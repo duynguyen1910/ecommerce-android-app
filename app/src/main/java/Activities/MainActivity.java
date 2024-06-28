@@ -1,10 +1,15 @@
 package Activities;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.stores.R;
@@ -12,12 +17,18 @@ import com.example.stores.databinding.ActivityMainBinding;
 import com.google.android.material.navigation.NavigationBarView;
 
 import Adapters.MainViewPager2Adapter;
+import Fragments.HomeFragment;
+import Fragments.MailFragment;
+import Fragments.NotificationFragment;
+import Fragments.ProfileFragment;
+import Fragments.VideoFragment;
 
 public class MainActivity extends AppCompatActivity {
 
 
     private ActivityMainBinding binding;
     MainViewPager2Adapter mainViewPager2Adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,43 +49,74 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
+                Fragment fragment = null;
+                String tag = "";
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 if (itemId == R.id.homeMenu) {
-                    binding.viewPager2.setCurrentItem(0);
+                    tag = "Home";
+                    fragment = fragmentManager.findFragmentByTag(tag);
+                    if (fragment == null) {
+                        fragment = new HomeFragment();
+                    }
+//                    binding.viewPager2.setCurrentItem(0);
                     binding.toolbarTitleTv.setText("Home");
                 } else if (itemId == R.id.categoryMenu) {
-                    binding.viewPager2.setCurrentItem(1);
+                    tag = "Mail";
+                    fragment = fragmentManager.findFragmentByTag(tag);
+                    if (fragment == null) {
+                        fragment = new MailFragment();
+                    }
+//                    binding.viewPager2.setCurrentItem(1);
                     binding.toolbarTitleTv.setText("Mail");
                 } else if (itemId == R.id.receiptMenu) {
-                    binding.viewPager2.setCurrentItem(2);
+                    tag = "Video";
+                    fragment = fragmentManager.findFragmentByTag(tag);
+                    if (fragment == null) {
+                        fragment = new VideoFragment();
+                    }
+//                    binding.viewPager2.setCurrentItem(2);
                     binding.toolbarTitleTv.setText("Video");
                 } else if (itemId == R.id.memberMenu) {
-                    binding.viewPager2.setCurrentItem(3);
+                    tag = "Notification";
+                    fragment = fragmentManager.findFragmentByTag(tag);
+                    if (fragment == null) {
+                        fragment = new NotificationFragment();
+                    }
+//                    binding.viewPager2.setCurrentItem(3);
                     binding.toolbarTitleTv.setText("Notification");
                 } else if (itemId == R.id.profileMenu) {
-                    binding.viewPager2.setCurrentItem(4);
+                    tag = "Profile";
+                    fragment = fragmentManager.findFragmentByTag(tag);
+                    if (fragment == null) {
+                        fragment = new ProfileFragment();
+                    }
+//                    binding.viewPager2.setCurrentItem(4);
                     binding.toolbarTitleTv.setText("Profile");
-                } else {
-                    Log.w("Navigation", "Unknown menu item selected");
-                    return false;
                 }
+                fragmentTransaction
+                        .replace(binding.frameLayout.getId(), fragment, tag)
+                        .commit();
                 return true;
             }
         });
 
 
-        binding.viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                binding.bottomNavigation.getMenu().getItem(position).setChecked(true);
-            }
-        });
+//        binding.viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+//            @Override
+//            public void onPageSelected(int position) {
+//                super.onPageSelected(position);
+//                binding.bottomNavigation.getMenu().getItem(position).setChecked(true);
+//            }
+//        });
 
 
     }
-    private void initUI(){
+
+    private void initUI() {
+        binding.bottomNavigation.setSelectedItemId(R.id.homeMenu);
         mainViewPager2Adapter = new MainViewPager2Adapter(this);
-        binding.viewPager2.setAdapter(mainViewPager2Adapter);
+//        binding.viewPager2.setAdapter(mainViewPager2Adapter);
     }
 
 
@@ -130,5 +172,5 @@ public class MainActivity extends AppCompatActivity {
 //            toolbar.setVisibility(View.VISIBLE);
 //        }
 
-    }
+}
 

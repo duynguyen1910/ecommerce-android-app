@@ -8,23 +8,62 @@
     android:padding="20dp">
 
 
-
-    <EditText
-        android:id="@+id/searchEdt"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/custom_edit_text_border"
-        android:drawableStart="@drawable/baseline_search_24"
-        android:drawableEnd="@null"
-        android:drawablePadding="10dp"
-        android:hint="Tìm kiếm thông tin"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="10dp"
-        android:textColor="#fff"
-        android:textColorHint="@color/text1"
-        android:textSize="14dp" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/searchEdt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_edit_text_border"
+            android:drawableStart="@drawable/baseline_search_24"
+            android:drawablePadding="10dp"
+            android:hint="Tìm kiếm thông tin"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp"
+            android:textColor="#fff"
+            android:textColorHint="@color/text1"
+            android:textSize="14dp" />
+
+        <RelativeLayout
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginEnd="10dp"
+         >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_cart" />
+
+
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/bg_quantity_in_cart"
+                android:gravity="center"
+                android:text="05"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_sms" />
+    </LinearLayout>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -36,6 +75,45 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <ProgressBar
+                    android:id="@+id/progressBarBanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="50dp" />
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager2Slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false" />
+
+                <me.relex.circleindicator.CircleIndicator3
+                    android:id="@+id/indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                   android:layout_centerInParent="true"
+                   />
+
+<!--                <com.google.android.material.tabs.TabLayout-->
+<!--                    android:id="@+id/tabLayout"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@id/viewPager2Slider"-->
+<!--                    android:layout_marginTop="-15dp"-->
+<!--                    app:tabBackground="@drawable/tab_indicator"-->
+<!--                    app:tabGravity="center"-->
+<!--                    app:tabIndicator="@null"-->
+<!--                    app:tabIndicatorGravity="center" />-->
+
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>

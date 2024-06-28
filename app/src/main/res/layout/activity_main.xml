@@ -50,13 +50,18 @@
 <!--        android:layout_weight="1"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content" />-->
-    <androidx.viewpager2.widget.ViewPager2
+<!--    <androidx.viewpager2.widget.ViewPager2-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:id="@+id/viewPager2"-->
+<!--        android:layout_weight="1"-->
+<!--        android:layout_height="wrap_content"/>-->
+
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:id="@+id/viewPager2"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_height="wrap_content"/>
-
-
+        android:id="@+id/frameLayout"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
