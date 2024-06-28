@@ -11,6 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -90,7 +91,7 @@
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager2Slider"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="110dp"
                     android:clipChildren="false"
                     android:clipToPadding="false" />
 
@@ -101,6 +102,36 @@
                     android:layout_below="@id/viewPager2Slider"
                     android:layout_marginTop="-20dp" />
             </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Official Brand"
+                android:textSize="14sp"
+                android:textColor="@color/text1"
+                android:textStyle="bold" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <ProgressBar
+                    android:id="@+id/progressBarOfficialBrand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="50dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewOfficialBrand"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false" />
+            </RelativeLayout>
+
 
         </LinearLayout>
     </ScrollView>
