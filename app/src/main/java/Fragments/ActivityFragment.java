@@ -9,16 +9,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.stores.databinding.FragmentMailBinding;
-import com.example.stores.databinding.FragmentVideoBinding;
+import com.example.stores.databinding.FragmentActivityBinding;
 
-public class MailFragment extends Fragment {
-    FragmentMailBinding binding;
+
+public class ActivityFragment extends Fragment {
+    FragmentActivityBinding binding;
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentMailBinding.inflate(getLayoutInflater());
+        binding = FragmentActivityBinding.inflate(getLayoutInflater());
 
         return binding.getRoot();
     }

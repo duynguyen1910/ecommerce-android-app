@@ -8,7 +8,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:text="Fragment Video"
+        android:text="Fragment Voucher"
         android:textSize="20sp"
         android:textColor="@color/primary_color"
         android:gravity="center"

@@ -1,25 +1,21 @@
 package Activities;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityMainBinding;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
 import Fragments.HomeFragment;
-import Fragments.MailFragment;
+import Fragments.VoucherFragment;
 import Fragments.NotificationFragment;
 import Fragments.ProfileFragment;
-import Fragments.VideoFragment;
+import Fragments.ActivityFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private void setupBottomNav(){
         HashMap<Integer, Fragment> fragmentMap = new HashMap<>();
         fragmentMap.put(R.id.homeMenu, new HomeFragment());
-        fragmentMap.put(R.id.categoryMenu, new MailFragment());
-        fragmentMap.put(R.id.receiptMenu, new VideoFragment());
-        fragmentMap.put(R.id.memberMenu, new NotificationFragment());
+        fragmentMap.put(R.id.voucherMenu, new VoucherFragment());
+        fragmentMap.put(R.id.activityMenu, new ActivityFragment());
+        fragmentMap.put(R.id.notificationMenu, new NotificationFragment());
         fragmentMap.put(R.id.profileMenu, new ProfileFragment());
 
         binding.bottomNavigation.setOnItemSelectedListener(item -> {
