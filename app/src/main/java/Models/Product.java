@@ -13,6 +13,7 @@ public class Product implements Serializable {
     private double rating;
     private int numberInCart;
     private int sold;
+    private int saleoff;
 
 
 
@@ -27,13 +28,22 @@ public class Product implements Serializable {
         this.numberInCart = NumberinCart;
     }
 
-    public Product(String title, String description, ArrayList<String> picUrl, double price, double rating, int sold) {
+    public Product(String title, String description, ArrayList<String> picUrl, double price, double rating, int sold, int saleoff) {
         this.title = title;
         this.description = description;
         this.picUrl = picUrl;
         this.price = price;
         this.rating = rating;
         this.sold = sold;
+        this.saleoff = saleoff;
+    }
+
+    public int getSaleoff() {
+        return saleoff;
+    }
+
+    public void setSaleoff(int saleoff) {
+        this.saleoff = saleoff;
     }
 
     public int getSold() {
