@@ -142,10 +142,10 @@ public class HomeFragment extends Fragment {
         picUrls4.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcfb-lsaqdfxpqmpo1c");
 
 //        Product(String title, String description, ArrayList<String> picUrl, double price, double rating, int sold)
-        list.add(new Product("Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057", getResources().getResourceName(R.string.product_desc1).toString(), picUrls1, 149000, 4.9, 200, 50));
-        list.add(new Product("Lovito Đầm trễ vai ngọc trai trơn đơn giản dành cho nữ L76AD154", getResources().getResourceName(R.string.product_desc1).toString(), picUrls2, 119000, 4.8, 179, 48));
-        list.add(new Product("Đồng hồ điện tử Unisex không thông minh thời trang S8 phong cách mới", getResources().getResourceName(R.string.product_desc2).toString(), picUrls3, 49000, 4.5, 559, 30));
-        list.add(new Product("Huizumei Váy preppy nữ mùa hè cổ polo nhỏ chắp vá eo nâng cao và giảm béo váy ngắn", getResources().getResourceName(R.string.product_desc3).toString(), picUrls4, 129000, 4.7, 989, 45));
+        list.add(new Product("Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057", getResources().getResourceName(R.string.product_desc1).toString(), picUrls1, 149000, 298000, 4.9, 200, 50));
+        list.add(new Product("Lovito Đầm trễ vai ngọc trai trơn đơn giản dành cho nữ L76AD154", getResources().getResourceName(R.string.product_desc1).toString(), picUrls2, 119000, 228000, 4.8, 179, 48));
+        list.add(new Product("Đồng hồ điện tử Unisex không thông minh thời trang S8 phong cách mới", getResources().getResourceName(R.string.product_desc2).toString(), picUrls3, 49000, 70000, 4.5, 559, 30));
+        list.add(new Product("Huizumei Váy preppy nữ mùa hè cổ polo nhỏ chắp vá eo nâng cao và giảm béo váy ngắn", getResources().getResourceName(R.string.product_desc3).toString(), picUrls4, 129000, 235000, 4.7, 989, 45));
 //
         if (!list.isEmpty()) {
             binding.recyclerViewProducts.setLayoutManager(new GridLayoutManager(requireActivity(), 2));

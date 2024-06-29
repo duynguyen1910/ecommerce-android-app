@@ -1,6 +1,8 @@
 package Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.stores.R;
 
-
 import java.util.ArrayList;
 
+import Activities.ProductDetailActivity;
+import Activities.ProductImagesDetailActivity;
 import Models.SliderItem;
 
-public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.ViewHolder> {
+public class SliderAdapterForProductDetail extends RecyclerView.Adapter<SliderAdapterForProductDetail.ViewHolder> {
     private Context context;
     private final ArrayList<SliderItem> sliderItems;
 
 
-    public SliderAdapter(Context context, ArrayList<SliderItem> sliderItems) {
+    public SliderAdapterForProductDetail(Context context, ArrayList<SliderItem> sliderItems) {
         this.context = context;
         this.sliderItems = sliderItems;
     }
@@ -38,13 +41,26 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.ViewHolder
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(com.example.stores.R.id.imageSlide);
+            imageView = itemView.findViewById(R.id.imageSlide);
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         Glide.with(context).load(sliderItems.get(position).getUrl()).into(holder.imageView);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int currentPosition = holder.getBindingAdapterPosition();
+                Intent intent = new Intent(context, ProductImagesDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("currentPosition", currentPosition);
+                bundle.putSerializable("sliderItems", sliderItems);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

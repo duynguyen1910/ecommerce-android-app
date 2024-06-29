@@ -54,5 +54,6 @@
     <color name="pink">#C13564</color>
     <color name="red">#ff343b</color>
     <color name="gray">#d2d2d2</color>
+    <color name="darkgray">#616161</color>
     <color name="lightgray">#EFEFEF</color>
 </resources>

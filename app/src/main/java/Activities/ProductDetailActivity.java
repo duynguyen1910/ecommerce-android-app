@@ -1,8 +1,11 @@
 package Activities;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +23,7 @@ import java.util.Objects;
 
 import Adapters.SizeAdapter;
 import Adapters.SliderAdapter;
+import Adapters.SliderAdapterForProductDetail;
 import Adapters.ViewPager2Adapter;
 import Fragments.DescriptionFragment;
 import Fragments.HomeFragment;
@@ -45,7 +49,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         initUI();
         getBundles();
 
-        initBanners();
+        initSlider();
 
         initSize();
 
@@ -106,26 +110,33 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     }
 
-    private void initBanners() {
+    private void initSlider() {
         ArrayList<SliderItem> sliderItems = new ArrayList<>();
         for (int i = 0; i < object.getPicUrl().size(); i++) {
             sliderItems.add(new SliderItem(object.getPicUrl().get(i)));
         }
 
-        binding.viewPager2Slider.setAdapter(new SliderAdapter(this, sliderItems));
-        binding.viewPager2Slider.setOffscreenPageLimit(3);
+        binding.viewPager2Slider.setAdapter(new SliderAdapterForProductDetail(this, sliderItems));
+        binding.viewPager2Slider.setOffscreenPageLimit(2);
         binding.indicator.setViewPager(binding.viewPager2Slider);
+
+
+
     }
 
     private void getBundles() {
         object = (Product) getIntent().getSerializableExtra("object");
         binding.txtTitle.setText(object.getTitle());
-
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedPrice = formatter.format(object.getPrice());
-        binding.txtPrice.setText("đ" + formattedPrice);
+        String formattedOldPrice = formatter.format(object.getOldPrice());
+        binding.txtOldPrice.setText("đ" + formattedOldPrice);
+        binding.txtOldPrice.setPaintFlags(binding.txtOldPrice.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+        String formattedPrice = formatter.format(object.getOldPrice()*(100-object.getSaleoff())/100);
+
+        binding.txtPrice.setText(formattedPrice);
+
         binding.ratingBar.setRating((float) object.getRating());
-        binding.txtRating.setText(String.valueOf(object.getRating()) + "/5");
+        binding.txtRating.setText(String.valueOf(object.getRating()) + " / 5");
         binding.txtSold.setText("Đã bán " + object.getSold());
         binding.btnAddToCart.setOnClickListener(v -> {
 //            object.setNumberinCart(numberOrder);

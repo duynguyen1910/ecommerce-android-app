@@ -28,11 +28,12 @@ public class Product implements Serializable {
         this.numberInCart = NumberinCart;
     }
 
-    public Product(String title, String description, ArrayList<String> picUrl, double price, double rating, int sold, int saleoff) {
+    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice,double rating, int sold, int saleoff) {
         this.title = title;
         this.description = description;
         this.picUrl = picUrl;
         this.price = price;
+        this.oldPrice = oldPrice;
         this.rating = rating;
         this.sold = sold;
         this.saleoff = saleoff;

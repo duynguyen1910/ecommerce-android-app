@@ -1,6 +1,8 @@
 package Models;
 
-public class SliderItem {
+import java.io.Serializable;
+
+public class SliderItem implements Serializable {
     private String url;
 
     public SliderItem() {

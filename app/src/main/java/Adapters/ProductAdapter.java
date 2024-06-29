@@ -46,7 +46,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         Product product = list.get(holder.getBindingAdapterPosition());
         holder.binding.txtTitle.setText(product.getTitle());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedPrice = formatter.format(product.getPrice());
+        String formattedPrice = formatter.format(product.getOldPrice()*(100-product.getSaleoff())/100);
+
         holder.binding.txtPrice.setText("đ" + formattedPrice);
         holder.binding.txtSold.setText("Đã bán " + product.getSold());
         holder.binding.txtSaleoff.setText("-" + product.getSaleoff() + "%");
