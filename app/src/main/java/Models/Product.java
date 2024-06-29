@@ -38,6 +38,17 @@ public class Product implements Serializable {
         this.sold = sold;
         this.saleoff = saleoff;
     }
+    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice,double rating, int sold, int saleoff, int numberInCart) {
+        this.title = title;
+        this.description = description;
+        this.picUrl = picUrl;
+        this.price = price;
+        this.oldPrice = oldPrice;
+        this.rating = rating;
+        this.sold = sold;
+        this.saleoff = saleoff;
+        this.numberInCart = numberInCart;
+    }
 
     public int getSaleoff() {
         return saleoff;

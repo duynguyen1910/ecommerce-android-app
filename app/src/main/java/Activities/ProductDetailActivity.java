@@ -54,6 +54,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         initSize();
 
         setUpViewPager2();
+
+        setupEvents();
     }
 
     private void setUpViewPager2(){
@@ -138,13 +140,24 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding.ratingBar.setRating((float) object.getRating());
         binding.txtRating.setText(String.valueOf(object.getRating()) + " / 5");
         binding.txtSold.setText("Đã bán " + object.getSold());
+
+    }
+
+    private void setupEvents(){
         binding.btnAddToCart.setOnClickListener(v -> {
+            Intent intent = new Intent();
 //            object.setNumberinCart(numberOrder);
 //            managmentCart.insertItem(object);
         });
         binding.imageBack.setOnClickListener(v -> finish());
 
-
+        binding.iconCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductDetailActivity.this, CartActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initUI() {

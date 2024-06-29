@@ -1,5 +1,6 @@
 package Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.example.stores.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
 
+import Activities.CartActivity;
 import Adapters.PopularBrandAdapter;
 import Adapters.ProductAdapter;
 import Adapters.SliderAdapter;
@@ -40,6 +42,7 @@ public class HomeFragment extends Fragment {
         initBanner();
         initOfficialBrand();
         initProducts();
+        setupEvents();
         return binding.getRoot();
 
     }
@@ -156,5 +159,14 @@ public class HomeFragment extends Fragment {
 
     }
 
+    private void setupEvents(){
+        binding.iconCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), CartActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
 }

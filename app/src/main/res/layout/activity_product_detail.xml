@@ -81,6 +81,7 @@
 
                         <RelativeLayout
                             android:layout_width="45dp"
+                            android:id="@+id/iconCart"
                             android:layout_height="45dp"
                             android:background="@color/lightgray">
 
