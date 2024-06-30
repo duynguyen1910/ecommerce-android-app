@@ -85,16 +85,8 @@ public class CartActivity extends AppCompatActivity {
         double percentTax = 0.08;
         double delivery = 50000;
         double tax = (double) Math.round(getTotalFee() * percentTax);
-
         double total = Math.round(getTotalFee() + tax + delivery);
-        double itemTotal = Math.round(getTotalFee());
-
-
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-
-        binding.txtTotalFee.setText("đ" + formatter.format(itemTotal));
-        binding.txtTax.setText("đ" + formatter.format(tax));
-        binding.txtDelivery.setText("đ" + formatter.format(delivery));
         binding.txtTotal.setText("đ" + formatter.format(total));
 
     }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/primary_color"
     android:orientation="vertical"
     android:weightSum="10">
 
@@ -12,7 +12,7 @@
         android:layout_height="0dp"
         android:layout_centerInParent="true"
         android:layout_weight="4"
-        android:src="@mipmap/black_logo" />
+        android:src="@mipmap/logo_ecommerce_primary" />
 
     <LinearLayout
         android:layout_width="match_parent"

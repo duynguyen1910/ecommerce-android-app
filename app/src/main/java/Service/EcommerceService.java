@@ -46,11 +46,11 @@ public class EcommerceService extends Service {
     @SuppressLint("ForegroundServiceType")
     private void sendNotification(String data) {
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.white_logo);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.logo_ecommerce);
         Intent intent = new Intent(this, CartActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, ConFigApplication.CHANNEL_ID)
-                .setContentTitle("Wear Shoes")
+                .setContentTitle("Ecommerce")
                 .setContentText(data)
                 .setLargeIcon(bitmap)
                 .setColor(Color.BLUE)

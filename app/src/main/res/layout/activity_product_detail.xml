@@ -64,7 +64,8 @@
                                 android:id="@+id/imageBack"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="12dp"
                                 android:src="@drawable/ic_back" />
                         </RelativeLayout>
 
@@ -80,8 +81,8 @@
                         app:cardCornerRadius="30dp">
 
                         <RelativeLayout
-                            android:layout_width="45dp"
                             android:id="@+id/iconCart"
+                            android:layout_width="45dp"
                             android:layout_height="45dp"
                             android:background="@color/lightgray">
 
@@ -173,7 +174,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginTop="8dp"
                 android:gravity="center_vertical">
 
@@ -241,31 +241,25 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <com.google.android.material.appbar.AppBarLayout
-                    android:id="@+id/toolbar"
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    app:tabBackground="@color/white"
+                    app:tabGravity="fill"
+                    app:tabIndicatorColor="@color/green"
+                    app:tabIndicatorHeight="5dp"
+                    app:tabMaxWidth="0dp"
+                    app:tabMode="fixed"
+                    app:tabSelectedTextColor="@color/green"
+                    app:tabTextColor="@color/black" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray" />
 
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tabLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:tabBackground="@color/white"
-                        app:tabGravity="fill"
-                        app:tabIndicatorColor="@color/green"
-                        app:tabIndicatorHeight="5dp"
-                        app:tabMaxWidth="0dp"
-                        app:tabMode="fixed"
-                        app:tabSelectedTextColor="@color/green"
-                        app:tabTextColor="@color/black" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/gray" />
-                </com.google.android.material.appbar.AppBarLayout>
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager2SizeSlider"

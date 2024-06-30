@@ -97,9 +97,9 @@
                 android:padding="5dp">
 
                 <ImageView
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@mipmap/ic_chart" />
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:src="@mipmap/ic_chart2" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
