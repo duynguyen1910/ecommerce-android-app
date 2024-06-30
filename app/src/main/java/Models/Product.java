@@ -15,21 +15,10 @@ public class Product implements Serializable {
     private int sold;
     private int saleoff;
     private int storeID;
+    private boolean checkedStatus;
 
 
-
-    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice, int review, double rating, int NumberinCart) {
-        this.title = title;
-        this.description = description;
-        this.picUrl = picUrl;
-        this.price = price;
-        this.oldPrice = oldPrice;
-        this.review = review;
-        this.rating = rating;
-        this.numberInCart = NumberinCart;
-    }
-
-    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice,double rating, int sold, int saleoff, int storeID) {
+    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice, double rating, int sold, int saleoff, int storeID) {
         this.title = title;
         this.description = description;
         this.picUrl = picUrl;
@@ -40,7 +29,8 @@ public class Product implements Serializable {
         this.saleoff = saleoff;
         this.storeID = storeID;
     }
-    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice,double rating, int sold, int saleoff, int numberInCart, int storeID) {
+
+    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice, double rating, int sold, int saleoff, int numberInCart, int storeID, boolean checkedStatus) {
         this.title = title;
         this.description = description;
         this.picUrl = picUrl;
@@ -51,6 +41,16 @@ public class Product implements Serializable {
         this.saleoff = saleoff;
         this.numberInCart = numberInCart;
         this.storeID = storeID;
+        this.checkedStatus = checkedStatus;
+    }
+
+
+    public boolean getCheckedStatus() {
+        return checkedStatus;
+    }
+
+    public void setCheckedStatus(boolean checkedStatus) {
+        this.checkedStatus = checkedStatus;
     }
 
     public int getStoreID() {
@@ -76,6 +76,7 @@ public class Product implements Serializable {
     public void setSold(int sold) {
         this.sold = sold;
     }
+
     public Product() {
     }
 

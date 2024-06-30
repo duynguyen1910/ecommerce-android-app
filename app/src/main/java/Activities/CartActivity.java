@@ -1,4 +1,5 @@
 package Activities;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -6,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,23 +15,32 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityCartBinding;
 import com.example.stores.databinding.LayoutOrderBinding;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
+
 import Adapters.CartAdapter;
+import Models.CartItem;
 import Models.Product;
+import Models.Store;
 import Service.EcommerceService;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity implements ToTalFeeCallback {
 
     ActivityCartBinding binding;
     CartAdapter cartAdapter;
-    ArrayList<Product> cart;
+    ArrayList<Product> listProductsInCart;
+    ArrayList<Store> listStores;
+    ArrayList<CartItem> cart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +48,7 @@ public class CartActivity extends AppCompatActivity {
         binding = ActivityCartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initUI();
-        initCart();
+        initCartUI();
         calculatorCart();
 
         binding.imageBack.setOnClickListener(v -> finish());
@@ -51,7 +62,8 @@ public class CartActivity extends AppCompatActivity {
         });
 
     }
-    private void showThankyouDialog(){
+
+    private void showThankyouDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutOrderBinding orderBinding = LayoutOrderBinding.inflate(getLayoutInflater());
         builder.setView(orderBinding.getRoot());
@@ -63,35 +75,18 @@ public class CartActivity extends AppCompatActivity {
     }
 
 
-    private void calculatorCart() {
-        int cartItemCount = cart.size();
-        if (cartItemCount == 0){
-            binding.layoutEmptyCart.setVisibility(View.VISIBLE);
-            binding.layoutCart.setVisibility(View.GONE);
-        }
-        double percentTax = 0.08;
-        double delivery = 50000;
-        double tax = (double) Math.round(getTotalFee() * percentTax);
-        double total = Math.round(getTotalFee() + tax + delivery);
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        binding.txtTotal.setText("đ" + formatter.format(total));
-
-    }
-    private double getTotalFee(){
-
-        double fee = 0;
-        int listSize = cart.size();
-        for (int i = 0; i< listSize; i++){
-            fee = fee + cart.get(i).getPrice() * cart.get(i).getNumberInCart();
-        }
-        return fee;
-    }
 
 
-    private void initCartList() {
+
+    private void initCart() {
+
+        listStores = new ArrayList<>();
+        listStores.add(new Store(1, "Zozo_Unisex", "TP. Hồ Chí Minh", "https://down-bs-vn.img.susercontent.com/fd234f3899f07b72e9c5e5e26f9d997d_tn.webp"));
+        listStores.add(new Store(2, "LOVITO OFFICIAL STORE", "TP. Hồ Chí Minh", "https://down-bs-vn.img.susercontent.com/f87c39a4a3702cd4cb149cacd8114a0b_tn.webp"));
+        listStores.add(new Store(3, "SANDAshop.vn", "Hà Nội", "https://down-bs-vn.img.susercontent.com/ac5556f336029ae92a1058195f2d4e56_tn.webp"));
 
 //        binding.progressBarProducts.setVisibility(View.VISIBLE);
-        cart = new ArrayList<>();
+        listProductsInCart = new ArrayList<>();
         ArrayList<String> picUrls1 = new ArrayList<>();
         picUrls1.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rbmn-lqld5fts53pj7e");
         picUrls1.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rbl4-lqld5gi75d2e60");
@@ -118,65 +113,67 @@ public class CartActivity extends AppCompatActivity {
         picUrls4.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcfb-lsaqdfxpqmpo1c");
 
 //        Product(String title, String description, ArrayList<String> picUrl, double price, double rating, int sold)
-        cart.add(new Product("Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057", getResources().getResourceName(R.string.product_desc1), picUrls1, 149000, 298000, 4.9, 200, 50, 1));
-        cart.add(new Product("Lovito Đầm trễ vai ngọc trai trơn đơn giản dành cho nữ L76AD154", getResources().getResourceName(R.string.product_desc1), picUrls2, 119000, 228000, 4.8, 179, 48, 2));
-        cart.add(new Product("Đồng hồ điện tử Unisex không thông minh thời trang S8 phong cách mới", getResources().getResourceName(R.string.product_desc2), picUrls3, 49000, 70000, 4.5, 559, 30, 1));
-        cart.add(new Product("Huizumei Váy preppy nữ mùa hè cổ polo nhỏ chắp vá eo nâng cao và giảm béo váy ngắn", getResources().getResourceName(R.string.product_desc3), picUrls4, 129000, 235000, 4.7, 989, 45,3));
+        listProductsInCart.add(new Product("Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057", getResources().getResourceName(R.string.product_desc1), picUrls1, 149000, 298000, 4.9, 200, 50, 1, 1, false));
+        listProductsInCart.add(new Product("Lovito Đầm trễ vai ngọc trai trơn đơn giản dành cho nữ L76AD154", getResources().getResourceName(R.string.product_desc1), picUrls2, 119000, 228000, 4.8, 179, 48, 2, 2, false));
+        listProductsInCart.add(new Product("Đồng hồ điện tử Unisex không thông minh thời trang S8 phong cách mới", getResources().getResourceName(R.string.product_desc2), picUrls3, 49000, 70000, 4.5, 559, 30, 3, 1, false));
+        listProductsInCart.add(new Product("Huizumei Váy preppy nữ mùa hè cổ polo nhỏ chắp vá eo nâng cao và giảm béo váy ngắn", getResources().getResourceName(R.string.product_desc3), picUrls4, 129000, 235000, 4.7, 989, 45, 1, 3, false));
 //
 
+        cart = groupProductsByStore();
 
 
     }
 
+    private ArrayList<CartItem> groupProductsByStore() {
+        HashMap<Integer, ArrayList<Product>> hashMap = new HashMap<>();
+        for (Product product : listProductsInCart) {
+            int storeId = product.getStoreID();
+            if (!hashMap.containsKey(storeId)) {
+                hashMap.put(storeId, new ArrayList<Product>());
+            }
+            hashMap.get(storeId).add(product);
+        }
 
-    private void initCart(){
+        ArrayList<CartItem> cartItems = new ArrayList<>();
 
-        initCartList();
-        if (!cart.isEmpty()){
+        // filter HashMap để tạo CartItem
+        for (Map.Entry<Integer, ArrayList<Product>> entry : hashMap.entrySet()) {
+            int storeId = entry.getKey();
+            ArrayList<Product> products = entry.getValue();
+
+            // Tìm tên cửa hàng theo storeId
+            String storeName = "";
+            for (Store store : listStores) {
+                if (store.getStoreID() == storeId) {
+                    storeName = store.getStoreName();
+                    break;
+                }
+            }
+
+            // Tạo CartItem và thêm vào danh sách cartItems
+            CartItem cartItem = new CartItem(storeId, storeName, products);
+            cartItems.add(cartItem);
+        }
+
+        return cartItems;
+    }
+
+
+    private void initCartUI() {
+
+        initCart();
+        if (!cart.isEmpty()) {
             binding.layoutEmptyCart.setVisibility(View.GONE);
             binding.layoutCart.setVisibility(View.VISIBLE);
 
-            cartAdapter = new CartAdapter(CartActivity.this, cart, this::calculatorCart);
+            cartAdapter = new CartAdapter(CartActivity.this, cart, CartActivity.this);
             binding.recyclerViewCart.setAdapter(cartAdapter);
             binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(CartActivity.this, LinearLayoutManager.VERTICAL, false));
-        }else {
+        } else {
             binding.layoutEmptyCart.setVisibility(View.VISIBLE);
             binding.layoutCart.setVisibility(View.GONE);
         }
 
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getBindingAdapterPosition();
-                cart.remove(position);
-                calculatorCart();
-                cartAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(CartActivity.this, R.color.primary_color))
-                        .addActionIcon(R.drawable.ic_delete)
-                        .setSwipeLeftLabelColor(ContextCompat.getColor(CartActivity.this, R.color.white))
-                        .addSwipeLeftLabel("Delete")
-                        .setIconHorizontalMargin(TypedValue.COMPLEX_UNIT_DIP, 16)
-                        .addCornerRadius(TypedValue.COMPLEX_UNIT_DIP, 12)
-                        .setSwipeLeftLabelTextSize(TypedValue.COMPLEX_UNIT_SP, 14)
-                        .create()
-                        .decorate();
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-            }
-        };
-
-
-        new ItemTouchHelper(simpleCallback).attachToRecyclerView(binding.recyclerViewCart);
 
 
     }
@@ -186,5 +183,55 @@ public class CartActivity extends AppCompatActivity {
 
         getWindow().setNavigationBarColor(Color.parseColor("#EFEFEF"));
         Objects.requireNonNull(getSupportActionBar()).hide();
+    }
+    private void calculatorCart() {
+        int cartItemCount = cart.size();
+        binding.txtQuantityInCart.setText("Giỏ Hàng (" + getQuantityProductsIncart() + ")" );
+        if (cartItemCount == 0) {
+            binding.layoutEmptyCart.setVisibility(View.VISIBLE);
+            binding.layoutCart.setVisibility(View.GONE);
+        }
+        double delivery = 20000;
+        double total = 0;
+        if (getTotalFee() != 0){
+            binding.layoutDiscount.setVisibility(View.VISIBLE);
+            total = Math.round(getTotalFee() + delivery);
+        }else {
+            binding.layoutDiscount.setVisibility(View.GONE);
+        }
+
+        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+        binding.txtTotal.setText("đ" + formatter.format(total));
+
+    }
+    private int getQuantityProductsIncart(){
+        int count = 0;
+        for (CartItem item : cart) {
+            count += item.getListProducts().size();
+        }
+        return count;
+    }
+
+
+
+
+    private double getTotalFee() {
+        double fee = 0;
+        int count = 0;
+        for (CartItem item : cart) {
+            for (Product product : item.getListProducts()) {
+                if (product.getCheckedStatus()){
+                    count += 1;
+                    fee += product.getPrice() * product.getNumberInCart();
+                }
+
+            }
+        }
+        binding.btnBuyNow.setText("Mua Hàng (" + count + ")" );
+        return fee;
+    }
+    @Override
+    public void totalFeeUpdate(double totalFee) {
+        calculatorCart();
     }
 }

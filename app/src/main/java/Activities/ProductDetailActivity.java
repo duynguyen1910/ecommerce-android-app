@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -149,13 +152,22 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void popUpProductDetailDialog(){
+    private void popUpProductDetailDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutProductDetailBinding detailBinding = LayoutProductDetailBinding.inflate(getLayoutInflater());
         builder.setView(detailBinding.getRoot());
         AlertDialog dialog = builder.create();
+
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.custom_edit_text_border);
         dialog.show();
+
+        // Set the dialog window attributes
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            window.setGravity(Gravity.BOTTOM);
+
+        }
 
         detailBinding.imageCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,6 +182,9 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
