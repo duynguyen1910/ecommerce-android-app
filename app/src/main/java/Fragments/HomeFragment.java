@@ -27,6 +27,7 @@ import Adapters.SliderAdapter;
 import Models.OfficialBrand;
 import Models.Product;
 import Models.SliderItem;
+import Models.Store;
 
 public class HomeFragment extends Fragment {
     FragmentHomeBinding binding;
@@ -117,6 +118,7 @@ public class HomeFragment extends Fragment {
 
     private void initProducts() {
 
+
 //        binding.progressBarProducts.setVisibility(View.VISIBLE);
         ArrayList<Product> list = new ArrayList<>();
         ArrayList<String> picUrls1 = new ArrayList<>();
@@ -133,10 +135,10 @@ public class HomeFragment extends Fragment {
 
 
         ArrayList<String> picUrls3 = new ArrayList<>();
-        picUrls3.add("https://down-vn.img.susercontent.com/file/cn-11134301-7r98o-lozhxkvh2rbr86");
-        picUrls3.add("https://down-vn.img.susercontent.com/file/cn-11134301-7r98o-lozhxkw11xlo75");
-        picUrls3.add("https://down-vn.img.susercontent.com/file/cn-11134301-7r98o-lozhxkvh6z13cb");
-        picUrls3.add("https://down-vn.img.susercontent.com/file/cn-11134301-7r98o-lozhxkvh5kgn8a");
+        picUrls3.add("https://down-vn.img.susercontent.com/file/e55e62939961126e8ef3b54061f0307d");
+        picUrls3.add("https://down-vn.img.susercontent.com/file/91d4a1fe3c410262bf67de9ac30e837d");
+        picUrls3.add("https://down-vn.img.susercontent.com/file/94ef82139c4ba8bfe56df151ff783e36");
+        picUrls3.add("https://down-vn.img.susercontent.com/file/4444ceee25d81cdc39228cdaec86c89e");
 
         ArrayList<String> picUrls4 = new ArrayList<>();
         picUrls4.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcck-lsaqdevfanrq8f");
@@ -145,17 +147,16 @@ public class HomeFragment extends Fragment {
         picUrls4.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcfb-lsaqdfxpqmpo1c");
 
 //        Product(String title, String description, ArrayList<String> picUrl, double price, double rating, int sold)
-        list.add(new Product("Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057", getResources().getResourceName(R.string.product_desc1).toString(), picUrls1, 149000, 298000, 4.9, 200, 50));
-        list.add(new Product("Lovito Đầm trễ vai ngọc trai trơn đơn giản dành cho nữ L76AD154", getResources().getResourceName(R.string.product_desc1).toString(), picUrls2, 119000, 228000, 4.8, 179, 48));
-        list.add(new Product("Đồng hồ điện tử Unisex không thông minh thời trang S8 phong cách mới", getResources().getResourceName(R.string.product_desc2).toString(), picUrls3, 49000, 70000, 4.5, 559, 30));
-        list.add(new Product("Huizumei Váy preppy nữ mùa hè cổ polo nhỏ chắp vá eo nâng cao và giảm béo váy ngắn", getResources().getResourceName(R.string.product_desc3).toString(), picUrls4, 129000, 235000, 4.7, 989, 45));
+        list.add(new Product("Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057", getResources().getResourceName(R.string.product_desc1).toString(), picUrls1, 149000, 298000, 4.9, 200, 50, 2));
+        list.add(new Product("Lovito Đầm trễ vai ngọc trai trơn đơn giản dành cho nữ L76AD154", getResources().getResourceName(R.string.product_desc1).toString(), picUrls2, 119000, 228000, 4.8, 179, 48, 2));
+        list.add(new Product("Đồng Hồ Điện Tử Chống Nước Phong Cách Quân Đội SANDA 2023 Cho Nam", getResources().getResourceName(R.string.product_desc2).toString(), picUrls3, 189000, 350000, 5.0, 559, 46, 3));
+        list.add(new Product("Huizumei Váy preppy nữ mùa hè cổ polo nhỏ chắp vá eo nâng cao và giảm béo váy ngắn", getResources().getResourceName(R.string.product_desc3).toString(), picUrls4, 129000, 235000, 4.7, 989, 45, 1));
 //
         if (!list.isEmpty()) {
             binding.recyclerViewProducts.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
             binding.recyclerViewProducts.setAdapter(new ProductAdapter(requireActivity(), list));
         }
         binding.progressBarProducts.setVisibility(View.GONE);
-
 
     }
 

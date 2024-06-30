@@ -1,5 +1,4 @@
 package Activities;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -7,28 +6,21 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityCartBinding;
-import com.example.stores.databinding.OrderLayoutBinding;
-
-import java.text.DecimalFormat;
+import com.example.stores.databinding.LayoutOrderBinding;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
-
 import Adapters.CartAdapter;
-import Adapters.ProductAdapter;
 import Models.Product;
 import Service.EcommerceService;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
@@ -61,18 +53,13 @@ public class CartActivity extends AppCompatActivity {
     }
     private void showThankyouDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        OrderLayoutBinding orderBinding = OrderLayoutBinding.inflate(getLayoutInflater());
+        LayoutOrderBinding orderBinding = LayoutOrderBinding.inflate(getLayoutInflater());
         builder.setView(orderBinding.getRoot());
         AlertDialog dialog = builder.create();
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.custom_edit_text_border);
         dialog.show();
 
-        orderBinding.imageCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        orderBinding.imageCancel.setOnClickListener(v -> dialog.dismiss());
     }
 
 
@@ -131,10 +118,10 @@ public class CartActivity extends AppCompatActivity {
         picUrls4.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcfb-lsaqdfxpqmpo1c");
 
 //        Product(String title, String description, ArrayList<String> picUrl, double price, double rating, int sold)
-        cart.add(new Product("Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057", getResources().getResourceName(R.string.product_desc1).toString(), picUrls1, 149000, 298000, 4.9, 200, 50, 1));
-        cart.add(new Product("Lovito Đầm trễ vai ngọc trai trơn đơn giản dành cho nữ L76AD154", getResources().getResourceName(R.string.product_desc1).toString(), picUrls2, 119000, 228000, 4.8, 179, 48, 2));
-        cart.add(new Product("Đồng hồ điện tử Unisex không thông minh thời trang S8 phong cách mới", getResources().getResourceName(R.string.product_desc2).toString(), picUrls3, 49000, 70000, 4.5, 559, 30, 1));
-        cart.add(new Product("Huizumei Váy preppy nữ mùa hè cổ polo nhỏ chắp vá eo nâng cao và giảm béo váy ngắn", getResources().getResourceName(R.string.product_desc3).toString(), picUrls4, 129000, 235000, 4.7, 989, 45,3));
+        cart.add(new Product("Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057", getResources().getResourceName(R.string.product_desc1), picUrls1, 149000, 298000, 4.9, 200, 50, 1));
+        cart.add(new Product("Lovito Đầm trễ vai ngọc trai trơn đơn giản dành cho nữ L76AD154", getResources().getResourceName(R.string.product_desc1), picUrls2, 119000, 228000, 4.8, 179, 48, 2));
+        cart.add(new Product("Đồng hồ điện tử Unisex không thông minh thời trang S8 phong cách mới", getResources().getResourceName(R.string.product_desc2), picUrls3, 49000, 70000, 4.5, 559, 30, 1));
+        cart.add(new Product("Huizumei Váy preppy nữ mùa hè cổ polo nhỏ chắp vá eo nâng cao và giảm béo váy ngắn", getResources().getResourceName(R.string.product_desc3), picUrls4, 129000, 235000, 4.7, 989, 45,3));
 //
 
 
@@ -149,12 +136,7 @@ public class CartActivity extends AppCompatActivity {
             binding.layoutEmptyCart.setVisibility(View.GONE);
             binding.layoutCart.setVisibility(View.VISIBLE);
 
-            cartAdapter = new CartAdapter(CartActivity.this, cart, new CallbackClass() {
-                @Override
-                public void callbackFunction() {
-                    calculatorCart();
-                }
-            });
+            cartAdapter = new CartAdapter(CartActivity.this, cart, this::calculatorCart);
             binding.recyclerViewCart.setAdapter(cartAdapter);
             binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(CartActivity.this, LinearLayoutManager.VERTICAL, false));
         }else {
@@ -168,6 +150,7 @@ public class CartActivity extends AppCompatActivity {
                 return false;
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getBindingAdapterPosition();

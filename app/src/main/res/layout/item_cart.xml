@@ -58,7 +58,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -96,6 +96,7 @@
                 android:ellipsize="end"
                 android:lines="2"
                 android:maxLines="2"
+                android:layout_marginBottom="2dp"
                 android:text="Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057"
                 android:textColor="@color/black"
                 android:textSize="13sp" />
@@ -110,10 +111,26 @@
                 android:drawableTint="@color/black"
                 android:ellipsize="end"
                 android:maxLines="2"
+                android:layout_marginBottom="8dp"
                 android:padding="3dp"
                 android:text="XANH-Trend, SIZE L"
                 android:textColor="@color/black"
-                android:textSize="13sp" />
+                android:textSize="12sp" />
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/custom_border_orange"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:paddingHorizontal="4dp"
+                android:paddingVertical="2dp"
+                android:text="Đổi ý 15 ngày"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/orange"
+                android:textSize="12sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -168,21 +185,18 @@
 
                         <ImageButton
                             android:id="@+id/btnMinus"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
                             android:layout_gravity="center_vertical"
                             android:background="@drawable/custom_btn_plus_minus"
-                            android:inputType="text"
                             android:padding="15dp"
-                            android:src="@drawable/ic_minus"
-                            android:textColor="@color/black"
-                            android:textColorHint="@color/black"
-                            android:textSize="15sp" />
+                            android:src="@drawable/ic_minus_16"
+                            app:tint="@color/text1" />
 
                         <TextView
                             android:id="@+id/txtQuantity"
                             android:layout_width="30dp"
-                            android:layout_height="20dp"
+                            android:layout_height="24dp"
                             android:background="@drawable/custom_btn_plus_minus"
                             android:gravity="center"
                             android:text="1"
@@ -191,23 +205,16 @@
 
                         <ImageButton
                             android:id="@+id/btnPlus"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center_vertical"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
                             android:background="@drawable/custom_btn_plus_minus"
-                            android:inputType="text"
                             android:padding="15dp"
-                            android:src="@drawable/baseline_add_24"
-                            android:textColor="@color/black"
-                            android:textColorHint="@color/black"
-                            android:textSize="15sp" />
-
-
+                            android:src="@drawable/ic_plus_16"
+                            app:tint="@color/text1"
+                         />
                     </LinearLayout>
                 </RelativeLayout>
             </RelativeLayout>
-
-
         </LinearLayout>
     </LinearLayout>
 

@@ -14,6 +14,7 @@ public class Product implements Serializable {
     private int numberInCart;
     private int sold;
     private int saleoff;
+    private int storeID;
 
 
 
@@ -28,7 +29,7 @@ public class Product implements Serializable {
         this.numberInCart = NumberinCart;
     }
 
-    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice,double rating, int sold, int saleoff) {
+    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice,double rating, int sold, int saleoff, int storeID) {
         this.title = title;
         this.description = description;
         this.picUrl = picUrl;
@@ -37,8 +38,9 @@ public class Product implements Serializable {
         this.rating = rating;
         this.sold = sold;
         this.saleoff = saleoff;
+        this.storeID = storeID;
     }
-    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice,double rating, int sold, int saleoff, int numberInCart) {
+    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice,double rating, int sold, int saleoff, int numberInCart, int storeID) {
         this.title = title;
         this.description = description;
         this.picUrl = picUrl;
@@ -48,6 +50,15 @@ public class Product implements Serializable {
         this.sold = sold;
         this.saleoff = saleoff;
         this.numberInCart = numberInCart;
+        this.storeID = storeID;
+    }
+
+    public int getStoreID() {
+        return storeID;
+    }
+
+    public void setStoreID(int storeID) {
+        this.storeID = storeID;
     }
 
     public int getSaleoff() {

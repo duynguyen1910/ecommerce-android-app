@@ -15,6 +15,7 @@ import java.util.Locale;
 
 import Activities.ProductDetailActivity;
 import Models.Product;
+import Models.Store;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
     private Context context;
