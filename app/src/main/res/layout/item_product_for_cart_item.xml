@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/custom_border_orange"
+                android:background="@drawable/custom_border_primary_color"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:paddingHorizontal="4dp"
