@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.example.stores.databinding.FragmentHomeBinding;
 import com.example.stores.databinding.FragmentProfileBinding;
 
+import Activities.CartActivity;
 import Activities.SettingsActivity;
 
 public class ProfileFragment extends Fragment {
@@ -23,15 +24,27 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(getLayoutInflater());
 
+        setupEvents();
+
+        return binding.getRoot();
+    }
+
+    private void setupEvents(){
         binding.imvSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(requireActivity(), SettingsActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
 
             }
         });
-        return binding.getRoot();
+
+        binding.iconCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), CartActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

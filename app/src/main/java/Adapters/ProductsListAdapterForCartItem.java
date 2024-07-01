@@ -93,15 +93,18 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
         Glide.with(context).load(product.getPicUrl().get(0)).into(holder.binding.imageView);
 
         holder.binding.btnPlus.setOnClickListener(v -> {
+
             int quantity = Integer.parseInt(holder.binding.txtQuantity.getText().toString().trim());
             holder.binding.txtQuantity.setText((quantity + 1) + "");
             product.setNumberInCart(quantity + 1);
-            callbackClass.totalFeeUpdate(getTotalFee());
-//            notifyItemChanged(holder.getBindingAdapterPosition());
+            if (holder.binding.checkbox.isChecked()) {
+                callbackClass.totalFeeUpdate(getTotalFee());
+            }
         });
 
 
         holder.binding.btnMinus.setOnClickListener(v -> {
+
             int quantity = Integer.parseInt(holder.binding.txtQuantity.getText().toString().trim());
             int currentPosition = holder.getBindingAdapterPosition();
             if (quantity == 1) {
@@ -113,9 +116,12 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
             } else {
                 holder.binding.txtQuantity.setText((quantity - 1) + "");
                 product.setNumberInCart(quantity - 1);
-//                notifyItemChanged(currentPosition);
+
             }
-            callbackClass.totalFeeUpdate(getTotalFee());
+            if (holder.binding.checkbox.isChecked()) {
+                callbackClass.totalFeeUpdate(getTotalFee());
+            }
+
         });
     }
 

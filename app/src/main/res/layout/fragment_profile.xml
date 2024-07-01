@@ -142,7 +142,7 @@
                 <LinearLayout
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginStart="55dp"
+                    android:layout_marginStart="50dp"
                     android:layout_marginTop="40dp"
                     android:background="@drawable/circle_background"
                     android:gravity="center">
@@ -152,7 +152,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_camera"
+                        android:src="@drawable/ic_edit"
                         app:tint="@color/white" />
                 </LinearLayout>
 
@@ -166,35 +166,17 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <LinearLayout
+
+                <TextView
+                    android:id="@+id/txtFullname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp">
-
-                    <TextView
-                        android:id="@+id/txtFullname"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:text="Ngọc Đại"
-                        android:textColor="@color/white"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/txtRole"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:background="@drawable/role_bg_2"
-                        android:drawableEnd="@drawable/ic_arrow_right_16"
-                        android:drawableTint="@color/darkgray"
-                        android:paddingHorizontal="5dp"
-                        android:paddingVertical="2dp"
-                        android:text="Bạc"
-                        android:textColor="@color/darkgray"
-                        android:textSize="14dp" />
-                </LinearLayout>
+                    android:layout_marginEnd="10dp"
+                    android:text="Ngọc Đại"
+                    android:layout_marginBottom="4dp"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
 
                 <TextView
@@ -322,8 +304,8 @@
 
                 <FrameLayout
                     android:layout_width="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp">
 
                     <ImageView
                         android:layout_width="35dp"

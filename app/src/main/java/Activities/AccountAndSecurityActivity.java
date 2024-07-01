@@ -7,18 +7,19 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.stores.databinding.ActivityAccountAndSecurityBinding;
 import com.example.stores.databinding.ActivitySettingsBinding;
 
 import java.util.Objects;
 
-public class SettingsActivity extends AppCompatActivity {
+public class AccountAndSecurityActivity extends AppCompatActivity {
 
-    ActivitySettingsBinding binding;
+    ActivityAccountAndSecurityBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySettingsBinding.inflate(getLayoutInflater());
+        binding = ActivityAccountAndSecurityBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
@@ -31,23 +32,16 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        binding.btnLogout.setOnClickListener(new View.OnClickListener() {
+        binding.txtCustomerProfileDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                Intent intent = new Intent(AccountAndSecurityActivity.this, UpdateProfileActivity.class);
                 startActivity(intent);
 
             }
         });
 
-        binding.txtAccountAndSecurity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SettingsActivity.this, AccountAndSecurityActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
     }
 
