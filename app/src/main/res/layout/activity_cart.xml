@@ -192,70 +192,31 @@
                 android:layout_height="60dp"
                 android:background="@drawable/custom_border_top_bottom">
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/checkboxAll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:text="Tất cả"
-                    app:buttonTint="@color/checkbox_color" />
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical">
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
 
-                    <LinearLayout
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end">
+                        android:layout_marginEnd="4dp"
+                        android:text="Tổng thanh toán"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="4dp"
-                            android:text="Tổng thanh toán"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/txtTotal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="đ126.000"
-                            android:textColor="@color/primary_color"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/layoutDiscount"
+                    <TextView
+                        android:id="@+id/txtTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_marginEnd="4dp"
-                            android:text="Tiết kiệm"
-
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/txtDiscount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableEnd="@drawable/ic_arrow_up_16"
-                            android:text="đ24,5k"
-                            android:textColor="@color/primary_color"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                        android:text="đ126.000"
+                        android:textColor="@color/primary_color"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
 
@@ -264,9 +225,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="6dp"
-                   android:paddingHorizontal="10dp"
+
                     android:background="@color/primary_color"
                     android:gravity="center"
+                    android:paddingHorizontal="15dp"
                     android:text="Mua hàng(3)"
                     android:textAllCaps="false"
                     android:textColor="@color/white"

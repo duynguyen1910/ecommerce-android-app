@@ -68,13 +68,11 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 product.setCheckedStatus(isChecked);
-
-                if (!isChecked) {
-                    // Nếu một checkbox item được uncheck, uncheck checkboxAll
-                    cartItemListener.updateCheckboxAllStatus(false);
-                } else if (getQuantityChecked() == list.size()) {
+                if (getQuantityChecked() == list.size()) {
                     // Nếu tất cả các checkbox items được check, check checkboxAll
                     cartItemListener.updateCheckboxAllStatus(true);
+                } else if (getQuantityChecked() == 0) {
+                    cartItemListener.updateCheckboxAllStatus(false);
                 }
                 // Cập nhật tổng phí
                 callbackClass.totalFeeUpdate(getTotalFee());
@@ -86,8 +84,8 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         String formattedOldPrice = formatter.format(product.getOldPrice());
         holder.binding.txtOldPrice.setText("đ" + formattedOldPrice);
-        holder.binding.txtOldPrice.setPaintFlags(holder.binding.txtOldPrice.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
-        String formattedPrice = formatter.format(product.getOldPrice()*(100-product.getSaleoff())/100);
+        holder.binding.txtOldPrice.setPaintFlags(holder.binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        String formattedPrice = formatter.format(product.getOldPrice() * (100 - product.getSaleoff()) / 100);
 
         holder.binding.txtPrice.setText(formattedPrice);
 
@@ -124,8 +122,8 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
     private int getQuantityChecked() {
         int count = 0;
         for (Product product : list) {
-                if (product.getCheckedStatus()){
-                    count += 1;
+            if (product.getCheckedStatus()) {
+                count += 1;
             }
         }
         return count;
@@ -134,13 +132,14 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
     private double getTotalFee() {
         double fee = 0;
         for (Product product : list) {
-            if (product.getCheckedStatus()){
+            if (product.getCheckedStatus()) {
                 fee += product.getPrice() * product.getNumberInCart();
             }
 
         }
         return fee;
     }
+
     @Override
     public int getItemCount() {
         return list.size();

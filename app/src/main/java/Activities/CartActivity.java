@@ -191,13 +191,10 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
             binding.layoutEmptyCart.setVisibility(View.VISIBLE);
             binding.layoutCart.setVisibility(View.GONE);
         }
-        double delivery = 20000;
+        double delivery = 0;
         double total = 0;
         if (getTotalFee() != 0){
-            binding.layoutDiscount.setVisibility(View.VISIBLE);
             total = Math.round(getTotalFee() + delivery);
-        }else {
-            binding.layoutDiscount.setVisibility(View.GONE);
         }
 
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
