@@ -79,18 +79,11 @@
         android:orientation="vertical">
 
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewCart"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </LinearLayout>
+            android:layout_weight="1" />
 
 
         <LinearLayout
@@ -138,54 +131,46 @@
             </LinearLayout>
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="16dp">
 
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/ecomerce_coin_desc"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:drawableStart="@drawable/ic_coin"
+                    android:drawablePadding="8dp"
+                    android:drawableTint="@color/yellow"
+                    android:gravity="center_vertical"
+                    android:text="Sử dụng Ecommerce Coin"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="16dp">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_toRightOf="@+id/ecomerce_coin_desc"
+                    android:src="@drawable/ic_question"
+                    app:tint="@color/gray" />
 
-                    <TextView
-                        android:id="@+id/ecomerce_coin_desc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:drawableStart="@drawable/ic_coin"
-                        android:drawablePadding="8dp"
-                        android:drawableTint="@color/yellow"
-                        android:text="Sử dụng Ecommerce Coin"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
+                <Switch
+                    android:id="@+id/switchEcommerceCoin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@color/green"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:buttonTint="@color/checkbox_color" />
+            </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="8dp"
-                        android:layout_toRightOf="@+id/ecomerce_coin_desc"
-                        android:src="@drawable/ic_question"
-                        app:tint="@color/gray" />
-
-                    <Switch
-                        android:id="@+id/switchEcommerceCoin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:textColor="@color/green"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        app:buttonTint="@color/checkbox_color" />
-                </RelativeLayout>
-
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -193,13 +178,12 @@
                 android:background="@drawable/custom_border_top_bottom">
 
 
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -225,7 +209,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="6dp"
-
                     android:background="@color/primary_color"
                     android:gravity="center"
                     android:paddingHorizontal="15dp"

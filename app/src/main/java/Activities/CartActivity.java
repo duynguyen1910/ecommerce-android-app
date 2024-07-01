@@ -54,28 +54,10 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         binding.imageBack.setOnClickListener(v -> finish());
 
         binding.btnBuyNow.setOnClickListener(v -> {
-            Intent intent = new Intent(CartActivity.this, EcommerceService.class);
-            String data = "Đơn hàng của bạn đã được gửi đến người bán";
-            intent.putExtra("data", data);
-            startService(intent);
-            showThankyouDialog();
+            Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
+            startActivity(intent);
         });
-
     }
-
-    private void showThankyouDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutOrderBinding orderBinding = LayoutOrderBinding.inflate(getLayoutInflater());
-        builder.setView(orderBinding.getRoot());
-        AlertDialog dialog = builder.create();
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.custom_edit_text_border);
-        dialog.show();
-
-        orderBinding.imageCancel.setOnClickListener(v -> dialog.dismiss());
-    }
-
-
-
 
 
     private void initCart() {
