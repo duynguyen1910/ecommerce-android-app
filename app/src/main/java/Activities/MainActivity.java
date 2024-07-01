@@ -15,7 +15,7 @@ import Fragments.HomeFragment;
 import Fragments.VoucherFragment;
 import Fragments.NotificationFragment;
 import Fragments.ProfileFragment;
-import Fragments.ActivityFragment;
+import Fragments.HistoryFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         HashMap<Integer, Fragment> fragmentMap = new HashMap<>();
         fragmentMap.put(R.id.homeMenu, new HomeFragment());
         fragmentMap.put(R.id.voucherMenu, new VoucherFragment());
-        fragmentMap.put(R.id.activityMenu, new ActivityFragment());
+        fragmentMap.put(R.id.historyMenu, new HistoryFragment());
         fragmentMap.put(R.id.notificationMenu, new NotificationFragment());
         fragmentMap.put(R.id.profileMenu, new ProfileFragment());
 

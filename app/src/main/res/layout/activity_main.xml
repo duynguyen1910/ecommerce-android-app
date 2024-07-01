@@ -69,6 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
+        style="@style/BottomNavigationViewStyle"
         app:itemIconTint="@color/custom_color_bottom_nav"
         app:itemTextColor="@color/custom_color_bottom_nav"
         app:labelVisibilityMode="labeled"

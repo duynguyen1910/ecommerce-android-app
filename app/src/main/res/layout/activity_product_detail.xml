@@ -300,6 +300,7 @@
             android:paddingHorizontal="16dp">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/imageBack"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@color/lightgray"
@@ -311,7 +312,6 @@
                     android:background="@color/lightgray">
 
                     <ImageView
-                        android:id="@+id/imageBack"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -334,7 +334,7 @@
                     android:id="@+id/iconCart"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
-                    android:background="@color/lightgray">
+                    android:background="@color/mediumgray">
 
                     <ImageView
                         android:layout_width="30dp"

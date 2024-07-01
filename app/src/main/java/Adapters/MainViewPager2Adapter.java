@@ -9,7 +9,7 @@ import Fragments.HomeFragment;
 import Fragments.VoucherFragment;
 import Fragments.NotificationFragment;
 import Fragments.ProfileFragment;
-import Fragments.ActivityFragment;
+import Fragments.HistoryFragment;
 
 public class MainViewPager2Adapter extends FragmentStateAdapter {
     private ArrayList<Fragment> list;
@@ -22,7 +22,7 @@ public class MainViewPager2Adapter extends FragmentStateAdapter {
         list = new ArrayList<>();
         list.add(new HomeFragment());
         list.add(new VoucherFragment());
-        list.add(new ActivityFragment());
+        list.add(new HistoryFragment());
         list.add(new NotificationFragment());
         list.add(new ProfileFragment());
     }

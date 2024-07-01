@@ -92,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginBottom="10dp"
+                android:id="@+id/layoutStatistics"
                 android:background="@drawable/custom_edit_text_border"
                 android:gravity="center_vertical"
                 android:padding="5dp">

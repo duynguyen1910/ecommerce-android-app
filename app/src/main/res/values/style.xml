@@ -6,4 +6,13 @@
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
+    <style name="BottomNavigationViewStyle" parent="Widget.Design.BottomNavigationView">
+        <item name="itemTextAppearanceActive">@style/BottomNavigationTextAppearance</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavigationTextAppearance</item>
+    </style>
+
+    <style name="BottomNavigationTextAppearance" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

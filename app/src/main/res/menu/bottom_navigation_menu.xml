@@ -10,10 +10,10 @@
         android:icon="@drawable/ic_voucher"
         android:title="Voucher"/>
     <item
-        android:id="@+id/activityMenu"
+        android:id="@+id/historyMenu"
         android:enabled="true"
-        android:icon="@drawable/ic_activity"
-        android:title="Hoạt động"/>
+        android:icon="@drawable/ic_clock"
+        android:title="Lịch sử"/>
     <item
         android:id="@+id/notificationMenu"
         android:enabled="true"
@@ -22,6 +22,6 @@
     <item
         android:id="@+id/profileMenu"
         android:enabled="true"
-        android:icon="@drawable/baseline_person_24"
-        android:title="Cá nhân"/>
+        android:icon="@drawable/ic_account_24"
+        android:title="Tài khoản"/>
 </menu>
