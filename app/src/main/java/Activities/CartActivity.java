@@ -46,11 +46,37 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         binding.btnBuyNow.setOnClickListener(v -> {
             if (getQuantityCheckedProducts() > 0){
                 Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
-                intent.putExtra("payment", cart);
+                ArrayList<CartItem> payment = groupCheckedProductsByStore();
+                intent.putExtra("payment", payment);
                 startActivity(intent);
             }
 
         });
+    }
+
+    private ArrayList<CartItem> groupCheckedProductsByStore() {
+        HashMap<String, ArrayList<Product>> hashMap = new HashMap<>();
+
+        for (CartItem cartItem : cart) {
+            for (Product product : cartItem.getListProducts()) {
+                if (product.getCheckedStatus()) {
+                    String storeName = cartItem.getStoreName();
+                    if (!hashMap.containsKey(storeName)){
+                        hashMap.put(storeName, new ArrayList<>());
+                    }
+                    Objects.requireNonNull(hashMap.get(storeName)).add(product);
+                }
+            }
+        }
+        // filter HashMap để tạo CartItem
+        ArrayList<CartItem> cartItems = new ArrayList<>();
+        for (Map.Entry<String, ArrayList<Product>> entry : hashMap.entrySet()) {
+            // Tạo CartItem mới từ tên cửa hàng và danh sách sản phẩm
+            cartItems.add(new CartItem(entry.getKey(), entry.getValue()));
+        }
+
+
+        return cartItems;
     }
 
 
@@ -127,7 +153,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
             }
 
             // Tạo CartItem và thêm vào danh sách cartItems
-            CartItem cartItem = new CartItem(storeId, storeName, products);
+            CartItem cartItem = new CartItem(storeName, products);
             cartItems.add(cartItem);
         }
 

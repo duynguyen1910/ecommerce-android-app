@@ -50,11 +50,11 @@ public class PaymentActivity extends AppCompatActivity {
             }
         });
         binding.btnPay.setOnClickListener(v -> {
-            Intent intent = new Intent(PaymentActivity.this, EcommerceService.class);
-            String data = "Đơn hàng của bạn đã được gửi đến người bán";
-            intent.putExtra("data", data);
-            startService(intent);
-            showThankyouDialog();
+//            Intent intent = new Intent(PaymentActivity.this, EcommerceService.class);
+//            String data = "Đơn hàng của bạn đã được gửi đến người bán";
+//            intent.putExtra("data", data);
+//            startService(intent);
+//            showThankyouDialog();
         });
     }
 
