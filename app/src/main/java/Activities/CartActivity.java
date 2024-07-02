@@ -1,38 +1,23 @@
 package Activities;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.View;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityCartBinding;
-import com.example.stores.databinding.LayoutOrderBinding;
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-
 import Adapters.CartAdapter;
 import Models.CartItem;
 import Models.Product;
 import Models.Store;
-import Service.EcommerceService;
-import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class CartActivity extends AppCompatActivity implements ToTalFeeCallback {
 
@@ -51,11 +36,19 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         initCartUI();
         calculatorCart();
 
+
+        setupEvents();
+    }
+
+    private void setupEvents(){
         binding.imageBack.setOnClickListener(v -> finish());
 
         binding.btnBuyNow.setOnClickListener(v -> {
-            Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
-            startActivity(intent);
+            if (getQuantityCheckedProducts() > 0){
+                Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
+                startActivity(intent);
+            }
+
         });
     }
 
@@ -111,9 +104,9 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         for (Product product : listProductsInCart) {
             int storeId = product.getStoreID();
             if (!hashMap.containsKey(storeId)) {
-                hashMap.put(storeId, new ArrayList<Product>());
+                hashMap.put(storeId, new ArrayList<>());
             }
-            hashMap.get(storeId).add(product);
+            Objects.requireNonNull(hashMap.get(storeId)).add(product);
         }
 
         ArrayList<CartItem> cartItems = new ArrayList<>();
@@ -196,19 +189,40 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
 
     private double getTotalFee() {
         double fee = 0;
-        int count = 0;
         for (CartItem item : cart) {
             for (Product product : item.getListProducts()) {
                 if (product.getCheckedStatus()){
-                    count += 1;
                     fee += product.getPrice() * product.getNumberInCart();
                 }
 
             }
         }
-        binding.btnBuyNow.setText("Mua Hàng (" + count + ")" );
+        binding.btnBuyNow.setText("Mua Hàng (" + getQuantityCheckedProducts() + ")" );
         return fee;
     }
+
+    private int getQuantityCheckedProducts() {
+        int count = 0;
+        for (CartItem item : cart) {
+            for (Product product : item.getListProducts()) {
+                if (product.getCheckedStatus()){
+                    count += 1;
+                }
+
+            }
+        }
+        if (count > 0) {
+            binding.btnBuyNow.setFocusable(true);
+            binding.btnBuyNow.setBackground(ContextCompat.getDrawable(this, R.color.primary_color));
+        } else {
+            binding.btnBuyNow.setFocusable(false);
+            binding.btnBuyNow.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
+        }
+        binding.btnBuyNow.setText("Mua Hàng (" + count + ")" );
+        return count;
+    }
+
+
     @Override
     public void totalFeeUpdate(double totalFee) {
         calculatorCart();

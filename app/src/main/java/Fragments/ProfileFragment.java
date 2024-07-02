@@ -9,12 +9,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import com.example.stores.databinding.FragmentHomeBinding;
 import com.example.stores.databinding.FragmentProfileBinding;
 
 import Activities.CartActivity;
 import Activities.SettingsActivity;
+import Activities.UpdateProfileActivity;
 
 public class ProfileFragment extends Fragment {
     FragmentProfileBinding binding;
@@ -30,21 +29,20 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setupEvents(){
-        binding.imvSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(requireActivity(), SettingsActivity.class);
-                startActivity(intent);
+        binding.imvSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), SettingsActivity.class);
+            startActivity(intent);
 
-            }
         });
 
-        binding.iconCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(requireActivity(), CartActivity.class);
-                startActivity(intent);
-            }
+        binding.iconCart.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), CartActivity.class);
+            startActivity(intent);
+        });
+
+        binding.layoutUpdateProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), UpdateProfileActivity.class);
+            startActivity(intent);
         });
     }
 }
