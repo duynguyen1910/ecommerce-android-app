@@ -18,7 +18,7 @@ import Models.Invoice;
 
 public class InvoiceAwaitConfirmationFragment extends Fragment {
     FragmentInvoiceAwaitConfirmationBinding binding;
-    Map<String, Invoice> invoicesMap;
+
     @Nullable
     @Override
 
@@ -31,10 +31,13 @@ public class InvoiceAwaitConfirmationFragment extends Fragment {
     private void getBundles() {
         Intent intent = requireActivity().getIntent();
         if (intent != null) {
-            invoicesMap = (Map<String, Invoice>) intent.getSerializableExtra("invoicesMap");
-            InvoiceAdapter invoiceAdapter = new InvoiceAdapter(requireActivity(), invoicesMap);
-            binding.recyclerView.setAdapter(invoiceAdapter);
-            binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
+            Map<String, Invoice> invoicesMap = (Map<String, Invoice>) intent.getSerializableExtra("invoicesMap");
+            if (invoicesMap != null){
+                InvoiceAdapter invoiceAdapter = new InvoiceAdapter(requireActivity(), invoicesMap);
+                binding.recyclerView.setAdapter(invoiceAdapter);
+                binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
+            }
+
         }
     }
 

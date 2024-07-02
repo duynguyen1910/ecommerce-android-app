@@ -1,9 +1,20 @@
 package Activities;
+import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import com.example.stores.R;
 import com.example.stores.databinding.ActivityInvoiceBinding;
+import com.example.stores.databinding.ItemTabLayoutBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.Objects;
@@ -38,27 +49,55 @@ public class InvoiceActivity extends AppCompatActivity {
         viewPager2Adapter.addFragment(new InvoiceCancelFragment(), "Đã hủy");
 
         binding.viewPager2.setAdapter(viewPager2Adapter);
+        binding.viewPager2.setCurrentItem(0);
         new TabLayoutMediator(binding.tabLayout, binding.viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                ItemTabLayoutBinding tabLayoutBinding = ItemTabLayoutBinding.inflate(getLayoutInflater());
+                TextView tabLabel = tabLayoutBinding.tabLabel;
                 if (position == 0) {
-                    tab.setText(viewPager2Adapter.getPageTitle(0));
+                    tabLabel.setText(viewPager2Adapter.getPageTitle(0));
                 } else if (position == 1) {
-                    tab.setText(viewPager2Adapter.getPageTitle(1));
+                    tabLabel.setText(viewPager2Adapter.getPageTitle(1));
                 }else if (position == 2) {
-                    tab.setText(viewPager2Adapter.getPageTitle(2));
+                    tabLabel.setText(viewPager2Adapter.getPageTitle(2));
                 }else if (position == 3) {
-                    tab.setText(viewPager2Adapter.getPageTitle(3));
+                    tabLabel.setText(viewPager2Adapter.getPageTitle(3));
                 }else if (position == 4) {
-                    tab.setText(viewPager2Adapter.getPageTitle(4));
+                    tabLabel.setText(viewPager2Adapter.getPageTitle(4));
                 }
+
+                tab.setCustomView(tabLayoutBinding.getRoot());
             }
         }).attach();
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                View customView = tab.getCustomView();
+                if (customView != null) {
+                    TextView tabLabel = customView.findViewById(R.id.tabLabel);
+                    tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.pink));
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                View customView = tab.getCustomView();
+                if (customView != null) {
+                    TextView tabLabel = customView.findViewById(R.id.tabLabel);
+                    tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.lightpink));
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // Optional: Handle tab reselection if needed
+            }
+        });
     }
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
-
-
     }
 
     private void initUI() {

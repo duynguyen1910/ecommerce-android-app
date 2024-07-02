@@ -7,21 +7,14 @@
     android:gravity="center"
     android:padding="8dp">
 
-    <ImageView
-        android:id="@+id/tabIcon"
-        android:layout_width="24dp"
-        android:src="@drawable/ic_account_box"
-        android:layout_height="24dp"
-        app:tint="@color/custom_color_bottom_nav" />
 
     <TextView
         android:id="@+id/tabLabel"
-        android:text="Thủ thư"
-        android:textColor="@color/gray1"
+        android:text="Chờ xác nhận"
+        android:textColor="@color/custom_color_bottom_nav"
         android:fontFamily="sans-serif"
-        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp" />
+     />
 
 </LinearLayout>
