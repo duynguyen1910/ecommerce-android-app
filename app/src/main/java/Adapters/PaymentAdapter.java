@@ -2,6 +2,7 @@ package Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -59,8 +60,13 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
 
         holder.binding.txtQuantityProducts.setText("Tổng số tiền (" + listProducts.size() + " sản phẩm)");
 
+
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         holder.binding.txtTotal.setText("đ" + formatter.format(getCartItemFee(cartItem)));
+
+        double oldDelivery = 38000;
+        holder.binding.txtOldDelivery.setText("đ" + formatter.format(oldDelivery));
+        holder.binding.txtOldDelivery.setPaintFlags(holder.binding.txtOldDelivery.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
     }
 
     private double getCartItemFee(CartItem cartItem) {
