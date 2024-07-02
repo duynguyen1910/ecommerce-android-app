@@ -46,6 +46,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         binding.btnBuyNow.setOnClickListener(v -> {
             if (getQuantityCheckedProducts() > 0){
                 Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
+                intent.putExtra("payment", cart);
                 startActivity(intent);
             }
 
@@ -148,8 +149,6 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
             binding.layoutEmptyCart.setVisibility(View.VISIBLE);
             binding.layoutCart.setVisibility(View.GONE);
         }
-
-
 
     }
 

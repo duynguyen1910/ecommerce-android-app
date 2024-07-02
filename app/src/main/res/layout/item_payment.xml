@@ -51,29 +51,26 @@
         android:paddingVertical="16dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#00ffffff"
-            android:drawableStart="@drawable/ic_voucher_24"
             android:drawablePadding="8dp"
-            android:drawableTint="@color/primary_color"
             android:gravity="center_vertical"
             android:text="Voucher của Shop"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:drawableStartCompat="@drawable/ic_voucher_24"
+            app:drawableTint="@color/primary_color" />
 
         <TextView
             android:id="@+id/txtVoucher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawableEnd="@drawable/ic_arrow_right_24"
-            android:drawableTint="@color/darkgray"
             android:gravity="center_vertical"
-            android:paddingHorizontal="5dp"
             android:text="Chọn hoặc nhập mã"
-            android:textColor="@color/darkgray" />
+            android:textColor="@color/darkgray"
+            app:drawableEndCompat="@drawable/ic_arrow_right_24"
+            app:drawableTint="@color/darkgray" />
 
     </LinearLayout>
 
@@ -89,15 +86,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:layout_weight="1"
-            android:background="#00ffffff"
-            android:drawableStart="@drawable/ic_truck_24"
             android:drawablePadding="8dp"
-            android:drawableTint="@color/green_persian"
             android:gravity="center_vertical"
             android:text="Chọn phương thức vận chuyển"
             android:textColor="@color/green_persian"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:drawableStartCompat="@drawable/ic_truck_24"
+            app:drawableTint="@color/green_persian" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -107,7 +102,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:text="Nhanh"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
@@ -119,7 +113,6 @@
                 android:gravity="end">
 
                 <TextView
-                    android:id="@+id/txtOldPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -128,7 +121,6 @@
                     android:textColor="@color/darkgray" />
 
                 <TextView
-                    android:id="@+id/txtPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -186,10 +178,9 @@
         android:paddingVertical="16dp">
 
         <TextView
+            android:id="@+id/txtQuantityProducts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#00ffffff"
-            android:gravity="center_vertical"
             android:text="Tổng số tiền (2 sản phẩm)"
             android:textColor="@color/black"
             android:textSize="14sp" />
