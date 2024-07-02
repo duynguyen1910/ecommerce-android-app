@@ -6,11 +6,9 @@
     android:background="@color/white"
     android:layout_height="match_parent">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Invoice await Confirmation"
-        android:textColor="@color/primary_color"
-        android:textSize="20sp" />
+        android:layout_weight="1" />
 </LinearLayout>

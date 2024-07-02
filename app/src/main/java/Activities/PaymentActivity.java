@@ -3,12 +3,15 @@ package Activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityPaymentBinding;
 import com.example.stores.databinding.LayoutOrderBinding;
+
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
 import Adapters.PaymentAdapter;
 import Models.CartItem;
 import Models.Invoice;
@@ -50,7 +54,6 @@ public class PaymentActivity extends AppCompatActivity {
             String paidDate = "";
             String giveToDeliveryDate = "";
             String completedDate = "";
-            double totalPayment = calculatorPayment();
             String note = "";
             int paymentMethod = 0; // 0: Thanh toán khi nhận hàng
             int orderStatus = 0; // 0: Chờ xác nhận
@@ -59,7 +62,7 @@ public class PaymentActivity extends AppCompatActivity {
             Map<String, Invoice> invoicesMap = new HashMap<>();
 
             for (int i = 0; i < cart.size(); i++) {
-                Invoice newInvoice = new Invoice(deliveryAddress, createdDate, paidDate, giveToDeliveryDate, completedDate, totalPayment, note, paymentMethod, orderStatus, cart.get(i), customerID);
+                Invoice newInvoice = new Invoice(deliveryAddress, createdDate, paidDate, giveToDeliveryDate, completedDate, getTotalForCartItem(cart.get(i)), note, paymentMethod, orderStatus, cart.get(i), customerID);
                 invoicesMap.put(generateInvoiceId(i), newInvoice);
             }
             Intent intent = new Intent(PaymentActivity.this, InvoiceActivity.class);
@@ -68,6 +71,19 @@ public class PaymentActivity extends AppCompatActivity {
             // call API gửi order cho Người bán
         });
 
+    }
+
+    private double getTotalForCartItem(CartItem cartItem) {
+        double fee = 0;
+
+        for (Product product : cartItem.getListProducts()) {
+            if (product.getCheckedStatus()) {
+                fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
+            }
+
+        }
+
+        return fee;
     }
 
     private String generateInvoiceId(int index) {

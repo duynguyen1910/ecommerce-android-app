@@ -3,29 +3,29 @@ package Models;
 import java.io.Serializable;
 
 public class Invoice implements Serializable {
-    private int orderID;
+    private int invoiceID;
     private String deliveryAddress;
     private String createdDate;
     private String paidDate;
     private String giveToDeliveryDate;
     private String completedDate;
-    private double totalPayment;
+    private double total;
     private String note;
     private int paymentMethod; // 0: Thanh toán khi nhận hàng
-    private int orderStatus; // 0: Chờ xác nhận
+    private int invoiceStatus; // 0: Chờ xác nhận
     private CartItem cartItem;
     private int customerID;
 
-    public Invoice(String deliveryAddress, String createdDate, String paidDate, String giveToDeliveryDate, String completedDate, double totalPayment, String note, int paymentMethod, int orderStatus, CartItem cartItem, int customerID) {
+    public Invoice(String deliveryAddress, String createdDate, String paidDate, String giveToDeliveryDate, String completedDate, double total, String note, int paymentMethod, int invoiceStatus, CartItem cartItem, int customerID) {
         this.deliveryAddress = deliveryAddress;
         this.createdDate = createdDate;
         this.paidDate = paidDate;
         this.giveToDeliveryDate = giveToDeliveryDate;
         this.completedDate = completedDate;
-        this.totalPayment = totalPayment;
+        this.total = total;
         this.note = note;
         this.paymentMethod = paymentMethod;
-        this.orderStatus = orderStatus;
+        this.invoiceStatus = invoiceStatus;
         this.cartItem = cartItem;
         this.customerID = customerID;
 
@@ -39,12 +39,12 @@ public class Invoice implements Serializable {
         this.cartItem = cartItem;
     }
 
-    public int getOrderID() {
-        return orderID;
+    public int getInvoiceID() {
+        return invoiceID;
     }
 
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
+    public void setInvoiceID(int invoiceID) {
+        this.invoiceID = invoiceID;
     }
 
     public String getCreatedDate() {
@@ -103,24 +103,24 @@ public class Invoice implements Serializable {
         this.completedDate = completedDate;
     }
 
-    public double getTotalPayment() {
-        return totalPayment;
+    public double getTotal() {
+        return total;
     }
 
-    public void setTotalPayment(double totalPayment) {
-        this.totalPayment = totalPayment;
+    public void setTotal(double total) {
+        this.total = total;
     }
 
     public void setTotalPayment(int totalPayment) {
-        this.totalPayment = totalPayment;
+        this.total = totalPayment;
     }
 
-    public int getOrderStatus() {
-        return orderStatus;
+    public int getInvoiceStatus() {
+        return invoiceStatus;
     }
 
-    public void setOrderStatus(int orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setInvoiceStatus(int invoiceStatus) {
+        this.invoiceStatus = invoiceStatus;
     }
 
     public int getCustomerID() {
