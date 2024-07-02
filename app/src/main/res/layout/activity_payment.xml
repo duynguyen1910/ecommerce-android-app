@@ -258,6 +258,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="đ150.000"
+                            android:id="@+id/txtTotalProductsFee"
                             android:textColor="@color/gray1" />
 
                     </LinearLayout>
@@ -278,6 +279,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="đ50.000"
+                            android:id="@+id/txtTotalDeliveryFee"
                             android:textColor="@color/gray1" />
 
                     </LinearLayout>
@@ -291,13 +293,14 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Giảm giá phí vận chuyển"
+                            android:text="Ecommerce giảm giá phí vận chuyển"
                             android:textColor="@color/black" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="-đ50.000"
+                            android:id="@+id/txtEcommerceDeliveryDiscount"
                             android:textColor="@color/gray1" />
 
                     </LinearLayout>
@@ -318,6 +321,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="-đ25.000"
+                            android:id="@+id/txtTotalDiscount"
                             android:textColor="@color/gray1" />
 
                     </LinearLayout>
@@ -334,6 +338,7 @@
                             android:gravity="center_vertical"
                             android:text="Tổng thanh toán"
                             android:textColor="@color/black"
+
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
@@ -344,6 +349,7 @@
                             android:gravity="center_vertical"
                             android:paddingHorizontal="5dp"
                             android:text="đ150.000"
+                            android:id="@+id/txtTotalPayment"
                             android:textColor="@color/primary_color"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -378,10 +384,10 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/txtTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="đ126.000"
+                android:id="@+id/txtTotalOrder"
                 android:textColor="@color/primary_color"
                 android:textSize="16sp"
                 android:textStyle="bold" />

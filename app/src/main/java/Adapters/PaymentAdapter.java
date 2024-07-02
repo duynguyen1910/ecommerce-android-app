@@ -4,9 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.stores.databinding.ItemPaymentBinding;
 
 import java.text.NumberFormat;
@@ -15,6 +17,7 @@ import java.util.Locale;
 
 import Models.CartItem;
 import Models.Product;
+
 public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<CartItem> list;
@@ -57,18 +60,13 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
         holder.binding.txtQuantityProducts.setText("Tổng số tiền (" + listProducts.size() + " sản phẩm)");
 
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        holder.binding.txtTotal.setText("đ" + formatter.format(getTotalFee()));
+        holder.binding.txtTotal.setText("đ" + formatter.format(getCartItemFee(cartItem)));
     }
 
-    private double getTotalFee() {
+    private double getCartItemFee(CartItem cartItem) {
         double fee = 0;
-        for (CartItem item : list) {
-            for (Product product : item.getListProducts()) {
-                if (product.getCheckedStatus()){
-                    fee += product.getPrice() * product.getNumberInCart();
-                }
-
-            }
+        for (Product product : cartItem.getListProducts()) {
+            fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
         }
         return fee;
     }

@@ -89,10 +89,10 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         picUrls4.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcfb-lsaqdfxpqmpo1c");
 
 //        Product(String title, String description, ArrayList<String> picUrl, double price, double rating, int sold)
-        listProductsInCart.add(new Product("Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057", getResources().getResourceName(R.string.product_desc1), picUrls1, 149000, 298000, 4.9, 200, 50, 1, 1, false));
+        listProductsInCart.add(new Product("Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057", getResources().getResourceName(R.string.product_desc1), picUrls1, 149000, 298000, 4.9, 200, 50, 1, 2, false));
         listProductsInCart.add(new Product("Lovito Đầm trễ vai ngọc trai trơn đơn giản dành cho nữ L76AD154", getResources().getResourceName(R.string.product_desc1), picUrls2, 119000, 228000, 4.8, 179, 48, 2, 2, false));
-        listProductsInCart.add(new Product("Đồng hồ điện tử Unisex không thông minh thời trang S8 phong cách mới", getResources().getResourceName(R.string.product_desc2), picUrls3, 49000, 70000, 4.5, 559, 30, 3, 1, false));
-        listProductsInCart.add(new Product("Huizumei Váy preppy nữ mùa hè cổ polo nhỏ chắp vá eo nâng cao và giảm béo váy ngắn", getResources().getResourceName(R.string.product_desc3), picUrls4, 129000, 235000, 4.7, 989, 45, 1, 3, false));
+        listProductsInCart.add(new Product("Đồng hồ điện tử Unisex không thông minh thời trang S8 phong cách mới", getResources().getResourceName(R.string.product_desc2), picUrls3, 49000, 70000, 4.5, 559, 30, 3, 3, false));
+        listProductsInCart.add(new Product("Huizumei Váy preppy nữ mùa hè cổ polo nhỏ chắp vá eo nâng cao và giảm béo váy ngắn", getResources().getResourceName(R.string.product_desc3), picUrls4, 129000, 235000, 4.7, 989, 45, 1, 1, false));
 //
 
         cart = groupProductsByStore();
@@ -191,7 +191,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         for (CartItem item : cart) {
             for (Product product : item.getListProducts()) {
                 if (product.getCheckedStatus()){
-                    fee += product.getPrice() * product.getNumberInCart();
+                    fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
                 }
 
             }

@@ -51,9 +51,8 @@ public class ProductsListAdapterForPaymentItem extends RecyclerView.Adapter<Prod
 
         holder.binding.txtProductTitle.setText(product.getTitle());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedPrice = formatter.format(product.getOldPrice() * (100 - product.getSaleoff()) / 100);
-
-        holder.binding.txtPrice.setText(formattedPrice);
+        String formattedPrice = formatter.format(product.getPrice() * (1 - product.getSaleoff() / 100));
+        holder.binding.txtPrice.setText("đ" + formattedPrice);
 
         holder.binding.txtQuantity.setText("x" + product.getNumberInCart());
         Glide.with(context).load(product.getPicUrl().get(0)).into(holder.binding.imageView);
@@ -74,7 +73,7 @@ public class ProductsListAdapterForPaymentItem extends RecyclerView.Adapter<Prod
         double fee = 0;
         for (Product product : list) {
             if (product.getCheckedStatus()) {
-                fee += product.getPrice() * product.getNumberInCart();
+                fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
             }
 
         }

@@ -139,7 +139,7 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
         double fee = 0;
         for (Product product : list) {
             if (product.getCheckedStatus()) {
-                fee += product.getPrice() * product.getNumberInCart();
+                fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
             }
 
         }

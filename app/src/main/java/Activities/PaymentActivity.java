@@ -13,12 +13,15 @@ import com.example.stores.R;
 import com.example.stores.databinding.ActivityPaymentBinding;
 import com.example.stores.databinding.LayoutOrderBinding;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
 import Adapters.CartAdapter;
 import Adapters.PaymentAdapter;
 import Models.CartItem;
+import Models.Product;
 import Service.EcommerceService;
 
 public class PaymentActivity extends AppCompatActivity {
@@ -62,8 +65,41 @@ public class PaymentActivity extends AppCompatActivity {
             PaymentAdapter paymentAdapter = new PaymentAdapter(PaymentActivity.this, cart);
             binding.recyclerViewPayment.setAdapter(paymentAdapter);
             binding.recyclerViewPayment.setLayoutManager(new LinearLayoutManager(PaymentActivity.this, LinearLayoutManager.VERTICAL, false));
+            calculatorPayment();
         }
+    }
 
+    private void calculatorPayment() {
+
+        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+        binding.txtTotalProductsFee.setText("đ" + formatter.format(getTotalProductsFee()));
+
+
+        double delivery = 18000;
+        double totalDelivery = delivery * cart.size();
+        double ecommerceDeliveryDiscount = 50000;
+
+        binding.txtTotalDeliveryFee.setText("đ" + formatter.format(totalDelivery));
+
+        binding.txtEcommerceDeliveryDiscount.setText("-đ" + formatter.format(ecommerceDeliveryDiscount));
+        binding.txtTotalDiscount.setText("-đ" + formatter.format(ecommerceDeliveryDiscount));
+
+        double total = getTotalProductsFee() + totalDelivery - ecommerceDeliveryDiscount;
+        binding.txtTotalPayment.setText("đ" + formatter.format(total));
+        binding.txtTotalOrder.setText("đ" + formatter.format(total));
+    }
+
+    private double getTotalProductsFee() {
+        double fee = 0;
+        for (CartItem item : cart) {
+            for (Product product : item.getListProducts()) {
+                if (product.getCheckedStatus()) {
+                    fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
+                }
+
+            }
+        }
+        return fee;
     }
 
 
