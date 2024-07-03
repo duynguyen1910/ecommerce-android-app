@@ -11,7 +11,7 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+
         android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -71,7 +71,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
-                        android:background="@color/darkgreen"
+                        android:background="@color/green_persian"
                         android:gravity="center_vertical"
                         android:padding="16dp"
                         android:text="Đã áp dụng Mã miễn phí vận chuyển"

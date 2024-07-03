@@ -1,6 +1,8 @@
 package Models;
 
-public class OfficialBrand {
+import java.io.Serializable;
+
+public class OfficialBrand implements Serializable {
     private String title;
     private int id;
     private String picUrl;

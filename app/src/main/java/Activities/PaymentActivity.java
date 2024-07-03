@@ -50,7 +50,7 @@ public class PaymentActivity extends AppCompatActivity {
         binding.btnPay.setOnClickListener(v -> {
 
             String deliveryAddress = "Ngọc Đại | 012345678\nFPT Polytechnic TP.HCM - Tòa F,\nCông Viên Phần Mềm Quang Trung, Tòa nhà GenPacific \nLô 3 đường 16, Trung Mỹ Tây, Quận 12, Hồ Chí Minh";
-            String createdDate = getDateToday();
+            String createdDate = generateTime();
             String paidDate = "";
             String giveToDeliveryDate = "";
             String completedDate = "";
@@ -71,6 +71,13 @@ public class PaymentActivity extends AppCompatActivity {
             // call API gửi order cho Người bán
         });
 
+    }
+    private String generateTime() {
+        Calendar calendar = Calendar.getInstance();
+        Date currentDate = calendar.getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd, HH:mm");
+        String invoiceId = dateFormat.format(currentDate);
+        return invoiceId;
     }
 
     private double getTotalForCartItem(CartItem cartItem) {

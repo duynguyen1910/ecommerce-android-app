@@ -2,8 +2,11 @@ package Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 
+import Activities.InvoiceDetailActivity;
 import Models.CartItem;
 import Models.Invoice;
 import Models.Product;
@@ -64,10 +68,23 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         holder.binding.recyclerViewProducts.setAdapter(adapter);
 
         holder.binding.txtQuantityProducts.setText(cartItem.getListProducts().size() + " sản phẩm");
+        holder.binding.txtCreatedDate.setText(invoice.getCreatedDate());
 
 
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         holder.binding.txtTotal.setText("đ" + formatter.format(getCartItemFee(cartItem)));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, InvoiceDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("invoice", invoice);
+                bundle.putString("invoiceID", invoiceID);
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
+        });
 
     }
 
