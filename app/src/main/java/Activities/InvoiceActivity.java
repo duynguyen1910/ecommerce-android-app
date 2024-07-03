@@ -68,7 +68,7 @@ public class InvoiceActivity extends AppCompatActivity {
         TabLayout.Tab firstTab = binding.tabLayout.getTabAt(0);
         if (firstTab != null && firstTab.getCustomView() != null) {
             TextView tabLabel = firstTab.getCustomView().findViewById(R.id.tabLabel);
-            tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.pink));
+            tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.primary_color));
         }
 
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -78,7 +78,7 @@ public class InvoiceActivity extends AppCompatActivity {
                 View customView = tab.getCustomView();
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
-                    tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.pink));
+                    tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.primary_color));
                 }
             }
 
@@ -87,7 +87,7 @@ public class InvoiceActivity extends AppCompatActivity {
                 View customView = tab.getCustomView();
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
-                    tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.lightpink));
+                    tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.darkgray));
                 }
             }
 

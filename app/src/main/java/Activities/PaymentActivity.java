@@ -59,14 +59,14 @@ public class PaymentActivity extends AppCompatActivity {
             int orderStatus = 0; // 0: Chờ xác nhận
             int customerID = 1; // 1: Ngọc Đại
 
-            Map<String, Invoice> invoicesMap = new HashMap<>();
+            HashMap<String, Invoice> invoicesMap = new HashMap<>();
 
             for (int i = 0; i < cart.size(); i++) {
                 Invoice newInvoice = new Invoice(deliveryAddress, createdDate, paidDate, giveToDeliveryDate, completedDate, getTotalForCartItem(cart.get(i)), note, paymentMethod, orderStatus, cart.get(i), customerID);
                 invoicesMap.put(generateInvoiceId(i), newInvoice);
             }
             Intent intent = new Intent(PaymentActivity.this, InvoiceActivity.class);
-            intent.putExtra("invoicesMap", (HashMap<String, Invoice>) invoicesMap);
+            intent.putExtra("invoicesMap", invoicesMap);
             startActivity(intent);
             // call API gửi order cho Người bán
         });

@@ -56,10 +56,9 @@
         app:tabMode="scrollable"
         app:tabGravity="fill"
         android:background="@color/white"
-        app:tabIconTint="@color/custom_color_bottom_nav"
         app:tabIndicatorColor="@color/primary_color"
         app:tabSelectedTextColor="@color/primary_color"
-        app:tabTextColor="@color/custom_color_bottom_nav" />
+        app:tabTextColor="@color/custom_scroll_tab_layout" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"

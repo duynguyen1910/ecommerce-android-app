@@ -14,6 +14,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:text="Chờ xác nhận"
-        android:textColor="@color/custom_color_bottom_nav" />
+        android:textColor="@color/custom_scroll_tab_layout" />
 
 </LinearLayout>
