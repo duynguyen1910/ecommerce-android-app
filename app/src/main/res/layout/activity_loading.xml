@@ -36,6 +36,7 @@
         android:layout_gravity="center"
         android:layout_weight="1"
         android:gravity="center"
+        android:fontFamily="serif"
         android:text="A New Journey Begins"
         android:textColor="@color/white"
         android:textSize="20sp"

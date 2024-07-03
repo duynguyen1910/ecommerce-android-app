@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.example.stores.databinding.FragmentProfileBinding;
 
 import Activities.CartActivity;
+import Activities.InvoiceActivity;
 import Activities.SettingsActivity;
 import Activities.UpdateProfileActivity;
 
@@ -43,6 +44,14 @@ public class ProfileFragment extends Fragment {
         binding.layoutUpdateProfile.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), UpdateProfileActivity.class);
             startActivity(intent);
+        });
+
+        binding.layoutInvoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), InvoiceActivity.class);
+                startActivity(intent);
+            }
         });
     }
 }

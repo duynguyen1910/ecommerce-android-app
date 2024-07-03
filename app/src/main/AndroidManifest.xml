@@ -55,10 +55,10 @@
             android:name="Activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.LoadingActivity"
+            android:name="Activities.MainActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.MainActivity"
+            android:name="Activities.LoadingActivity"
 
             android:exported="true">
             <intent-filter>
