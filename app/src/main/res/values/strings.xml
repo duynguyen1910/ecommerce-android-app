@@ -63,4 +63,5 @@
     <string name="address">
         Ngọc Đại | 012345678\nFPT Polytechnic TP.HCM - Tòa F,\nCông Viên Phần Mềm Quang Trung, Tòa nhà GenPacific \nLô 3 đường 16, Trung Mỹ Tây, Quận 12, Hồ Chí Minh
     </string>
+    <string name="activate_store">Đã hơn 90 ngày bạn chưa đăng nhập tài khoản bán hàng trên Ecommerce. Nhấn ""Kích hoạt ngay"" để duy trì tài khoản bán hàng nhé!</string>
 </resources>

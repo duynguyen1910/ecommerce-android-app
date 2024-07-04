@@ -13,6 +13,7 @@ import com.example.stores.databinding.FragmentProfileBinding;
 
 import Activities.CartActivity;
 import Activities.InvoiceActivity;
+import Activities.ActivateStoreActivity;
 import Activities.SettingsActivity;
 import Activities.UpdateProfileActivity;
 
@@ -50,6 +51,13 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(requireActivity(), InvoiceActivity.class);
+                startActivity(intent);
+            }
+        });
+        binding.layoutActivateStore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), ActivateStoreActivity.class);
                 startActivity(intent);
             }
         });
