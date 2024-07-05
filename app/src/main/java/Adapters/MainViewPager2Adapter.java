@@ -6,10 +6,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import java.util.ArrayList;
 import Fragments.HomeFragment;
-import Fragments.MailFragment;
+import Fragments.VoucherFragment;
 import Fragments.NotificationFragment;
 import Fragments.ProfileFragment;
-import Fragments.VideoFragment;
+import Fragments.HistoryFragment;
 
 public class MainViewPager2Adapter extends FragmentStateAdapter {
     private ArrayList<Fragment> list;
@@ -21,8 +21,8 @@ public class MainViewPager2Adapter extends FragmentStateAdapter {
     private void initFragmentsList(){
         list = new ArrayList<>();
         list.add(new HomeFragment());
-        list.add(new MailFragment());
-        list.add(new VideoFragment());
+        list.add(new VoucherFragment());
+        list.add(new HistoryFragment());
         list.add(new NotificationFragment());
         list.add(new ProfileFragment());
     }

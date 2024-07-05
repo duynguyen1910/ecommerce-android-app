@@ -3,25 +3,25 @@
         android:id="@+id/homeMenu"
         android:enabled="true"
         android:icon="@drawable/baseline_home_24"
-        android:title="Home"/>
+        android:title="Trang chủ"/>
     <item
-        android:id="@+id/categoryMenu"
+        android:id="@+id/voucherMenu"
         android:enabled="true"
-        android:icon="@drawable/ic_email"
-        android:title="Mail"/>
+        android:icon="@drawable/ic_voucher"
+        android:title="Voucher"/>
     <item
-        android:id="@+id/receiptMenu"
+        android:id="@+id/historyMenu"
         android:enabled="true"
-        android:icon="@drawable/ic_video"
-        android:title="Video"/>
+        android:icon="@drawable/ic_clock"
+        android:title="Lịch sử"/>
     <item
-        android:id="@+id/memberMenu"
+        android:id="@+id/notificationMenu"
         android:enabled="true"
         android:icon="@drawable/ic_notification"
-        android:title="Notification"/>
+        android:title="Thông báo"/>
     <item
         android:id="@+id/profileMenu"
         android:enabled="true"
-        android:icon="@drawable/baseline_person_24"
-        android:title="Profile"/>
+        android:icon="@drawable/ic_account_24"
+        android:title="Tài khoản"/>
 </menu>

@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:weightSum="4">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -17,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="360dp"
             android:layout_centerInParent="true"
-            android:src="@mipmap/white_logo" />
+            android:src="@mipmap/logo_ecommerce" />
     </RelativeLayout>
 
     <ImageView
@@ -29,27 +30,16 @@
         android:layout_marginBottom="-30dp"
         android:src="@drawable/loading_ic_next" />
 
-
-    <RelativeLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_weight="1"
-        android:orientation="vertical">
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:fontFamily="serif"
-            android:gravity="center"
-            android:text="Minium Library"
-            android:textColor="@color/white"
-            android:textSize="24dp"
-            android:textStyle="bold" />
-
-    </RelativeLayout>
+        android:gravity="center"
+        android:text="A New Journey Begins"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 
 </LinearLayout>
