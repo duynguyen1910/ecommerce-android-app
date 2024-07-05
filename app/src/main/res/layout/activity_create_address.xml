@@ -199,6 +199,7 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:padding="16dp"
+                    android:textAllCaps="false"
                     android:text="Đặt làm địa chỉ mặc định "
                     android:textColor="@color/black"
                   />

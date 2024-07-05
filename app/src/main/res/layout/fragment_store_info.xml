@@ -19,12 +19,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_marginHorizontal="16dp"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:text="Tên Store * (Tối đa 30 ký tự)"
         android:textColor="@color/black" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,10 +48,10 @@
         android:background="@color/lightgray" />
 
     <LinearLayout
+        android:id="@+id/layoutCreateAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="16dp"
-        android:id="@+id/layoutCreateAddress"
         android:paddingVertical="16dp">
 
         <TextView
