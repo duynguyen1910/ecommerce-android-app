@@ -1,16 +1,13 @@
 package Activities;
-
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityCreateStoreBinding;
 import com.example.stores.databinding.ItemTabLayout2Binding;
@@ -53,6 +50,10 @@ public class CreateStoreActivity extends AppCompatActivity {
                 binding.stepProgressbar.setProgress(new Pair<>(currentState, 100f));
                 binding.viewPager2.setCurrentItem(currentState - 1);
                 setupButton();
+            } else if (currentState == steps) {
+                Intent intent = new Intent(CreateStoreActivity.this, RegisterStoreOwnerSuccessfulActivity.class);
+                startActivity(intent);
+
             }
         });
 
@@ -65,22 +66,6 @@ public class CreateStoreActivity extends AppCompatActivity {
             }
         });
     }
-
-//    private void setupProgess(){
-//        if (currentState < steps) {
-//            currentState++;
-//            binding.stepProgressbar.setProgress(new Pair<>(currentState, 100f));
-//            binding.viewPager2.setCurrentItem(currentState - 1);
-//            setupButton();
-//        }
-//
-//        if (currentState > 1) {
-//            currentState--;
-//            binding.stepProgressbar.setProgress(new Pair<>(currentState, 100f));
-//            binding.viewPager2.setCurrentItem(currentState - 1);
-//            setupButton();
-//        }
-//    }
 
     private void setupButton() {
         if (currentState == 1) {
