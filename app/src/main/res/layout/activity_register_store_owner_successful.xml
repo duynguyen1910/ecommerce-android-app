@@ -62,9 +62,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="32dp"
+        android:paddingHorizontal="20dp"
         android:layout_marginBottom="10dp"
-        android:lineHeight="20dp"
+        android:lineHeight="25dp"
+        android:textSize="16sp"
         android:text="Hãy đăng bán sản phẩm đầu tiên để khởi động hành trình bán hàng cùng Ecommerce nhé!"
         android:textAlignment="center"
         android:textColor="#333" />
