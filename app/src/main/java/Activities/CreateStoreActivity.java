@@ -30,6 +30,7 @@ public class CreateStoreActivity extends AppCompatActivity {
 
     ActivityCreateStoreBinding binding;
     int currentState = 1;
+    int steps = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class CreateStoreActivity extends AppCompatActivity {
         binding.imageBack.setOnClickListener(v -> finish());
 
         binding.btnNext.setOnClickListener(v -> {
-            if (currentState < 4) {
+            if (currentState < steps) {
                 currentState++;
                 binding.stepProgressbar.setProgress(new Pair<>(currentState, 100f));
                 binding.viewPager2.setCurrentItem(currentState - 1);
@@ -56,7 +57,7 @@ public class CreateStoreActivity extends AppCompatActivity {
         });
 
         binding.btnPrevious.setOnClickListener(v -> {
-            if (currentState >= 2) {
+            if (currentState > 1) {
                 currentState--;
                 binding.stepProgressbar.setProgress(new Pair<>(currentState, 100f));
                 binding.viewPager2.setCurrentItem(currentState - 1);
@@ -65,6 +66,22 @@ public class CreateStoreActivity extends AppCompatActivity {
         });
     }
 
+//    private void setupProgess(){
+//        if (currentState < steps) {
+//            currentState++;
+//            binding.stepProgressbar.setProgress(new Pair<>(currentState, 100f));
+//            binding.viewPager2.setCurrentItem(currentState - 1);
+//            setupButton();
+//        }
+//
+//        if (currentState > 1) {
+//            currentState--;
+//            binding.stepProgressbar.setProgress(new Pair<>(currentState, 100f));
+//            binding.viewPager2.setCurrentItem(currentState - 1);
+//            setupButton();
+//        }
+//    }
+
     private void setupButton() {
         if (currentState == 1) {
             binding.btnPrevious.setVisibility(View.GONE);
@@ -72,7 +89,7 @@ public class CreateStoreActivity extends AppCompatActivity {
         } else {
             binding.btnPrevious.setVisibility(View.VISIBLE);
             binding.btnPrevious.setText("Quay lại");
-            if (currentState >= 4) {
+            if (currentState >= steps) {
                 binding.btnNext.setText("Lưu");
             } else {
                 binding.btnNext.setText("Tiếp theo");
@@ -99,6 +116,7 @@ public class CreateStoreActivity extends AppCompatActivity {
                 TextView tabLabel = tabLayoutBinding.tabLabel;
                 tabLabel.setText(viewPager2Adapter.getPageTitle(position));
                 tab.setCustomView(tabLayoutBinding.getRoot());
+
             }
         }).attach();
         // Đặt màu hồng cho tab đầu tiên sau khi attach()
@@ -112,6 +130,8 @@ public class CreateStoreActivity extends AppCompatActivity {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                currentState= tab.getPosition() + 1;
+                binding.stepProgressbar.setProgress(new Pair<>(currentState, 100f));
                 View customView = tab.getCustomView();
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
