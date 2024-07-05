@@ -64,26 +64,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="6dp"
-                    android:drawableStart="@drawable/ic_location_16"
                     android:drawablePadding="6dp"
-                    android:drawableTint="@color/primary_color"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="16dp"
                     android:text="Địa chỉ lấy hàng"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    app:drawableStartCompat="@drawable/ic_location_16"
+                    app:drawableTint="@color/primary_color" />
 
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_arrow_right_24"
                     android:drawablePadding="6dp"
-                    android:drawableTint="@color/darkgray"
                     android:gravity="center_vertical"
                     android:lineHeight="20dp"
                     android:paddingHorizontal="26dp"
                     android:text="@string/address1"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    app:drawableEndCompat="@drawable/ic_arrow_right_24"
+                    app:drawableTint="@color/darkgray" />
             </LinearLayout>
 
 

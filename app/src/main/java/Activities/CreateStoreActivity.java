@@ -90,7 +90,7 @@ public class CreateStoreActivity extends AppCompatActivity {
             binding.btnPrevious.setVisibility(View.VISIBLE);
             binding.btnPrevious.setText("Quay lại");
             if (currentState >= steps) {
-                binding.btnNext.setText("Lưu");
+                binding.btnNext.setText("Hoàn tất");
             } else {
                 binding.btnNext.setText("Tiếp theo");
             }
@@ -132,6 +132,7 @@ public class CreateStoreActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 currentState= tab.getPosition() + 1;
                 binding.stepProgressbar.setProgress(new Pair<>(currentState, 100f));
+                setupButton();
                 View customView = tab.getCustomView();
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
