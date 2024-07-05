@@ -38,11 +38,20 @@
                         android:clipChildren="false"
                         android:clipToPadding="false" />
 
-                    <me.relex.circleindicator.CircleIndicator3
+                    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
                         android:id="@+id/indicator"
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        android:layout_marginTop="-20dp" />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="-20dp"
+                        android:layout_marginBottom="10dp"
+                        app:dotsColor="@color/gray"
+                        app:dotsCornerRadius="8dp"
+                        app:dotsSize="10dp"
+                        app:dotsSpacing="2dp"
+                        app:dotsWidthFactor="2.5"
+                        app:selectedDotColor="@color/primary_color" />
+
                 </LinearLayout>
 
 
@@ -316,7 +325,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="12dp"
-                        android:src="@drawable/ic_back" />
+                        android:src="@drawable/ic_back"
+                        app:tint="@color/primary_color" />
                 </RelativeLayout>
 
 
@@ -327,8 +337,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:background="#80D5D4D3"
                 android:layout_toStartOf="@id/imageShare"
+                android:background="#80D5D4D3"
                 app:cardCornerRadius="30dp">
 
                 <RelativeLayout

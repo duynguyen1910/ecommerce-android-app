@@ -85,7 +85,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         binding.viewPager2Slider.setAdapter(new SliderAdapterForProductDetail(this, sliderItems));
         binding.viewPager2Slider.setOffscreenPageLimit(2);
-        binding.indicator.setViewPager(binding.viewPager2Slider);
+        binding.indicator.attachTo(binding.viewPager2Slider);
 
 
 

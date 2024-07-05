@@ -11,6 +11,7 @@
     <color name="primary_alpha2">#ffe5ef</color>
 
     <color name="primary_color">#f04d7f</color>
+    <color name="black_trans">#33000000</color>
 
     <color name="secondary_color">#0c0</color>
     <color name="gray1" >#686868</color>

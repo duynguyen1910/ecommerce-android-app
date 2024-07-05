@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+
+        <ImageView
+            android:id="@+id/imageBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="6dp"
+            android:src="@drawable/ic_back"
+            app:tint="@color/primary_color" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:drawablePadding="2dp"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="Thông tin Store"
+            android:textColor="@color/text1"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:background="@color/white"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/primary_color"
+            app:tabSelectedTextColor="@color/white"
+            app:tabIndicator="@color/white"
+            app:tabTextColor="@color/custom_scroll_tab_layout" />
+        <me.sudodios.stepprogressbar.LineStepProgressBar
+            android:id="@+id/stepProgressbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:baselineAligned="false"
+            app:lsp_currentStep="1"
+            app:lsp_progress="100"
+            app:lsp_progressBackgroundColor="?attr/colorControlHighlight"
+            app:lsp_progressBackgroundWidth="10dp"
+            app:lsp_progressColor="?attr/colorPrimary"
+            app:lsp_progressEndColor="@color/primary_color"
+            app:lsp_progressGradientDegree="45"
+            app:lsp_progressStartColor="@color/primary_color"
+            app:lsp_progressWidth="10dp"
+            app:lsp_roundCorners="true"
+            app:lsp_space="40dp"
+            app:lsp_steps="4" />
+
+
+
+
+
+    </LinearLayout>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:background="@color/white"
+        android:paddingHorizontal="16dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnPrevious"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/custom_edit_text_border"
+            android:paddingHorizontal="20dp"
+            android:text="Quay lại"
+            android:visibility="gone"
+            android:textAllCaps="false"
+            android:textColor="@color/darkgray"
+            android:textSize="14sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_button_primary"
+            android:paddingHorizontal="20dp"
+            android:text="Tiếp theo"
+            android:textAllCaps="false"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>
