@@ -47,7 +47,6 @@
         android:layout_marginBottom="20dp"
         android:layout_marginTop="50dp"
         android:layout_gravity="center_vertical"
-
         android:src="@mipmap/online_shopping" />
 
     <TextView
@@ -64,6 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:lineHeight="25dp"
+        android:gravity="center"
         android:textSize="16sp"
         android:text="@string/activate_store"
         android:textColor="@color/text1" />

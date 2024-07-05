@@ -1,5 +1,6 @@
 package Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.stores.databinding.FragmentStoreInfoBinding;
 
+import Activities.CreateAddressActivity;
+
 public class StoreInfoFragment extends Fragment {
     FragmentStoreInfoBinding binding;
     @Nullable
@@ -18,6 +21,18 @@ public class StoreInfoFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentStoreInfoBinding.inflate(getLayoutInflater());
+        setupEvent();
         return binding.getRoot();
+    }
+
+    private void setupEvent(){
+        binding.layoutCreateAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), CreateAddressActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }
