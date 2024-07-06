@@ -3,14 +3,11 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:gravity="center"
-    android:background="@color/white"
+    android:background="@color/lightgray"
     android:layout_height="match_parent">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:text="Sản phẩm còn hàng"
-        android:textSize="20sp"
-        android:textColor="@color/primary_color"
-        android:gravity="center"
+        android:id="@+id/recyclerView"
         android:layout_height="wrap_content"/>
 </LinearLayout>

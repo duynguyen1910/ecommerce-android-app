@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.stores.R;
-import com.example.stores.databinding.ActivityProductsBinding;
+import com.example.stores.databinding.ActivityMyProductsBinding;
 import com.example.stores.databinding.ItemTabLayoutProductsBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -25,14 +25,14 @@ import Fragments.ProductsHiddenFragment;
 import Fragments.ProductsInStockFragment;
 import Fragments.ProductsOutOfStockFragment;
 
-public class ProductsActivity extends AppCompatActivity {
+public class MyProductsActivity extends AppCompatActivity {
 
-    ActivityProductsBinding binding;
+    ActivityMyProductsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityProductsBinding.inflate(getLayoutInflater());
+        binding = ActivityMyProductsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initUI();
         setupUI();
@@ -64,8 +64,8 @@ public class ProductsActivity extends AppCompatActivity {
         if (firstTab != null && firstTab.getCustomView() != null) {
             TextView tabLabel = firstTab.getCustomView().findViewById(R.id.tabLabel);
             TextView tabQuantity = firstTab.getCustomView().findViewById(R.id.tabQuantity);
-            tabLabel.setTextColor(ContextCompat.getColor(ProductsActivity.this, R.color.primary_color));
-            tabQuantity.setTextColor(ContextCompat.getColor(ProductsActivity.this, R.color.primary_color));
+            tabLabel.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
+            tabQuantity.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
         }
 
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -76,8 +76,8 @@ public class ProductsActivity extends AppCompatActivity {
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
                     TextView tabQuantity = customView.findViewById(R.id.tabQuantity);
-                    tabLabel.setTextColor(ContextCompat.getColor(ProductsActivity.this, R.color.primary_color));
-                    tabQuantity.setTextColor(ContextCompat.getColor(ProductsActivity.this, R.color.primary_color));
+                    tabLabel.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
+                    tabQuantity.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
                 }
             }
 
@@ -87,8 +87,8 @@ public class ProductsActivity extends AppCompatActivity {
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
                     TextView tabQuantity = customView.findViewById(R.id.tabQuantity);
-                    tabLabel.setTextColor(ContextCompat.getColor(ProductsActivity.this, R.color.darkgray));
-                    tabQuantity.setTextColor(ContextCompat.getColor(ProductsActivity.this, R.color.darkgray));
+                    tabLabel.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.darkgray));
+                    tabQuantity.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.darkgray));
                 }
             }
 
@@ -104,7 +104,7 @@ public class ProductsActivity extends AppCompatActivity {
         binding.btnAddProducts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProductsActivity.this, AddProductsActivity.class);
+                Intent intent = new Intent(MyProductsActivity.this, AddProductsActivity.class);
                 startActivity(intent);
             }
         });

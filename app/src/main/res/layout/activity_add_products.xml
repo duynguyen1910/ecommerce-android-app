@@ -66,7 +66,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_weight="1"
-
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="Hình ảnh sản phẩm * (Tỉ lệ 1:1)"
@@ -91,8 +90,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:layout_marginTop="10dp"
+                android:background="@color/white"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -104,15 +103,26 @@
                     android:layout_weight="1"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
-                    android:text="Tên sản phẩm *"
+                    android:text="Tên sản phẩm * (Không quá 120 ký tự)"
                     android:textColor="@color/black" />
 
-                <EditText
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@color/white"
-                    android:hint="Nhập tên sản phẩm"
-                    android:textSize="14sp" />
+                    android:layout_height="wrap_content"
+                    app:counterEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/custom_edittext_no_border"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="16dp"
+                        android:hint="Nhập tên sản phẩm"
+                        android:maxLength="120"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -121,8 +131,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="vertical"
-             android:padding="16dp"
-                >
+                android:padding="16dp">
 
 
                 <TextView
@@ -132,16 +141,27 @@
                     android:layout_weight="1"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
-                    android:text="Mô tả sản phẩm *"
+                    android:text="Mô tả sản phẩm * (Không quá 2000 ký tự)"
                     android:textColor="@color/black" />
 
-                <EditText
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@color/white"
-                    android:hint="Nhập mô tả sản phẩm"
-                    android:textSize="14sp" />
+                    android:layout_height="wrap_content"
+                    app:counterEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/custom_edittext_no_border"
+                        android:gravity="center_vertical"
+                        android:paddingVertical="16dp"
+                        android:hint="Nhập mô tả sản phẩm"
+                        android:maxLength="2000"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -153,9 +173,9 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:src="@drawable/baseline_category_24"
-                    android:layout_marginEnd="8dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/baseline_category_24"
                     app:tint="@color/darkgray" />
 
                 <TextView
@@ -163,49 +183,52 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawablePadding="8dp"
-                    android:drawableEnd="@drawable/ic_arrow_right_24"
                     android:gravity="center_vertical"
                     android:text="Chọn ngành hàng*"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    app:drawableEndCompat="@drawable/ic_arrow_right_24" />
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="12dp">
+                android:paddingHorizontal="16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:src="@drawable/ic_sell_24"
-                    android:layout_marginEnd="8dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_sell_24"
                     app:tint="@color/darkgray" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:drawablePadding="8dp"
                     android:gravity="center_vertical"
+                    android:paddingVertical="12dp"
                     android:text="Giá*"
                     android:textColor="@color/black" />
+
                 <EditText
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="end"
                     android:background="@color/white"
+                    android:gravity="end"
                     android:hint="0 đ"
+                    android:inputType="number"
+                    android:paddingVertical="12dp"
                     android:textSize="14sp" />
 
 
-
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -213,19 +236,19 @@
                 android:background="@color/white"
                 android:orientation="horizontal"
                 android:paddingHorizontal="16dp"
-                android:paddingVertical="12dp">
+              >
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:src="@drawable/ic_package_24"
-                    android:layout_marginEnd="8dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_package_24"
                     app:tint="@color/darkgray" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="Tồn kho*"
                     android:textColor="@color/black" />
@@ -234,40 +257,44 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="end"
                     android:background="@color/white"
+                    android:textAlignment="textEnd"
+                    android:paddingVertical="12dp"
                     android:hint="0"
+                    android:inputType="number"
                     android:textSize="14sp" />
             </LinearLayout>
+
             <LinearLayout
+                android:id="@+id/layoutDeliveryFee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:id="@+id/layoutDeliveryFee"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:src="@drawable/ic_truck_24"
-                    android:layout_marginEnd="8dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_truck_24"
                     app:tint="@color/darkgray" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawablePadding="8dp"
                     android:drawableEnd="@drawable/ic_arrow_right_24"
+                    android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="Phí vận chuyển*"
                     android:textColor="@color/black" />
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -279,9 +306,9 @@
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:src="@drawable/ic_info_24"
-                    android:layout_marginEnd="8dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_info_24"
                     app:tint="@color/darkgray" />
 
                 <TextView
@@ -296,6 +323,7 @@
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -303,13 +331,14 @@
                 android:background="@color/white"
                 android:orientation="horizontal"
                 android:paddingHorizontal="16dp"
-                android:paddingVertical="12dp">
+              >
 
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:src="@drawable/ic_tick"
-                    android:layout_marginEnd="8dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_tick"
                     app:tint="@color/darkgray" />
 
                 <androidx.appcompat.widget.SwitchCompat
@@ -317,10 +346,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawablePadding="8dp"
+                    android:paddingVertical="12dp"
                     android:gravity="center_vertical"
                     android:text="Hàng đặt trước"
-                    android:textColor="@color/black"
-                   />
+                    android:textColor="@color/black" />
 
 
             </LinearLayout>
@@ -330,6 +359,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSave"
             android:layout_width="wrap_content"
@@ -340,13 +370,14 @@
             android:text="Lưu sản phẩm ở trạng thái ẩn"
             android:textAllCaps="false"
             android:textColor="@color/primary_color" />
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnDisplay"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_margin="20dp"
             android:layout_weight="1"
-            android:background="@drawable/custom_border_green_persian"
+            android:background="@drawable/custom_edit_text_border"
             android:text="Hiển thị"
             android:textAllCaps="false"
             android:textColor="@color/green_persian" />

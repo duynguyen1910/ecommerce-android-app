@@ -32,7 +32,7 @@ public class StoreOwnerActivity extends AppCompatActivity {
         });
 
         binding.layoutProducts.setOnClickListener(v -> {
-            Intent intent = new Intent(StoreOwnerActivity.this, ProductsActivity.class);
+            Intent intent = new Intent(StoreOwnerActivity.this, MyProductsActivity.class);
             startActivity(intent);
         });
     }

@@ -74,14 +74,16 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="2dp"
                 android:background="@drawable/custom_border_top_bottom"
-                android:orientation="horizontal"
-                android:padding="16dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
                     android:text="Cân nặng sản phẩm (gram) *"
                     android:textColor="@color/black" />
 
@@ -91,6 +93,9 @@
                     android:layout_alignParentEnd="true"
                     android:background="@color/white"
                     android:hint="Nhập cân nặng"
+                    android:inputType="number"
+                    android:layout_centerVertical="true"
+                    android:paddingVertical="12dp"
                     android:textAlignment="textEnd"
                     android:textSize="14sp" />
 
@@ -101,12 +106,15 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_border_top_bottom"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:paddingVertical="2dp"
+                android:paddingHorizontal="16dp"
+             >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
                     android:text="Chiều rộng (cm)"
                     android:textColor="@color/black" />
 
@@ -116,6 +124,8 @@
                     android:layout_alignParentEnd="true"
                     android:background="@color/white"
                     android:hint="Nhập chiều rộng"
+                    android:inputType="number"
+                    android:paddingVertical="12dp"
                     android:textAlignment="textEnd"
                     android:textSize="14sp" />
 
@@ -126,12 +136,15 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_border_top_bottom"
                 android:orientation="horizontal"
-                android:padding="16dp">
+                android:paddingVertical="2dp"
+                android:paddingHorizontal="16dp"
+               >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
                     android:text="Chiều dài (cm)"
                     android:textColor="@color/black" />
 
@@ -140,6 +153,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:background="@color/white"
+                    android:paddingVertical="12dp"
+                    android:inputType="number"
                     android:hint="Nhập chiều dài"
                     android:textAlignment="textEnd"
                     android:textSize="14sp" />
@@ -149,11 +164,13 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp">
+                android:paddingVertical="2dp"
+                android:paddingHorizontal="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_alignParentStart="true"
                     android:text="Chiều cao (cm)"
                     android:textColor="@color/black" />
@@ -163,7 +180,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:background="@color/white"
+                    android:paddingVertical="12dp"
                     android:hint="Nhập chiều cao"
+                    android:inputType="number"
                     android:textAlignment="textEnd"
                     android:textSize="14sp" />
 
@@ -176,10 +195,12 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
             android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -193,9 +214,9 @@
                 <androidx.appcompat.widget.SwitchCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
                     android:background="@color/white"
                     android:checked="true"
-                    android:layout_alignParentEnd="true"
                     android:gravity="center_vertical"
                     android:padding="16dp"
                     android:textColor="@color/primary_color" />
@@ -204,8 +225,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -219,9 +241,9 @@
                 <androidx.appcompat.widget.SwitchCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
                     android:background="@color/white"
                     android:checked="true"
-                    android:layout_alignParentEnd="true"
                     android:gravity="center_vertical"
                     android:padding="16dp"
                     android:textColor="@color/primary_color" />
@@ -229,8 +251,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -244,9 +267,9 @@
                 <androidx.appcompat.widget.SwitchCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
                     android:background="@color/white"
                     android:checked="true"
-                    android:layout_alignParentEnd="true"
                     android:gravity="center_vertical"
                     android:padding="16dp"
                     android:textColor="@color/primary_color" />
@@ -254,8 +277,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -269,9 +293,9 @@
                 <androidx.appcompat.widget.SwitchCompat
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
                     android:background="@color/white"
                     android:checked="true"
-                    android:layout_alignParentEnd="true"
                     android:gravity="center_vertical"
                     android:padding="16dp"
                     android:text="đ65.000"
@@ -282,16 +306,18 @@
 
 
     </LinearLayout>
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSave"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="20dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/custom_edit_text_border"
         android:text="Lưu"
-        android:textSize="14sp"
         android:textAllCaps="false"
-        android:textColor="@color/primary_color" />
+        android:textColor="@color/primary_color"
+        android:textSize="14sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

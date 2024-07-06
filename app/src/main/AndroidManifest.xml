@@ -92,7 +92,7 @@
             android:name="Activities.LoadingActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.ProductsActivity"
+            android:name="Activities.MyProductsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
