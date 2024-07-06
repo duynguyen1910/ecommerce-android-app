@@ -21,6 +21,9 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
+            android:name="Activities.CreateStoreActivity"
+            android:exported="false" />
+        <activity
             android:name="Activities.RegisterStoreOwnerSuccessfulActivity"
             android:exported="false" />
         <activity
@@ -77,7 +80,7 @@
             android:name="Activities.LoadingActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.CreateStoreActivity"
+            android:name="Activities.StoreOwnerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
