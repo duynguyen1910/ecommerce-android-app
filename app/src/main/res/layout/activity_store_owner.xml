@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:padding="16dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingVertical="10dp">
@@ -104,7 +105,7 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/txtFullname"
+                android:id="@+id/txtStoreName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"

@@ -1,24 +1,26 @@
 package Activities;
-import android.content.Intent;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.stores.databinding.ActivityDecorateStoreBinding;
 import com.example.stores.databinding.ActivityStoreOwnerBinding;
 
 import java.util.Objects;
 
-public class StoreOwnerActivity extends AppCompatActivity {
+public class DecorateStoreActivity extends AppCompatActivity {
 
-    ActivityStoreOwnerBinding binding;
+    ActivityDecorateStoreBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityStoreOwnerBinding.inflate(getLayoutInflater());
+        binding = ActivityDecorateStoreBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
+        getWindow().setStatusBarColor(Color.parseColor("#B0009688"));
         Objects.requireNonNull(getSupportActionBar()).hide();
 
 
@@ -26,13 +28,6 @@ public class StoreOwnerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-        binding.btnViewStore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StoreOwnerActivity.this, DecorateStoreActivity.class);
-                startActivity(intent);
             }
         });
 

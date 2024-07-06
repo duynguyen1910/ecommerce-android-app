@@ -54,6 +54,7 @@
     <color name="green">#169955</color>
     <color name="darkgreen">#5C8A72</color>
     <color name="green_persian">#009688</color>
+    <color name="green_persian_alpha70">#B0009688</color>
     <color name="light_green_persian">#679E99</color>
     <color name="lightpink">#D985A1</color>
     <color name="pink">#C13564</color>
