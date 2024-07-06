@@ -1,34 +1,37 @@
 package Activities;
+
 import android.annotation.SuppressLint;
-import android.content.Intent;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
 import com.example.stores.R;
-import com.example.stores.databinding.ActivityInvoiceBinding;
-import com.example.stores.databinding.ItemTabLayoutInvoiceBinding;
+import com.example.stores.databinding.ActivityProductsBinding;
+import com.example.stores.databinding.ItemTabLayoutProductsBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
 import java.util.Objects;
+
 import Adapters.ViewPager2Adapter;
-import Fragments.InvoiceAwaitConfirmationFragment;
-import Fragments.InvoiceAwaitDeliveryFragment;
-import Fragments.InvoiceAwaitPickupFragment;
-import Fragments.InvoiceCancelFragment;
-import Fragments.InvoiceCompletedFragment;
+import Fragments.ProductsHiddenFragment;
+import Fragments.ProductsInStockFragment;
+import Fragments.ProductsOutOfStockFragment;
 
-public class InvoiceActivity extends AppCompatActivity {
+public class ProductsActivity extends AppCompatActivity {
 
-    ActivityInvoiceBinding binding;
+    ActivityProductsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityInvoiceBinding.inflate(getLayoutInflater());
+        binding = ActivityProductsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initUI();
         setupUI();
@@ -39,11 +42,9 @@ public class InvoiceActivity extends AppCompatActivity {
 
     private void setupUI() {
         ViewPager2Adapter viewPager2Adapter = new ViewPager2Adapter(this);
-        viewPager2Adapter.addFragment(new InvoiceAwaitConfirmationFragment(), "Chờ xác nhận");
-        viewPager2Adapter.addFragment(new InvoiceAwaitDeliveryFragment(), "Chờ giao hàng");
-        viewPager2Adapter.addFragment(new InvoiceAwaitPickupFragment(), "Chờ lấy hàng");
-        viewPager2Adapter.addFragment(new InvoiceCompletedFragment(), "Hoàn thành");
-        viewPager2Adapter.addFragment(new InvoiceCancelFragment(), "Đã hủy");
+        viewPager2Adapter.addFragment(new ProductsInStockFragment(), "Còn hàng");
+        viewPager2Adapter.addFragment(new ProductsOutOfStockFragment(), "Hết hàng");
+        viewPager2Adapter.addFragment(new ProductsHiddenFragment(), "Bị ẩn");
 
         binding.viewPager2.setAdapter(viewPager2Adapter);
         binding.viewPager2.setCurrentItem(0);
@@ -51,7 +52,7 @@ public class InvoiceActivity extends AppCompatActivity {
         new TabLayoutMediator(binding.tabLayout, binding.viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                ItemTabLayoutInvoiceBinding tabLayoutBinding = ItemTabLayoutInvoiceBinding.inflate(getLayoutInflater());
+                ItemTabLayoutProductsBinding tabLayoutBinding = ItemTabLayoutProductsBinding.inflate(getLayoutInflater());
                 TextView tabLabel = tabLayoutBinding.tabLabel;
                 tabLabel.setText(viewPager2Adapter.getPageTitle(position));
                 tab.setCustomView(tabLayoutBinding.getRoot());
@@ -61,7 +62,9 @@ public class InvoiceActivity extends AppCompatActivity {
         TabLayout.Tab firstTab = binding.tabLayout.getTabAt(0);
         if (firstTab != null && firstTab.getCustomView() != null) {
             TextView tabLabel = firstTab.getCustomView().findViewById(R.id.tabLabel);
-            tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.primary_color));
+            TextView tabQuantity = firstTab.getCustomView().findViewById(R.id.tabQuantity);
+            tabLabel.setTextColor(ContextCompat.getColor(ProductsActivity.this, R.color.primary_color));
+            tabQuantity.setTextColor(ContextCompat.getColor(ProductsActivity.this, R.color.primary_color));
         }
 
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -71,7 +74,9 @@ public class InvoiceActivity extends AppCompatActivity {
                 View customView = tab.getCustomView();
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
-                    tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.primary_color));
+                    TextView tabQuantity = customView.findViewById(R.id.tabQuantity);
+                    tabLabel.setTextColor(ContextCompat.getColor(ProductsActivity.this, R.color.primary_color));
+                    tabQuantity.setTextColor(ContextCompat.getColor(ProductsActivity.this, R.color.primary_color));
                 }
             }
 
@@ -80,7 +85,9 @@ public class InvoiceActivity extends AppCompatActivity {
                 View customView = tab.getCustomView();
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
-                    tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.darkgray));
+                    TextView tabQuantity = customView.findViewById(R.id.tabQuantity);
+                    tabLabel.setTextColor(ContextCompat.getColor(ProductsActivity.this, R.color.darkgray));
+                    tabQuantity.setTextColor(ContextCompat.getColor(ProductsActivity.this, R.color.darkgray));
                 }
             }
 
@@ -93,14 +100,7 @@ public class InvoiceActivity extends AppCompatActivity {
 
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
-        binding.imvHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(InvoiceActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-        });
+
     }
 
     private void initUI() {

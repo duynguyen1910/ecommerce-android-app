@@ -10,12 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityCreateStoreBinding;
-import com.example.stores.databinding.ItemTabLayout2Binding;
+import com.example.stores.databinding.ItemTabLayoutCreateStoreBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
 import java.util.Objects;
-
 import Adapters.ViewPager2Adapter;
 import Fragments.SettingDeliveryFragment;
 import Fragments.StoreIdentifierInfoFragment;
@@ -97,7 +95,7 @@ public class CreateStoreActivity extends AppCompatActivity {
         new TabLayoutMediator(binding.tabLayout, binding.viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                ItemTabLayout2Binding tabLayoutBinding = ItemTabLayout2Binding.inflate(getLayoutInflater());
+                ItemTabLayoutCreateStoreBinding tabLayoutBinding = ItemTabLayoutCreateStoreBinding.inflate(getLayoutInflater());
                 TextView tabLabel = tabLayoutBinding.tabLabel;
                 tabLabel.setText(viewPager2Adapter.getPageTitle(position));
                 tab.setCustomView(tabLayoutBinding.getRoot());
