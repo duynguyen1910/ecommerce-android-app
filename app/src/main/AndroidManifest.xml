@@ -21,6 +21,9 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
+            android:name="Activities.AddProductsActivity"
+            android:exported="false" />
+        <activity
             android:name="Activities.StoreOwnerActivity"
             android:exported="false" />
         <activity

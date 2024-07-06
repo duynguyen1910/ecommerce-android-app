@@ -2,6 +2,7 @@ package Activities;
 
 import android.annotation.SuppressLint;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -100,6 +101,13 @@ public class ProductsActivity extends AppCompatActivity {
 
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
+        binding.btnAddProducts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductsActivity.this, AddProductsActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 
