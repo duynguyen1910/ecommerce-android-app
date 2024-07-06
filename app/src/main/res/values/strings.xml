@@ -79,4 +79,8 @@
         Tôi xác nhận tất cả dữ liệu đã cung cấp là chính xác và trung thực.
         Tôi đã đọc và đồng ý với Chính sách Bảo Mật của Ecommerce
     </string>
+    <string name="delivery_hoa_toc"><b>Hỏa Tốc</b> (≤ 30.000 gram)</string>
+    <string name="delivery_nhanh"><b>Nhanh</b> (1~15.000 gram)</string>
+    <string name="delivery_tiet_kiem"><b>Tiết Kiệm</b> (1~15.000 gram)</string>
+    <string name="delivery_cong_kenh"><b>Cồng Kềnh</b> (≤ 200.000 gram)</string>
 </resources>

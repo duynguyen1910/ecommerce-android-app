@@ -245,6 +245,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
+                android:id="@+id/layoutDeliveryFee"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp">
 
@@ -336,7 +337,7 @@
             android:layout_margin="20dp"
             android:layout_weight="1"
             android:background="@drawable/custom_edit_text_border"
-            android:text="Lưu"
+            android:text="Lưu sản phẩm ở trạng thái ẩn"
             android:textAllCaps="false"
             android:textColor="@color/primary_color" />
         <androidx.appcompat.widget.AppCompatButton
@@ -345,10 +346,10 @@
             android:layout_height="50dp"
             android:layout_margin="20dp"
             android:layout_weight="1"
-            android:background="@drawable/custom_button_primary"
+            android:background="@drawable/custom_border_green_persian"
             android:text="Hiển thị"
             android:textAllCaps="false"
-            android:textColor="@color/white" />
+            android:textColor="@color/green_persian" />
     </LinearLayout>
 
 </LinearLayout>

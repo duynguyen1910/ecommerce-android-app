@@ -1,24 +1,22 @@
 package Activities;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.stores.databinding.ActivityAddProductsBinding;
 
+import com.example.stores.databinding.ActivityDeliveryFeeBinding;
 
 import java.util.Objects;
 
-public class AddProductsActivity extends AppCompatActivity {
+public class DeliveryFeeActivity extends AppCompatActivity {
 
-    ActivityAddProductsBinding binding;
+    ActivityDeliveryFeeBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAddProductsBinding.inflate(getLayoutInflater());
+        binding = ActivityDeliveryFeeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         initUI();
@@ -31,13 +29,7 @@ public class AddProductsActivity extends AppCompatActivity {
 
     private void setupEvents(){
         binding.imageBack.setOnClickListener(v -> finish());
-        binding.layoutDeliveryFee.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AddProductsActivity.this, DeliveryFeeActivity.class);
-                startActivity(intent);
-            }
-        });
+        binding.btnSave.setOnClickListener(v -> finish());
 
     }
     private void initUI(){
