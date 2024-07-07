@@ -2,22 +2,27 @@ package Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Paint;
+import android.content.Intent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
+import android.view.Window;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
+import com.example.stores.R;
 import com.example.stores.databinding.ItemMyProductBinding;
+import com.example.stores.databinding.LayoutProductDetailBinding;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
+import Activities.UpdateProductsActivity;
 import Models.Product;
 
 public class MyProductsAdapter extends RecyclerView.Adapter<MyProductsAdapter.ViewHolder> {
@@ -64,51 +69,54 @@ public class MyProductsAdapter extends RecyclerView.Adapter<MyProductsAdapter.Vi
         holder.binding.txtLikes.setText(String.valueOf(product.getLikes()));
         holder.binding.txtViews.setText(String.valueOf(product.getViews()));
 
-        holder.binding.btnHide.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.binding.btnHide.setOnClickListener(v -> {
+            // Set hiddenStatus = true
 
-            }
         });
-        holder.binding.btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.binding.btnEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(context, UpdateProductsActivity.class);
+            intent.putExtra("product", product);
+            context.startActivity(intent);
 
-            }
         });
-        holder.binding.btnMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        holder.binding.btnMore.setOnClickListener(v -> {
 
-            }
+
         });
-
-
-
-
 
     }
 
-    private int getQuantityChecked() {
-        int count = 0;
-        for (Product product : list) {
-            if (product.getCheckedStatus()) {
-                count += 1;
-            }
-        }
-        return count;
-    }
+    private void popUpProductDetailDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutProductDetailBinding detailBinding = LayoutProductDetailBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
+        builder.setView(detailBinding.getRoot());
+        AlertDialog dialog = builder.create();
 
-    private double getTotalFee() {
-        double fee = 0;
-        for (Product product : list) {
-            if (product.getCheckedStatus()) {
-                fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
-            }
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.custom_edit_text_border);
+        dialog.show();
+
+        // Set the dialog window attributes
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            window.setGravity(Gravity.BOTTOM);
 
         }
-        return fee;
+
+        detailBinding.imageCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        detailBinding.btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {
