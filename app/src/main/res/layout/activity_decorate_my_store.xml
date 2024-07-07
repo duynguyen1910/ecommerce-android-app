@@ -116,11 +116,10 @@
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-
                 android:layout_width="150dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center_horizontal"
-
+                android:id="@+id/btnCategory"
                 android:background="@drawable/custom_button_primary"
                 android:text="Bắt đầu dùng"
                 android:textAllCaps="false"
@@ -165,7 +164,7 @@
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_marginEnd="10dp"
-                    android:src="@mipmap/online_shopping" />
+                    android:src="@mipmap/online_shopping3" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

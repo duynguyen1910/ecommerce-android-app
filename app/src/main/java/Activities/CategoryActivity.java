@@ -6,20 +6,17 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.stores.databinding.ActivityDecorateMyStoreBinding;
-
-
+import com.example.stores.databinding.ActivityCategoryBinding;
 import java.util.Objects;
 
-public class DecorateMyStoreActivity extends AppCompatActivity {
+public class CategoryActivity extends AppCompatActivity {
 
-    ActivityDecorateMyStoreBinding binding;
+    ActivityCategoryBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityDecorateMyStoreBinding.inflate(getLayoutInflater());
+        binding = ActivityCategoryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         initUI();
@@ -32,10 +29,10 @@ public class DecorateMyStoreActivity extends AppCompatActivity {
 
     private void setupEvents(){
         binding.imageBack.setOnClickListener(v -> finish());
-        binding.btnCategory.setOnClickListener(new View.OnClickListener() {
+        binding.layoutAddCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DecorateMyStoreActivity.this, CategoryActivity.class);
+                Intent intent = new Intent(CategoryActivity.this, AddCategoryActivity.class);
                 startActivity(intent);
             }
         });
