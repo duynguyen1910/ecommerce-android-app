@@ -48,6 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+
         android:orientation="vertical">
 
         <LinearLayout
@@ -56,7 +57,7 @@
             android:layout_marginBottom="15dp"
             android:background="@color/white"
             android:orientation="vertical"
-            android:paddingVertical="6dp">
+            android:paddingVertical="10dp">
 
 
             <TextView
@@ -64,148 +65,154 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dp"
                 android:background="@drawable/custom_border_top_bottom"
+                android:drawablePadding="8dp"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp"
-                android:drawablePadding="8dp"
                 android:text="Danh mục của Store"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:drawableStartCompat="@drawable/baseline_category_24"
                 app:drawableTint="@color/primary_color" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@mipmap/online_shopping" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:drawablePadding="8dp"
+                        android:paddingHorizontal="16dp"
+                        android:text="Tạo danh mục mới cho Store"
+                        android:textColor="@color/primary_color"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:checked="true"
+                        android:gravity="center_vertical"
+                        android:padding="16dp"
+                        android:text="Thu hút người mua đặt hàng với danh mục của Shop"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+
+                android:background="@drawable/custom_button_primary"
+                android:text="Bắt đầu dùng"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
 
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
-            android:orientation="vertical">
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingVertical="16dp">
 
-            <RelativeLayout
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white">
+                android:layout_marginBottom="6dp"
+                android:background="@drawable/custom_border_top_bottom"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:text="Trang trí Store"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/ic_store_fill_24"
+                app:drawableTint="@color/primary_color" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:checked="true"
-                    android:gravity="center_vertical"
-                    android:padding="16dp"
-                    android:text="@string/delivery_hoa_toc"
-                    android:textColor="@color/black" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/white"
-                    android:checked="true"
-                    android:gravity="center_vertical"
-                    android:padding="16dp"
-                    android:textColor="@color/primary_color" />
-            </RelativeLayout>
-
-
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white">
+                android:layout_marginBottom="10dp"
+                android:padding="16dp">
 
-                <TextView
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_marginEnd="10dp"
+                    android:src="@mipmap/online_shopping" />
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:checked="true"
-                    android:gravity="center_vertical"
-                    android:padding="16dp"
-                    android:text="@string/delivery_nhanh"
-                    android:textColor="@color/black" />
+                    android:orientation="vertical">
 
-                <androidx.appcompat.widget.SwitchCompat
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/white"
-                    android:checked="true"
-                    android:gravity="center_vertical"
-                    android:padding="16dp"
-                    android:textColor="@color/primary_color" />
-            </RelativeLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="6dp"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="16dp"
+                        android:text="Nhanh tay trang trí store của bạn để thu hút nhiều Người mua hơn!"
+                        android:textColor="@color/primary_color"
+                        android:textStyle="bold" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:checked="true"
+                        android:gravity="center_vertical"
+                        android:padding="16dp"
+                        android:text="@string/decorate_my_store_desc"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:checked="true"
+                android:paddingHorizontal="16dp"
+                android:textStyle="italic"
+                android:text="(Tính năng đang phát triển)"
+                android:textColor="@color/black" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:checked="true"
-                    android:gravity="center_vertical"
-                    android:padding="16dp"
-                    android:text="@string/delivery_tiet_kiem"
-                    android:textColor="@color/black" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/white"
-                    android:checked="true"
-                    android:gravity="center_vertical"
-                    android:padding="16dp"
-                    android:textColor="@color/primary_color" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:checked="true"
-                    android:gravity="center_vertical"
-                    android:padding="16dp"
-                    android:text="@string/delivery_cong_kenh"
-                    android:textColor="@color/black" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/white"
-                    android:checked="true"
-                    android:gravity="center_vertical"
-                    android:padding="16dp"
-                    android:text="đ65.000"
-                    android:textColor="@color/primary_color" />
-            </RelativeLayout>
 
         </LinearLayout>
 
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnSave"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/custom_edit_text_border"
-        android:text="Lưu"
-        android:textAllCaps="false"
-        android:textColor="@color/primary_color"
-        android:textSize="14sp"
-        android:textStyle="bold" />
 
 </LinearLayout>

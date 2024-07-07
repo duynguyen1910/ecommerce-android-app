@@ -1,5 +1,6 @@
 package Activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +10,7 @@ import com.example.stores.databinding.ActivityViewMyStoreBinding;
 
 import java.util.Objects;
 
-public class DecorateStoreActivity extends AppCompatActivity {
+public class ViewMyStoreActivity extends AppCompatActivity {
 
     ActivityViewMyStoreBinding binding;
 
@@ -26,6 +27,13 @@ public class DecorateStoreActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        binding.btnDecorateMyStore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ViewMyStoreActivity.this, DecorateMyStoreActivity.class);
+                startActivity(intent);
             }
         });
 

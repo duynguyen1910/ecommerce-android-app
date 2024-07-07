@@ -145,9 +145,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
+        android:id="@+id/btnDecorateMyStore"
         android:background="@drawable/custom_button_primary"
         android:layout_margin="16dp"
-        android:text="Trang trí Shop ngay"
+        android:text="Trang trí Store ngay"
         android:textAllCaps="false"
         android:textColor="@color/white" />
 </LinearLayout>

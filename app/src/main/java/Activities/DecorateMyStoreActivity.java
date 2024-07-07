@@ -1,19 +1,25 @@
 package Activities;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.stores.databinding.ActivityStoreOwnerBinding;
+
+import com.example.stores.databinding.ActivityDecorateMyStoreBinding;
+
+
 import java.util.Objects;
 
-public class StoreOwnerActivity extends AppCompatActivity {
+public class DecorateMyStoreActivity extends AppCompatActivity {
 
-    ActivityStoreOwnerBinding binding;
+    ActivityDecorateMyStoreBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityStoreOwnerBinding.inflate(getLayoutInflater());
+        binding = ActivityDecorateMyStoreBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         initUI();
@@ -26,15 +32,8 @@ public class StoreOwnerActivity extends AppCompatActivity {
 
     private void setupEvents(){
         binding.imageBack.setOnClickListener(v -> finish());
-        binding.btnViewStore.setOnClickListener(v -> {
-            Intent intent = new Intent(StoreOwnerActivity.this, ViewMyStoreActivity.class);
-            startActivity(intent);
-        });
 
-        binding.layoutProducts.setOnClickListener(v -> {
-            Intent intent = new Intent(StoreOwnerActivity.this, MyProductsActivity.class);
-            startActivity(intent);
-        });
+
     }
     private void initUI(){
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));

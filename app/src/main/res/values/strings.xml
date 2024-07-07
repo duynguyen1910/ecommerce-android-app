@@ -83,4 +83,8 @@
     <string name="delivery_nhanh"><b>Nhanh</b> (1~15.000 gram)</string>
     <string name="delivery_tiet_kiem"><b>Tiết Kiệm</b> (1~15.000 gram)</string>
     <string name="delivery_cong_kenh"><b>Cồng Kềnh</b> (≤ 200.000 gram)</string>
+    <string name="decorate_my_store_desc">
+        Bạn có thể dễ dàng chính sửa bố cục, nội dung, và hình ảnh để làm nổi bật các sản phẩm cùng những chương trình khuyến mãi hấp dẫn theo
+        phong cách hoàn toàn độc đáo của Shop
+    </string>
 </resources>
