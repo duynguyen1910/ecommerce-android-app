@@ -36,7 +36,7 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:text="Phí vận chuyển"
-            android:textColor="@color/text1"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
 

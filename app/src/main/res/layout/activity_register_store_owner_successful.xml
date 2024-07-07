@@ -35,7 +35,7 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:text="Đăng ký Người bán thành công"
-            android:textColor="@color/text1"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -72,12 +72,12 @@
 
 
     <Button
-        android:id="@+id/btnAddProducts"
+        android:id="@+id/btnViewStore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_button_primary"
         android:padding="8dp"
-        android:text="Thêm sản phẩm"
+        android:text="Xem Store"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="14dp"

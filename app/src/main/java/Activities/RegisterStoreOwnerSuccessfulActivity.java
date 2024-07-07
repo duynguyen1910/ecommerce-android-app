@@ -1,9 +1,7 @@
 package Activities;
-
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.stores.databinding.ActivityRegisterStoreOwnerSuccessfulBinding;
 
@@ -28,11 +26,10 @@ public class RegisterStoreOwnerSuccessfulActivity extends AppCompatActivity {
     }
 
     private void setupEvent(){
-        binding.imageBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
+        binding.imageBack.setOnClickListener(v -> finish());
+        binding.btnViewStore.setOnClickListener(v -> {
+            Intent intent = new Intent(RegisterStoreOwnerSuccessfulActivity.this, StoreOwnerActivity.class);
+            startActivity(intent);
         });
 
     }
