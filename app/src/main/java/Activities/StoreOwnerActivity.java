@@ -35,6 +35,7 @@ public class StoreOwnerActivity extends AppCompatActivity {
             Intent intent = new Intent(StoreOwnerActivity.this, MyProductsActivity.class);
             startActivity(intent);
         });
+
     }
     private void initUI(){
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
