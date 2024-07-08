@@ -28,8 +28,8 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:src="@mipmap/lovito_dress" />
             </androidx.cardview.widget.CardView>
 
@@ -52,13 +52,29 @@
                     android:textColor="@color/black" />
 
 
-                <TextView
-                    android:id="@+id/txtOldPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="đ123.000"
-                    android:textColor="@color/primary_color" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:paddingVertical="2dp"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/txtOldPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="đ123.000"
+                        android:textColor="@color/primary_color" />
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/custom_edit_text_border"
+                        android:text="Sửa"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        />
+                </RelativeLayout>
+
             </LinearLayout>
         </LinearLayout>
 
@@ -133,112 +149,10 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="8dp">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:drawablePadding="4dp"
-                        android:drawableTint="@color/darkgray"
-                        android:text="Thích"
-                        android:textColor="@color/darkgray"
-
-                        app:drawableStartCompat="@drawable/ic_favorite_16" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:id="@+id/txtLikes"
-                        android:textColor="@color/darkgray"
-                       />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingVertical="8dp">
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:drawablePadding="4dp"
-                        android:drawableTint="@color/darkgray"
-                        android:text="Lượt xem"
-                        android:textColor="@color/darkgray"
-
-                        app:drawableStartCompat="@drawable/ic_view_16" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:id="@+id/txtViews"
-                        android:textColor="@color/darkgray"
-                       />
-                </LinearLayout>
-            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/footer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnHide"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/custom_edit_text_border"
-                android:text="Ẩn"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-               />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/custom_edit_text_border"
-                android:text="Sửa"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-              />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnMore"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/custom_edit_text_border"
-                android:text="..."
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-               />
-        </LinearLayout>
 
     </LinearLayout>
 

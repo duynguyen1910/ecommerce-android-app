@@ -116,9 +116,9 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/custom_edittext_no_border"
                         android:gravity="center_vertical"
-                        android:paddingVertical="16dp"
                         android:hint="Nhập tên sản phẩm"
                         android:maxLength="120"
+                        android:paddingVertical="16dp"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -154,9 +154,9 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/custom_edittext_no_border"
                         android:gravity="center_vertical"
-                        android:paddingVertical="16dp"
                         android:hint="Nhập mô tả sản phẩm"
                         android:maxLength="2000"
+                        android:paddingVertical="16dp"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -235,14 +235,13 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-              >
+                android:paddingHorizontal="16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_package_24"
                     app:tint="@color/darkgray" />
 
@@ -258,10 +257,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/white"
-                    android:textAlignment="textEnd"
-                    android:paddingVertical="16dp"
                     android:hint="0"
                     android:inputType="number"
+                    android:paddingVertical="16dp"
+                    android:textAlignment="textEnd"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -330,14 +329,13 @@
                 android:layout_marginVertical="10dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-              >
+                android:paddingHorizontal="16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_tick"
                     app:tint="@color/darkgray" />
 
@@ -346,8 +344,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawablePadding="8dp"
-                    android:paddingVertical="16dp"
                     android:gravity="center_vertical"
+                    android:paddingVertical="16dp"
                     android:text="Hàng đặt trước"
                     android:textColor="@color/black" />
 
@@ -356,31 +354,17 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSave"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="50dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/custom_edit_text_border"
+        android:gravity="center"
+        android:text="Thêm mới"
+        android:textAllCaps="false"
+        android:textColor="@color/green_persian" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnSave"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_margin="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/custom_edit_text_border"
-            android:text="Lưu sản phẩm ở trạng thái ẩn"
-            android:textAllCaps="false"
-            android:textColor="@color/primary_color" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnDisplay"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_margin="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/custom_edit_text_border"
-            android:text="Hiển thị"
-            android:textAllCaps="false"
-            android:textColor="@color/green_persian" />
-    </LinearLayout>
 
 </LinearLayout>

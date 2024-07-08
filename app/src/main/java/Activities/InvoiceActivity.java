@@ -39,14 +39,15 @@ public class InvoiceActivity extends AppCompatActivity {
 
     private void setupUI() {
         ViewPager2Adapter viewPager2Adapter = new ViewPager2Adapter(this);
-        viewPager2Adapter.addFragment(new InvoiceAwaitConfirmationFragment(), "Chờ xác nhận");
-        viewPager2Adapter.addFragment(new InvoiceAwaitDeliveryFragment(), "Chờ giao hàng");
-        viewPager2Adapter.addFragment(new InvoiceAwaitPickupFragment(), "Chờ lấy hàng");
-        viewPager2Adapter.addFragment(new InvoiceCompletedFragment(), "Hoàn thành");
-        viewPager2Adapter.addFragment(new InvoiceCancelFragment(), "Đã hủy");
-
+        viewPager2Adapter.addFragment(new InvoiceAwaitConfirmationFragment(), "Chờ xác nhận");//0
+        viewPager2Adapter.addFragment(new InvoiceAwaitDeliveryFragment(), "Chờ giao hàng");//1
+        viewPager2Adapter.addFragment(new InvoiceAwaitPickupFragment(), "Chờ lấy hàng");//2
+        viewPager2Adapter.addFragment(new InvoiceCompletedFragment(), "Hoàn thành");//3
+        viewPager2Adapter.addFragment(new InvoiceCancelFragment(), "Đã hủy");//4
         binding.viewPager2.setAdapter(viewPager2Adapter);
-        binding.viewPager2.setCurrentItem(0);
+
+
+
 
         new TabLayoutMediator(binding.tabLayout, binding.viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
@@ -58,11 +59,7 @@ public class InvoiceActivity extends AppCompatActivity {
             }
         }).attach();
         // Đặt màu hồng cho tab đầu tiên sau khi attach()
-        TabLayout.Tab firstTab = binding.tabLayout.getTabAt(0);
-        if (firstTab != null && firstTab.getCustomView() != null) {
-            TextView tabLabel = firstTab.getCustomView().findViewById(R.id.tabLabel);
-            tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.primary_color));
-        }
+
 
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @SuppressLint("ResourceAsColor")
@@ -89,6 +86,17 @@ public class InvoiceActivity extends AppCompatActivity {
 
             }
         });
+        Intent intent = getIntent();
+        if (intent!= null){
+            int invoiceStatus = intent.getIntExtra("invoiceStatus", 0);
+            binding.viewPager2.setCurrentItem(invoiceStatus);
+
+            TabLayout.Tab firstTab = binding.tabLayout.getTabAt(invoiceStatus);
+            if (firstTab != null && firstTab.getCustomView() != null) {
+                TextView tabLabel = firstTab.getCustomView().findViewById(R.id.tabLabel);
+                tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.primary_color));
+            }
+        }
     }
 
     private void setupEvents() {

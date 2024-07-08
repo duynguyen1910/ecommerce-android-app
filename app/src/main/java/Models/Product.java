@@ -20,7 +20,6 @@ public class Product implements Serializable {
     private int likes;
     private int views;
 
-
     private boolean hiddenStatus;
 
 

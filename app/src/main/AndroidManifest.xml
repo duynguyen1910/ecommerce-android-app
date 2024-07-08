@@ -42,7 +42,7 @@
             android:name="Activities.AddProductsActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.StoreOwnerActivity"
+            android:name="Activities.ViewMyStoreActivity"
             android:exported="false" />
         <activity
             android:name="Activities.MyProductsActivity"
@@ -63,7 +63,7 @@
             android:name="Activities.CreateAddressActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.MainActivity"
+            android:name="Activities.StoreOwnerActivity"
             android:exported="false" />
         <activity
             android:name="Activities.ActivateStoreActivity"
@@ -104,10 +104,10 @@
             android:name="Activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.ViewMyStoreActivity"
+            android:name="Activities.LoadingActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.LoadingActivity"
+            android:name="Activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

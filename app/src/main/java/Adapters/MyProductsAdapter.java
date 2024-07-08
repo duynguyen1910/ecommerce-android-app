@@ -66,23 +66,14 @@ public class MyProductsAdapter extends RecyclerView.Adapter<MyProductsAdapter.Vi
 
         holder.binding.txtInStock.setText(String.valueOf(product.getInStock()));
         holder.binding.txtSold.setText(String.valueOf(product.getSold()));
-        holder.binding.txtLikes.setText(String.valueOf(product.getLikes()));
-        holder.binding.txtViews.setText(String.valueOf(product.getViews()));
 
-        holder.binding.btnHide.setOnClickListener(v -> {
-            // Set hiddenStatus = true
-
-        });
         holder.binding.btnEdit.setOnClickListener(v -> {
             Intent intent = new Intent(context, UpdateProductsActivity.class);
             intent.putExtra("product", product);
             context.startActivity(intent);
 
         });
-        holder.binding.btnMore.setOnClickListener(v -> {
 
-
-        });
 
     }
 

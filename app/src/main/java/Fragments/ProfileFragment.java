@@ -51,29 +51,40 @@ public class ProfileFragment extends Fragment {
         });
 
         binding.layoutUpdateProfile.setOnClickListener(v -> {
+            //0
             Intent intent = new Intent(requireActivity(), UpdateProfileActivity.class);
+
+            startActivity(intent);
+        });
+        binding.layoutInvoiceAwaitConfirm.setOnClickListener(v -> {
+            //1
+            Intent intent = new Intent(requireActivity(), InvoiceActivity.class);
+
+            intent.putExtra("invoiceStatus", 0);
+            startActivity(intent);
+        });
+        binding.layoutInvoiceAwaitDelivery.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), InvoiceActivity.class);
+            intent.putExtra("invoiceStatus", 1);
+            startActivity(intent);
+        });
+        binding.layoutInvoiceAwaitPickup.setOnClickListener(v -> {
+            //2
+            Intent intent = new Intent(requireActivity(), InvoiceActivity.class);
+            intent.putExtra("invoiceStatus", 2);
             startActivity(intent);
         });
 
-        binding.layoutInvoice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(requireActivity(), InvoiceActivity.class);
-                startActivity(intent);
-            }
-        });
-        binding.txtStore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Nếu chưa tạo store
-                Intent intent = new Intent(requireActivity(), ActivateStoreActivity.class);
-                startActivity(intent);
 
-                // Nếu đã tạo store thì vào thẳng Store Owner Activity
+        binding.txtStore.setOnClickListener(v -> {
+            // Nếu chưa tạo store
+            Intent intent = new Intent(requireActivity(), ActivateStoreActivity.class);
+            startActivity(intent);
+
+            // Nếu đã tạo store thì vào thẳng Store Owner Activity
 
 //                Intent intent = new Intent(requireActivity(), StoreOwnerActivity.class);
 //                startActivity(intent);
-            }
         });
     }
 }

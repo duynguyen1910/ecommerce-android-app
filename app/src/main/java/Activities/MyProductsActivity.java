@@ -45,7 +45,7 @@ public class MyProductsActivity extends AppCompatActivity {
         ViewPager2Adapter viewPager2Adapter = new ViewPager2Adapter(this);
         viewPager2Adapter.addFragment(new ProductsInStockFragment(), "Còn hàng");
         viewPager2Adapter.addFragment(new ProductsOutOfStockFragment(), "Hết hàng");
-        viewPager2Adapter.addFragment(new ProductsHiddenFragment(), "Bị ẩn");
+
 
         binding.viewPager2.setAdapter(viewPager2Adapter);
         binding.viewPager2.setCurrentItem(0);
