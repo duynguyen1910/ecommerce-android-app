@@ -104,10 +104,10 @@
             android:name="Activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.LoadingActivity"
+            android:name="Activities.ViewMyStoreActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.ViewMyStoreActivity"
+            android:name="Activities.LoadingActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

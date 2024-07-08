@@ -15,6 +15,7 @@ import Activities.CartActivity;
 import Activities.InvoiceActivity;
 import Activities.ActivateStoreActivity;
 import Activities.SettingsActivity;
+import Activities.StoreOwnerActivity;
 import Activities.UpdateProfileActivity;
 
 public class ProfileFragment extends Fragment {
@@ -25,9 +26,16 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(getLayoutInflater());
 
+        initUI();
         setupEvents();
 
         return binding.getRoot();
+    }
+
+    private void initUI(){
+       // Nếu đã tạo store thì đổi text của txtStore
+//        binding.txtStore.setText("Store của tôi");
+
     }
 
     private void setupEvents(){
@@ -54,11 +62,17 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        binding.layoutActivateStore.setOnClickListener(new View.OnClickListener() {
+        binding.txtStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Nếu chưa tạo store
                 Intent intent = new Intent(requireActivity(), ActivateStoreActivity.class);
                 startActivity(intent);
+
+                // Nếu đã tạo store thì vào thẳng Store Owner Activity
+
+//                Intent intent = new Intent(requireActivity(), StoreOwnerActivity.class);
+//                startActivity(intent);
             }
         });
     }

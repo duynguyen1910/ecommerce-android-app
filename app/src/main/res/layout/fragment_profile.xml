@@ -36,7 +36,7 @@
                     app:tint="@color/text1" />
 
                 <TextView
-                    android:id="@+id/txtStoreName"
+                    android:id="@+id/txtStore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"

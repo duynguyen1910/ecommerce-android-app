@@ -26,10 +26,15 @@ public class RegisterStoreOwnerSuccessfulActivity extends AppCompatActivity {
     }
 
     private void setupEvent(){
-        binding.imageBack.setOnClickListener(v -> finish());
+        binding.imageBack.setOnClickListener(v -> {
+            Intent intent = new Intent(RegisterStoreOwnerSuccessfulActivity.this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
+//        binding.imageBack.setOnClickListener(v -> finish());
         binding.btnViewStore.setOnClickListener(v -> {
             Intent intent = new Intent(RegisterStoreOwnerSuccessfulActivity.this, StoreOwnerActivity.class);
-            startActivity(intent);
+;            startActivity(intent);
         });
 
     }
