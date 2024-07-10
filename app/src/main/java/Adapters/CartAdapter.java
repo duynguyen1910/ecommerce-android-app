@@ -19,10 +19,10 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 
 import java.util.ArrayList;
 
-import Interfaces.CartItemListener;
-import Interfaces.ToTalFeeCallback;
-import Models.CartItem;
-import Models.Product;
+import interfaces.CartItemListener;
+import interfaces.ToTalFeeCallback;
+import models.CartItem;
+import models.Product;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {

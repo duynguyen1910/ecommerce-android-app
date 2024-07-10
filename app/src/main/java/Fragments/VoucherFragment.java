@@ -43,22 +43,7 @@ public class VoucherFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentVoucherBinding.inflate(getLayoutInflater());
 
-        binding.testBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callAPI();
-            }
-        });
-
         return binding.getRoot();
     }
 
-    public void callAPI() {
-        try {
-            Glide.with(getContext()).load("https://images.pexels.com/photos/60597/dahlia-red-blossom-bloom-60597.jpeg?auto=compress&cs=tinysrgb&w=800").into(binding.imgTest);
-        } catch (Exception exception) {
-            Log.d(TAG, exception.getMessage());
-        }
-
-    }
 }

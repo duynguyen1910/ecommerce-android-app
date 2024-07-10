@@ -209,7 +209,7 @@
                         android:background="@drawable/custom_border_primary_color"
                         android:text="Xem Store"
                         android:textAllCaps="false"
-                        android:textColor="@color/orange"
+                        android:textColor="@color/primary_color"
                         android:textSize="14sp" />
 
 

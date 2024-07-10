@@ -3,11 +3,9 @@ package Fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,28 +17,17 @@ import androidx.viewpager2.widget.MarginPageTransformer;
 
 import com.example.stores.R;
 import com.example.stores.databinding.FragmentHomeBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import Activities.CartActivity;
 import Activities.StatisticsActivity;
 import Adapters.PopularBrandAdapter;
 import Adapters.ProductAdapter;
 import Adapters.SliderAdapter;
-import Models.OfficialBrand;
-import Models.Product;
-import Models.SliderItem;
-import Models.Store;
+import models.OfficialBrand;
+import models.Product;
+import models.SliderItem;
 
 public class HomeFragment extends Fragment {
     FragmentHomeBinding binding;

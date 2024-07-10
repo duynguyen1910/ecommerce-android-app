@@ -77,6 +77,7 @@
                     android:drawableEnd="@drawable/ic_arrow_right_24"
                     android:drawableTint="@color/darkgray"
                     android:gravity="center_vertical"
+                    android:id="@+id/txtAccountAndSecurity"
                     android:padding="16dp"
                     android:text="Tài khoản &amp; Bảo mật"
                     android:textColor="@color/black"

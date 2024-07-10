@@ -1,32 +1,17 @@
 package Activities;
 
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.stores.databinding.ActivityProductDetailBinding;
 import com.example.stores.databinding.ActivityProductImagesDetailBinding;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Objects;
 
-import Adapters.SizeAdapter;
 import Adapters.SliderAdapter;
-import Adapters.ViewPager2Adapter;
-import Fragments.DescriptionFragment;
-import Fragments.ReviewFragment;
-import Fragments.SoldFragment;
-import Models.Product;
-import Models.SliderItem;
 
 public class ProductImagesDetailActivity extends AppCompatActivity {
 

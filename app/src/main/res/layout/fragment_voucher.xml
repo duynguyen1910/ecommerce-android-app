@@ -13,14 +13,4 @@
         android:textColor="@color/primary_color"
         android:gravity="center"
         android:layout_height="wrap_content"/>
-    <ImageView
-        android:id="@+id/imgTest"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@mipmap/bg_law" />
-    <Button
-        android:id="@+id/testBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Call"/>
 </LinearLayout>

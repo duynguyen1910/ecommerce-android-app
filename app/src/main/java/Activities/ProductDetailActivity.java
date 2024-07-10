@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityProductDetailBinding;
-import com.example.stores.databinding.LayoutOrderBinding;
 import com.example.stores.databinding.LayoutProductDetailBinding;
 
 import java.text.NumberFormat;
@@ -27,9 +27,9 @@ import Adapters.ViewPager2Adapter;
 import Fragments.DescriptionFragment;
 import Fragments.ReviewFragment;
 import Fragments.SoldFragment;
-import Models.Product;
-import Models.SliderItem;
-import Models.Store;
+import models.Product;
+import models.SliderItem;
+import models.Store;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -125,7 +125,14 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
             binding.txtStoreName.setText(store.getStoreName());
             binding.txtStoreAddress.setText(store.getStoreAddress());
-            Glide.with(this).load(store.getStoreImage()).into(binding.imvStoreImage);
+
+            try {
+
+                Glide.with(this).load(store.getStoreImage()).into(binding.imvStoreImage);
+            } catch (Exception exception) {
+                Log.e("ERROR", "Không tải được hình ảnh", exception);
+            }
+
 
         }
 

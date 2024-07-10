@@ -18,9 +18,9 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import Interfaces.CartItemListener;
-import Interfaces.ToTalFeeCallback;
-import Models.Product;
+import interfaces.CartItemListener;
+import interfaces.ToTalFeeCallback;
+import models.Product;
 
 public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<ProductsListAdapterForCartItem.ViewHolder> {
     private final Context context;
@@ -90,15 +90,18 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
         Glide.with(context).load(product.getPicUrl().get(0)).into(holder.binding.imageView);
 
         holder.binding.btnPlus.setOnClickListener(v -> {
+
             int quantity = Integer.parseInt(holder.binding.txtQuantity.getText().toString().trim());
             holder.binding.txtQuantity.setText((quantity + 1) + "");
             product.setNumberInCart(quantity + 1);
-            callbackClass.totalFeeUpdate(getTotalFee());
-//            notifyItemChanged(holder.getBindingAdapterPosition());
+            if (holder.binding.checkbox.isChecked()) {
+                callbackClass.totalFeeUpdate(getTotalFee());
+            }
         });
 
 
         holder.binding.btnMinus.setOnClickListener(v -> {
+
             int quantity = Integer.parseInt(holder.binding.txtQuantity.getText().toString().trim());
             int currentPosition = holder.getBindingAdapterPosition();
             if (quantity == 1) {
@@ -110,9 +113,12 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
             } else {
                 holder.binding.txtQuantity.setText((quantity - 1) + "");
                 product.setNumberInCart(quantity - 1);
-//                notifyItemChanged(currentPosition);
+
             }
-            callbackClass.totalFeeUpdate(getTotalFee());
+            if (holder.binding.checkbox.isChecked()) {
+                callbackClass.totalFeeUpdate(getTotalFee());
+            }
+
         });
     }
 
@@ -130,7 +136,7 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
         double fee = 0;
         for (Product product : list) {
             if (product.getCheckedStatus()) {
-                fee += product.getPrice() * product.getNumberInCart();
+                fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
             }
 
         }

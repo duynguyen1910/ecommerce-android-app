@@ -15,7 +15,7 @@ import com.example.stores.R;
 
 import java.util.ArrayList;
 
-import Models.SliderItem;
+import models.SliderItem;
 
 public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.ViewHolder> {
     private Context context;

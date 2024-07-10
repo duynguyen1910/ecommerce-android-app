@@ -1,31 +1,26 @@
 package Activities;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.core.content.ContextCompat;
 
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityCartBinding;
-import com.example.stores.databinding.LayoutOrderBinding;
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-
 import Adapters.CartAdapter;
-import Interfaces.ToTalFeeCallback;
-import Models.CartItem;
-import Models.Product;
-import Models.Store;
-import Service.EcommerceService;
+import interfaces.ToTalFeeCallback;
+import models.CartItem;
+import models.Product;
+import models.Store;
 
 public class CartActivity extends AppCompatActivity implements ToTalFeeCallback {
 
@@ -44,31 +39,57 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         initCartUI();
         calculatorCart();
 
+
+        setupEvents();
+    }
+
+    private void setupEvents(){
         binding.imageBack.setOnClickListener(v -> finish());
 
         binding.btnBuyNow.setOnClickListener(v -> {
-            Intent intent = new Intent(CartActivity.this, EcommerceService.class);
-            String data = "Đơn hàng của bạn đã được gửi đến người bán";
-            intent.putExtra("data", data);
-            startService(intent);
-            showThankyouDialog();
+            if (getQuantityCheckedProducts() > 0){
+                Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
+                ArrayList<CartItem> payment = groupCheckedProductsByStore();
+                intent.putExtra("payment", payment);
+                startActivity(intent);
+            }
+
         });
 
+        binding.imvHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CartActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
     }
 
-    private void showThankyouDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutOrderBinding orderBinding = LayoutOrderBinding.inflate(getLayoutInflater());
-        builder.setView(orderBinding.getRoot());
-        AlertDialog dialog = builder.create();
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.custom_edit_text_border);
-        dialog.show();
+    private ArrayList<CartItem> groupCheckedProductsByStore() {
+        HashMap<String, ArrayList<Product>> hashMap = new HashMap<>();
 
-        orderBinding.imageCancel.setOnClickListener(v -> dialog.dismiss());
+        for (CartItem cartItem : cart) {
+            for (Product product : cartItem.getListProducts()) {
+                if (product.getCheckedStatus()) {
+                    String storeName = cartItem.getStoreName();
+                    if (!hashMap.containsKey(storeName)){
+                        hashMap.put(storeName, new ArrayList<>());
+                    }
+                    Objects.requireNonNull(hashMap.get(storeName)).add(product);
+                }
+            }
+        }
+        // filter HashMap để tạo CartItem
+        ArrayList<CartItem> cartItems = new ArrayList<>();
+        for (Map.Entry<String, ArrayList<Product>> entry : hashMap.entrySet()) {
+            // Tạo CartItem mới từ tên cửa hàng và danh sách sản phẩm
+            cartItems.add(new CartItem(entry.getKey(), entry.getValue()));
+        }
+
+
+        return cartItems;
     }
-
-
-
 
 
     private void initCart() {
@@ -106,10 +127,10 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         picUrls4.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcfb-lsaqdfxpqmpo1c");
 
 //        Product(String title, String description, ArrayList<String> picUrl, double price, double rating, int sold)
-        listProductsInCart.add(new Product("Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057", getResources().getResourceName(R.string.product_desc1), picUrls1, 149000, 298000, 4.9, 200, 50, 1, 1, false));
+        listProductsInCart.add(new Product("Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057", getResources().getResourceName(R.string.product_desc1), picUrls1, 149000, 298000, 4.9, 200, 50, 1, 2, false));
         listProductsInCart.add(new Product("Lovito Đầm trễ vai ngọc trai trơn đơn giản dành cho nữ L76AD154", getResources().getResourceName(R.string.product_desc1), picUrls2, 119000, 228000, 4.8, 179, 48, 2, 2, false));
-        listProductsInCart.add(new Product("Đồng hồ điện tử Unisex không thông minh thời trang S8 phong cách mới", getResources().getResourceName(R.string.product_desc2), picUrls3, 49000, 70000, 4.5, 559, 30, 3, 1, false));
-        listProductsInCart.add(new Product("Huizumei Váy preppy nữ mùa hè cổ polo nhỏ chắp vá eo nâng cao và giảm béo váy ngắn", getResources().getResourceName(R.string.product_desc3), picUrls4, 129000, 235000, 4.7, 989, 45, 1, 3, false));
+        listProductsInCart.add(new Product("Đồng hồ điện tử Unisex không thông minh thời trang S8 phong cách mới", getResources().getResourceName(R.string.product_desc2), picUrls3, 49000, 70000, 4.5, 559, 30, 3, 3, false));
+        listProductsInCart.add(new Product("Huizumei Váy preppy nữ mùa hè cổ polo nhỏ chắp vá eo nâng cao và giảm béo váy ngắn", getResources().getResourceName(R.string.product_desc3), picUrls4, 129000, 235000, 4.7, 989, 45, 1, 1, false));
 //
 
         cart = groupProductsByStore();
@@ -122,9 +143,9 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         for (Product product : listProductsInCart) {
             int storeId = product.getStoreID();
             if (!hashMap.containsKey(storeId)) {
-                hashMap.put(storeId, new ArrayList<Product>());
+                hashMap.put(storeId, new ArrayList<>());
             }
-            hashMap.get(storeId).add(product);
+            Objects.requireNonNull(hashMap.get(storeId)).add(product);
         }
 
         ArrayList<CartItem> cartItems = new ArrayList<>();
@@ -144,7 +165,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
             }
 
             // Tạo CartItem và thêm vào danh sách cartItems
-            CartItem cartItem = new CartItem(storeId, storeName, products);
+            CartItem cartItem = new CartItem(storeName, products);
             cartItems.add(cartItem);
         }
 
@@ -166,8 +187,6 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
             binding.layoutEmptyCart.setVisibility(View.VISIBLE);
             binding.layoutCart.setVisibility(View.GONE);
         }
-
-
 
     }
 
@@ -207,19 +226,40 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
 
     private double getTotalFee() {
         double fee = 0;
+        for (CartItem item : cart) {
+            for (Product product : item.getListProducts()) {
+                if (product.getCheckedStatus()){
+                    fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
+                }
+
+            }
+        }
+        binding.btnBuyNow.setText("Mua Hàng (" + getQuantityCheckedProducts() + ")" );
+        return fee;
+    }
+
+    private int getQuantityCheckedProducts() {
         int count = 0;
         for (CartItem item : cart) {
             for (Product product : item.getListProducts()) {
                 if (product.getCheckedStatus()){
                     count += 1;
-                    fee += product.getPrice() * product.getNumberInCart();
                 }
 
             }
         }
+        if (count > 0) {
+            binding.btnBuyNow.setFocusable(true);
+            binding.btnBuyNow.setBackground(ContextCompat.getDrawable(this, R.color.primary_color));
+        } else {
+            binding.btnBuyNow.setFocusable(false);
+            binding.btnBuyNow.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
+        }
         binding.btnBuyNow.setText("Mua Hàng (" + count + ")" );
-        return fee;
+        return count;
     }
+
+
     @Override
     public void totalFeeUpdate(double totalFee) {
         calculatorCart();

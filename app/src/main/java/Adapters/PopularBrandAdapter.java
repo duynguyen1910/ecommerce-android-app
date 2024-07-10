@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.stores.databinding.ItemPopularBrandBinding;
 import java.util.ArrayList;
-import Models.OfficialBrand;
+import models.OfficialBrand;
 
 public class PopularBrandAdapter extends RecyclerView.Adapter<PopularBrandAdapter.ViewHolder> {
     private Context context;
