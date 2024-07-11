@@ -21,6 +21,15 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
+            android:name="Activities.SelectAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.PaymentMethodActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.LoadingActivity"
+            android:exported="false" />
+        <activity
             android:name="Activities.SelectProductsToCategoryActivity"
             android:exported="false" />
         <activity
@@ -76,7 +85,7 @@
             android:exported="false"
            />
         <activity
-            android:name="Activities.CartActivity"
+            android:name="Activities.PaymentActivity"
             android:exported="false" />
         <activity
             android:name="Activities.AccountAndSecurityActivity"
@@ -92,7 +101,7 @@
             android:name="Activities.StatisticsActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.PaymentActivity"
+            android:name="Activities.DeliveryMethodActivity"
             android:exported="false" />
         <activity
             android:name="Activities.ProductImagesDetailActivity"
@@ -104,10 +113,10 @@
             android:name="Activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.LoadingActivity"
+            android:name="Activities.MainActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.MainActivity"
+            android:name="Activities.CartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
