@@ -1,4 +1,5 @@
 package Activities;
+import static constants.keyName.FULLNAME;
 import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;
 import static constants.keyName.USER_ID;
@@ -39,7 +40,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setupEvents(){
         binding.registerRedirectTv.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+
+            startActivity(intent);
+            finish();
         });
 
         binding.btnLoginCt.setOnClickListener(v -> {
@@ -92,8 +96,9 @@ public class LoginActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString(USER_ID, user.getUserId());
+        editor.putString(USER_ID, user.getBaseId());
         editor.putString(PHONE_NUMBER, user.getPhoneNumber());
+        editor.putString(FULLNAME, user.getFullname());
         editor.putString(PASSWORD, user.getPassword());
         editor.putInt(USER_ROLE, user.getRole().getRoleValue());
         editor.apply();

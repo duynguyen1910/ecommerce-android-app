@@ -18,7 +18,6 @@ import api.userApi;
 import interfaces.RegisterCallback;
 
 public class User extends BaseObject {
-    private String userId;
     private String phoneNumber;
     private String password;
     private String fullname;
@@ -38,13 +37,18 @@ public class User extends BaseObject {
         this.role = role;
     }
 
-    public String getUserId() {
-        return userId;
+    @Override
+    public String getBaseId() {
+        return super.baseId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    @Override
+    public void setBaseId(String userId) {
+        validateBaseId(userId);
+
+        super.baseId = userId;
     }
+
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -95,7 +99,7 @@ public class User extends BaseObject {
                         User user = document.toObject(User.class);
 
                         String documentId = document.getId();
-                        user.setUserId(documentId);
+                        user.setBaseId(documentId);
                         int roleValue = document.getLong(USER_ROLE).intValue();
                         user.setRole(roleValue);
 

@@ -29,6 +29,51 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="Activities.SelectProductsToCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.AddCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.CategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.DecorateMyStoreActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.UpdateProductsActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.DeliveryFeeActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.AddProductsActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.ViewMyStoreActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.MyProductsActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.CreateStoreActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.RegisterStoreSuccessfulActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.RegisteredBusinessAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.SelectDeliveryMethodActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.CreateAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.StoreOwnerActivity"
+            android:exported="false" />
+        <activity
             android:name="Activities.ActivateStoreActivity"
             android:exported="false" />
         <activity
@@ -36,7 +81,8 @@
             android:exported="false" />
         <activity
             android:name="Activities.InvoiceActivity"
-            android:exported="false" />
+            android:exported="false"
+           />
         <activity
             android:name="Activities.CartActivity"
             android:exported="false" />
@@ -71,7 +117,7 @@
         </activity>
         <activity
             android:name="Activities.MainActivity"
-            android:exported="false" />
+            android:exported="true" />
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@
     android:background="@color/lightgray"
     android:orientation="vertical">
 
+
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -15,7 +16,6 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="16dp">
-
 
         <ImageView
             android:id="@+id/imageBack"
@@ -35,7 +35,7 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:text="Đơn mua"
-            android:textColor="@color/text1"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -58,13 +58,13 @@
             android:src="@drawable/ic_sms"
             app:tint="@color/primary_color" />
 
-
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:background="@color/white"
         app:tabGravity="fill"
         app:tabIndicatorColor="@color/primary_color"
@@ -75,8 +75,6 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1" />
-
-
 </LinearLayout>

@@ -1,27 +1,19 @@
 package Activities;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityInvoiceBinding;
-import com.example.stores.databinding.ItemTabLayoutBinding;
+import com.example.stores.databinding.ItemTabLayoutInvoiceBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
 import java.util.Objects;
-
 import Adapters.ViewPager2Adapter;
 import Fragments.InvoiceAwaitConfirmationFragment;
 import Fragments.InvoiceAwaitDeliveryFragment;
@@ -47,30 +39,27 @@ public class InvoiceActivity extends AppCompatActivity {
 
     private void setupUI() {
         ViewPager2Adapter viewPager2Adapter = new ViewPager2Adapter(this);
-        viewPager2Adapter.addFragment(new InvoiceAwaitConfirmationFragment(), "Chờ xác nhận");
-        viewPager2Adapter.addFragment(new InvoiceAwaitDeliveryFragment(), "Chờ giao hàng");
-        viewPager2Adapter.addFragment(new InvoiceAwaitPickupFragment(), "Chờ lấy hàng");
-        viewPager2Adapter.addFragment(new InvoiceCompletedFragment(), "Hoàn thành");
-        viewPager2Adapter.addFragment(new InvoiceCancelFragment(), "Đã hủy");
-
+        viewPager2Adapter.addFragment(new InvoiceAwaitConfirmationFragment(), "Chờ xác nhận");//0
+        viewPager2Adapter.addFragment(new InvoiceAwaitDeliveryFragment(), "Chờ giao hàng");//1
+        viewPager2Adapter.addFragment(new InvoiceAwaitPickupFragment(), "Chờ lấy hàng");//2
+        viewPager2Adapter.addFragment(new InvoiceCompletedFragment(), "Hoàn thành");//3
+        viewPager2Adapter.addFragment(new InvoiceCancelFragment(), "Đã hủy");//4
         binding.viewPager2.setAdapter(viewPager2Adapter);
-        binding.viewPager2.setCurrentItem(0);
+
+
+
 
         new TabLayoutMediator(binding.tabLayout, binding.viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                ItemTabLayoutBinding tabLayoutBinding = ItemTabLayoutBinding.inflate(getLayoutInflater());
+                ItemTabLayoutInvoiceBinding tabLayoutBinding = ItemTabLayoutInvoiceBinding.inflate(getLayoutInflater());
                 TextView tabLabel = tabLayoutBinding.tabLabel;
                 tabLabel.setText(viewPager2Adapter.getPageTitle(position));
                 tab.setCustomView(tabLayoutBinding.getRoot());
             }
         }).attach();
         // Đặt màu hồng cho tab đầu tiên sau khi attach()
-        TabLayout.Tab firstTab = binding.tabLayout.getTabAt(0);
-        if (firstTab != null && firstTab.getCustomView() != null) {
-            TextView tabLabel = firstTab.getCustomView().findViewById(R.id.tabLabel);
-            tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.primary_color));
-        }
+
 
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @SuppressLint("ResourceAsColor")
@@ -97,6 +86,17 @@ public class InvoiceActivity extends AppCompatActivity {
 
             }
         });
+        Intent intent = getIntent();
+        if (intent!= null){
+            int invoiceStatus = intent.getIntExtra("invoiceStatus", 0);
+            binding.viewPager2.setCurrentItem(invoiceStatus);
+
+            TabLayout.Tab firstTab = binding.tabLayout.getTabAt(invoiceStatus);
+            if (firstTab != null && firstTab.getCustomView() != null) {
+                TextView tabLabel = firstTab.getCustomView().findViewById(R.id.tabLabel);
+                tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.primary_color));
+            }
+        }
     }
 
     private void setupEvents() {
@@ -114,5 +114,7 @@ public class InvoiceActivity extends AppCompatActivity {
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
+
+
     }
 }

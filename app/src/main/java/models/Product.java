@@ -16,6 +16,12 @@ public class Product implements Serializable {
     private int saleoff;
     private int storeID;
     private boolean checkedStatus;
+    private int inStock;
+    private int likes;
+    private int views;
+
+    private boolean hiddenStatus;
+
 
 
     public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice, double rating, int sold, int saleoff, int storeID) {
@@ -44,6 +50,53 @@ public class Product implements Serializable {
         this.checkedStatus = checkedStatus;
     }
 
+
+
+    // constructor for MyProduct Item
+    public Product(String title, String description, ArrayList<String> picUrl, double oldPrice, int sold, int inStock, int likes, int views, boolean hiddenStatus, int storeID) {
+        this.title = title;
+        this.description = description;
+        this.picUrl = picUrl;
+        this.oldPrice = oldPrice;
+        this.sold = sold;
+        this.inStock = inStock;
+        this.likes = likes;
+        this.views = views;
+        this.hiddenStatus = hiddenStatus;
+        this.storeID = storeID;
+    }
+
+    public boolean isHiddenStatus() {
+        return hiddenStatus;
+    }
+
+    public void setHiddenStatus(boolean hiddenStatus) {
+        this.hiddenStatus = hiddenStatus;
+    }
+
+    public int getInStock() {
+        return inStock;
+    }
+
+    public void setInStock(int inStock) {
+        this.inStock = inStock;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public int getViews() {
+        return views;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
+    }
 
     public boolean getCheckedStatus() {
         return checkedStatus;

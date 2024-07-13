@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- res/drawable/border.xml -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
+
+    <!-- Background shape -->
+    <item android:top="1dp" android:right="1dp" android:left="1dp">
         <shape android:shape="rectangle">
-            <solid android:color="@android:color/white" />
+            <corners android:radius="6dp" />
+            <solid android:color="@color/gray" />
         </shape>
     </item>
-    <item android:top="0.5dp">
+
+
+    <!-- Bottom stroke -->
+    <item
+        android:bottom="1dp">
         <shape android:shape="rectangle">
-            <stroke android:width="1dp" android:color="@color/lightgray"  />
-            <size android:height="1dp" />
+            <solid android:color="@color/white" />
+            <stroke
+                android:width="1dp"
+                android:color="@color/white" />
         </shape>
     </item>
-    <item android:bottom="0.5dp">
-        <shape android:shape="rectangle">
-            <stroke android:width="1dp" android:color="@color/lightgray" />
-            <size android:height="1dp" />
-        </shape>
-    </item>
+
 </layer-list>
+

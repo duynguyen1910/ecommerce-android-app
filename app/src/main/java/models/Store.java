@@ -1,19 +1,36 @@
 package models;
 
 import java.io.Serializable;
+import java.util.Map;
 
-public class Store implements Serializable {
-    private int storeID;
+import api.storeApi;
+import interfaces.RegisterCallback;
+
+public class Store extends BaseObject implements Serializable {
     private String storeName;
     private String storeAddress;
     private String storeImage;
     private int ownerID;
+    private storeApi storeApi;
 
-    public Store(int storeID, String storeName, String storeAddress, String storeImage) {
-        this.storeID = storeID;
+
+    public Store(String storeID, String storeName, String storeAddress, String storeImage) {
+        super.baseId = storeID;
         this.storeName = storeName;
         this.storeAddress = storeAddress;
         this.storeImage = storeImage;
+    }
+
+    @Override
+    public String getBaseId() {
+        return super.baseId;
+    }
+
+    @Override
+    public void setBaseId(String storeId) {
+        validateBaseId(storeId);
+
+        super.baseId = storeId;
     }
 
     public String getStoreImage() {
@@ -24,13 +41,6 @@ public class Store implements Serializable {
         this.storeImage = storeImage;
     }
 
-    public int getStoreID() {
-        return storeID;
-    }
-
-    public void setStoreID(int storeID) {
-        this.storeID = storeID;
-    }
 
     public String getStoreName() {
         return storeName;
@@ -54,5 +64,9 @@ public class Store implements Serializable {
 
     public void setOwnerID(int ownerID) {
         this.ownerID = ownerID;
+    }
+
+    public void onCreateStore(Map<String, Object> newStore, final RegisterCallback callback) {
+        storeApi.createStoreApi(newStore, callback);
     }
 }

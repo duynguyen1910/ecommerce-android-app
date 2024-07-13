@@ -24,7 +24,7 @@
             android:layout_height="24dp"
             android:layout_marginStart="6dp"
             android:src="@drawable/ic_back"
-            app:tint="@color/text1" />
+            app:tint="@color/primary_color" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:text="Tài khoản &amp; Bảo mật"
-            android:textColor="@color/text1"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
 

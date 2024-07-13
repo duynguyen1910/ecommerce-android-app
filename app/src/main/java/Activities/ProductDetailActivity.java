@@ -85,7 +85,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         binding.viewPager2Slider.setAdapter(new SliderAdapterForProductDetail(this, sliderItems));
         binding.viewPager2Slider.setOffscreenPageLimit(2);
-        binding.indicator.setViewPager(binding.viewPager2Slider);
+        binding.indicator.attachTo(binding.viewPager2Slider);
 
 
 
@@ -94,9 +94,9 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void getBundles() {
 
         ArrayList<Store> listStore = new ArrayList<>();
-        listStore.add(new Store(1, "Zozo_Unisex", "TP. Hồ Chí Minh", "https://down-bs-vn.img.susercontent.com/fd234f3899f07b72e9c5e5e26f9d997d_tn.webp"));
-        listStore.add(new Store(2, "LOVITO OFFICIAL STORE", "TP. Hồ Chí Minh" , "https://down-bs-vn.img.susercontent.com/f87c39a4a3702cd4cb149cacd8114a0b_tn.webp"));
-        listStore.add(new Store(3, "SANDAshop.vn", "Hà Nội", "https://down-bs-vn.img.susercontent.com/ac5556f336029ae92a1058195f2d4e56_tn.webp"));
+        listStore.add(new Store("1", "Zozo_Unisex", "TP. Hồ Chí Minh", "https://down-bs-vn.img.susercontent.com/fd234f3899f07b72e9c5e5e26f9d997d_tn.webp"));
+        listStore.add(new Store("2", "LOVITO OFFICIAL STORE", "TP. Hồ Chí Minh" , "https://down-bs-vn.img.susercontent.com/f87c39a4a3702cd4cb149cacd8114a0b_tn.webp"));
+        listStore.add(new Store("3", "SANDAshop.vn", "Hà Nội", "https://down-bs-vn.img.susercontent.com/ac5556f336029ae92a1058195f2d4e56_tn.webp"));
 
         object = (Product) getIntent().getSerializableExtra("object");
         if (object != null){
@@ -118,10 +118,10 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             Store store = null;
             for (Store s: listStore){
-                if (s.getStoreID() == object.getStoreID()){
-                    store = s;
-                    break;
-                }
+//                if (s.getStoreID() == object.getStoreID()){
+//                    store = s;
+//                    break;
+//                }
             }
             binding.txtStoreName.setText(store.getStoreName());
             binding.txtStoreAddress.setText(store.getStoreAddress());

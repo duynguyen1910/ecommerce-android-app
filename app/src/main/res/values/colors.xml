@@ -11,6 +11,7 @@
     <color name="primary_alpha2">#ffe5ef</color>
 
     <color name="primary_color">#f04d7f</color>
+    <color name="black_trans">#33000000</color>
 
     <color name="secondary_color">#0c0</color>
     <color name="gray1" >#686868</color>
@@ -53,6 +54,7 @@
     <color name="green">#169955</color>
     <color name="darkgreen">#5C8A72</color>
     <color name="green_persian">#009688</color>
+    <color name="green_persian_alpha70">#B0009688</color>
     <color name="light_green_persian">#679E99</color>
     <color name="lightpink">#D985A1</color>
     <color name="pink">#C13564</color>

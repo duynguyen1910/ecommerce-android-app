@@ -36,7 +36,7 @@
                     app:tint="@color/text1" />
 
                 <TextView
-                    android:id="@+id/txtStoreName"
+                    android:id="@+id/txtStore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
@@ -168,8 +168,6 @@
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
-
-
                 <TextView
                     android:id="@+id/txtFullname"
                     android:layout_width="wrap_content"
@@ -180,7 +178,6 @@
                     android:textColor="@color/white"
                     android:textSize="20dp"
                     android:textStyle="bold" />
-
 
                 <TextView
                     android:id="@+id/txtPhoneNumber"
@@ -285,6 +282,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:id="@+id/layoutInvoiceAwaitConfirm"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -301,11 +299,31 @@
                     android:textColor="@color/black" />
             </LinearLayout>
 
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/layoutInvoiceAwaitDelivery"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/ic_truck_24" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Chờ giao hàng"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/layoutInvoiceAwaitPickup"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -321,28 +339,6 @@
                     android:text="Chờ lấy hàng"
                     android:textColor="@color/black" />
             </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:src="@drawable/ic_truck_24" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Chờ giao hàng"
-                    android:textColor="@color/black" />
-            </LinearLayout>
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -370,8 +366,6 @@
                         android:text="4"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
-
-
                 </FrameLayout>
 
                 <TextView
