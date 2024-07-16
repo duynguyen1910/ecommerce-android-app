@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 import api.storeApi;
-import interfaces.RegisterCallback;
+import interfaces.CreateStoreCallback;
 
 public class Store extends BaseObject implements Serializable {
     private String storeName;
@@ -69,7 +69,7 @@ public class Store extends BaseObject implements Serializable {
         this.ownerID = ownerID;
     }
 
-    public void onCreateStore(Map<String, Object> newStore, final RegisterCallback callback) {
+    public void onCreateStore(Map<String, Object> newStore, final CreateStoreCallback callback) {
         storeApi.createStoreApi(newStore, callback);
     }
 }

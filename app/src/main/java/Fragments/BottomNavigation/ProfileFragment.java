@@ -2,8 +2,8 @@ package Fragments.BottomNavigation;
 
 import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.FULLNAME;
-import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;
+import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.keyName.USER_ROLE;
@@ -13,22 +13,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.example.stores.R;
 import com.example.stores.databinding.FragmentProfileBinding;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import Activities.CartActivity;
 import Activities.InvoiceActivity;
@@ -38,23 +34,24 @@ import Activities.RegisterActivity;
 import Activities.SettingsActivity;
 import Activities.StoreOwnerActivity;
 import Activities.UpdateProfileActivity;
-import enums.UserRole;
-import models.User;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment{
     private SharedPreferences sharedPreferences;
     private FragmentProfileBinding binding;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private ActivityResultLauncher<Intent> myLauncher;
+
+    String storeId;
+
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(getLayoutInflater());
 
-        initUI();
         setupEvents();
-        getUserInfo();
+        handleGetUserInfo();
         return binding.getRoot();
     }
 
@@ -63,29 +60,27 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         myLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent intent = result.getData();
-                            if (intent != null && intent.getBooleanExtra(LOGIN_SUCCESSFULLY, false)) {
-                                getUserInfo();
-                            }
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent intent = result.getData();
+                        if (intent != null && intent.getBooleanExtra(LOGIN_SUCCESSFULLY, false)) {
+                            handleGetUserInfo();
                         }
                     }
                 });
     }
 
 
-    private void getUserInfo() {
+    private void handleGetUserInfo() {
         sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);
 
         String userId = sharedPreferences.getString(USER_ID, null);
         String phoneNumber = sharedPreferences.getString(PHONE_NUMBER, null);
         String fullname = sharedPreferences.getString(FULLNAME, null);
+        storeId = sharedPreferences.getString(STORE_ID, null);
         int roleValue = sharedPreferences.getInt(USER_ROLE, -1);
 
-        if(userId != null) {
+        if (userId != null) {
             binding.loggedLayoutLn.setVisibility(View.VISIBLE);
             binding.defaultLayoutRl.setVisibility(View.GONE);
         } else {
@@ -101,17 +96,22 @@ public class ProfileFragment extends Fragment {
 //            binding.txtStoreName.setText("Chủ hàng");
 //        }
 
+        if (storeId != null){
+            binding.txtStore.setText("Store của bạn");
+        }else {
+            binding.txtStore.setText("Tạo store");
+        }
         binding.txtFullname.setText(fullname);
         binding.txtPhoneNumber.setText(phoneNumber);
     }
 
-    private void initUI(){
-       // Nếu đã tạo store thì đổi text của txtStore
-//        binding.txtStore.setText("Store của tôi");
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        handleGetUserInfo();
     }
 
-    private void setupEvents(){
+    private void setupEvents() {
         binding.imvSettings.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), SettingsActivity.class);
             startActivity(intent);
@@ -150,42 +150,33 @@ public class ProfileFragment extends Fragment {
 
 
         binding.txtStore.setOnClickListener(v -> {
-            // Nếu chưa tạo store
-            Intent intent = new Intent(requireActivity(), ActivateStoreActivity.class);
-            startActivity(intent);
-
             // Nếu đã tạo store thì vào thẳng Store Owner Activity
+            if (storeId != null){
+                Intent intent = new Intent(requireActivity(), StoreOwnerActivity.class);
+                startActivity(intent);
+            }else {
+                Intent intent = new Intent(requireActivity(), ActivateStoreActivity.class);
+                startActivity(intent);
+            }
 
-//                Intent intent = new Intent(requireActivity(), StoreOwnerActivity.class);
-//                startActivity(intent);
+
         });
 
-        binding.loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                myLauncher.launch(intent);
-            }
+        binding.loginBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            myLauncher.launch(intent);
         });
 
-        binding.registerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(requireActivity(), RegisterActivity.class));
-            }
-        });
+        binding.registerBtn.setOnClickListener(v -> startActivity(new Intent(requireActivity(), RegisterActivity.class)));
 
-        binding.layoutLogoutLn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.clear();
-                editor.apply();
+        binding.layoutLogoutLn.setOnClickListener(v -> {
+            sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.apply();
 
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                myLauncher.launch(intent);
-            }
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            myLauncher.launch(intent);
         });
     }
 

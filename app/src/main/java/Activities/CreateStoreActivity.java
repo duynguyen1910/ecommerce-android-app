@@ -1,5 +1,6 @@
 package Activities;
 import static constants.keyName.STORE_ADDRESS;
+import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 import static constants.keyName.STORE_OWNER_ID;
 import static constants.keyName.USER_ID;
@@ -32,9 +33,11 @@ import Fragments.StoreSettings.SettingDeliveryFragment;
 import Fragments.StoreSettings.StoreIdentifierInfoFragment;
 import Fragments.StoreSettings.StoreInfoFragment;
 import Fragments.StoreSettings.TaxInfoFragment;
+import interfaces.CreateStoreCallback;
 import interfaces.RegisterCallback;
 import kotlin.Pair;
 import models.Store;
+import models.User;
 
 public class CreateStoreActivity extends AppCompatActivity {
 
@@ -85,9 +88,15 @@ public class CreateStoreActivity extends AppCompatActivity {
                 storeInfo.put(STORE_ADDRESS, storeInfoFragment.getStoreAddress());
                 storeInfo.put(STORE_OWNER_ID, userId);
 
-                newStore.onCreateStore(storeInfo, new RegisterCallback() {
+                newStore.onCreateStore(storeInfo, new CreateStoreCallback() {
                     @Override
-                    public void onRegisterSuccess(String successMessage) {
+                    public void onCreateSuccess(String storeId) {
+                        // Sau khi tạo  store xong, ta lấy storeId vừa tạo, call api update user
+                        User user = new User();
+                        Map<String, Object> updateData = new HashMap<>();
+                        updateData.put(STORE_ID, storeId);
+                        user.onUpdate(updateData, userId);
+
 
                         binding.progressBar.setVisibility(View.GONE);
                         Intent intent = new Intent(CreateStoreActivity.this, RegisterStoreSuccessfulActivity.class);
@@ -96,7 +105,7 @@ public class CreateStoreActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onRegisterFailure(String errorMessage) {
+                    public void onCreateFailure(String errorMessage) {
                         binding.btnNext.setFocusable(true);
                         binding.btnNext.setBackground(ContextCompat.getDrawable(CreateStoreActivity.this, R.color.primary_color));
                         binding.progressBar.setVisibility(View.GONE);

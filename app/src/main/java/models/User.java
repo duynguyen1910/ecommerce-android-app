@@ -1,6 +1,10 @@
 package models;
 
+import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_ROLE;
+
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -24,6 +28,7 @@ public class User extends BaseObject {
     private String imageUrl;
     private UserRole role;
     private userApi userApi;
+    private String storeId;
 
     public User() {
         userApi  = new userApi();
@@ -49,6 +54,13 @@ public class User extends BaseObject {
         super.baseId = userId;
     }
 
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -101,6 +113,9 @@ public class User extends BaseObject {
                         user.setBaseId(documentId);
                         int roleValue = document.getLong(USER_ROLE).intValue();
                         user.setRole(roleValue);
+                        String documentStoreId = document.getString(STORE_ID);
+                        user.setStoreId(documentStoreId);
+                        Log.d("documentStoreId", documentStoreId);
 
                         callback.onLoginSuccess(user);
                     }
@@ -113,6 +128,10 @@ public class User extends BaseObject {
 
     public void onRegister(Map<String, Object> newUser, final RegisterCallback callback) {
         userApi.createUserApi(newUser, callback);
+    }
+
+    public void onUpdate(Map<String, Object> updateData, String userId){
+        userApi.updateUserApi(updateData, userId);
     }
 
 }

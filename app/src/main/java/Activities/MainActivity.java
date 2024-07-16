@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentMap.put(R.id.notificationMenu, new NotificationFragment());
         fragmentMap.put(R.id.profileMenu, new ProfileFragment());
 
+        binding.bottomNavigation.setSelectedItemId(0);
         binding.bottomNavigation.setOnItemSelectedListener(item -> {
             Fragment fragment = fragmentMap.get(item.getItemId());
             if (fragment != null) {

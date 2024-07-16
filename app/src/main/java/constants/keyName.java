@@ -8,6 +8,7 @@ public class keyName {
     public static final String PASSWORD = "password";
     public static final String USER_ROLE = "role";
 
+    public static final String STORE_ID = "storeId";
     public static final String STORE_NAME = "storeName";
     public static final String STORE_ADDRESS = "storeAddress";
     public static final String STORE_OWNER_ID = "storeOwnerId";

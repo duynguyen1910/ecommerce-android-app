@@ -4,6 +4,8 @@ import static constants.collectionName.USER_COLLECTION;
 import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,6 +51,23 @@ public class userApi {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         callback.onRegisterFailure(toastMessage.REGISTER_FAILED);
+                    }
+                });
+
+    }
+
+    public void updateUserApi(Map<String, Object> updateData, String userId) {
+        DocumentReference userRef = db.collection(USER_COLLECTION).document(userId);
+        userRef.update(updateData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("Firestore", "User's STORE_ID updated successfully.");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Firestore", "Error updating user's STORE_ID.", e);
                     }
                 });
 

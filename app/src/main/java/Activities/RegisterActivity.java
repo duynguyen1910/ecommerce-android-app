@@ -3,6 +3,7 @@ package Activities;
 import static constants.keyName.FULLNAME;
 import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;
+import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.keyName.USER_ROLE;
@@ -92,6 +93,8 @@ public class RegisterActivity extends AppCompatActivity {
         newUser.put(FULLNAME, fullname);
         newUser.put(PASSWORD, rePassword);
         newUser.put(USER_ROLE, UserRole.CUSTOMER_ROLE.getRoleValue());
+        newUser.put(STORE_ID, null);
+
 
         user.onRegister(newUser, new RegisterCallback() {
             @Override
