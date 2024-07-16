@@ -114,6 +114,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:id="@+id/edtTitle"
                         android:background="@drawable/custom_edittext_no_border"
                         android:gravity="center_vertical"
                         android:hint="Nhập tên sản phẩm"
@@ -152,6 +153,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:id="@+id/edtDescription"
                         android:background="@drawable/custom_edittext_no_border"
                         android:gravity="center_vertical"
                         android:hint="Nhập mô tả sản phẩm"
@@ -222,6 +224,7 @@
                     android:background="@color/white"
                     android:gravity="end"
                     android:hint="0 đ"
+                    android:id="@+id/edtPrice"
                     android:inputType="number"
                     android:paddingVertical="16dp"
                     android:textSize="14sp" />
@@ -258,6 +261,7 @@
                     android:layout_weight="1"
                     android:background="@color/white"
                     android:hint="0"
+                    android:id="@+id/edtInStock"
                     android:inputType="number"
                     android:paddingVertical="16dp"
                     android:textAlignment="textEnd"
@@ -289,64 +293,6 @@
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:text="Phí vận chuyển*"
-                    android:textColor="@color/black" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="16dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_info_24"
-                    app:tint="@color/darkgray" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawablePadding="8dp"
-                    android:gravity="center_vertical"
-                    android:text="Tình trạng"
-                    android:textColor="@color/black"
-                    app:drawableEndCompat="@drawable/ic_arrow_right_24" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:paddingHorizontal="16dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_tick"
-                    app:tint="@color/darkgray" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawablePadding="8dp"
-                    android:gravity="center_vertical"
-                    android:paddingVertical="16dp"
-                    android:text="Hàng đặt trước"
                     android:textColor="@color/black" />
 
 

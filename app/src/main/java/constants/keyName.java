@@ -13,5 +13,12 @@ public class keyName {
     public static final String STORE_ADDRESS = "storeAddress";
     public static final String STORE_OWNER_ID = "storeOwnerId";
 
+    public static final String PRODUCT_ID = "productId";
+    public static final String PRODUCT_TITLE = "productTitle";
+    public static final String PRODUCT_DESC = "productDesc";
+    public static final String PRODUCT_PRICE = "productPrice";
+    public static final String PRODUCT_IMAGES = "productImages";
+    public static final String PRODUCT_INSTOCK = "productInStock";
+
 
 }

@@ -2,6 +2,14 @@ package models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
+
+import api.productApi;
+import api.storeApi;
+import interfaces.CreateProductCallback;
+import interfaces.CreateStoreCallback;
+import interfaces.GetProductDataCallback;
+import interfaces.GetStoreDataCallback;
 
 public class Product implements Serializable {
     private String title;
@@ -19,9 +27,13 @@ public class Product implements Serializable {
     private int inStock;
     private int likes;
     private int views;
+    private api.productApi productApi;
 
     private boolean hiddenStatus;
 
+    public Product() {
+        productApi = new productApi();
+    }
 
 
     public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice, double rating, int sold, int saleoff, int storeID) {
@@ -130,8 +142,7 @@ public class Product implements Serializable {
         this.sold = sold;
     }
 
-    public Product() {
-    }
+
 
     public String getTitle() {
         return title;
@@ -195,5 +206,14 @@ public class Product implements Serializable {
 
     public void setNumberInCart(int numberInCart) {
         this.numberInCart = numberInCart;
+    }
+
+
+    public void onCreateProduct(Map<String, Object> productData, final CreateProductCallback callback) {
+        productApi.createProductApi(productData, callback);
+    }
+
+    public void onGetStoreData(String productId, GetProductDataCallback callback){
+        productApi.getProductDataApi(productId, callback);
     }
 }
