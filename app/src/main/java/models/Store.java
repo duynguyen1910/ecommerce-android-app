@@ -5,6 +5,7 @@ import java.util.Map;
 
 import api.storeApi;
 import interfaces.CreateStoreCallback;
+import interfaces.GetStoreDataCallback;
 
 public class Store extends BaseObject implements Serializable {
     private String storeName;
@@ -71,5 +72,8 @@ public class Store extends BaseObject implements Serializable {
 
     public void onCreateStore(Map<String, Object> newStore, final CreateStoreCallback callback) {
         storeApi.createStoreApi(newStore, callback);
+    }
+    public void onGetStoreData(String storeId, GetStoreDataCallback callback){
+        storeApi.getStoreDataApi(storeId, callback);
     }
 }

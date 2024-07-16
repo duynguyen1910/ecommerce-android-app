@@ -153,6 +153,7 @@ public class ProfileFragment extends Fragment{
             // Nếu đã tạo store thì vào thẳng Store Owner Activity
             if (storeId != null){
                 Intent intent = new Intent(requireActivity(), StoreOwnerActivity.class);
+                intent.putExtra("storeId", storeId);
                 startActivity(intent);
             }else {
                 Intent intent = new Intent(requireActivity(), ActivateStoreActivity.class);
