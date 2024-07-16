@@ -1,16 +1,32 @@
 package Activities;
+import static constants.keyName.FULLNAME;
+import static constants.keyName.PASSWORD;
+import static constants.keyName.PHONE_NUMBER;
+import static constants.keyName.USER_ID;
+import static constants.keyName.USER_INFO;
+import static constants.keyName.USER_ROLE;
+import static constants.toastMessage.LOGIN_SUCCESSFULLY;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.stores.databinding.ActivityLoginBinding;
 import java.util.Objects;
 
+import interfaces.LoginCallback;
+import models.User;
+import constants.toastMessage;
+
 public class LoginActivity extends AppCompatActivity {
-    SharedPreferences sharedPreferences;
-    ActivityLoginBinding binding;
+    private SharedPreferences sharedPreferences;
+    private ActivityLoginBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,28 +35,74 @@ public class LoginActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
 
-        binding.btnSignin.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        setupEvents();
+    }
+
+    private void setupEvents(){
+        binding.registerRedirectTv.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+
             startActivity(intent);
+            finish();
         });
+
+        binding.btnLoginCt.setOnClickListener(v -> {
+            onLogin();
+        });
+    };
+
+    private void onLogin() {
+        String phoneNumber = binding.edtPhoneNumber.getText().toString();
+        String password = binding.edtPassword.getText().toString();
+
+        if (phoneNumber.isEmpty()) {
+            binding.edtPhoneNumber.setError(toastMessage.PHONE_NUMBER_REQUIRE);
+            return;
+        }
+
+        if (password.isEmpty()) {
+            binding.edtPassword.setError(toastMessage.PASSWORD_REQUIRE);
+            return;
+        }
+
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.progressBar.getIndeterminateDrawable()
+                .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
+
+        User user = new User();
+
+       user.onLogin(phoneNumber, password, new LoginCallback() {
+           @Override
+           public void onLoginSuccess(User user) {
+               binding.progressBar.setVisibility(View.GONE);
+               Toast.makeText(LoginActivity.this, LOGIN_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
+
+               onSaveUserInfo(user);
+
+               Intent resultIntent = new Intent();
+               resultIntent.putExtra(LOGIN_SUCCESSFULLY, true);
+               setResult(Activity.RESULT_OK, resultIntent);
+               finish();
+           }
+           @Override
+           public void onLoginFailure(String errorMessage) {
+               binding.progressBar.setVisibility(View.GONE);
+               Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+           }
+       });
     }
 
-    private boolean handleValidateLoginForm(String phoneNumber, String password){
-        if (phoneNumber.isEmpty()){
-            binding.edtPhoneNumber.setError("Vui lòng nhập trường này");
-            return false;
-        }
-        if (password.isEmpty()){
-            binding.edtPassword.setError("Vui lòng nhập trường này");
-            return false;
-        }
-        if (password.length() < 6){
-            Toast.makeText(this, "Mật khẩu ít nhất 6 ký tự", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
+    private void onSaveUserInfo(User user) {
+        sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        editor.putString(USER_ID, user.getBaseId());
+        editor.putString(PHONE_NUMBER, user.getPhoneNumber());
+        editor.putString(FULLNAME, user.getFullname());
+        editor.putString(PASSWORD, user.getPassword());
+        editor.putInt(USER_ROLE, user.getRole().getRoleValue());
+        editor.apply();
+    }
 
 
     private void getDataRememberLogin() {

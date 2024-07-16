@@ -20,13 +20,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 import Adapters.PaymentAdapter;
-import Models.CartItem;
-import Models.Invoice;
-import Models.Product;
+import models.CartItem;
+import models.Invoice;
+import models.Product;
 
 public class PaymentActivity extends AppCompatActivity {
 

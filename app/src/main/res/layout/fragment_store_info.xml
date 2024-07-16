@@ -22,7 +22,7 @@
         android:layout_marginHorizontal="16dp"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
-        android:text="Tên Store * (Tối đa 30 ký tự)"
+        android:text="Tên Store * (Tối đa 20 ký tự)"
         android:textColor="@color/black" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -31,6 +31,7 @@
         app:counterEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtStoreName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/custom_edittext_no_border"
@@ -86,17 +87,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawablePadding="8dp"
-
             android:gravity="center_vertical"
             android:text="Email *"
             android:textColor="@color/black" />
 
         <TextView
-
+            android:id="@+id/txtEmailStore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableTint="@color/darkgray"
-
             android:gravity="center_vertical"
             android:text="ngocdai@gmail.com"
             android:textColor="@color/black"
@@ -120,12 +119,11 @@
             android:textColor="@color/black" />
 
         <TextView
-
+            android:id="@+id/txtPhoneNumberStore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableTint="@color/darkgray"
             android:gravity="center_vertical"
-
             android:text="012345678"
             android:textColor="@color/darkgray"
             app:drawableEndCompat="@drawable/ic_arrow_right_24" />

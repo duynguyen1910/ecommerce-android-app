@@ -1,29 +1,13 @@
 package Activities;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import com.example.stores.R;
 import com.example.stores.databinding.ActivitySelectDeliveryMethodBinding;
-import com.example.stores.databinding.ItemTabLayout2Binding;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Objects;
-
-import Adapters.ViewPager2Adapter;
-import Fragments.SettingDeliveryFragment;
-import Fragments.StoreIdentifierInfoFragment;
-import Fragments.StoreInfoFragment;
-import Fragments.TaxInfoFragment;
-import kotlin.Pair;
 
 public class SelectDeliveryMethodActivity extends AppCompatActivity {
 

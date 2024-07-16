@@ -36,12 +36,13 @@
                     android:clipChildren="false"
                     android:clipToPadding="false" />
 
-                <me.relex.circleindicator.CircleIndicator3
-                    android:id="@+id/indicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:layout_below="@id/viewPager2Slider"
-                    android:layout_marginTop="-20dp" />
+<!--                <me.relex.circleindicator.CircleIndicator3-->
+<!--                    android:id="@+id/indicator"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="20dp"-->
+<!--                    android:layout_below="@id/viewPager2Slider"-->
+<!--                    android:layout_marginTop="-20dp"-->
+<!--                    tools:ignore="MissingClass" />-->
             </RelativeLayout>
 
             <TextView

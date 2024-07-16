@@ -3,11 +3,9 @@ package Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -21,10 +19,10 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 
 import java.util.ArrayList;
 
-import Activities.CartItemListener;
-import Activities.ToTalFeeCallback;
-import Models.CartItem;
-import Models.Product;
+import interfaces.CartItemListener;
+import interfaces.ToTalFeeCallback;
+import models.CartItem;
+import models.Product;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {

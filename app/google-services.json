@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "627137084562",
+    "project_id": "ecommerce-android-app-cdbad",
+    "storage_bucket": "ecommerce-android-app-cdbad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:627137084562:android:05ba5193c6e632db03ba4b",
+        "android_client_info": {
+          "package_name": "com.example.stores"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ37chQbAdhBUgEY-OZsc0Y6guhmPUf8A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

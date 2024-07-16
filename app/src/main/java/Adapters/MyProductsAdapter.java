@@ -23,7 +23,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import Activities.UpdateProductsActivity;
-import Models.Product;
+import models.Product;
 
 public class MyProductsAdapter extends RecyclerView.Adapter<MyProductsAdapter.ViewHolder> {
     private final Context context;

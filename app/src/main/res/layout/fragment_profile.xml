@@ -109,13 +109,14 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/loggedLayoutLn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@drawable/bg_gradient_primary"
             android:gravity="center_vertical"
-            android:padding="16dp">
-
+            android:padding="16dp"
+            android:visibility="gone">
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -134,7 +135,7 @@
                             android:id="@+id/imvAvatar"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
-                            android:scaleType="fitXY"
+                            android:scaleType="fitCenter"
                             android:src="@mipmap/meo" />
                     </androidx.cardview.widget.CardView>
 
@@ -151,8 +152,8 @@
 
                     <ImageView
                         android:id="@+id/imvUpdateProfile"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_edit"
                         app:tint="@color/white" />
@@ -167,8 +168,6 @@
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
-
-
                 <TextView
                     android:id="@+id/txtFullname"
                     android:layout_width="wrap_content"
@@ -180,9 +179,8 @@
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
-
                 <TextView
-                    android:id="@+id/txtUsername"
+                    android:id="@+id/txtPhoneNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
@@ -190,18 +188,63 @@
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/defaultLayoutRl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_gradient_primary"
+            android:gravity="center_vertical"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/ic_account_circle"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal"
+                android:layout_alignParentEnd="true">
+
+                <Button
+                    android:id="@+id/loginBtn"
+                    android:backgroundTint="@color/primary_color"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đăng nhập"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    android:layout_marginEnd="8dp" />
+
+                <Button
+                    android:id="@+id/registerBtn"
+                    android:backgroundTint="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đăng ký"
+                    android:textAllCaps="false"
+                    android:textColor="@color/primary_color"
+                    android:textSize="15dp"
+                />
 
             </LinearLayout>
-
-
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginBottom="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -296,11 +339,6 @@
                     android:text="Chờ lấy hàng"
                     android:textColor="@color/black" />
             </LinearLayout>
-
-
-
-
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -328,8 +366,6 @@
                         android:text="4"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
-
-
                 </FrameLayout>
 
                 <TextView
@@ -339,9 +375,51 @@
                     android:text="Đánh giá"
                     android:textColor="@color/black" />
             </LinearLayout>
-
         </LinearLayout>
-
-
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tiện ích"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutLogoutLn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_logout" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đăng xuất"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>

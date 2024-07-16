@@ -13,7 +13,7 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Objects;
 import Adapters.ProductsListAdapterForInvoiceDetail;
-import Models.Invoice;
+import models.Invoice;
 
 public class InvoiceDetailActivity extends AppCompatActivity {
 

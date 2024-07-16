@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 import Adapters.MyProductsAdapter;
 import Adapters.ProductAdapter;
-import Models.Product;
+import models.Product;
 
 public class StoreProductsFragment extends Fragment {
     FragmentStoreProductsBinding binding;

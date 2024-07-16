@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.stores.databinding.FragmentInvoiceAwaitConfirmationBinding;
 import java.util.Map;
 import Adapters.InvoiceAdapter;
-import Models.Invoice;
+import models.Invoice;
 
 public class InvoiceAwaitConfirmationFragment extends Fragment {
     FragmentInvoiceAwaitConfirmationBinding binding;

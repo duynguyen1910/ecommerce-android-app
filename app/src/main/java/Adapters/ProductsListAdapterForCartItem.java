@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,13 +16,11 @@ import com.example.stores.databinding.ItemProductForCartItemBinding;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
-import Activities.CartItemListener;
-import Activities.ToTalFeeCallback;
-import Models.CartItem;
-import Models.Product;
+import interfaces.CartItemListener;
+import interfaces.ToTalFeeCallback;
+import models.Product;
 
 public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<ProductsListAdapterForCartItem.ViewHolder> {
     private final Context context;

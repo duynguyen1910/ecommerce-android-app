@@ -18,9 +18,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import Activities.InvoiceDetailActivity;
-import Models.CartItem;
-import Models.Invoice;
-import Models.Product;
+import models.CartItem;
+
+import models.Invoice;
+import models.Product;
 
 public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHolder> {
     private final Context context;

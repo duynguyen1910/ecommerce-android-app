@@ -16,7 +16,7 @@ import com.example.stores.databinding.FragmentProductsInStockBinding;
 
 import java.util.ArrayList;
 import Adapters.MyProductsAdapter;
-import Models.Product;
+import models.Product;
 
 public class ProductsInStockFragment extends Fragment {
     FragmentProductsInStockBinding binding;

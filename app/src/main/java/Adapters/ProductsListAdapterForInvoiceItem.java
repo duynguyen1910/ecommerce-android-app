@@ -14,7 +14,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import Models.Product;
+import models.Product;
 
 public class ProductsListAdapterForInvoiceItem extends RecyclerView.Adapter<ProductsListAdapterForInvoiceItem.ViewHolder> {
     private final Context context;

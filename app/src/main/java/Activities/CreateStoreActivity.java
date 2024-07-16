@@ -1,11 +1,21 @@
 package Activities;
+import static constants.keyName.STORE_ADDRESS;
+import static constants.keyName.STORE_NAME;
+import static constants.keyName.STORE_OWNER_ID;
+import static constants.keyName.USER_ID;
+import static constants.keyName.USER_INFO;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.example.stores.R;
@@ -13,19 +23,27 @@ import com.example.stores.databinding.ActivityCreateStoreBinding;
 import com.example.stores.databinding.ItemTabLayoutCreateStoreBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import Adapters.ViewPager2Adapter;
-import Fragments.SettingDeliveryFragment;
-import Fragments.StoreIdentifierInfoFragment;
-import Fragments.StoreInfoFragment;
-import Fragments.TaxInfoFragment;
+import Fragments.StoreSettings.SettingDeliveryFragment;
+import Fragments.StoreSettings.StoreIdentifierInfoFragment;
+import Fragments.StoreSettings.StoreInfoFragment;
+import Fragments.StoreSettings.TaxInfoFragment;
+import interfaces.RegisterCallback;
 import kotlin.Pair;
+import models.Store;
 
 public class CreateStoreActivity extends AppCompatActivity {
 
     ActivityCreateStoreBinding binding;
     int currentState = 1;
     int steps = 4;
+    private String storeName;
+    private String emailStore;
+    ViewPager2Adapter viewPager2Adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +54,6 @@ public class CreateStoreActivity extends AppCompatActivity {
         setupUI();
 
         setupEvents();
-
     }
 
     private void setupEvents() {
@@ -49,8 +66,46 @@ public class CreateStoreActivity extends AppCompatActivity {
                 binding.viewPager2.setCurrentItem(currentState - 1);
                 setupButton();
             } else if (currentState == steps) {
-                Intent intent = new Intent(CreateStoreActivity.this, RegisterStoreOwnerSuccessfulActivity.class);
-                startActivity(intent);
+
+                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.btnNext.setFocusable(false);
+                binding.btnNext.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
+                binding.progressBar.getIndeterminateDrawable()
+                        .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
+
+                Store newStore = new Store();
+                SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+                String userId = sharedPreferences.getString(USER_ID, null);
+
+
+                StoreInfoFragment storeInfoFragment = (StoreInfoFragment) viewPager2Adapter.getFragment(0);
+
+                Map<String, Object> storeInfo = new HashMap<>();
+                storeInfo.put(STORE_NAME, storeInfoFragment.getStoreName());
+                storeInfo.put(STORE_ADDRESS, storeInfoFragment.getStoreAddress());
+                storeInfo.put(STORE_OWNER_ID, userId);
+
+                newStore.onCreateStore(storeInfo, new RegisterCallback() {
+                    @Override
+                    public void onRegisterSuccess(String successMessage) {
+
+                        binding.progressBar.setVisibility(View.GONE);
+                        Intent intent = new Intent(CreateStoreActivity.this, RegisterStoreSuccessfulActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onRegisterFailure(String errorMessage) {
+                        binding.btnNext.setFocusable(true);
+                        binding.btnNext.setBackground(ContextCompat.getDrawable(CreateStoreActivity.this, R.color.primary_color));
+                        binding.progressBar.setVisibility(View.GONE);
+                        Toast.makeText(CreateStoreActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+
 
             }
         });
@@ -80,9 +135,9 @@ public class CreateStoreActivity extends AppCompatActivity {
         }
     }
 
-
     private void setupUI() {
-        ViewPager2Adapter viewPager2Adapter = new ViewPager2Adapter(this);
+        viewPager2Adapter = new ViewPager2Adapter(this);
+
         viewPager2Adapter.addFragment(new StoreInfoFragment(), "Thông tin Store");
         viewPager2Adapter.addFragment(new SettingDeliveryFragment(), "Cài đặt vận chuyển");
         viewPager2Adapter.addFragment(new TaxInfoFragment(), "Thông tin thuế");
@@ -92,15 +147,12 @@ public class CreateStoreActivity extends AppCompatActivity {
         binding.viewPager2.setAdapter(viewPager2Adapter);
         binding.viewPager2.setCurrentItem(0);
 
-        new TabLayoutMediator(binding.tabLayout, binding.viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                ItemTabLayoutCreateStoreBinding tabLayoutBinding = ItemTabLayoutCreateStoreBinding.inflate(getLayoutInflater());
-                TextView tabLabel = tabLayoutBinding.tabLabel;
-                tabLabel.setText(viewPager2Adapter.getPageTitle(position));
-                tab.setCustomView(tabLayoutBinding.getRoot());
+        new TabLayoutMediator(binding.tabLayout, binding.viewPager2, (tab, position) -> {
+            ItemTabLayoutCreateStoreBinding tabLayoutBinding = ItemTabLayoutCreateStoreBinding.inflate(getLayoutInflater());
+            TextView tabLabel = tabLayoutBinding.tabLabel;
+            tabLabel.setText(viewPager2Adapter.getPageTitle(position));
+            tab.setCustomView(tabLayoutBinding.getRoot());
 
-            }
         }).attach();
         // Đặt màu hồng cho tab đầu tiên sau khi attach()
         TabLayout.Tab firstTab = binding.tabLayout.getTabAt(0);
@@ -142,9 +194,11 @@ public class CreateStoreActivity extends AppCompatActivity {
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
-
-
     }
 
 
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
 }

@@ -13,7 +13,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import Models.Product;
+import models.Product;
 
 public class ProductsListAdapterForInvoiceDetail extends RecyclerView.Adapter<ProductsListAdapterForInvoiceDetail.ViewHolder> {
     private final Context context;

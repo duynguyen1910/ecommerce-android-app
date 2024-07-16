@@ -18,9 +18,11 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+
 import Activities.DeliveryMethodActivity;
-import Models.CartItem;
-import Models.Product;
+import models.CartItem;
+import models.Product;
+
 
 public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHolder> {
     private final Context context;

@@ -3,11 +3,9 @@ package Activities;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.stores.R;
 import com.example.stores.databinding.ActivityStatisticsBinding;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -16,11 +14,8 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Objects;
-
-import Models.Product;
 
 public class StatisticsActivity extends AppCompatActivity {
 

@@ -75,18 +75,31 @@
             app:lsp_progressWidth="10dp"
             app:lsp_roundCorners="true"
             app:lsp_space="40dp"
-            app:lsp_steps="4" />
-
-
-
-
-
+            app:lsp_steps="4"
+            tools:ignore="MissingClass" />
     </LinearLayout>
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager2"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone"
+            tools:ignore="MissingConstraints" />
+    </RelativeLayout>
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -120,7 +133,6 @@
             android:textColor="@color/white"
             android:textSize="14sp" />
     </RelativeLayout>
-
 
 
 

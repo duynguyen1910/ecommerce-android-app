@@ -11,11 +11,11 @@ import com.example.stores.databinding.ActivityMainBinding;
 import java.util.HashMap;
 import java.util.Objects;
 
-import Fragments.HomeFragment;
-import Fragments.VoucherFragment;
-import Fragments.NotificationFragment;
-import Fragments.ProfileFragment;
-import Fragments.HistoryFragment;
+import Fragments.BottomNavigation.HomeFragment;
+import Fragments.BottomNavigation.VoucherFragment;
+import Fragments.BottomNavigation.NotificationFragment;
+import Fragments.BottomNavigation.ProfileFragment;
+import Fragments.BottomNavigation.HistoryFragment;
 
 public class MainActivity extends AppCompatActivity {
 

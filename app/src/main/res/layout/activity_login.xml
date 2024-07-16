@@ -1,37 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:weightSum="10">
-
+    android:layout_height="match_parent">
     <ImageView
+        android:id="@+id/logoImv"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4"
-        android:layout_marginTop="50dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="80dp"
         android:src="@mipmap/logo_ecommerce" />
 
     <LinearLayout
+        android:id="@+id/headerLn"
+        android:layout_below="@+id/logoImv"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="6"
+        android:layout_height="wrap_content"
         android:background="@drawable/signin_bg"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:padding="30dp">
+        android:paddingHorizontal="30dp"
+        android:layout_marginBottom="20dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:text="Hi, Welcome"
+            android:text="Chào mừng đã trở lại"
             android:textColor="@color/primary_color"
-            android:textSize="28dp"
+            android:textSize="16dp"
             android:textStyle="bold" />
-
 
         <EditText
             android:id="@+id/edtPhoneNumber"
@@ -74,20 +72,58 @@
             android:textSize="14dp" />
 
 
-        <Button
-            android:id="@+id/btnSignin"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btnLoginCt"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_gravity="start"
+            android:layout_height="wrap_content"
             android:background="@drawable/signin_button"
-            android:drawableEnd="@drawable/ic_arrow_right"
-            android:text="Sign in"
-            android:paddingHorizontal="16dp"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            app:backgroundTint="@null" />
-    </LinearLayout>
+            android:paddingVertical="16dp">
 
-</LinearLayout>
+            <ProgressBar
+                android:visibility="gone"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:id="@+id/progressBar"
+                android:indeterminateTintMode="src_atop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="@id/btnLogin"
+                tools:ignore="MissingConstraints"
+                tools:targetApi="lollipop"/>
+            <TextView
+                android:id="@+id/btnLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="Đăng nhập"
+                android:paddingHorizontal="34dp"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                app:layout_constraintVertical_bias="0.512"
+                tools:ignore="MissingConstraints" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/headerLn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bạn chưa có tài khoản"
+            android:layout_marginEnd="10dp"/>
+        <TextView
+            android:id="@+id/registerRedirectTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_color"
+            android:textStyle="bold"
+            android:text="Đăng ký" />
+    </LinearLayout>
+</RelativeLayout>

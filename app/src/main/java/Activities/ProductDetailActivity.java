@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityProductDetailBinding;
-import com.example.stores.databinding.LayoutOrderBinding;
 import com.example.stores.databinding.LayoutProductDetailBinding;
 
 import java.text.NumberFormat;
@@ -27,9 +27,9 @@ import Adapters.ViewPager2Adapter;
 import Fragments.DescriptionFragment;
 import Fragments.ReviewFragment;
 import Fragments.SoldFragment;
-import Models.Product;
-import Models.SliderItem;
-import Models.Store;
+import models.Product;
+import models.SliderItem;
+import models.Store;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -94,9 +94,9 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void getBundles() {
 
         ArrayList<Store> listStore = new ArrayList<>();
-        listStore.add(new Store(1, "Zozo_Unisex", "TP. Hồ Chí Minh", "https://down-bs-vn.img.susercontent.com/fd234f3899f07b72e9c5e5e26f9d997d_tn.webp"));
-        listStore.add(new Store(2, "LOVITO OFFICIAL STORE", "TP. Hồ Chí Minh" , "https://down-bs-vn.img.susercontent.com/f87c39a4a3702cd4cb149cacd8114a0b_tn.webp"));
-        listStore.add(new Store(3, "SANDAshop.vn", "Hà Nội", "https://down-bs-vn.img.susercontent.com/ac5556f336029ae92a1058195f2d4e56_tn.webp"));
+        listStore.add(new Store("1", "Zozo_Unisex", "TP. Hồ Chí Minh", "https://down-bs-vn.img.susercontent.com/fd234f3899f07b72e9c5e5e26f9d997d_tn.webp"));
+        listStore.add(new Store("2", "LOVITO OFFICIAL STORE", "TP. Hồ Chí Minh" , "https://down-bs-vn.img.susercontent.com/f87c39a4a3702cd4cb149cacd8114a0b_tn.webp"));
+        listStore.add(new Store("3", "SANDAshop.vn", "Hà Nội", "https://down-bs-vn.img.susercontent.com/ac5556f336029ae92a1058195f2d4e56_tn.webp"));
 
         object = (Product) getIntent().getSerializableExtra("object");
         if (object != null){
@@ -118,14 +118,21 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             Store store = null;
             for (Store s: listStore){
-                if (s.getStoreID() == object.getStoreID()){
-                    store = s;
-                    break;
-                }
+//                if (s.getStoreID() == object.getStoreID()){
+//                    store = s;
+//                    break;
+//                }
             }
             binding.txtStoreName.setText(store.getStoreName());
             binding.txtStoreAddress.setText(store.getStoreAddress());
-            Glide.with(this).load(store.getStoreImage()).into(binding.imvStoreImage);
+
+            try {
+
+                Glide.with(this).load(store.getStoreImage()).into(binding.imvStoreImage);
+            } catch (Exception exception) {
+                Log.e("ERROR", "Không tải được hình ảnh", exception);
+            }
+
 
         }
 

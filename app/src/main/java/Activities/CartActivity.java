@@ -3,9 +3,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.core.content.ContextCompat;
+
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityCartBinding;
 import java.text.NumberFormat;
@@ -15,9 +17,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import Adapters.CartAdapter;
-import Models.CartItem;
-import Models.Product;
-import Models.Store;
+import interfaces.ToTalFeeCallback;
+import models.CartItem;
+import models.Product;
+import models.Store;
 
 public class CartActivity extends AppCompatActivity implements ToTalFeeCallback {
 
@@ -92,9 +95,9 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
     private void initCart() {
 
         listStores = new ArrayList<>();
-        listStores.add(new Store(1, "Zozo_Unisex", "TP. Hồ Chí Minh", "https://down-bs-vn.img.susercontent.com/fd234f3899f07b72e9c5e5e26f9d997d_tn.webp"));
-        listStores.add(new Store(2, "LOVITO OFFICIAL STORE", "TP. Hồ Chí Minh", "https://down-bs-vn.img.susercontent.com/f87c39a4a3702cd4cb149cacd8114a0b_tn.webp"));
-        listStores.add(new Store(3, "SANDAshop.vn", "Hà Nội", "https://down-bs-vn.img.susercontent.com/ac5556f336029ae92a1058195f2d4e56_tn.webp"));
+        listStores.add(new Store("1", "Zozo_Unisex", "TP. Hồ Chí Minh", "https://down-bs-vn.img.susercontent.com/fd234f3899f07b72e9c5e5e26f9d997d_tn.webp"));
+        listStores.add(new Store("2", "LOVITO OFFICIAL STORE", "TP. Hồ Chí Minh", "https://down-bs-vn.img.susercontent.com/f87c39a4a3702cd4cb149cacd8114a0b_tn.webp"));
+        listStores.add(new Store("3", "SANDAshop.vn", "Hà Nội", "https://down-bs-vn.img.susercontent.com/ac5556f336029ae92a1058195f2d4e56_tn.webp"));
 
 //        binding.progressBarProducts.setVisibility(View.VISIBLE);
         listProductsInCart = new ArrayList<>();
@@ -155,10 +158,10 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
             // Tìm tên cửa hàng theo storeId
             String storeName = "";
             for (Store store : listStores) {
-                if (store.getStoreID() == storeId) {
-                    storeName = store.getStoreName();
-                    break;
-                }
+//                if (store.getBaseId() == storeId) {
+//                    storeName = store.getStoreName();
+//                    break;
+//                }
             }
 
             // Tạo CartItem và thêm vào danh sách cartItems

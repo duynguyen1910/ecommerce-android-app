@@ -15,7 +15,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import Models.Product;
+import models.Product;
 
 public class ProductsListAdapterForPaymentItem extends RecyclerView.Adapter<ProductsListAdapterForPaymentItem.ViewHolder> {
     private final Context context;
