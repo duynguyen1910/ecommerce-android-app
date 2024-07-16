@@ -5,6 +5,9 @@ import static constants.keyName.STORE_NAME;
 import static constants.keyName.STORE_OWNER_ID;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
+import static constants.toastMessage.INTERNET_ERROR;
+import static constants.toastMessage.STOREA_ADDRESS_REQUIRE;
+import static constants.toastMessage.STORENAME_REQUIRE;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -35,6 +38,7 @@ import Fragments.StoreSettings.StoreInfoFragment;
 import Fragments.StoreSettings.TaxInfoFragment;
 import interfaces.CreateStoreCallback;
 import interfaces.RegisterCallback;
+import interfaces.UpdateUserCallback;
 import kotlin.Pair;
 import models.Store;
 import models.User;
@@ -42,6 +46,7 @@ import models.User;
 public class CreateStoreActivity extends AppCompatActivity {
 
     ActivityCreateStoreBinding binding;
+    private SharedPreferences sharedPreferences;
     int currentState = 1;
     int steps = 4;
     private String storeName;
@@ -76,18 +81,44 @@ public class CreateStoreActivity extends AppCompatActivity {
                 binding.progressBar.getIndeterminateDrawable()
                         .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
+
+                // Khởi tạo đối tượng Store để gọi api kết nối với Collection Store
+
                 Store newStore = new Store();
-                SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+                sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
                 String userId = sharedPreferences.getString(USER_ID, null);
 
 
+                // Lấy thông tin store từ fragment StoreInfo
                 StoreInfoFragment storeInfoFragment = (StoreInfoFragment) viewPager2Adapter.getFragment(0);
 
+                String storeName = storeInfoFragment.getStoreName();
+                if (storeName == null){
+                    binding.btnNext.setFocusable(true);
+                    binding.btnNext.setBackground(ContextCompat.getDrawable(CreateStoreActivity.this, R.color.primary_color));
+                    binding.viewPager2.setCurrentItem(0);
+                    binding.progressBar.setVisibility(View.GONE);
+                    Toast.makeText(this, STORENAME_REQUIRE, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String storeAddress = storeInfoFragment.getStoreAddress();
+                if (storeAddress == null){
+                    binding.btnNext.setFocusable(true);
+                    binding.btnNext.setBackground(ContextCompat.getDrawable(CreateStoreActivity.this, R.color.primary_color));
+                    binding.progressBar.setVisibility(View.GONE);
+                    binding.viewPager2.setCurrentItem(0);
+                    Toast.makeText(this, STOREA_ADDRESS_REQUIRE, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // setup thông tin cho api
                 Map<String, Object> storeInfo = new HashMap<>();
-                storeInfo.put(STORE_NAME, storeInfoFragment.getStoreName());
-                storeInfo.put(STORE_ADDRESS, storeInfoFragment.getStoreAddress());
+                storeInfo.put(STORE_NAME, storeName);
+                storeInfo.put(STORE_ADDRESS, storeAddress);
                 storeInfo.put(STORE_OWNER_ID, userId);
 
+
+                // call API
                 newStore.onCreateStore(storeInfo, new CreateStoreCallback() {
                     @Override
                     public void onCreateSuccess(String storeId) {
@@ -95,13 +126,27 @@ public class CreateStoreActivity extends AppCompatActivity {
                         User user = new User();
                         Map<String, Object> updateData = new HashMap<>();
                         updateData.put(STORE_ID, storeId);
-                        user.onUpdate(updateData, userId);
+                        user.onUpdate(updateData, userId, new UpdateUserCallback() {
+                            @Override
+                            public void onUpdateSuccess() {
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString(STORE_ID, storeId);
+                                editor.apply();
+
+                                binding.progressBar.setVisibility(View.GONE);
+                                Intent intent = new Intent(CreateStoreActivity.this, RegisterStoreSuccessfulActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            @Override
+                            public void onUpdateFailure(String errorMessage) {
+                                Toast.makeText(CreateStoreActivity.this, INTERNET_ERROR, Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
 
-                        binding.progressBar.setVisibility(View.GONE);
-                        Intent intent = new Intent(CreateStoreActivity.this, RegisterStoreSuccessfulActivity.class);
-                        startActivity(intent);
-                        finish();
+
                     }
 
                     @Override
@@ -128,6 +173,14 @@ public class CreateStoreActivity extends AppCompatActivity {
             }
         });
     }
+    private void updateStoreId(String newStoreId) {
+        sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString(STORE_ID, newStoreId);
+        editor.apply();
+    }
+
 
     private void setupButton() {
         if (currentState == 1) {

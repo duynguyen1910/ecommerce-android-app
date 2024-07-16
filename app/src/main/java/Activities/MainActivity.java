@@ -56,7 +56,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupBottomNav();
+    }
 
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));

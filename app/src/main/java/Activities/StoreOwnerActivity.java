@@ -1,13 +1,18 @@
 package Activities;
+
+import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
+import static constants.keyName.USER_INFO;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.stores.databinding.ActivityStoreOwnerBinding;
 
 import java.util.Map;
@@ -19,6 +24,7 @@ import models.Store;
 public class StoreOwnerActivity extends AppCompatActivity {
 
     ActivityStoreOwnerBinding binding;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +36,9 @@ public class StoreOwnerActivity extends AppCompatActivity {
         setupEvents();
 
 
-
-
     }
 
-    private void setupEvents(){
+    private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
         binding.btnViewStore.setOnClickListener(v -> {
             Intent intent = new Intent(StoreOwnerActivity.this, ViewMyStoreActivity.class);
@@ -47,36 +51,39 @@ public class StoreOwnerActivity extends AppCompatActivity {
         });
 
     }
-    private void initUI(){
+
+    private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         binding.progressBarStoreName.setVisibility(View.VISIBLE);
-        Intent intent = getIntent();
-        if (intent != null){
-            String storeId = intent.getStringExtra("storeId");
-            // lấy thông tin avatar, invoice
+        sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
 
 
-            if (storeId != null){
-                Store store = new Store();
-                store.onGetStoreData(storeId, new GetStoreDataCallback() {
-                    @Override
-                    public void onGetDataSuccess(Map<String, Object> data) {
-                        binding.progressBarStoreName.setVisibility(View.GONE);
-                        binding.txtStoreName.setText((CharSequence) data.get(STORE_NAME));
+        String storeId = sharedPreferences.getString(STORE_ID, null);
+        // lấy thông tin avatar, invoice
+        Toast.makeText(this, "storeID: " + storeId, Toast.LENGTH_SHORT).show();
 
-                        // set up UI avatar, invoice
 
-                    }
+        if (storeId != null) {
+            Store store = new Store();
+            store.onGetStoreData(storeId, new GetStoreDataCallback() {
+                @Override
+                public void onGetDataSuccess(Map<String, Object> data) {
+                    binding.progressBarStoreName.setVisibility(View.GONE);
+                    binding.txtStoreName.setText((CharSequence) data.get(STORE_NAME));
 
-                    @Override
-                    public void onGetDataFailure(String errorMessage) {
-                        Toast.makeText(StoreOwnerActivity.this, "Uiii, lỗi mạng rồi :(((", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    // set up UI avatar, invoice
 
-            }
+                }
+
+                @Override
+                public void onGetDataFailure(String errorMessage) {
+                    Toast.makeText(StoreOwnerActivity.this, "Uiii, lỗi mạng rồi :(((", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
         }
 
     }

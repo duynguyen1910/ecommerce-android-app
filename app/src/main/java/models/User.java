@@ -20,6 +20,7 @@ import constants.toastMessage;
 import enums.UserRole;
 import interfaces.LoginCallback;
 import interfaces.RegisterCallback;
+import interfaces.UpdateUserCallback;
 
 public class User extends BaseObject {
     private String phoneNumber;
@@ -113,9 +114,6 @@ public class User extends BaseObject {
                         user.setBaseId(documentId);
                         int roleValue = document.getLong(USER_ROLE).intValue();
                         user.setRole(roleValue);
-                        String documentStoreId = document.getString(STORE_ID);
-                        user.setStoreId(documentStoreId);
-                        Log.d("documentStoreId", documentStoreId);
 
                         callback.onLoginSuccess(user);
                     }
@@ -130,8 +128,8 @@ public class User extends BaseObject {
         userApi.createUserApi(newUser, callback);
     }
 
-    public void onUpdate(Map<String, Object> updateData, String userId){
-        userApi.updateUserApi(updateData, userId);
+    public void onUpdate(Map<String, Object> updateData, String userId, UpdateUserCallback callback){
+        userApi.updateUserApi(updateData, userId, callback);
     }
 
 }

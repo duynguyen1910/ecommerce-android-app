@@ -19,6 +19,7 @@ import java.util.Map;
 
 import interfaces.LoginCallback;
 import interfaces.RegisterCallback;
+import interfaces.UpdateUserCallback;
 import models.User;
 import constants.toastMessage;
 
@@ -56,12 +57,12 @@ public class userApi {
 
     }
 
-    public void updateUserApi(Map<String, Object> updateData, String userId) {
+    public void updateUserApi(Map<String, Object> updateData, String userId, UpdateUserCallback callback) {
         DocumentReference userRef = db.collection(USER_COLLECTION).document(userId);
         userRef.update(updateData).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Log.d("Firestore", "User's STORE_ID updated successfully.");
+                        callback.onUpdateSuccess();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
