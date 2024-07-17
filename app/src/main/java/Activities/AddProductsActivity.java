@@ -16,8 +16,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.stores.databinding.ActivityAddProductsBinding;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -40,11 +46,9 @@ public class AddProductsActivity extends AppCompatActivity {
         setupEvents();
 
 
-
-
     }
 
-    private void setupEvents(){
+    private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
         binding.layoutDeliveryFee.setOnClickListener(v -> {
             Intent intent = new Intent(AddProductsActivity.this, DeliveryFeeActivity.class);
@@ -76,10 +80,26 @@ public class AddProductsActivity extends AppCompatActivity {
 
         binding.txtCategory.setOnClickListener(v -> {
             Intent intent = new Intent(AddProductsActivity.this, SelectCategoryActivity.class);
-            startActivity(intent);
+            launcherSelectCategory.launch(intent);
         });
 
     }
+
+    ActivityResultLauncher<Intent> launcherSelectCategory = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == 1) {
+                    Intent intent = result.getData();
+                    if (intent != null){
+                        String data = intent.getStringExtra("data");
+                        if (data != null){
+                            binding.txtCategory.setText("Ngành hàng: " + data);
+                        }
+                    }
+
+
+                }
+            });
 
     private Map<String, Object> validateForm() {
 
@@ -125,7 +145,7 @@ public class AddProductsActivity extends AppCompatActivity {
     }
 
 
-    private void initUI(){
+    private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
 

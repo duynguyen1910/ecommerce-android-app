@@ -1,7 +1,11 @@
 package Activities;
 
+import static constants.toastMessage.INTERNET_ERROR;
+
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,9 +41,11 @@ public class SelectCategoryActivity extends AppCompatActivity {
 
         Category category = new Category();
 
+        binding.progressBar.setVisibility(View.VISIBLE);
         category.getCategoryCollection(new GetCategoryCollectionCallback() {
             @Override
             public void onGetDataSuccess(ArrayList<Category> categories) {
+                binding.progressBar.setVisibility(View.GONE);
                 CategoryAdapter adapter = new CategoryAdapter(SelectCategoryActivity.this, categories);
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(SelectCategoryActivity.this));
                 binding.recyclerView.setAdapter(adapter);
@@ -47,6 +53,7 @@ public class SelectCategoryActivity extends AppCompatActivity {
 
             @Override
             public void onGetDataFailure(String errorMessage) {
+                Toast.makeText(SelectCategoryActivity.this, INTERNET_ERROR, Toast.LENGTH_SHORT).show();
 
             }
         });

@@ -62,7 +62,7 @@ public class StoreOwnerActivity extends AppCompatActivity {
 
         String storeId = sharedPreferences.getString(STORE_ID, null);
         // lấy thông tin avatar, invoice
-        Toast.makeText(this, "storeID: " + storeId, Toast.LENGTH_SHORT).show();
+
 
 
         if (storeId != null) {

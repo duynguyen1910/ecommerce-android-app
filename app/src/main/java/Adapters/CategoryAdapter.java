@@ -1,12 +1,15 @@
 package Adapters;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.stores.databinding.ItemCategoryBinding;
 import java.util.ArrayList;
-import models.Brand;
 import models.Category;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
@@ -38,6 +41,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, int position) {
         Category category = list.get(holder.getBindingAdapterPosition());
         holder.binding.txtCategoryName.setText(category.getCategoryName());
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.putExtra("data", category.getCategoryName());
+            ((Activity) context).setResult(1, intent);
+            ((Activity) context).finish();
+        });
     }
 
     @Override
