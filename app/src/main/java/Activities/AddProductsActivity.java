@@ -1,5 +1,6 @@
 package Activities;
 
+import static constants.keyName.CATEGORY_NAME;
 import static constants.keyName.PRODUCT_DESC;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_PRICE;
@@ -56,11 +57,11 @@ public class AddProductsActivity extends AppCompatActivity {
         });
 
         binding.btnSave.setOnClickListener(v -> {
-            sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
-            String storeId = sharedPreferences.getString(STORE_ID, null);
-            Map<String, Object> productData = validateForm();
-            productData.put(STORE_ID, storeId);
-            if (productData != null) {
+            if (validateForm() != null){
+                sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+                String storeId = sharedPreferences.getString(STORE_ID, null);
+                Map<String, Object> productData = validateForm();
+                productData.put(STORE_ID, storeId);
                 Product product = new Product();
                 product.onCreateProduct(productData, storeId, new CreateProductCallback() {
                     @Override
@@ -76,9 +77,10 @@ public class AddProductsActivity extends AppCompatActivity {
                 });
 
             }
+
         });
 
-        binding.txtCategory.setOnClickListener(v -> {
+        binding.layoutCategory.setOnClickListener(v -> {
             Intent intent = new Intent(AddProductsActivity.this, SelectCategoryActivity.class);
             launcherSelectCategory.launch(intent);
         });
@@ -93,7 +95,8 @@ public class AddProductsActivity extends AppCompatActivity {
                     if (intent != null){
                         String data = intent.getStringExtra("data");
                         if (data != null){
-                            binding.txtCategory.setText("Ngành hàng: " + data);
+                            binding.txtChooseCategory.setText("Ngành hàng: ");
+                            binding.edtCategory.setText(data);
                         }
                     }
 
@@ -107,6 +110,7 @@ public class AddProductsActivity extends AppCompatActivity {
         String description = Objects.requireNonNull(binding.edtDescription.getText()).toString().trim();
         String price = Objects.requireNonNull(binding.edtPrice.getText()).toString().trim();
         String inStock = Objects.requireNonNull(binding.edtInStock.getText()).toString().trim();
+        String categoryName = Objects.requireNonNull(binding.edtCategory.getText()).toString().trim();
 
         boolean isValid = true;
 
@@ -130,6 +134,11 @@ public class AddProductsActivity extends AppCompatActivity {
             binding.edtInStock.setError("Tồn kho không được bỏ trống");
             isValid = false;
         }
+        if (categoryName.isEmpty()) {
+            binding.edtCategory.setText("Vui lòng chọn ngành hàng");
+            isValid = false;
+        }
+
 
 
         if (isValid) {
@@ -138,6 +147,8 @@ public class AddProductsActivity extends AppCompatActivity {
             productData.put(PRODUCT_DESC, description);
             productData.put(PRODUCT_PRICE, price);
             productData.put(PRODUCT_INSTOCK, inStock);
+            productData.put(CATEGORY_NAME, categoryName);
+
             return productData;
         } else {
             return null;

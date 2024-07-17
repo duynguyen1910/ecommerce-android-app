@@ -2,9 +2,7 @@ package Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,8 +11,8 @@ import java.util.ArrayList;
 import models.Category;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
-    private Context context;
-    private ArrayList<Category> list;
+    private final Context context;
+    private final ArrayList<Category> list;
 
     public CategoryAdapter(Context context, ArrayList<Category> list) {
         this.context = context;

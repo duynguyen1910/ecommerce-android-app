@@ -5,11 +5,8 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import api.productApi;
-import api.storeApi;
 import interfaces.CreateProductCallback;
-import interfaces.CreateStoreCallback;
 import interfaces.GetProductDataCallback;
-import interfaces.GetStoreDataCallback;
 
 public class Product implements Serializable {
     private String title;
@@ -22,12 +19,14 @@ public class Product implements Serializable {
     private int numberInCart;
     private int sold;
     private int saleoff;
-    private int storeID;
+    private int storeId;
     private boolean checkedStatus;
     private int inStock;
     private int likes;
     private int views;
     private api.productApi productApi;
+    private String categoryName;
+
 
     private boolean hiddenStatus;
 
@@ -36,7 +35,7 @@ public class Product implements Serializable {
     }
 
 
-    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice, double rating, int sold, int saleoff, int storeID) {
+    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice, double rating, int sold, int saleoff, int storeId) {
         this.title = title;
         this.description = description;
         this.picUrl = picUrl;
@@ -45,10 +44,10 @@ public class Product implements Serializable {
         this.rating = rating;
         this.sold = sold;
         this.saleoff = saleoff;
-        this.storeID = storeID;
+        this.storeId = storeId;
     }
 
-    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice, double rating, int sold, int saleoff, int numberInCart, int storeID, boolean checkedStatus) {
+    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice, double rating, int sold, int saleoff, int numberInCart, int storeId, boolean checkedStatus) {
         this.title = title;
         this.description = description;
         this.picUrl = picUrl;
@@ -58,14 +57,14 @@ public class Product implements Serializable {
         this.sold = sold;
         this.saleoff = saleoff;
         this.numberInCart = numberInCart;
-        this.storeID = storeID;
+        this.storeId = storeId;
         this.checkedStatus = checkedStatus;
     }
 
 
 
     // constructor for MyProduct Item
-    public Product(String title, String description, ArrayList<String> picUrl, double oldPrice, int sold, int inStock, int likes, int views, boolean hiddenStatus, int storeID) {
+    public Product(String title, String description, ArrayList<String> picUrl, double oldPrice, int sold, int inStock, int likes, int views, boolean hiddenStatus, int storeId) {
         this.title = title;
         this.description = description;
         this.picUrl = picUrl;
@@ -75,7 +74,15 @@ public class Product implements Serializable {
         this.likes = likes;
         this.views = views;
         this.hiddenStatus = hiddenStatus;
-        this.storeID = storeID;
+        this.storeId = storeId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public boolean isHiddenStatus() {
@@ -118,12 +125,12 @@ public class Product implements Serializable {
         this.checkedStatus = checkedStatus;
     }
 
-    public int getStoreID() {
-        return storeID;
+    public int getStoreId() {
+        return storeId;
     }
 
-    public void setStoreID(int storeID) {
-        this.storeID = storeID;
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
     }
 
     public int getSaleoff() {

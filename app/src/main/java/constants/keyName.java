@@ -22,6 +22,8 @@ public class keyName {
     public static final String PRODUCT_INSTOCK = "productInStock";
 
 
+
+    public static final String CATEGORY_ID = "categoryId";
     public static final String CATEGORY_NAME = "categoryName";
 
 
