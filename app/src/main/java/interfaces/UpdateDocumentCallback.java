@@ -1,6 +1,6 @@
 package interfaces;
 
-public interface UpdateUserCallback {
+public interface UpdateDocumentCallback {
     void onUpdateSuccess();
     void onUpdateFailure(String errorMessage);
 }

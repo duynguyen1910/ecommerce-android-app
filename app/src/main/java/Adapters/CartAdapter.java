@@ -150,7 +150,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         for (CartItem item : list) {
             for (Product product : item.getListProducts()) {
                 if (product.getCheckedStatus()){
-                    fee += product.getPrice() * product.getNumberInCart();
+                    fee += product.getNewPrice() * product.getNumberInCart();
                 }
 
             }

@@ -25,8 +25,8 @@ import models.Product;
 public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<ProductsListAdapterForCartItem.ViewHolder> {
     private final Context context;
     private final ArrayList<Product> list;
-    private ToTalFeeCallback callbackClass;
-    private CartItemListener cartItemListener;
+    private final ToTalFeeCallback callbackClass;
+    private final CartItemListener cartItemListener;
 
 
     public ProductsListAdapterForCartItem(Context context, ArrayList<Product> list, ToTalFeeCallback callbackClass, CartItemListener cartItemListener) {
@@ -77,12 +77,12 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
         });
 
 
-        holder.binding.txtTitle.setText(product.getTitle());
+        holder.binding.txtTitle.setText(product.getProductName());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         String formattedOldPrice = formatter.format(product.getOldPrice());
         holder.binding.txtOldPrice.setText("đ" + formattedOldPrice);
         holder.binding.txtOldPrice.setPaintFlags(holder.binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        String formattedPrice = formatter.format(product.getOldPrice() * (100 - product.getSaleoff()) / 100);
+        String formattedPrice = formatter.format(product.getOldPrice());
 
         holder.binding.txtPrice.setText(formattedPrice);
 
@@ -136,7 +136,7 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
         double fee = 0;
         for (Product product : list) {
             if (product.getCheckedStatus()) {
-                fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
+                fee += (product.getNewPrice()  * product.getNumberInCart());
             }
 
         }

@@ -3,7 +3,7 @@ import static constants.keyName.STORE_ADDRESS;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 import static constants.keyName.STORE_OWNER_ID;
-import static constants.keyName.STORE_PRODUCTS;
+import static constants.keyName.PRODUCTS;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.INTERNET_ERROR;
@@ -16,7 +16,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,9 +36,8 @@ import Fragments.StoreSettings.SettingDeliveryFragment;
 import Fragments.StoreSettings.StoreIdentifierInfoFragment;
 import Fragments.StoreSettings.StoreInfoFragment;
 import Fragments.StoreSettings.TaxInfoFragment;
-import interfaces.CreateStoreCallback;
-import interfaces.RegisterCallback;
-import interfaces.UpdateUserCallback;
+import interfaces.CreateDocumentCallback;
+import interfaces.UpdateDocumentCallback;
 import kotlin.Pair;
 import models.Store;
 import models.User;
@@ -117,22 +115,22 @@ public class CreateStoreActivity extends AppCompatActivity {
                 storeInfo.put(STORE_NAME, storeName);
                 storeInfo.put(STORE_ADDRESS, storeAddress);
                 storeInfo.put(STORE_OWNER_ID, userId);
-                storeInfo.put(STORE_PRODUCTS, new HashMap<>()); // một map rỗng
+                storeInfo.put(PRODUCTS, new HashMap<>()); // một map rỗng
 
 
                 // call API
-                newStore.onCreateStore(storeInfo, new CreateStoreCallback() {
+                newStore.onCreateStore(storeInfo, new CreateDocumentCallback() {
                     @Override
-                    public void onCreateSuccess(String storeId) {
+                    public void onCreateSuccess(String documentId) {
                         // Sau khi tạo  store xong, ta lấy storeId vừa tạo, call api update user
                         User user = new User();
                         Map<String, Object> updateData = new HashMap<>();
-                        updateData.put(STORE_ID, storeId);
-                        user.onUpdate(updateData, userId, new UpdateUserCallback() {
+                        updateData.put(STORE_ID, documentId);
+                        user.onUpdate(updateData, userId, new UpdateDocumentCallback() {
                             @Override
                             public void onUpdateSuccess() {
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString(STORE_ID, storeId);
+                                editor.putString(STORE_ID, documentId);
                                 editor.apply();
 
                                 binding.progressBar.setVisibility(View.GONE);

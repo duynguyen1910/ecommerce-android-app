@@ -89,7 +89,7 @@ public class PaymentActivity extends AppCompatActivity {
 
         for (Product product : cartItem.getListProducts()) {
             if (product.getCheckedStatus()) {
-                fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
+                fee += (product.getOldPrice() * product.getNumberInCart());
             }
 
         }
@@ -150,7 +150,7 @@ public class PaymentActivity extends AppCompatActivity {
         for (CartItem item : cart) {
             for (Product product : item.getListProducts()) {
                 if (product.getCheckedStatus()) {
-                    fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
+                    fee += (product.getNewPrice() * product.getNumberInCart());
                 }
 
             }

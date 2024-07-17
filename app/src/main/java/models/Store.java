@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Map;
 
 import api.storeApi;
-import interfaces.CreateStoreCallback;
-import interfaces.GetStoreDataCallback;
+import interfaces.CreateDocumentCallback;
+import interfaces.GetDocumentCallback;
 
 public class Store extends BaseObject implements Serializable {
     private String storeName;
@@ -70,10 +70,10 @@ public class Store extends BaseObject implements Serializable {
         this.ownerID = ownerID;
     }
 
-    public void onCreateStore(Map<String, Object> newStore, final CreateStoreCallback callback) {
+    public void onCreateStore(Map<String, Object> newStore, final CreateDocumentCallback callback) {
         storeApi.createStoreApi(newStore, callback);
     }
-    public void onGetStoreData(String storeId, GetStoreDataCallback callback){
+    public void onGetStoreData(String storeId, GetDocumentCallback callback){
         storeApi.getStoreDataApi(storeId, callback);
     }
 }

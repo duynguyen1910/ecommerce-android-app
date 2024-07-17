@@ -3,22 +3,18 @@ package Activities;
 import static constants.keyName.CATEGORY_NAME;
 import static constants.keyName.PRODUCT_DESC;
 import static constants.keyName.PRODUCT_INSTOCK;
+import static constants.keyName.PRODUCT_NAME;
 import static constants.keyName.PRODUCT_PRICE;
-import static constants.keyName.PRODUCT_TITLE;
 import static constants.keyName.STORE_ID;
-import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
-import static constants.toastMessage.CREATE_PRODUCT_SUCCESSFULLY;
+import static constants.toastMessage.DEFAULT_REQUIRE;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import interfaces.CreateProductCallback;
+import interfaces.CreateDocumentCallback;
 import models.Product;
 
 public class AddProductsActivity extends AppCompatActivity {
@@ -57,13 +53,13 @@ public class AddProductsActivity extends AppCompatActivity {
         });
 
         binding.btnSave.setOnClickListener(v -> {
-            if (validateForm() != null){
+            Map<String, Object> productData = validateForm();
+            if (productData != null){
                 sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
                 String storeId = sharedPreferences.getString(STORE_ID, null);
-                Map<String, Object> productData = validateForm();
                 productData.put(STORE_ID, storeId);
                 Product product = new Product();
-                product.onCreateProduct(productData, storeId, new CreateProductCallback() {
+                product.onCreateProduct(productData, storeId, new CreateDocumentCallback() {
                     @Override
                     public void onCreateSuccess(String successMessage) {
                         Toast.makeText(AddProductsActivity.this, successMessage, Toast.LENGTH_SHORT).show();
@@ -116,26 +112,26 @@ public class AddProductsActivity extends AppCompatActivity {
 
 
         if (productName.isEmpty()) {
-            binding.edtTitle.setError("Tên sản phẩm không được bỏ trống");
+            binding.edtTitle.setError(DEFAULT_REQUIRE);
             isValid = false;
         }
 
         if (description.isEmpty()) {
-            binding.edtDescription.setError("Mô tả không được bỏ trống");
+            binding.edtDescription.setError(DEFAULT_REQUIRE);
             isValid = false;
         }
 
         if (price.isEmpty()) {
-            binding.edtPrice.setError("Giá không được bỏ trống");
+            binding.edtPrice.setError(DEFAULT_REQUIRE);
             isValid = false;
         }
 
         if (inStock.isEmpty()) {
-            binding.edtInStock.setError("Tồn kho không được bỏ trống");
+            binding.edtInStock.setError(DEFAULT_REQUIRE);
             isValid = false;
         }
         if (categoryName.isEmpty()) {
-            binding.edtCategory.setText("Vui lòng chọn ngành hàng");
+            binding.edtCategory.setError(DEFAULT_REQUIRE);
             isValid = false;
         }
 
@@ -143,7 +139,7 @@ public class AddProductsActivity extends AppCompatActivity {
 
         if (isValid) {
             Map<String, Object> productData = new HashMap<>();
-            productData.put(PRODUCT_TITLE, productName);
+            productData.put(PRODUCT_NAME, productName);
             productData.put(PRODUCT_DESC, description);
             productData.put(PRODUCT_PRICE, price);
             productData.put(PRODUCT_INSTOCK, inStock);

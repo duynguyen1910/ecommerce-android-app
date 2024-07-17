@@ -2,8 +2,7 @@ package api;
 
 import static android.content.ContentValues.TAG;
 import static constants.collectionName.STORE_COLLECTION;
-import static constants.collectionName.USER_COLLECTION;
-import static constants.keyName.STORE_PRODUCTS;
+import static constants.keyName.PRODUCTS;
 
 import android.util.Log;
 
@@ -17,15 +16,17 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import constants.toastMessage;
-import interfaces.CreateProductCallback;
-import interfaces.CreateStoreCallback;
-import interfaces.GetProductDataCallback;
-import interfaces.GetStoreDataCallback;
-import interfaces.UpdateUserCallback;
+import interfaces.CreateDocumentCallback;
+import interfaces.GetCollectionCallback;
+import interfaces.GetDocumentCallback;
+import models.Product;
 
 public class productApi {
     private FirebaseFirestore db;
@@ -34,13 +35,13 @@ public class productApi {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void createProductApi(Map<String, Object> productData, String storeId, CreateProductCallback callback) {
+    public void createProductApi(Map<String, Object> productData, String storeId, CreateDocumentCallback callback) {
         // Sản phẩm nằm trong Store
         // Tìm reference của Collection Store
         DocumentReference storeRef = db.collection(STORE_COLLECTION).document(storeId);
 
         // Vào trường storeProducts của CollectionStore,đây là 1 subCollection, add productData vào subCollection này
-        storeRef.collection(STORE_PRODUCTS)
+        storeRef.collection(PRODUCTS)
                 .add(productData)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
@@ -57,8 +58,8 @@ public class productApi {
 
     }
 
-    public void getProductDetailDataApi(String storeId, String productId, GetProductDataCallback callback) {
-        DocumentReference productRef = db.collection(STORE_COLLECTION).document(storeId).collection(STORE_PRODUCTS).document(productId);
+    public void getProductDetailApi(String storeId, String productId, GetDocumentCallback callback) {
+        DocumentReference productRef = db.collection(STORE_COLLECTION).document(storeId).collection(PRODUCTS).document(productId);
         productRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -67,10 +68,30 @@ public class productApi {
                     if (document.exists()) {
                         callback.onGetDataSuccess(document.getData());
                     } else {
-                        callback.onGetDataFailure(toastMessage.GET_PRODUCT_FAILED);
+                        callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+    }
+
+    public void getProductsCollectionApi(String storeId, final GetCollectionCallback<Product> callback) {
+        ArrayList<Product> products = new ArrayList<>();
+        CollectionReference productRef = db.collection(STORE_COLLECTION).document(storeId).collection(PRODUCTS);
+        productRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Product category = document.toObject(Product.class);
+                        products.add(category);
+                    }
+                    callback.onGetDataSuccess(products);
+                } else {
+                    callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
                 }
             }
         });

@@ -1,10 +1,6 @@
 package models;
 
-import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_ROLE;
-
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -20,7 +16,7 @@ import constants.toastMessage;
 import enums.UserRole;
 import interfaces.LoginCallback;
 import interfaces.RegisterCallback;
-import interfaces.UpdateUserCallback;
+import interfaces.UpdateDocumentCallback;
 
 public class User extends BaseObject {
     private String phoneNumber;
@@ -128,7 +124,7 @@ public class User extends BaseObject {
         userApi.createUserApi(newUser, callback);
     }
 
-    public void onUpdate(Map<String, Object> updateData, String userId, UpdateUserCallback callback){
+    public void onUpdate(Map<String, Object> updateData, String userId, UpdateDocumentCallback callback){
         userApi.updateUserApi(updateData, userId, callback);
     }
 

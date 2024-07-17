@@ -9,8 +9,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
-import constants.toastMessage;
-import interfaces.GetCategoryCollectionCallback;
+import interfaces.GetCollectionCallback;
 import models.Category;
 
 public class categoryApi {
@@ -22,7 +21,7 @@ public class categoryApi {
 
 
 
-    public void getCategoryCollectionApi(final GetCategoryCollectionCallback callback) {
+    public void getCategoryCollectionApi(final GetCollectionCallback<Category> callback) {
         ArrayList<Category> categories = new ArrayList<>();
         CollectionReference categoryRef = db.collection(CATEGORY_COLLECTION);
         categoryRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -35,7 +34,7 @@ public class categoryApi {
                     }
                     callback.onGetDataSuccess(categories);
                 } else {
-                    callback.onGetDataFailure(toastMessage.GET_PRODUCT_FAILED);
+                    callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
                 }
             }
         });

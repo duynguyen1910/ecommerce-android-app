@@ -2,7 +2,6 @@ package api;
 
 import static android.content.ContentValues.TAG;
 import static constants.collectionName.STORE_COLLECTION;
-import static constants.collectionName.USER_COLLECTION;
 
 import android.util.Log;
 
@@ -19,9 +18,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Map;
 
 import constants.toastMessage;
-import interfaces.CreateStoreCallback;
-import interfaces.GetStoreDataCallback;
-import interfaces.RegisterCallback;
+import interfaces.CreateDocumentCallback;
+import interfaces.GetDocumentCallback;
 
 public class storeApi {
     private FirebaseFirestore db;
@@ -29,7 +27,7 @@ public class storeApi {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void createStoreApi(Map<String, Object> newStore, final CreateStoreCallback callback) {
+    public void createStoreApi(Map<String, Object> newStore, final CreateDocumentCallback callback) {
         db.collection(STORE_COLLECTION)
                 .add(newStore)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -49,7 +47,7 @@ public class storeApi {
 
     }
 
-    public void getStoreDataApi(String storeId, GetStoreDataCallback callback){
+    public void getStoreDataApi(String storeId, GetDocumentCallback callback){
         DocumentReference docRef = db.collection(STORE_COLLECTION).document(storeId);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override

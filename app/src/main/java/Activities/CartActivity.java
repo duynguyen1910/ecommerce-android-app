@@ -95,43 +95,43 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
     private void initCart() {
 
         listStores = new ArrayList<>();
-        listStores.add(new Store("1", "Zozo_Unisex", "TP. Hồ Chí Minh", "https://down-bs-vn.img.susercontent.com/fd234f3899f07b72e9c5e5e26f9d997d_tn.webp"));
-        listStores.add(new Store("2", "LOVITO OFFICIAL STORE", "TP. Hồ Chí Minh", "https://down-bs-vn.img.susercontent.com/f87c39a4a3702cd4cb149cacd8114a0b_tn.webp"));
-        listStores.add(new Store("3", "SANDAshop.vn", "Hà Nội", "https://down-bs-vn.img.susercontent.com/ac5556f336029ae92a1058195f2d4e56_tn.webp"));
+//        listStores.add(new Store("1", "Zozo_Unisex", "TP. Hồ Chí Minh", "https://down-bs-vn.img.susercontent.com/fd234f3899f07b72e9c5e5e26f9d997d_tn.webp"));
+//        listStores.add(new Store("2", "LOVITO OFFICIAL STORE", "TP. Hồ Chí Minh", "https://down-bs-vn.img.susercontent.com/f87c39a4a3702cd4cb149cacd8114a0b_tn.webp"));
+//        listStores.add(new Store("3", "SANDAshop.vn", "Hà Nội", "https://down-bs-vn.img.susercontent.com/ac5556f336029ae92a1058195f2d4e56_tn.webp"));
 
 //        binding.progressBarProducts.setVisibility(View.VISIBLE);
         listProductsInCart = new ArrayList<>();
-        ArrayList<String> picUrls1 = new ArrayList<>();
-        picUrls1.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rbmn-lqld5fts53pj7e");
-        picUrls1.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rbl4-lqld5gi75d2e60");
-        picUrls1.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rbmc-lqld5e0asxgg61");
-        picUrls1.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rbk4-lqlpjd5622bp5d");
-
-        ArrayList<String> picUrls2 = new ArrayList<>();
-        picUrls2.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rccv-ls294ot5axpz02");
-        picUrls2.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcdn-ls294pp208mn48");
-        picUrls2.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcdp-ls294qoujut336");
-        picUrls2.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcev-ls294uaz9fcv33");
-
-
-        ArrayList<String> picUrls3 = new ArrayList<>();
-        picUrls3.add("https://down-vn.img.susercontent.com/file/cn-11134301-7r98o-lozhxkvh2rbr86");
-        picUrls3.add("https://down-vn.img.susercontent.com/file/cn-11134301-7r98o-lozhxkw11xlo75");
-        picUrls3.add("https://down-vn.img.susercontent.com/file/cn-11134301-7r98o-lozhxkvh6z13cb");
-        picUrls3.add("https://down-vn.img.susercontent.com/file/cn-11134301-7r98o-lozhxkvh5kgn8a");
-
-        ArrayList<String> picUrls4 = new ArrayList<>();
-        picUrls4.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcck-lsaqdevfanrq8f");
-        picUrls4.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rce5-lsaqdhlxbx002b");
-        picUrls4.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcen-lsaqdfgsfeeqa7");
-        picUrls4.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcfb-lsaqdfxpqmpo1c");
-
-//        Product(String title, String description, ArrayList<String> picUrl, double price, double rating, int sold)
-        listProductsInCart.add(new Product("Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057", getResources().getResourceName(R.string.product_desc1), picUrls1, 149000, 298000, 4.9, 200, 50, 1, 2, false));
-        listProductsInCart.add(new Product("Lovito Đầm trễ vai ngọc trai trơn đơn giản dành cho nữ L76AD154", getResources().getResourceName(R.string.product_desc1), picUrls2, 119000, 228000, 4.8, 179, 48, 2, 2, false));
-        listProductsInCart.add(new Product("Đồng hồ điện tử Unisex không thông minh thời trang S8 phong cách mới", getResources().getResourceName(R.string.product_desc2), picUrls3, 49000, 70000, 4.5, 559, 30, 3, 3, false));
-        listProductsInCart.add(new Product("Huizumei Váy preppy nữ mùa hè cổ polo nhỏ chắp vá eo nâng cao và giảm béo váy ngắn", getResources().getResourceName(R.string.product_desc3), picUrls4, 129000, 235000, 4.7, 989, 45, 1, 1, false));
+//        ArrayList<String> picUrls1 = new ArrayList<>();
+//        picUrls1.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rbmn-lqld5fts53pj7e");
+//        picUrls1.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rbl4-lqld5gi75d2e60");
+//        picUrls1.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rbmc-lqld5e0asxgg61");
+//        picUrls1.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rbk4-lqlpjd5622bp5d");
 //
+//        ArrayList<String> picUrls2 = new ArrayList<>();
+//        picUrls2.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rccv-ls294ot5axpz02");
+//        picUrls2.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcdn-ls294pp208mn48");
+//        picUrls2.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcdp-ls294qoujut336");
+//        picUrls2.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcev-ls294uaz9fcv33");
+//
+//
+//        ArrayList<String> picUrls3 = new ArrayList<>();
+//        picUrls3.add("https://down-vn.img.susercontent.com/file/cn-11134301-7r98o-lozhxkvh2rbr86");
+//        picUrls3.add("https://down-vn.img.susercontent.com/file/cn-11134301-7r98o-lozhxkw11xlo75");
+//        picUrls3.add("https://down-vn.img.susercontent.com/file/cn-11134301-7r98o-lozhxkvh6z13cb");
+//        picUrls3.add("https://down-vn.img.susercontent.com/file/cn-11134301-7r98o-lozhxkvh5kgn8a");
+//
+//        ArrayList<String> picUrls4 = new ArrayList<>();
+//        picUrls4.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcck-lsaqdevfanrq8f");
+//        picUrls4.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rce5-lsaqdhlxbx002b");
+//        picUrls4.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcen-lsaqdfgsfeeqa7");
+//        picUrls4.add("https://down-vn.img.susercontent.com/file/sg-11134201-7rcfb-lsaqdfxpqmpo1c");
+//
+////        Product(String title, String description, ArrayList<String> picUrl, double price, double rating, int sold)
+//        listProductsInCart.add(new Product("Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057", getResources().getResourceName(R.string.product_desc1), picUrls1, 149000, 298000, 4.9, 200, 50, 1, "2", false));
+//        listProductsInCart.add(new Product("Lovito Đầm trễ vai ngọc trai trơn đơn giản dành cho nữ L76AD154", getResources().getResourceName(R.string.product_desc1), picUrls2, 119000, 228000, 4.8, 179, 48, 2, "2", false));
+//        listProductsInCart.add(new Product("Đồng hồ điện tử Unisex không thông minh thời trang S8 phong cách mới", getResources().getResourceName(R.string.product_desc2), picUrls3, 49000, 70000, 4.5, 559, 30, 3, "2", false));
+//        listProductsInCart.add(new Product("Huizumei Váy preppy nữ mùa hè cổ polo nhỏ chắp vá eo nâng cao và giảm béo váy ngắn", getResources().getResourceName(R.string.product_desc3), picUrls4, 129000, 235000, 4.7, 989, 45, 1, "2", false));
+////
 
         cart = groupProductsByStore();
 
@@ -139,9 +139,9 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
     }
 
     private ArrayList<CartItem> groupProductsByStore() {
-        HashMap<Integer, ArrayList<Product>> hashMap = new HashMap<>();
+        HashMap<String, ArrayList<Product>> hashMap = new HashMap<>();
         for (Product product : listProductsInCart) {
-            int storeId = product.getStoreId();
+            String storeId = product.getStoreId();
             if (!hashMap.containsKey(storeId)) {
                 hashMap.put(storeId, new ArrayList<>());
             }
@@ -151,8 +151,8 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         ArrayList<CartItem> cartItems = new ArrayList<>();
 
         // filter HashMap để tạo CartItem
-        for (Map.Entry<Integer, ArrayList<Product>> entry : hashMap.entrySet()) {
-            int storeId = entry.getKey();
+        for (Map.Entry<String, ArrayList<Product>> entry : hashMap.entrySet()) {
+            String storeId = entry.getKey();
             ArrayList<Product> products = entry.getValue();
 
             // Tìm tên cửa hàng theo storeId
@@ -229,7 +229,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         for (CartItem item : cart) {
             for (Product product : item.getListProducts()) {
                 if (product.getCheckedStatus()){
-                    fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
+                    fee += (product.getNewPrice() * product.getNumberInCart());
                 }
 
             }

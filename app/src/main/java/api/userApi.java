@@ -17,10 +17,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Map;
 
-import interfaces.LoginCallback;
 import interfaces.RegisterCallback;
-import interfaces.UpdateUserCallback;
-import models.User;
+import interfaces.UpdateDocumentCallback;
 import constants.toastMessage;
 
 public class userApi {
@@ -57,7 +55,7 @@ public class userApi {
 
     }
 
-    public void updateUserApi(Map<String, Object> updateData, String userId, UpdateUserCallback callback) {
+    public void updateUserApi(Map<String, Object> updateData, String userId, UpdateDocumentCallback callback) {
         DocumentReference userRef = db.collection(USER_COLLECTION).document(userId);
         userRef.update(updateData).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

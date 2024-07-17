@@ -22,7 +22,7 @@
         android:layout_marginHorizontal="16dp"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
-        android:text="Tên Store * (Tối đa 30 ký tự)"
+        android:text="Tên Store * (Tối đa 20 ký tự)"
         android:textColor="@color/black" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -37,7 +37,7 @@
             android:background="@drawable/custom_edittext_no_border"
             android:gravity="center_vertical"
             android:hint="Nhập tên Store"
-            android:maxLength="30"
+            android:maxLength="20"
             android:padding="16dp"
             android:textColor="@color/black"
             android:textSize="14sp" />
@@ -57,7 +57,7 @@
         android:paddingVertical="16dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawablePadding="8dp"
@@ -83,7 +83,7 @@
         android:paddingVertical="16dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawablePadding="8dp"
@@ -91,13 +91,15 @@
             android:text="Email *"
             android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/txtEmailStore"
+        <EditText
+            android:id="@+id/edtEmailStore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:gravity="center_vertical"
-            android:text="ngocdai@gmail.com"
+            android:hint="Thiết lập"
             android:textColor="@color/black"
+            android:textSize="14sp"
             app:drawableEndCompat="@drawable/ic_arrow_right_24"
             app:drawableTint="@color/darkgray" />
     </LinearLayout>
@@ -109,7 +111,7 @@
         android:paddingVertical="16dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawablePadding="8dp"
@@ -117,13 +119,17 @@
             android:text="Số điện thoại *"
             android:textColor="@color/black" />
 
-        <TextView
-            android:id="@+id/txtPhoneNumber"
+        <EditText
+            android:id="@+id/edtPhoneNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:gravity="center_vertical"
-            android:text="012345678"
-            android:textColor="@color/darkgray" />
+            android:hint="Thiết lập"
+            android:textColor="@color/darkgray"
+            android:textSize="14sp"
+            app:drawableEndCompat="@drawable/ic_arrow_right_24"
+            app:drawableTint="@color/darkgray" />
     </LinearLayout>
 
 

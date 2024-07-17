@@ -47,12 +47,12 @@ public class ProductsListAdapterForInvoiceDetail extends RecyclerView.Adapter<Pr
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = list.get(holder.getBindingAdapterPosition());
 
-        holder.binding.txtProductTitle.setText(product.getTitle());
+        holder.binding.txtProductTitle.setText(product.getProductName());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         String formattedOldPrice = formatter.format(product.getOldPrice());
         holder.binding.txtOldPrice.setText("đ" + formattedOldPrice);
         holder.binding.txtOldPrice.setPaintFlags(holder.binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        String formattedPrice = formatter.format(product.getOldPrice() * (100 - product.getSaleoff()) / 100);
+        String formattedPrice = formatter.format(product.getOldPrice());
 
         holder.binding.txtPrice.setText(formattedPrice);
 

@@ -18,7 +18,7 @@ import com.example.stores.databinding.ActivityStoreOwnerBinding;
 import java.util.Map;
 import java.util.Objects;
 
-import interfaces.GetStoreDataCallback;
+import interfaces.GetDocumentCallback;
 import models.Store;
 
 public class StoreOwnerActivity extends AppCompatActivity {
@@ -67,7 +67,7 @@ public class StoreOwnerActivity extends AppCompatActivity {
 
         if (storeId != null) {
             Store store = new Store();
-            store.onGetStoreData(storeId, new GetStoreDataCallback() {
+            store.onGetStoreData(storeId, new GetDocumentCallback() {
                 @Override
                 public void onGetDataSuccess(Map<String, Object> data) {
                     binding.progressBarStoreName.setVisibility(View.GONE);

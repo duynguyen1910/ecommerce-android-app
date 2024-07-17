@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import models.Category;
 
-public interface GetCategoryCollectionCallback {
-    void onGetDataSuccess(ArrayList<Category> categories);
+public interface GetCollectionCallback<T> {
+    void onGetDataSuccess(ArrayList<T> items);
     void onGetDataFailure(String errorMessage);
 }

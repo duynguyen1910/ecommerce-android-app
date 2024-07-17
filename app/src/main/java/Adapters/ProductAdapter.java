@@ -44,15 +44,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public void onBindViewHolder(@NonNull ProductAdapter.ViewHolder holder, int position) {
 
         Product product = list.get(holder.getBindingAdapterPosition());
-        holder.binding.txtTitle.setText(product.getTitle());
+        holder.binding.txtTitle.setText(product.getProductName());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedPrice = formatter.format(product.getOldPrice()*(100-product.getSaleoff())/100);
+        String formattedPrice = formatter.format(product.getNewPrice());
 
         holder.binding.txtPrice.setText("đ" + formattedPrice);
-        holder.binding.txtSold.setText("Đã bán " + product.getSold());
-        holder.binding.txtSaleoff.setText("-" + product.getSaleoff() + "%");
-        holder.binding.txtRating.setText("(" + product.getRating() + ")");
-        holder.binding.ratingBar.setRating((float) product.getRating());
+        holder.binding.txtSold.setText("Đã bán " + 200);
+        holder.binding.txtSaleoff.setText("-" + 40 + "%");
+        holder.binding.txtRating.setText("(" + 4.5 + ")");
+        holder.binding.ratingBar.setRating(4.5F);
         Glide.with(context).load(product.getPicUrl().get(0)).into(holder.binding.imageView);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

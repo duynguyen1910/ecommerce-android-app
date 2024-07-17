@@ -91,7 +91,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
     private double getCartItemFee(CartItem cartItem) {
         double fee = 0;
         for (Product product : cartItem.getListProducts()) {
-            fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
+            fee += (product.getNewPrice() * product.getNumberInCart());
         }
         return fee;
     }
