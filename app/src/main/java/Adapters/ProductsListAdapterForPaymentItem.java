@@ -55,7 +55,7 @@ public class ProductsListAdapterForPaymentItem extends RecyclerView.Adapter<Prod
         holder.binding.txtPrice.setText("đ" + formattedPrice);
 
         holder.binding.txtQuantity.setText("x" + product.getNumberInCart());
-        Glide.with(context).load(product.getPicUrl().get(0)).into(holder.binding.imageView);
+        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
 
     }
     @Override

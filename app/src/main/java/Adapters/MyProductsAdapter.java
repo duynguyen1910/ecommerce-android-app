@@ -60,7 +60,7 @@ public class MyProductsAdapter extends RecyclerView.Adapter<MyProductsAdapter.Vi
         holder.binding.txtTitle.setText(product.getProductName());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         String formattedNewPrice = formatter.format(product.getNewPrice());
-        holder.binding.txtOldPrice.setText("đ" + formattedNewPrice);
+        holder.binding.txtNewPrice.setText("đ" + formattedNewPrice);
 
 //        Glide.with(context).load(product.getPicUrl().get(0)).into(holder.binding.imageView);
 
@@ -69,7 +69,7 @@ public class MyProductsAdapter extends RecyclerView.Adapter<MyProductsAdapter.Vi
 
         holder.binding.btnEdit.setOnClickListener(v -> {
             Intent intent = new Intent(context, UpdateProductsActivity.class);
-            intent.putExtra("product", product);
+//            intent.putExtra("product", product);
             context.startActivity(intent);
 
         });

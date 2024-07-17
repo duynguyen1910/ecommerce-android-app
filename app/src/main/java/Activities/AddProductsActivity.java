@@ -4,7 +4,8 @@ import static constants.keyName.CATEGORY_NAME;
 import static constants.keyName.PRODUCT_DESC;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
-import static constants.keyName.PRODUCT_PRICE;
+import static constants.keyName.PRODUCT_NEW_PRICE;
+import static constants.keyName.PRODUCT_OLD_PRICE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.DEFAULT_REQUIRE;
@@ -32,6 +33,7 @@ public class AddProductsActivity extends AppCompatActivity {
 
     ActivityAddProductsBinding binding;
     private SharedPreferences sharedPreferences;
+    String storeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +57,6 @@ public class AddProductsActivity extends AppCompatActivity {
         binding.btnSave.setOnClickListener(v -> {
             Map<String, Object> productData = validateForm();
             if (productData != null){
-                sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
-                String storeId = sharedPreferences.getString(STORE_ID, null);
-                productData.put(STORE_ID, storeId);
                 Product product = new Product();
                 product.onCreateProduct(productData, storeId, new CreateDocumentCallback() {
                     @Override
@@ -73,6 +72,8 @@ public class AddProductsActivity extends AppCompatActivity {
                 });
 
             }
+
+            finish();
 
         });
 
@@ -108,8 +109,8 @@ public class AddProductsActivity extends AppCompatActivity {
         String inStock = Objects.requireNonNull(binding.edtInStock.getText()).toString().trim();
         String categoryName = Objects.requireNonNull(binding.edtCategory.getText()).toString().trim();
 
-        boolean isValid = true;
 
+        boolean isValid = true;
 
         if (productName.isEmpty()) {
             binding.edtTitle.setError(DEFAULT_REQUIRE);
@@ -135,16 +136,15 @@ public class AddProductsActivity extends AppCompatActivity {
             isValid = false;
         }
 
-
-
         if (isValid) {
             Map<String, Object> productData = new HashMap<>();
             productData.put(PRODUCT_NAME, productName);
             productData.put(PRODUCT_DESC, description);
-            productData.put(PRODUCT_PRICE, price);
-            productData.put(PRODUCT_INSTOCK, inStock);
+            productData.put(PRODUCT_NEW_PRICE, Double.parseDouble(price));
+            productData.put(PRODUCT_OLD_PRICE, Double.parseDouble(price));
+            productData.put(PRODUCT_INSTOCK, Integer.parseInt(inStock));
             productData.put(CATEGORY_NAME, categoryName);
-
+            productData.put(STORE_ID, storeId);
             return productData;
         } else {
             return null;
@@ -155,7 +155,8 @@ public class AddProductsActivity extends AppCompatActivity {
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
-
+        sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        storeId = sharedPreferences.getString(STORE_ID, null);
     }
 
 

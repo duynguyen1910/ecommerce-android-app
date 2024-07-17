@@ -18,9 +18,10 @@ public class keyName {
     public static final String PRODUCT_ID = "productId";
     public static final String PRODUCT_NAME = "productName";
     public static final String PRODUCT_DESC = "description";
-    public static final String PRODUCT_PRICE = "productPrice";
+    public static final String PRODUCT_NEW_PRICE = "newPrice";
+    public static final String PRODUCT_OLD_PRICE = "oldPrice";
     public static final String PRODUCT_IMAGES = "productImages";
-    public static final String PRODUCT_INSTOCK = "productInStock";
+    public static final String PRODUCT_INSTOCK = "inStock";
 
 
 

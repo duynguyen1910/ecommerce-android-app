@@ -12,7 +12,7 @@ import interfaces.GetDocumentCallback;
 public class Product extends BaseObject implements Serializable {
     private String productName;
     private String description;
-    private ArrayList<String> picUrl;
+    private ArrayList<String> productImages;
     private double oldPrice;
     private double newPrice;
     private int numberInCart;
@@ -76,12 +76,12 @@ public class Product extends BaseObject implements Serializable {
         this.description = description;
     }
 
-    public ArrayList<String> getPicUrl() {
-        return picUrl;
+    public ArrayList<String> getProductImages() {
+        return productImages;
     }
 
-    public void setPicUrl(ArrayList<String> picUrl) {
-        this.picUrl = picUrl;
+    public void setProductImages(ArrayList<String> productImages) {
+        this.productImages = productImages;
     }
 
     public double getOldPrice() {

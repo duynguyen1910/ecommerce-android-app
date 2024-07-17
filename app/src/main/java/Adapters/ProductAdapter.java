@@ -53,7 +53,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.binding.txtSaleoff.setText("-" + 40 + "%");
         holder.binding.txtRating.setText("(" + 4.5 + ")");
         holder.binding.ratingBar.setRating(4.5F);
-        Glide.with(context).load(product.getPicUrl().get(0)).into(holder.binding.imageView);
+        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

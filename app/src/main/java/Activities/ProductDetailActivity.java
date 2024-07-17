@@ -23,10 +23,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
 import Adapters.SliderAdapterForProductDetail;
-import Adapters.ViewPager2Adapter;
-import Fragments.DescriptionFragment;
-import Fragments.ReviewFragment;
-import Fragments.SoldFragment;
 import models.Product;
 import models.SliderItem;
 import models.Store;
@@ -50,8 +46,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void initSlider() {
         ArrayList<SliderItem> sliderItems = new ArrayList<>();
-        for (int i = 0; i < object.getPicUrl().size(); i++) {
-            sliderItems.add(new SliderItem(object.getPicUrl().get(i)));
+        for (int i = 0; i < object.getProductImages().size(); i++) {
+            sliderItems.add(new SliderItem(object.getProductImages().get(i)));
         }
 
         binding.viewPager2Slider.setAdapter(new SliderAdapterForProductDetail(this, sliderItems));
@@ -166,7 +162,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
-
         getWindow().setNavigationBarColor(Color.parseColor("#EFEFEF"));
         Objects.requireNonNull(getSupportActionBar()).hide();
     }
