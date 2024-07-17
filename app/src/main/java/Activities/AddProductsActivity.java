@@ -57,7 +57,7 @@ public class AddProductsActivity extends AppCompatActivity {
             productData.put(STORE_ID, storeId);
             if (productData != null) {
                 Product product = new Product();
-                product.onCreateProduct(productData, new CreateProductCallback() {
+                product.onCreateProduct(productData, storeId, new CreateProductCallback() {
                     @Override
                     public void onCreateSuccess(String successMessage) {
                         Toast.makeText(AddProductsActivity.this, successMessage, Toast.LENGTH_SHORT).show();

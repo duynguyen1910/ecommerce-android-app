@@ -209,11 +209,11 @@ public class Product implements Serializable {
     }
 
 
-    public void onCreateProduct(Map<String, Object> productData, final CreateProductCallback callback) {
-        productApi.createProductApi(productData, callback);
+    public void onCreateProduct(Map<String, Object> productData, String storeId, final CreateProductCallback callback) {
+        productApi.createProductApi(productData, storeId, callback);
     }
 
-    public void onGetStoreData(String productId, GetProductDataCallback callback){
-        productApi.getProductDataApi(productId, callback);
+    public void getProductDetailData(String storeId, String productId, GetProductDataCallback callback){
+        productApi.getProductDetailDataApi(storeId, productId, callback);
     }
 }

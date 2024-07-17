@@ -3,6 +3,7 @@ import static constants.keyName.STORE_ADDRESS;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 import static constants.keyName.STORE_OWNER_ID;
+import static constants.keyName.STORE_PRODUCTS;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.INTERNET_ERROR;
@@ -111,11 +112,12 @@ public class CreateStoreActivity extends AppCompatActivity {
                     return;
                 }
 
-                // setup thông tin cho api
+                // setup thông tin cho new store
                 Map<String, Object> storeInfo = new HashMap<>();
                 storeInfo.put(STORE_NAME, storeName);
                 storeInfo.put(STORE_ADDRESS, storeAddress);
                 storeInfo.put(STORE_OWNER_ID, userId);
+                storeInfo.put(STORE_PRODUCTS, new HashMap<>()); // một map rỗng
 
 
                 // call API

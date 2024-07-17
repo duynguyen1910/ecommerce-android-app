@@ -12,6 +12,7 @@ public class keyName {
     public static final String STORE_NAME = "storeName";
     public static final String STORE_ADDRESS = "storeAddress";
     public static final String STORE_OWNER_ID = "storeOwnerId";
+    public static final String STORE_PRODUCTS = "storeProducts";
 
     public static final String PRODUCT_ID = "productId";
     public static final String PRODUCT_TITLE = "productTitle";
