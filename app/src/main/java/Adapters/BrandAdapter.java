@@ -7,20 +7,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.stores.databinding.ItemPopularBrandBinding;
 import java.util.ArrayList;
-import models.OfficialBrand;
+import models.Brand;
 
-public class PopularBrandAdapter extends RecyclerView.Adapter<PopularBrandAdapter.ViewHolder> {
+public class BrandAdapter extends RecyclerView.Adapter<BrandAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<OfficialBrand> list;
+    private ArrayList<Brand> list;
 
-    public PopularBrandAdapter(Context context, ArrayList<OfficialBrand> list) {
+    public BrandAdapter(Context context, ArrayList<Brand> list) {
         this.context = context;
         this.list = list;
     }
 
     @NonNull
     @Override
-    public PopularBrandAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BrandAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemPopularBrandBinding binding = ItemPopularBrandBinding.inflate(LayoutInflater.from(context), parent, false);
         return new ViewHolder(binding);
     }
@@ -35,10 +35,10 @@ public class PopularBrandAdapter extends RecyclerView.Adapter<PopularBrandAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PopularBrandAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BrandAdapter.ViewHolder holder, int position) {
 
-        OfficialBrand categoryDomain = list.get(holder.getBindingAdapterPosition());
-        holder.binding.title.setText(categoryDomain.getTitle());
+        Brand categoryDomain = list.get(holder.getBindingAdapterPosition());
+        holder.binding.title.setText(categoryDomain.getBrandName());
         Glide.with(context).load(categoryDomain.getPicUrl()).into(holder.binding.image);
     }
 
