@@ -2,8 +2,10 @@ package Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -15,9 +17,10 @@ import com.example.stores.databinding.ItemPaymentBinding;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
-
 import models.CartItem;
 import models.Product;
+import Activities.DeliveryMethodActivity;
+
 
 public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHolder> {
     private final Context context;
@@ -67,6 +70,14 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
         double oldDelivery = 38000;
         holder.binding.txtOldDelivery.setText("đ" + formatter.format(oldDelivery));
         holder.binding.txtOldDelivery.setPaintFlags(holder.binding.txtOldDelivery.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+
+        holder.binding.layoutDeliveryMethod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, DeliveryMethodActivity.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
     private double getCartItemFee(CartItem cartItem) {

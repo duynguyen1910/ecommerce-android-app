@@ -2,32 +2,24 @@ package Fragments.BottomNavigation;
 
 import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.FULLNAME;
-import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.keyName.USER_ROLE;
-import static constants.toastMessage.LOGIN_SUCCESSFULLY;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.example.stores.R;
+import com.bumptech.glide.Glide;
 import com.example.stores.databinding.FragmentProfileBinding;
 
 import Activities.CartActivity;
@@ -36,46 +28,34 @@ import Activities.ActivateStoreActivity;
 import Activities.LoginActivity;
 import Activities.RegisterActivity;
 import Activities.SettingsActivity;
-import Activities.StoreOwnerActivity;
 import Activities.UpdateProfileActivity;
 import enums.UserRole;
+import interfaces.ImageCallback;
 import models.User;
 
 public class ProfileFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private FragmentProfileBinding binding;
+    private User user;
 
-    private ActivityResultLauncher<Intent> myLauncher;
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(getLayoutInflater());
 
-        initUI();
         setupEvents();
+        initUI();
         getUserInfo();
+
         return binding.getRoot();
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        myLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent intent = result.getData();
-                            if (intent != null && intent.getBooleanExtra(LOGIN_SUCCESSFULLY, false)) {
-                                getUserInfo();
-                            }
-                        }
-                    }
-                });
+    public void onResume() {
+        super.onResume();
+        getUserInfo();
     }
-
 
     private void getUserInfo() {
         sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);
@@ -93,22 +73,29 @@ public class ProfileFragment extends Fragment {
             binding.defaultLayoutRl.setVisibility(View.VISIBLE);
         }
 
-//        if(UserRole.CUSTOMER_ROLE == UserRole.fromInt(roleValue)) {
-//            binding.txtStoreName.setVisibility(View.GONE);
-//        }
-//
-//        if(UserRole.STORE_OWNER_ROLE == UserRole.fromInt(roleValue)) {
-//            binding.txtStoreName.setText("Chủ hàng");
-//        }
+        if (UserRole.fromInt(roleValue) == UserRole.CUSTOMER_ROLE) {
+            binding.txtRole.setText(UserRole.CUSTOMER_ROLE.getLabelRole());
+        }
+
+
 
         binding.txtFullname.setText(fullname);
         binding.txtPhoneNumber.setText(phoneNumber);
+        user.getUserImageUrl(userId, new ImageCallback() {
+            @Override
+            public void getImageSuccess(String downloadUri) {
+                Glide.with(getContext()).load(downloadUri).into(binding.imvAvatar);
+            }
+
+            @Override
+            public void getImageFailure(String errorMessage) {
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initUI(){
-       // Nếu đã tạo store thì đổi text của txtStore
-//        binding.txtStore.setText("Store của tôi");
-
+        user = new User();
     }
 
     private void setupEvents(){
@@ -163,8 +150,7 @@ public class ProfileFragment extends Fragment {
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                myLauncher.launch(intent);
+                startActivity(new Intent(getActivity(), LoginActivity.class));
             }
         });
 
@@ -183,8 +169,7 @@ public class ProfileFragment extends Fragment {
                 editor.clear();
                 editor.apply();
 
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                myLauncher.launch(intent);
+                startActivity(new Intent(getActivity(), LoginActivity.class));
             }
         });
     }

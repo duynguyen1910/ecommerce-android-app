@@ -2,6 +2,8 @@ package models;
 
 import static constants.keyName.USER_ROLE;
 
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -13,7 +15,9 @@ import java.util.Map;
 
 import constants.toastMessage;
 import enums.UserRole;
-import interfaces.LoginCallback;
+import interfaces.ImageCallback;
+import interfaces.UpdateCallback;
+import interfaces.UserCallback;
 import api.userApi;
 import interfaces.RegisterCallback;
 
@@ -22,6 +26,7 @@ public class User extends BaseObject {
     private String password;
     private String fullname;
     private String imageUrl;
+    private String email;
     private UserRole role;
     private userApi userApi;
 
@@ -29,12 +34,14 @@ public class User extends BaseObject {
         userApi  = new userApi();
     }
 
-    public User(String phoneNumber, String password, String fullname, String imageUrl, UserRole role) {
+    public User(String phoneNumber, String password, String fullname, String imageUrl, String email, UserRole role, api.userApi userApi) {
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.fullname = fullname;
         this.imageUrl = imageUrl;
+        this.email = email;
         this.role = role;
+        this.userApi = userApi;
     }
 
     @Override
@@ -82,6 +89,14 @@ public class User extends BaseObject {
         this.imageUrl = imageUrl;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public UserRole getRole() {
         return role;
     }
@@ -90,7 +105,8 @@ public class User extends BaseObject {
         this.role = UserRole.fromInt(role);
     }
 
-    public void onLogin(String phoneNumber, String password, final LoginCallback callback) {
+
+    public void onLogin(String phoneNumber, String password, final UserCallback callback) {
         userApi.checkUserCredentialsApi(phoneNumber, password, new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -103,10 +119,10 @@ public class User extends BaseObject {
                         int roleValue = document.getLong(USER_ROLE).intValue();
                         user.setRole(roleValue);
 
-                        callback.onLoginSuccess(user);
+                        callback.onGetUserInfoSuccess(user);
                     }
                 } else {
-                    callback.onLoginFailure(toastMessage.LOGIN_FAILED);
+                    callback.onGetUserInfoFailure(toastMessage.LOGIN_FAILED);
                 }
             }
         });
@@ -116,4 +132,19 @@ public class User extends BaseObject {
         userApi.createUserApi(newUser, callback);
     }
 
+    public void onSaveUserImage(String downloadUri, String userId) {
+        userApi.saveImageUriApi(downloadUri, userId);
+    }
+
+    public void getUserImageUrl(String userId, final ImageCallback callback) {
+        userApi.getUserImageApi(userId, callback);
+    }
+
+    public void getUserInfo(String userId, final UserCallback callback) {
+        userApi.getUserInfoApi(userId, callback);
+    }
+
+    public void updateUserInfo(String userId, Map<String, Object> userUpdates, final UpdateCallback callback) {
+        userApi.updateUserInfoApi(userId, userUpdates, callback);
+    }
 }

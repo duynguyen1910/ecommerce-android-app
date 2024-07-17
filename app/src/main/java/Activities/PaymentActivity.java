@@ -3,6 +3,7 @@ package Activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -68,6 +69,10 @@ public class PaymentActivity extends AppCompatActivity {
             intent.putExtra("invoicesMap", invoicesMap);
             startActivity(intent);
             // call API gửi order cho Người bán
+        });
+        binding.txtPaymentMethod.setOnClickListener(v -> {
+            Intent intent = new Intent(PaymentActivity.this, PaymentMethodActivity.class);
+            startActivity(intent);
         });
 
     }

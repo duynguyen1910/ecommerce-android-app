@@ -206,22 +206,23 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="#00ffffff"
-                        android:drawableStart="@drawable/ic_paid"
                         android:drawablePadding="8dp"
-                        android:drawableTint="@color/primary_color"
                         android:gravity="center_vertical"
                         android:text="Phương thức thanh toán"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        app:drawableStartCompat="@drawable/ic_paid"
+                        app:drawableTint="@color/primary_color" />
 
                     <TextView
 
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableTint="@color/darkgray"
                         android:gravity="center_vertical"
                         android:text="Thanh toán khi nhận hàng"
                         android:textColor="@color/darkgray"
-                        app:drawableEndCompat="@drawable/ic_arrow_right_24" />
+                        android:id="@+id/txtPaymentMethod"
+                        app:drawableEndCompat="@drawable/ic_arrow_right_24"
+                        app:drawableTint="@color/darkgray" />
                 </LinearLayout>
 
                 <LinearLayout

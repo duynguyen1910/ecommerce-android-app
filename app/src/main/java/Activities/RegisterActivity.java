@@ -3,8 +3,6 @@ package Activities;
 import static constants.keyName.FULLNAME;
 import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;
-import static constants.keyName.USER_ID;
-import static constants.keyName.USER_INFO;
 import static constants.keyName.USER_ROLE;
 
 import android.content.Intent;
@@ -17,7 +15,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.stores.databinding.ActivityLoginBinding;
 import com.example.stores.databinding.ActivityRegisterBinding;
 
 import java.util.HashMap;
@@ -25,7 +22,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import constants.toastMessage;
-import interfaces.LoginCallback;
 import interfaces.RegisterCallback;
 import models.User;
 import enums.UserRole;

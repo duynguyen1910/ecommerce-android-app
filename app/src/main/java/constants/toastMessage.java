@@ -8,4 +8,8 @@ public class toastMessage {
     public static final String PHONE_NUMBER_REQUIRE = "Vui lòng nhập số điện thoại";
     public static final String PASSWORD_REQUIRE = "Vui lòng nhập mật khẩu";
     public static final String FULLNAME_REQUIRE = "Vui lòng nhập họ tên";
+    public static final String IMAGE_REQUIRE = "Vui lòng chọn ảnh";
+    public static final String UPLOAD_FAILED = "Tải lên không thành công";
+    public static final String URL_NOT_FOUND = "Không tìm thấy URL";
+    public static final String UPDATE_SUCCESSFULLY = "Cập nhật thành công";
 }

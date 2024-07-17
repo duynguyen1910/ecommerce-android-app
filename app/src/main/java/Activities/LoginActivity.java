@@ -19,7 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.stores.databinding.ActivityLoginBinding;
 import java.util.Objects;
 
-import interfaces.LoginCallback;
+import interfaces.UserCallback;
 import models.User;
 import constants.toastMessage;
 
@@ -71,9 +71,9 @@ public class LoginActivity extends AppCompatActivity {
 
         User user = new User();
 
-       user.onLogin(phoneNumber, password, new LoginCallback() {
+       user.onLogin(phoneNumber, password, new UserCallback() {
            @Override
-           public void onLoginSuccess(User user) {
+           public void onGetUserInfoSuccess(User user) {
                binding.progressBar.setVisibility(View.GONE);
                Toast.makeText(LoginActivity.this, LOGIN_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
 
@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                finish();
            }
            @Override
-           public void onLoginFailure(String errorMessage) {
+           public void onGetUserInfoFailure(String errorMessage) {
                binding.progressBar.setVisibility(View.GONE);
                Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
            }
