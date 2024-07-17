@@ -20,7 +20,7 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
-            android:name="Activities.SplashScreen"
+            android:name="Activities.SelectCategoryActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,6 +28,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="Activities.SplashScreen"
+            android:exported="false" />
         <activity
             android:name="Activities.RegisterActivity"
             android:exported="false" />

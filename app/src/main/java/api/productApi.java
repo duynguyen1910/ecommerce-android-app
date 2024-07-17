@@ -1,7 +1,6 @@
 package api;
 
 import static android.content.ContentValues.TAG;
-import static constants.collectionName.PRODUCT_COLLECTION;
 import static constants.collectionName.STORE_COLLECTION;
 import static constants.collectionName.USER_COLLECTION;
 import static constants.keyName.STORE_PRODUCTS;

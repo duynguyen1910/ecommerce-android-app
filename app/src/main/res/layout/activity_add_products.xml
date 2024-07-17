@@ -112,9 +112,9 @@
                     app:counterEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtTitle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/edtTitle"
                         android:background="@drawable/custom_edittext_no_border"
                         android:gravity="center_vertical"
                         android:hint="Nhập tên sản phẩm"
@@ -151,9 +151,9 @@
                     app:counterEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtDescription"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/edtDescription"
                         android:background="@drawable/custom_edittext_no_border"
                         android:gravity="center_vertical"
                         android:hint="Nhập mô tả sản phẩm"
@@ -170,22 +170,24 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="16dp">
+                android:paddingHorizontal="16dp">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginEnd="8dp"
                     android:src="@drawable/baseline_category_24"
                     app:tint="@color/darkgray" />
 
                 <TextView
+                    android:id="@+id/txtCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
+                    android:paddingVertical="16dp"
                     android:text="Chọn ngành hàng*"
                     android:textColor="@color/black"
                     app:drawableEndCompat="@drawable/ic_arrow_right_24" />
@@ -218,13 +220,13 @@
                     android:textColor="@color/black" />
 
                 <EditText
+                    android:id="@+id/edtPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@color/white"
                     android:gravity="end"
                     android:hint="0 đ"
-                    android:id="@+id/edtPrice"
                     android:inputType="number"
                     android:paddingVertical="16dp"
                     android:textSize="14sp" />
@@ -256,12 +258,12 @@
                     android:textColor="@color/black" />
 
                 <EditText
+                    android:id="@+id/edtInStock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/white"
                     android:hint="0"
-                    android:id="@+id/edtInStock"
                     android:inputType="number"
                     android:paddingVertical="16dp"
                     android:textAlignment="textEnd"

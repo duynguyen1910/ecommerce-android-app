@@ -2,10 +2,15 @@ package models;
 
 import java.io.Serializable;
 
+import api.categoryApi;
+import interfaces.GetCategoryCollectionCallback;
+
 public class Category extends BaseObject implements Serializable {
     private String categoryName;
+    private api.categoryApi categoryApi;
 
     public Category() {
+        categoryApi = new categoryApi();
     }
 
     public String getCategoryName() {
@@ -30,4 +35,10 @@ public class Category extends BaseObject implements Serializable {
         super.baseId = categoryId;
 
     }
+
+    public void getCategoryCollection(GetCategoryCollectionCallback callback){
+       categoryApi.getCategoryCollectionApi(callback);
+    }
+
+
 }
