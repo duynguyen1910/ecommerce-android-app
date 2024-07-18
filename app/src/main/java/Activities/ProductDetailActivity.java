@@ -1,6 +1,16 @@
 package Activities;
 
+import static constants.keyName.PRODUCT_DESC;
+import static constants.keyName.PRODUCT_NAME;
+import static constants.keyName.PRODUCT_NEW_PRICE;
+import static constants.keyName.PRODUCT_OLD_PRICE;
+import static constants.keyName.STORE_ID;
+import static constants.keyName.STORE_NAME;
+import static constants.keyName.USER_INFO;
+import static constants.toastMessage.INTERNET_ERROR;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -9,6 +19,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,15 +32,16 @@ import com.example.stores.databinding.LayoutProductDetailBinding;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
+
 import Adapters.SliderAdapterForProductDetail;
+import interfaces.GetDocumentCallback;
 import models.Product;
 import models.SliderItem;
 import models.Store;
 
 public class ProductDetailActivity extends AppCompatActivity {
-
-    private Product object;
 
     ActivityProductDetailBinding binding;
 
@@ -39,76 +51,62 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding = ActivityProductDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initUI();
-        getBundles();
-        initSlider();
+        setupProductInfo();
+        setupStoreInfo();
         setupEvents();
     }
 
-    private void initSlider() {
-        ArrayList<SliderItem> sliderItems = new ArrayList<>();
-        for (int i = 0; i < object.getProductImages().size(); i++) {
-            sliderItems.add(new SliderItem(object.getProductImages().get(i)));
-        }
 
-        binding.viewPager2Slider.setAdapter(new SliderAdapterForProductDetail(this, sliderItems));
-        binding.viewPager2Slider.setOffscreenPageLimit(2);
-        binding.indicator.attachTo(binding.viewPager2Slider);
+    private void setupProductInfo() {
+        binding.progressBarProduct.setVisibility(View.VISIBLE);
+        SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        String storeId = sharedPreferences.getString(STORE_ID, null);
+        String productId = getIntent().getStringExtra("productId");
+        if (productId != null) {
 
+            Product product = new Product();
+            product.getProductDetail(storeId, productId, new GetDocumentCallback() {
+                @Override
+                public void onGetDataSuccess(Map<String, Object> data) {
+                    binding.progressBarProduct.setVisibility(View.GONE);
+                    // setup product information
+                    binding.txtTitle.setText((CharSequence) data.get(PRODUCT_NAME));
+                    NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+                    String formattedOldPrice = formatter.format(data.get(PRODUCT_OLD_PRICE));
+                    binding.txtOldPrice.setText("đ" + formattedOldPrice);
+                    binding.txtOldPrice.setPaintFlags(binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-
-    }
-
-    private void getBundles() {
-
-        ArrayList<Store> listStore = new ArrayList<>();
-        listStore.add(new Store("1", "Zozo_Unisex", "TP. Hồ Chí Minh", "https://down-bs-vn.img.susercontent.com/fd234f3899f07b72e9c5e5e26f9d997d_tn.webp"));
-        listStore.add(new Store("2", "LOVITO OFFICIAL STORE", "TP. Hồ Chí Minh" , "https://down-bs-vn.img.susercontent.com/f87c39a4a3702cd4cb149cacd8114a0b_tn.webp"));
-        listStore.add(new Store("3", "SANDAshop.vn", "Hà Nội", "https://down-bs-vn.img.susercontent.com/ac5556f336029ae92a1058195f2d4e56_tn.webp"));
-
-        object = (Product) getIntent().getSerializableExtra("object");
-        if (object != null){
-
-            // setup product information
-            binding.txtTitle.setText(object.getProductName());
-            NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-            String formattedOldPrice = formatter.format(object.getOldPrice());
-            binding.txtOldPrice.setText("đ" + formattedOldPrice);
-            binding.txtOldPrice.setPaintFlags(binding.txtOldPrice.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
-            String formattedPrice = formatter.format(object.getNewPrice());
-            binding.txtPrice.setText(formattedPrice);
-            binding.ratingBar.setRating(4.5F);
-            binding.txtRating.setText(4.5 + " / 5");
-            binding.txtSold.setText("Đã bán " + 200);
-//            binding.txtProdctDescription.setText(object.getDescription());
-
-            // setup store information
-
-            Store store = null;
-            for (Store s: listStore){
-//                if (s.getStoreID() == object.getStoreID()){
-//                    store = s;
-//                    break;
-//                }
-            }
-            binding.txtStoreName.setText(store.getStoreName());
-            binding.txtStoreAddress.setText(store.getStoreAddress());
-
-            try {
-
-                Glide.with(this).load(store.getStoreImage()).into(binding.imvStoreImage);
-            } catch (Exception exception) {
-                Log.e("ERROR", "Không tải được hình ảnh", exception);
-            }
+                    String formattedNewPrice = formatter.format(data.get(PRODUCT_NEW_PRICE));
+                    binding.txtNewPrice.setText(formattedNewPrice);
+                    binding.ratingBar.setRating(4.5F);
+                    binding.txtRating.setText(4.5 + " / 5");
+                    binding.txtSold.setText("Đã bán " + 200);
+                    binding.txtProdctDescription.setText((CharSequence) data.get(PRODUCT_DESC));
 
 
+                    // setup productImages
+//                    ArrayList<SliderItem> sliderItems = new ArrayList<>();
+//                    for (int i = 0; i < data.getProductImages().size(); i++) {
+//                        sliderItems.add(new SliderItem(object.getProductImages().get(i)));
+//                    }
+//
+//                    binding.viewPager2Slider.setAdapter(new SliderAdapterForProductDetail(ProductDetailActivity.this, sliderItems));
+//                    binding.viewPager2Slider.setOffscreenPageLimit(2);
+//                    binding.indicator.attachTo(binding.viewPager2Slider);
+                }
+
+                @Override
+                public void onGetDataFailure(String errorMessage) {
+                    Toast.makeText(ProductDetailActivity.this, INTERNET_ERROR, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
 
     }
 
-    private void setupEvents(){
+    private void setupEvents() {
         binding.btnAddToCart.setOnClickListener(v -> {
-
 
         });
         binding.imageBack.setOnClickListener(v -> finish());
@@ -118,12 +116,48 @@ public class ProductDetailActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        binding.txtProductDetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popUpProductDetailDialog();
-            }
+        binding.txtProductDetail.setOnClickListener(v -> popUpProductDetailDialog());
+
+        binding.btnViewStore.setOnClickListener(v -> {
+            Intent intent = new Intent(ProductDetailActivity.this, ViewMyStoreActivity.class);
+            startActivity(intent);
         });
+    }
+
+
+    private void initUI() {
+        getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
+        getWindow().setNavigationBarColor(Color.parseColor("#EFEFEF"));
+        Objects.requireNonNull(getSupportActionBar()).hide();
+    }
+
+    private void setupStoreInfo() {
+        binding.progressBarStore.setVisibility(View.VISIBLE);
+        SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        String storeId = sharedPreferences.getString(STORE_ID, null);
+        // lấy thông tin avatar, invoice
+
+        if (storeId != null) {
+            Store store = new Store();
+            store.onGetStoreData(storeId, new GetDocumentCallback() {
+                @Override
+                public void onGetDataSuccess(Map<String, Object> data) {
+                    binding.progressBarStore.setVisibility(View.GONE);
+                    binding.txtStoreName.setText((CharSequence) data.get(STORE_NAME));
+
+                    // set up UI avatar, invoice
+
+                }
+
+                @Override
+                public void onGetDataFailure(String errorMessage) {
+                    Toast.makeText(ProductDetailActivity.this, "Uiii, lỗi mạng rồi :(((", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+        }
+
     }
 
     private void popUpProductDetailDialog() {
@@ -155,14 +189,5 @@ public class ProductDetailActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-    }
-
-
-
-
-    private void initUI() {
-        getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
-        getWindow().setNavigationBarColor(Color.parseColor("#EFEFEF"));
-        Objects.requireNonNull(getSupportActionBar()).hide();
     }
 }

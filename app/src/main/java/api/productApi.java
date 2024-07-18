@@ -2,6 +2,7 @@ package api;
 
 import static android.content.ContentValues.TAG;
 import static constants.collectionName.STORE_COLLECTION;
+import static constants.collectionName.USER_COLLECTION;
 import static constants.keyName.PRODUCTS;
 
 import android.util.Log;
@@ -26,6 +27,7 @@ import constants.toastMessage;
 import interfaces.CreateDocumentCallback;
 import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
+import interfaces.UpdateDocumentCallback;
 import models.Product;
 
 public class productApi {
@@ -46,7 +48,7 @@ public class productApi {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        callback.onCreateSuccess(toastMessage.CREATE_PRODUCT_SUCCESSFULLY);
+                        callback.onCreateSuccess(documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -77,6 +79,13 @@ public class productApi {
         });
 
     }
+    public void updateProductApi(Map<String, Object> updateData, String storeId, String productId, UpdateDocumentCallback callback) {
+        DocumentReference productRef = db.collection(STORE_COLLECTION).document(storeId).collection(PRODUCTS).document(productId);
+        productRef.update(updateData)
+                .addOnSuccessListener(unused -> callback.onUpdateSuccess())
+                .addOnFailureListener(e -> Log.w("Firestore", "Error updating user's STORE_ID.", e));
+
+    }
 
     public void getProductsCollectionApi(String storeId, final GetCollectionCallback<Product> callback) {
         ArrayList<Product> products = new ArrayList<>();
@@ -86,8 +95,10 @@ public class productApi {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Product category = document.toObject(Product.class);
-                        products.add(category);
+                        Product product = document.toObject(Product.class);
+                        String id = document.getId();
+                        product.setBaseId(id);
+                        products.add(product);
                     }
                     callback.onGetDataSuccess(products);
                 } else {
@@ -95,6 +106,6 @@ public class productApi {
                 }
             }
         });
-
     }
+
 }

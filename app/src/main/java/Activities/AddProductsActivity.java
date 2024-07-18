@@ -2,12 +2,14 @@ package Activities;
 
 import static constants.keyName.CATEGORY_NAME;
 import static constants.keyName.PRODUCT_DESC;
+import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
 import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
+import static constants.toastMessage.CREATE_PRODUCT_SUCCESSFULLY;
 import static constants.toastMessage.DEFAULT_REQUIRE;
 
 import android.content.Intent;
@@ -27,6 +29,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import interfaces.CreateDocumentCallback;
+import interfaces.UpdateDocumentCallback;
 import models.Product;
 
 public class AddProductsActivity extends AppCompatActivity {
@@ -59,9 +62,8 @@ public class AddProductsActivity extends AppCompatActivity {
                 Product product = new Product();
                 product.onCreateProduct(productData, storeId, new CreateDocumentCallback() {
                     @Override
-                    public void onCreateSuccess(String successMessage) {
-                        Toast.makeText(AddProductsActivity.this, successMessage, Toast.LENGTH_SHORT).show();
-
+                    public void onCreateSuccess(String documentId) {
+                        Toast.makeText(AddProductsActivity.this, CREATE_PRODUCT_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -69,7 +71,6 @@ public class AddProductsActivity extends AppCompatActivity {
                         Toast.makeText(AddProductsActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
-
             }
 
             finish();
@@ -95,13 +96,10 @@ public class AddProductsActivity extends AppCompatActivity {
                             binding.edtCategory.setText(data);
                         }
                     }
-
-
                 }
             });
 
     private Map<String, Object> validateForm() {
-
         String productName = Objects.requireNonNull(binding.edtTitle.getText()).toString().trim();
         String description = Objects.requireNonNull(binding.edtDescription.getText()).toString().trim();
         String price = Objects.requireNonNull(binding.edtPrice.getText()).toString().trim();

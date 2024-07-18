@@ -1,5 +1,12 @@
 package models;
 
+import static constants.collectionName.STORE_COLLECTION;
+import static constants.keyName.PRODUCTS;
+
+import android.util.Log;
+
+import com.google.firebase.firestore.DocumentReference;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
@@ -8,6 +15,7 @@ import api.productApi;
 import interfaces.CreateDocumentCallback;
 import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
+import interfaces.UpdateDocumentCallback;
 
 public class Product extends BaseObject implements Serializable {
     private String productName;
@@ -121,17 +129,23 @@ public class Product extends BaseObject implements Serializable {
         productApi.getProductDetailApi(storeId, productId, callback);
     }
 
+
+    public void updateProduct(Map<String, Object> updateData, String storeId, String productId, UpdateDocumentCallback callback) {
+       productApi.updateProductApi(updateData, storeId, productId, callback);
+    }
+
+
     public void getProductsCollection(String storeId, final GetCollectionCallback<Product> callback){
         productApi.getProductsCollectionApi(storeId, callback);
     }
 
     @Override
-    protected String getBaseId() {
+    public String getBaseId() {
         return super.baseId;
     }
 
     @Override
-    protected void setBaseId(String productId) {
+    public void setBaseId(String productId) {
         super.baseId = productId;
 
     }

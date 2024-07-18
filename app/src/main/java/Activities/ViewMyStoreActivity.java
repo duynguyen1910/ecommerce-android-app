@@ -53,10 +53,10 @@ public class ViewMyStoreActivity extends AppCompatActivity {
 
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
-        binding.btnDecorateMyStore.setOnClickListener(v -> {
-            Intent intent = new Intent(ViewMyStoreActivity.this, DecorateMyStoreActivity.class);
-            startActivity(intent);
-        });
+//        binding.btnDecorateMyStore.setOnClickListener(v -> {
+//            Intent intent = new Intent(ViewMyStoreActivity.this, DecorateMyStoreActivity.class);
+//            startActivity(intent);
+//        });
     }
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));

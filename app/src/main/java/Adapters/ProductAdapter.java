@@ -17,7 +17,7 @@ import Activities.ProductDetailActivity;
 import models.Product;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
-    private Context context;
+    private final Context context;
     ArrayList<Product> list;
 
     public ProductAdapter(Context context, ArrayList<Product> list) {
@@ -60,9 +60,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(context, ProductDetailActivity.class);
-//                intent.putExtra("object", product);
-//                context.startActivity(intent);
+                Intent intent = new Intent(context, ProductDetailActivity.class);
+                // truyền productId
+                intent.putExtra("productId", product.getBaseId());
+                context.startActivity(intent);
             }
         });
     }
