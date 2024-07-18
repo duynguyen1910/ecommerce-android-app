@@ -30,13 +30,10 @@ public class storeApi {
     public void createStoreApi(Map<String, Object> newStore, final CreateDocumentCallback callback) {
         db.collection(STORE_COLLECTION)
                 .add(newStore)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
+                .addOnSuccessListener(documentReference -> {
 
-                        // documentReference.getId() trong trường hợp này là storeId
-                        callback.onCreateSuccess(documentReference.getId());
-                    }
+                    // documentReference.getId() trong trường hợp này là storeId
+                    callback.onCreateSuccess(documentReference.getId());
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -49,19 +46,16 @@ public class storeApi {
 
     public void getStoreDataApi(String storeId, GetDocumentCallback callback){
         DocumentReference docRef = db.collection(STORE_COLLECTION).document(storeId);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        callback.onGetDataSuccess(document.getData());
-                    } else {
-                        callback.onGetDataFailure(toastMessage.REGISTER_FAILED);
-                    }
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    callback.onGetDataSuccess(document.getData());
                 } else {
-                    Log.d(TAG, "get failed with ", task.getException());
+                    callback.onGetDataFailure(toastMessage.REGISTER_FAILED);
                 }
+            } else {
+                Log.d(TAG, "get failed with ", task.getException());
             }
         });
 

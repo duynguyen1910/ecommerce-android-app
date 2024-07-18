@@ -12,15 +12,17 @@ import interfaces.GetDocumentCallback;
 public class Product extends BaseObject implements Serializable {
     private String productName;
     private String description;
-    private ArrayList<String> productImages;
-    private double oldPrice;
     private double newPrice;
-    private int numberInCart;
-    private boolean checkedStatus;
+    private double oldPrice;
     private int inStock;
-    private final api.productApi productApi;
     private String categoryName;
     private String storeId;
+    private int numberInCart;
+    private boolean checkedStatus;
+    private final api.productApi productApi;
+    private ArrayList<String> productImages;
+
+
     public Product() {
         productApi = new productApi();
     }

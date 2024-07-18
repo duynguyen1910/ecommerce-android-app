@@ -15,9 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-
-import com.example.stores.R;
 import com.example.stores.databinding.FragmentProductsInStockBinding;
 
 import java.util.ArrayList;
@@ -28,7 +25,6 @@ import models.Product;
 
 public class ProductsInStockFragment extends Fragment {
     FragmentProductsInStockBinding binding;
-    private SharedPreferences sharedPreferences;
 
     @Nullable
     @Override
@@ -46,7 +42,7 @@ public class ProductsInStockFragment extends Fragment {
 
     private void initProducts() {
         binding.progressBar.setVisibility(View.VISIBLE);
-        sharedPreferences = requireActivity().getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(USER_INFO, MODE_PRIVATE);
         String storeId = sharedPreferences.getString(STORE_ID, null);
         Product product = new Product();
         product.getProductsCollection(storeId, new GetCollectionCallback<Product>() {

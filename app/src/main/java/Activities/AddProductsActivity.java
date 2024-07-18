@@ -32,7 +32,6 @@ import models.Product;
 public class AddProductsActivity extends AppCompatActivity {
 
     ActivityAddProductsBinding binding;
-    private SharedPreferences sharedPreferences;
     String storeId;
 
     @Override
@@ -155,7 +154,7 @@ public class AddProductsActivity extends AppCompatActivity {
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
-        sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
         storeId = sharedPreferences.getString(STORE_ID, null);
     }
 

@@ -24,7 +24,6 @@ import models.Store;
 public class StoreOwnerActivity extends AppCompatActivity {
 
     ActivityStoreOwnerBinding binding;
-    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +56,7 @@ public class StoreOwnerActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         binding.progressBarStoreName.setVisibility(View.VISIBLE);
-        sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
 
 
         String storeId = sharedPreferences.getString(STORE_ID, null);

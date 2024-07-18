@@ -48,18 +48,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         String formattedPrice = formatter.format(product.getNewPrice());
 
+        if (product.getInStock() == 0){
+            holder.binding.layoutOutOfStock.setVisibility(View.VISIBLE);
+        }
         holder.binding.txtPrice.setText("đ" + formattedPrice);
         holder.binding.txtSold.setText("Đã bán " + 200);
         holder.binding.txtSaleoff.setText("-" + 40 + "%");
         holder.binding.txtRating.setText("(" + 4.5 + ")");
         holder.binding.ratingBar.setRating(4.5F);
-        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
+//        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ProductDetailActivity.class);
-                intent.putExtra("object", product);
-                context.startActivity(intent);
+//                Intent intent = new Intent(context, ProductDetailActivity.class);
+//                intent.putExtra("object", product);
+//                context.startActivity(intent);
             }
         });
     }

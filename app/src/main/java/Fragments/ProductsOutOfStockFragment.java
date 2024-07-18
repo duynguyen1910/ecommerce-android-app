@@ -25,7 +25,7 @@ import models.Product;
 
 public class ProductsOutOfStockFragment extends Fragment {
     FragmentProductsOutOfStockBinding binding;
-    private SharedPreferences sharedPreferences;
+
     @Nullable
     @Override
 
@@ -43,7 +43,7 @@ public class ProductsOutOfStockFragment extends Fragment {
 
     private void initProducts() {
         binding.progressBar.setVisibility(View.VISIBLE);
-        sharedPreferences = requireActivity().getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(USER_INFO, MODE_PRIVATE);
         String storeId = sharedPreferences.getString(STORE_ID, null);
         Product product = new Product();
         product.getProductsCollection(storeId, new GetCollectionCallback<Product>() {
