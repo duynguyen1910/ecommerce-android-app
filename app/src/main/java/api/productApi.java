@@ -20,7 +20,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import constants.toastMessage;
@@ -29,8 +31,9 @@ import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
 import interfaces.UpdateDocumentCallback;
 import models.Product;
+import models.Store;
 
-public class productApi {
+public class productApi{
     private FirebaseFirestore db;
 
     public productApi() {
@@ -79,6 +82,7 @@ public class productApi {
         });
 
     }
+
     public void updateProductApi(Map<String, Object> updateData, String storeId, String productId, UpdateDocumentCallback callback) {
         DocumentReference productRef = db.collection(STORE_COLLECTION).document(storeId).collection(PRODUCTS).document(productId);
         productRef.update(updateData)
@@ -107,5 +111,41 @@ public class productApi {
             }
         });
     }
+
+    public void getAllProductsApi(final GetCollectionCallback<Product> callback) {
+        CollectionReference storeRef = db.collection(STORE_COLLECTION);
+        storeRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    ArrayList<Product> result = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String storeId = document.getId();
+                        CollectionReference productRef = storeRef.document(storeId).collection(PRODUCTS);
+                        productRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot productDoc : task.getResult()) {
+                                        Product product = productDoc.toObject(Product.class);
+                                        String id = productDoc.getId();
+                                        product.setBaseId(id);
+                                        result.add(product);
+                                    }
+                                    callback.onGetDataSuccess(result);
+                                } else {
+                                    callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
+                                }
+                            }
+                        });
+                    }
+                    callback.onGetDataSuccess(result);
+                } else {
+                    callback.onGetDataFailure("Lấy thông tin cửa hàng thất bại");
+                }
+            }
+        });
+    }
+
 
 }

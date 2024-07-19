@@ -1,6 +1,8 @@
 package models;
 
-public abstract class BaseObject {
+import java.io.Serializable;
+
+public abstract class BaseObject{
     protected String baseId;
 
     /**

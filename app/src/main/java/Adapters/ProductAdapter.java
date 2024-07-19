@@ -1,6 +1,7 @@
 package Adapters;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,8 +62,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ProductDetailActivity.class);
-                // truyền productId
-                intent.putExtra("productId", product.getBaseId());
+                // truyền productId, storeId
+                Bundle bundle = new Bundle();
+
+                bundle.putString("productId", product.getBaseId());
+                bundle.putString("storeId", product.getStoreId());
+                intent.putExtras(bundle);
                 context.startActivity(intent);
             }
         });

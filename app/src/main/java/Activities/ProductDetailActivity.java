@@ -4,37 +4,27 @@ import static constants.keyName.PRODUCT_DESC;
 import static constants.keyName.PRODUCT_NAME;
 import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
-import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
-import static constants.keyName.USER_INFO;
 import static constants.toastMessage.INTERNET_ERROR;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.bumptech.glide.Glide;
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityProductDetailBinding;
 import com.example.stores.databinding.LayoutProductDetailBinding;
-
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-
 import Adapters.SliderAdapterForProductDetail;
 import interfaces.GetDocumentCallback;
 import models.Product;
@@ -44,31 +34,41 @@ import models.Store;
 public class ProductDetailActivity extends AppCompatActivity {
 
     ActivityProductDetailBinding binding;
-
+    private String productId;
+    private String storeId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityProductDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initUI();
+        getBundle();
         setupProductInfo();
         setupStoreInfo();
+
         setupEvents();
+    }
+
+    private void getBundle() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            productId = bundle.getString("productId", null);
+            storeId = bundle.getString("storeId", null);
+        }
     }
 
 
     private void setupProductInfo() {
+        binding.layoutProductsInfo.setVisibility(View.GONE);
         binding.progressBarProduct.setVisibility(View.VISIBLE);
-        SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
-        String storeId = sharedPreferences.getString(STORE_ID, null);
-        String productId = getIntent().getStringExtra("productId");
-        if (productId != null) {
 
+        if (storeId != null && productId != null) {
             Product product = new Product();
             product.getProductDetail(storeId, productId, new GetDocumentCallback() {
                 @Override
                 public void onGetDataSuccess(Map<String, Object> data) {
                     binding.progressBarProduct.setVisibility(View.GONE);
+                    binding.layoutProductsInfo.setVisibility(View.VISIBLE);
                     // setup product information
                     binding.txtTitle.setText((CharSequence) data.get(PRODUCT_NAME));
                     NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
@@ -100,11 +100,33 @@ public class ProductDetailActivity extends AppCompatActivity {
                     Toast.makeText(ProductDetailActivity.this, INTERNET_ERROR, Toast.LENGTH_SHORT).show();
                 }
             });
+
         }
-
-
     }
 
+
+    private void setupStoreInfo() {
+        binding.progressBarStore.setVisibility(View.VISIBLE);
+        // lấy thông tin avatar, invoice
+        if (storeId != null) {
+            Store store = new Store();
+            store.onGetStoreData(storeId, new GetDocumentCallback() {
+                @Override
+                public void onGetDataSuccess(Map<String, Object> data) {
+                    binding.progressBarStore.setVisibility(View.GONE);
+                    binding.txtStoreName.setText((CharSequence) data.get(STORE_NAME));
+
+                    // set up UI avatar, invoice
+
+                }
+
+                @Override
+                public void onGetDataFailure(String errorMessage) {
+                    Toast.makeText(ProductDetailActivity.this, "Uiii, lỗi mạng rồi :(((", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
     private void setupEvents() {
         binding.btnAddToCart.setOnClickListener(v -> {
 
@@ -124,42 +146,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
     }
 
-
-    private void initUI() {
-        getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
-        getWindow().setNavigationBarColor(Color.parseColor("#EFEFEF"));
-        Objects.requireNonNull(getSupportActionBar()).hide();
-    }
-
-    private void setupStoreInfo() {
-        binding.progressBarStore.setVisibility(View.VISIBLE);
-        SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
-        String storeId = sharedPreferences.getString(STORE_ID, null);
-        // lấy thông tin avatar, invoice
-
-        if (storeId != null) {
-            Store store = new Store();
-            store.onGetStoreData(storeId, new GetDocumentCallback() {
-                @Override
-                public void onGetDataSuccess(Map<String, Object> data) {
-                    binding.progressBarStore.setVisibility(View.GONE);
-                    binding.txtStoreName.setText((CharSequence) data.get(STORE_NAME));
-
-                    // set up UI avatar, invoice
-
-                }
-
-                @Override
-                public void onGetDataFailure(String errorMessage) {
-                    Toast.makeText(ProductDetailActivity.this, "Uiii, lỗi mạng rồi :(((", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-
-        }
-
-    }
-
     private void popUpProductDetailDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutProductDetailBinding detailBinding = LayoutProductDetailBinding.inflate(getLayoutInflater());
@@ -177,17 +163,12 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         }
 
-        detailBinding.imageCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        detailBinding.btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        detailBinding.imageCancel.setOnClickListener(v -> dialog.dismiss());
+        detailBinding.btnClose.setOnClickListener(v -> dialog.dismiss());
+    }
+    private void initUI() {
+        getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
+        getWindow().setNavigationBarColor(Color.parseColor("#EFEFEF"));
+        Objects.requireNonNull(getSupportActionBar()).hide();
     }
 }

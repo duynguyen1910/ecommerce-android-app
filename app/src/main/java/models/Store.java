@@ -1,6 +1,7 @@
 package models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Map;
 
 import api.storeApi;
@@ -13,6 +14,7 @@ public class Store extends BaseObject implements Serializable {
     private String storeImage;
     private int ownerID;
     private storeApi storeApi;
+    private ArrayList<Product> products;
 
     public Store() {
         storeApi = new storeApi();
@@ -35,6 +37,14 @@ public class Store extends BaseObject implements Serializable {
         validateBaseId(storeId);
 
         super.baseId = storeId;
+    }
+
+    public ArrayList<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(ArrayList<Product> products) {
+        this.products = products;
     }
 
     public String getStoreImage() {

@@ -3,6 +3,7 @@ package models;
 import static constants.collectionName.STORE_COLLECTION;
 import static constants.keyName.PRODUCTS;
 
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
@@ -29,6 +30,7 @@ public class Product extends BaseObject implements Serializable {
     private boolean checkedStatus;
     private final api.productApi productApi;
     private ArrayList<String> productImages;
+
 
 
     public Product() {
@@ -137,6 +139,10 @@ public class Product extends BaseObject implements Serializable {
 
     public void getProductsCollection(String storeId, final GetCollectionCallback<Product> callback){
         productApi.getProductsCollectionApi(storeId, callback);
+    }
+
+    public void getAllProducts(final GetCollectionCallback<Product> callback) {
+        productApi.getAllProductsApi(callback);
     }
 
     @Override
