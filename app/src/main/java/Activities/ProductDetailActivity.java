@@ -8,6 +8,7 @@ import static constants.keyName.PRODUCT_OLD_PRICE;
 import static constants.keyName.STORE_NAME;
 import static constants.toastMessage.INTERNET_ERROR;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,6 +18,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
@@ -26,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityProductDetailBinding;
+import com.example.stores.databinding.DialogProductImageExpandBinding;
 import com.example.stores.databinding.DialogSelectVariantBinding;
 import com.example.stores.databinding.LayoutProductDetailBinding;
 
@@ -226,6 +229,13 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             }
         });
+
+        variantBinding.imageExpand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popUpProductImageExpandDialog();
+            }
+        });
         variantBinding.btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -260,6 +270,26 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         });
     }
+
+
+    private void popUpProductImageExpandDialog() {
+        // Tạo dialog mới
+        Dialog dialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        DialogProductImageExpandBinding dialogBinding = DialogProductImageExpandBinding.inflate(getLayoutInflater());
+        dialog.setContentView(dialogBinding.getRoot());
+
+        // Hiển thị dialog
+        dialog.show();
+
+        // Tạo hiệu ứng slide up
+        Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+        dialogBinding.getRoot().startAnimation(slideUp);
+
+        // Đặt sự kiện click cho nút đóng dialog
+        dialogBinding.imageClose.setOnClickListener(v -> dialog.dismiss());
+    }
+
+
 
     private void popUpProductDetailDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
