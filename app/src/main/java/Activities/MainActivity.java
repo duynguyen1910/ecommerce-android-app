@@ -51,14 +51,7 @@ public class MainActivity extends AppCompatActivity {
                         .beginTransaction()
                         .replace(binding.frameLayout.getId(), fragment, tag)
                         .commit();
-                if (item.getItemId() == R.id.profileMenu) {
-                    getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
-                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); // Đặt văn bản và biểu tượng thành màu đen
-                } else {
-                    // Đặt màu thanh trạng thái và biểu tượng mặc định khi không phải là profileMenu
-                    getWindow().setStatusBarColor(Color.parseColor("#FFFFFF"));
-                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                }
+
                 return true;
             }
             return false;

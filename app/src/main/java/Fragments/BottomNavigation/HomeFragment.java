@@ -21,6 +21,7 @@ import com.example.stores.databinding.FragmentHomeBinding;
 import java.util.ArrayList;
 
 import Activities.CartActivity;
+import Activities.SearchActivity;
 import Activities.StatisticsActivity;
 import Adapters.BrandAdapter;
 import Adapters.ProductAdapter;
@@ -122,6 +123,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(requireActivity(), StatisticsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(requireActivity(), SearchActivity.class);
                 startActivity(intent);
             }
         });
