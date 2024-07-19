@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="đ123.000"
-                    android:textColor="@color/darkgray"
+                    android:textColor="@color/green_persian"
                     android:textSize="16sp" />
 
 

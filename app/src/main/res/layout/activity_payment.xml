@@ -109,7 +109,7 @@
                     android:id="@+id/recyclerViewPayment"
                     android:layout_width="match_parent"
                     android:background="@color/lightgray"
-                    android:minHeight="300dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
             </LinearLayout>

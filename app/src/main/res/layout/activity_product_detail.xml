@@ -157,6 +157,7 @@
                                 android:textSize="14sp" />
                         </LinearLayout>
                     </LinearLayout>
+
                     <ProgressBar
                         android:id="@+id/progressBarProduct"
                         android:layout_width="match_parent"

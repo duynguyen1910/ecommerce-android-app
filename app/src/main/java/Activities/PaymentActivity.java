@@ -49,7 +49,6 @@ public class PaymentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityPaymentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         setupUI();
         getBundles();
         setupEvents();
@@ -63,7 +62,6 @@ public class PaymentActivity extends AppCompatActivity {
         if (intent != null) {
             payment = (ArrayList<CartItem>) getIntent().getSerializableExtra("payment");
 
-            Toast.makeText(this, "cartSize" + payment.size(), Toast.LENGTH_SHORT).show();
             PaymentAdapter paymentAdapter = new PaymentAdapter(PaymentActivity.this, payment);
             binding.recyclerViewPayment.setAdapter(paymentAdapter);
             binding.recyclerViewPayment.setLayoutManager(new LinearLayoutManager(PaymentActivity.this, LinearLayoutManager.VERTICAL, false));

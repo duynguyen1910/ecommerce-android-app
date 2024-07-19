@@ -17,6 +17,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -24,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityProductDetailBinding;
+import com.example.stores.databinding.DialogSelectVariantBinding;
 import com.example.stores.databinding.LayoutProductDetailBinding;
 
 import java.text.NumberFormat;
@@ -79,13 +82,6 @@ public class ProductDetailActivity extends AppCompatActivity {
             product.getProductDetail(storeId, productId, new GetDocumentCallback() {
                 @Override
                 public void onGetDataSuccess(Map<String, Object> productDetail) {
-//                    this.productName = productName;
-//                    this.description = description;
-//                    this.newPrice = newPrice;
-//                    this.oldPrice = oldPrice;
-//                    this.inStock = inStock;
-//                    this.storeId = storeId;
-//                    this.numberInCart = numberInCart;
                     thisProduct = new Product(
                             (String) productDetail.get(PRODUCT_NAME),
                             (String) productDetail.get(PRODUCT_DESC),
@@ -179,49 +175,89 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding.layoutBuyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                popUpSelectVariantDialog();
+
+            }
+        });
+    }
+
+
+    private void popUpSelectVariantDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        DialogSelectVariantBinding variantBinding = DialogSelectVariantBinding.inflate(getLayoutInflater());
+        builder.setView(variantBinding.getRoot());
+        AlertDialog dialog = builder.create();
+
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.custom_edit_text_border);
+        dialog.show();
+
+
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            window.setGravity(Gravity.BOTTOM);
+
+            Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+            variantBinding.getRoot().startAnimation(slideUp);
+        }
+        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+        String formattedOldPrice = formatter.format(thisProduct.getOldPrice());
+        variantBinding.txtOldPrice.setText("đ" + formattedOldPrice);
+        variantBinding.txtOldPrice.setPaintFlags(binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+        String formattedNewPrice = formatter.format(thisProduct.getNewPrice());
+
+        variantBinding.txtNewPrice.setText(formattedNewPrice);
+        variantBinding.txtInStock.setText("Kho: " + thisProduct.getInStock());
+
+        //reset số lượng sau mỗi lần popup dialog
+        thisProduct.setNumberInCart(1);
+        variantBinding.txtQuantity.setText(String.valueOf(thisProduct.getNumberInCart()));
+
+        variantBinding.btnPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity = thisProduct.getNumberInCart();
+                if (quantity < 99) {
+                    thisProduct.setNumberInCart(quantity + 1);
+                    variantBinding.txtQuantity.setText(String.valueOf(thisProduct.getNumberInCart()));
+                }
+
+            }
+        });
+        variantBinding.btnMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity = thisProduct.getNumberInCart();
+                if (quantity > 1) {
+                    thisProduct.setNumberInCart(quantity - 1);
+                    variantBinding.txtQuantity.setText(String.valueOf(thisProduct.getNumberInCart()));
+                }
+
+            }
+        });
+
+        variantBinding.imageClose.setOnClickListener(v -> dialog.dismiss());
+
+        variantBinding.btnBuyNow.setOnClickListener(v -> {
+            if (thisProduct.getNumberInCart() > thisProduct.getInStock()) {
+                Toast.makeText(ProductDetailActivity.this, "Uiii, số lượng sản phẩm không đủ!", Toast.LENGTH_SHORT).show();
+            } else {
                 Intent intent = new Intent(ProductDetailActivity.this, PaymentActivity.class);
-
                 ArrayList<CartItem> payment = new ArrayList<>();
-                CartItem cartItem1 = new CartItem();
-                ArrayList<Product> listProducts1 = new ArrayList<>();
-                listProducts1.add(thisProduct);
-                cartItem1.setStoreName(storeName);
-                cartItem1.setListProducts(listProducts1);
-                payment.add(cartItem1);
+                CartItem cartItem = new CartItem();
+                ArrayList<Product> listProducts = new ArrayList<>();
 
-                CartItem cartItem2 = new CartItem();
-                ArrayList<Product> listProducts2 = new ArrayList<>();
-                Product product2 = new Product(
-                        "Ao thun unisex",
-                        "Ao thun unisex",
-                        150000,
-                        150000,
-                        100,
-                        "G5XhvPoLD2wffJdq9PXW",
-                        3);
-                Product product3 = new Product(
-                        "Quan kaki",
-                        "Quan kaki",
-                        150000,
-                        150000,
-                        100,
-                        "G5XhvPoLD2wffJdq9PXW",
-                        1);
-                listProducts2.add(product2);
-                listProducts2.add(product3);
-                cartItem2.setStoreName("Ngoc Dai Store");
-                cartItem2.setListProducts(listProducts2);
-                payment.add(cartItem2);
-
+                listProducts.add(thisProduct);
+                cartItem.setStoreName(storeName);
+                cartItem.setListProducts(listProducts);
+                payment.add(cartItem);
 
                 intent.putExtra("payment", payment);
-//                Bundle bundle = new Bundle();
-//                bundle.putInt("numberInCart", 1);
-//                bundle.putString("productId", productId);
-//                bundle.putString("storeId", storeId);
-//                intent.putExtras(bundle);
                 startActivity(intent);
             }
+
         });
     }
 
@@ -234,15 +270,17 @@ public class ProductDetailActivity extends AppCompatActivity {
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.custom_edit_text_border);
         dialog.show();
 
-        // Set the dialog window attributes
+
         Window window = dialog.getWindow();
         if (window != null) {
             window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             window.setGravity(Gravity.BOTTOM);
 
+            Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+            detailBinding.getRoot().startAnimation(slideUp);
         }
 
-        detailBinding.imageCancel.setOnClickListener(v -> dialog.dismiss());
+
         detailBinding.btnClose.setOnClickListener(v -> dialog.dismiss());
     }
 
