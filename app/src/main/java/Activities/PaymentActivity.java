@@ -144,12 +144,9 @@ public class PaymentActivity extends AppCompatActivity {
 
 
     private double calculatorPayment() {
-
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         binding.txtTotalProductsFee.setText("đ" + formatter.format(getTotalProductsFee()));
-
-
-        double delivery = 18000;
+        double delivery = 25000;
         double totalDelivery = delivery * payment.size();
         double ecommerceDeliveryDiscount = 50000;
 
@@ -158,21 +155,17 @@ public class PaymentActivity extends AppCompatActivity {
 //        binding.txtEcommerceDeliveryDiscount.setText("-đ" + formatter.format(ecommerceDeliveryDiscount));
 //        binding.txtTotalDiscount.setText("-đ" + formatter.format(ecommerceDeliveryDiscount));
 
-        double total = getTotalProductsFee() + totalDelivery - ecommerceDeliveryDiscount;
+        double total = getTotalProductsFee() + totalDelivery;
         binding.txtTotalPayment.setText("đ" + formatter.format(total));
         binding.txtTotalOrder.setText("đ" + formatter.format(total));
         return total;
-
     }
 
     private double getTotalProductsFee() {
         double fee = 0;
         for (CartItem item : payment) {
             for (Product product : item.getListProducts()) {
-                if (product.getCheckedStatus()) {
                     fee += (product.getNewPrice() * product.getNumberInCart());
-                }
-
             }
         }
         return fee;
@@ -193,7 +186,6 @@ public class PaymentActivity extends AppCompatActivity {
     private void setupUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
-
     }
 
 

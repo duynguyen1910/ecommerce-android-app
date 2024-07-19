@@ -79,12 +79,19 @@ public class ProductDetailActivity extends AppCompatActivity {
             product.getProductDetail(storeId, productId, new GetDocumentCallback() {
                 @Override
                 public void onGetDataSuccess(Map<String, Object> productDetail) {
+//                    this.productName = productName;
+//                    this.description = description;
+//                    this.newPrice = newPrice;
+//                    this.oldPrice = oldPrice;
+//                    this.inStock = inStock;
+//                    this.storeId = storeId;
+//                    this.numberInCart = numberInCart;
                     thisProduct = new Product(
                             (String) productDetail.get(PRODUCT_NAME),
                             (String) productDetail.get(PRODUCT_DESC),
-                            (Double) productDetail.get(PRODUCT_NEW_PRICE),
-                            (Double) productDetail.get(PRODUCT_OLD_PRICE),
-                            100,
+                            (double) productDetail.get(PRODUCT_NEW_PRICE),
+                            (double) productDetail.get(PRODUCT_OLD_PRICE),
+                            ((Long) productDetail.get(PRODUCT_INSTOCK)).intValue(),
                             storeId,
                             1);
                     binding.progressBarProduct.setVisibility(View.GONE);
@@ -184,15 +191,24 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                 CartItem cartItem2 = new CartItem();
                 ArrayList<Product> listProducts2 = new ArrayList<>();
-               Product product2 = new Product(
+                Product product2 = new Product(
                         "Ao thun unisex",
-                       "Ao thun unisex",
+                        "Ao thun unisex",
                         150000,
                         150000,
                         100,
                         "G5XhvPoLD2wffJdq9PXW",
                         3);
+                Product product3 = new Product(
+                        "Quan kaki",
+                        "Quan kaki",
+                        150000,
+                        150000,
+                        100,
+                        "G5XhvPoLD2wffJdq9PXW",
+                        1);
                 listProducts2.add(product2);
+                listProducts2.add(product3);
                 cartItem2.setStoreName("Ngoc Dai Store");
                 cartItem2.setListProducts(listProducts2);
                 payment.add(cartItem2);
