@@ -14,7 +14,8 @@ public class CartItem implements Serializable {
         this.listProducts = listProducts;
     }
 
-
+    public CartItem() {
+    }
 
     public String getStoreName() {
         return storeName;

@@ -1,6 +1,7 @@
 package Activities;
 
 import static constants.keyName.PRODUCT_DESC;
+import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
 import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
@@ -11,22 +12,29 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityProductDetailBinding;
 import com.example.stores.databinding.LayoutProductDetailBinding;
+
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
 import Adapters.SliderAdapterForProductDetail;
 import interfaces.GetDocumentCallback;
+import models.CartItem;
 import models.Product;
 import models.SliderItem;
 import models.Store;
@@ -36,6 +44,10 @@ public class ProductDetailActivity extends AppCompatActivity {
     ActivityProductDetailBinding binding;
     private String productId;
     private String storeId;
+    Product thisProduct;
+
+    private String storeName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,22 +78,31 @@ public class ProductDetailActivity extends AppCompatActivity {
             Product product = new Product();
             product.getProductDetail(storeId, productId, new GetDocumentCallback() {
                 @Override
-                public void onGetDataSuccess(Map<String, Object> data) {
+                public void onGetDataSuccess(Map<String, Object> productDetail) {
+                    thisProduct = new Product(
+                            (String) productDetail.get(PRODUCT_NAME),
+                            (String) productDetail.get(PRODUCT_DESC),
+                            (Double) productDetail.get(PRODUCT_NEW_PRICE),
+                            (Double) productDetail.get(PRODUCT_OLD_PRICE),
+                            100,
+                            storeId,
+                            1);
                     binding.progressBarProduct.setVisibility(View.GONE);
                     binding.layoutProductsInfo.setVisibility(View.VISIBLE);
                     // setup product information
-                    binding.txtTitle.setText((CharSequence) data.get(PRODUCT_NAME));
+                    binding.txtTitle.setText(thisProduct.getProductName());
                     NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-                    String formattedOldPrice = formatter.format(data.get(PRODUCT_OLD_PRICE));
+                    String formattedOldPrice = formatter.format(thisProduct.getOldPrice());
                     binding.txtOldPrice.setText("đ" + formattedOldPrice);
                     binding.txtOldPrice.setPaintFlags(binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-                    String formattedNewPrice = formatter.format(data.get(PRODUCT_NEW_PRICE));
+                    String formattedNewPrice = formatter.format(thisProduct.getNewPrice());
                     binding.txtNewPrice.setText(formattedNewPrice);
                     binding.ratingBar.setRating(4.5F);
                     binding.txtRating.setText(4.5 + " / 5");
                     binding.txtSold.setText("Đã bán " + 200);
-                    binding.txtProdctDescription.setText((CharSequence) data.get(PRODUCT_DESC));
+                    binding.txtProdctDescription.setText(thisProduct.getDescription());
+                    binding.txtNewPriceInBuyNow.setText(formattedNewPrice);
 
 
                     // setup productImages
@@ -113,8 +134,9 @@ public class ProductDetailActivity extends AppCompatActivity {
             store.onGetStoreData(storeId, new GetDocumentCallback() {
                 @Override
                 public void onGetDataSuccess(Map<String, Object> data) {
+                    storeName = (String) data.get(STORE_NAME);
                     binding.progressBarStore.setVisibility(View.GONE);
-                    binding.txtStoreName.setText((CharSequence) data.get(STORE_NAME));
+                    binding.txtStoreName.setText(storeName);
 
                     // set up UI avatar, invoice
 
@@ -127,6 +149,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             });
         }
     }
+
     private void setupEvents() {
         binding.btnAddToCart.setOnClickListener(v -> {
 
@@ -142,7 +165,47 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         binding.btnViewStore.setOnClickListener(v -> {
             Intent intent = new Intent(ProductDetailActivity.this, ViewMyStoreActivity.class);
+            intent.putExtra("storeId", storeId);
             startActivity(intent);
+        });
+
+        binding.layoutBuyNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductDetailActivity.this, PaymentActivity.class);
+
+                ArrayList<CartItem> payment = new ArrayList<>();
+                CartItem cartItem1 = new CartItem();
+                ArrayList<Product> listProducts1 = new ArrayList<>();
+                listProducts1.add(thisProduct);
+                cartItem1.setStoreName(storeName);
+                cartItem1.setListProducts(listProducts1);
+                payment.add(cartItem1);
+
+                CartItem cartItem2 = new CartItem();
+                ArrayList<Product> listProducts2 = new ArrayList<>();
+               Product product2 = new Product(
+                        "Ao thun unisex",
+                       "Ao thun unisex",
+                        150000,
+                        150000,
+                        100,
+                        "G5XhvPoLD2wffJdq9PXW",
+                        3);
+                listProducts2.add(product2);
+                cartItem2.setStoreName("Ngoc Dai Store");
+                cartItem2.setListProducts(listProducts2);
+                payment.add(cartItem2);
+
+
+                intent.putExtra("payment", payment);
+//                Bundle bundle = new Bundle();
+//                bundle.putInt("numberInCart", 1);
+//                bundle.putString("productId", productId);
+//                bundle.putString("storeId", storeId);
+//                intent.putExtras(bundle);
+                startActivity(intent);
+            }
         });
     }
 
@@ -166,6 +229,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         detailBinding.imageCancel.setOnClickListener(v -> dialog.dismiss());
         detailBinding.btnClose.setOnClickListener(v -> dialog.dismiss());
     }
+
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         getWindow().setNavigationBarColor(Color.parseColor("#EFEFEF"));

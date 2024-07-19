@@ -70,16 +70,16 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
         holder.binding.txtTotal.setText("đ" + formatter.format(getCartItemFee(cartItem)));
 
         double oldDelivery = 38000;
-        holder.binding.txtOldDelivery.setText("đ" + formatter.format(oldDelivery));
-        holder.binding.txtOldDelivery.setPaintFlags(holder.binding.txtOldDelivery.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
-
-        holder.binding.layoutDeliveryMethod.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DeliveryMethodActivity.class);
-                context.startActivity(intent);
-            }
-        });
+//        holder.binding.txtOldDelivery.setText("đ" + formatter.format(oldDelivery));
+//        holder.binding.txtOldDelivery.setPaintFlags(holder.binding.txtOldDelivery.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+//
+//        holder.binding.layoutDeliveryMethod.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(context, DeliveryMethodActivity.class);
+//                context.startActivity(intent);
+//            }
+//        });
     }
 
     private double getCartItemFee(CartItem cartItem) {

@@ -1,9 +1,18 @@
 package Activities;
 
+import static constants.keyName.PRODUCT_DESC;
+import static constants.keyName.PRODUCT_NAME;
+import static constants.keyName.PRODUCT_NEW_PRICE;
+import static constants.keyName.PRODUCT_OLD_PRICE;
+import static constants.keyName.STORE_NAME;
+import static constants.toastMessage.INTERNET_ERROR;
+
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,17 +29,20 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import Adapters.PaymentAdapter;
+import interfaces.GetDocumentCallback;
 import models.CartItem;
 import models.Invoice;
 import models.Product;
+import models.Store;
 
 public class PaymentActivity extends AppCompatActivity {
 
     ActivityPaymentBinding binding;
-    ArrayList<CartItem> cart = new ArrayList<>();
+    ArrayList<CartItem> payment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,37 +57,55 @@ public class PaymentActivity extends AppCompatActivity {
 
     }
 
-    private void setupEvents() {
-        binding.imageBack.setOnClickListener(v -> finish());
-        binding.btnPay.setOnClickListener(v -> {
+    private void getBundles() {
 
-            String deliveryAddress = "Ngọc Đại | 012345678\nFPT Polytechnic TP.HCM - Tòa F,\nCông Viên Phần Mềm Quang Trung, Tòa nhà GenPacific \nLô 3 đường 16, Trung Mỹ Tây, Quận 12, Hồ Chí Minh";
-            String createdDate = generateTime();
-            String paidDate = "";
-            String giveToDeliveryDate = "";
-            String completedDate = "";
-            String note = "";
-            int paymentMethod = 0; // 0: Thanh toán khi nhận hàng
-            int orderStatus = 0; // 0: Chờ xác nhận
-            int customerID = 1; // 1: Ngọc Đại
+        Intent intent = getIntent();
+        if (intent != null) {
+            payment = (ArrayList<CartItem>) getIntent().getSerializableExtra("payment");
 
-            HashMap<String, Invoice> invoicesMap = new HashMap<>();
+            Toast.makeText(this, "cartSize" + payment.size(), Toast.LENGTH_SHORT).show();
+            PaymentAdapter paymentAdapter = new PaymentAdapter(PaymentActivity.this, payment);
+            binding.recyclerViewPayment.setAdapter(paymentAdapter);
+            binding.recyclerViewPayment.setLayoutManager(new LinearLayoutManager(PaymentActivity.this, LinearLayoutManager.VERTICAL, false));
 
-            for (int i = 0; i < cart.size(); i++) {
-                Invoice newInvoice = new Invoice(deliveryAddress, createdDate, paidDate, giveToDeliveryDate, completedDate, getTotalForCartItem(cart.get(i)), note, paymentMethod, orderStatus, cart.get(i), customerID);
-                invoicesMap.put(generateInvoiceId(i), newInvoice);
-            }
-            Intent intent = new Intent(PaymentActivity.this, InvoiceActivity.class);
-            intent.putExtra("invoicesMap", invoicesMap);
-            startActivity(intent);
-            // call API gửi order cho Người bán
-        });
-        binding.txtPaymentMethod.setOnClickListener(v -> {
-            Intent intent = new Intent(PaymentActivity.this, PaymentMethodActivity.class);
-            startActivity(intent);
-        });
+        }
+
+        calculatorPayment();
 
     }
+
+    private void setupEvents() {
+        binding.imageBack.setOnClickListener(v -> finish());
+//        binding.btnPay.setOnClickListener(v -> {
+//
+//            String deliveryAddress = "Ngọc Đại | 012345678\nFPT Polytechnic TP.HCM - Tòa F,\nCông Viên Phần Mềm Quang Trung, Tòa nhà GenPacific \nLô 3 đường 16, Trung Mỹ Tây, Quận 12, Hồ Chí Minh";
+//            String createdDate = generateTime();
+//            String paidDate = "";
+//            String giveToDeliveryDate = "";
+//            String completedDate = "";
+//            String note = "";
+//            int paymentMethod = 0; // 0: Thanh toán khi nhận hàng
+//            int orderStatus = 0; // 0: Chờ xác nhận
+//            int customerID = 1; // 1: Ngọc Đại
+//
+//            HashMap<String, Invoice> invoicesMap = new HashMap<>();
+//
+//            for (int i = 0; i < cart.size(); i++) {
+//                Invoice newInvoice = new Invoice(deliveryAddress, createdDate, paidDate, giveToDeliveryDate, completedDate, getTotalForCartItem(cart.get(i)), note, paymentMethod, orderStatus, cart.get(i), customerID);
+//                invoicesMap.put(generateInvoiceId(i), newInvoice);
+//            }
+//            Intent intent = new Intent(PaymentActivity.this, InvoiceActivity.class);
+//            intent.putExtra("invoicesMap", invoicesMap);
+//            startActivity(intent);
+//            // call API gửi order cho Người bán
+//        });
+//        binding.txtPaymentMethod.setOnClickListener(v -> {
+//            Intent intent = new Intent(PaymentActivity.this, PaymentMethodActivity.class);
+//            startActivity(intent);
+//        });
+
+    }
+
     private String generateTime() {
         Calendar calendar = Calendar.getInstance();
         Date currentDate = calendar.getTime();
@@ -112,16 +142,6 @@ public class PaymentActivity extends AppCompatActivity {
         return dinhDangNgay.format(calendar.getTime());
     }
 
-    private void getBundles() {
-        Intent intent = getIntent();
-        if (intent != null) {
-            cart = (ArrayList<CartItem>) intent.getSerializableExtra("payment");
-            PaymentAdapter paymentAdapter = new PaymentAdapter(PaymentActivity.this, cart);
-            binding.recyclerViewPayment.setAdapter(paymentAdapter);
-            binding.recyclerViewPayment.setLayoutManager(new LinearLayoutManager(PaymentActivity.this, LinearLayoutManager.VERTICAL, false));
-            calculatorPayment();
-        }
-    }
 
     private double calculatorPayment() {
 
@@ -130,13 +150,13 @@ public class PaymentActivity extends AppCompatActivity {
 
 
         double delivery = 18000;
-        double totalDelivery = delivery * cart.size();
+        double totalDelivery = delivery * payment.size();
         double ecommerceDeliveryDiscount = 50000;
 
         binding.txtTotalDeliveryFee.setText("đ" + formatter.format(totalDelivery));
 
-        binding.txtEcommerceDeliveryDiscount.setText("-đ" + formatter.format(ecommerceDeliveryDiscount));
-        binding.txtTotalDiscount.setText("-đ" + formatter.format(ecommerceDeliveryDiscount));
+//        binding.txtEcommerceDeliveryDiscount.setText("-đ" + formatter.format(ecommerceDeliveryDiscount));
+//        binding.txtTotalDiscount.setText("-đ" + formatter.format(ecommerceDeliveryDiscount));
 
         double total = getTotalProductsFee() + totalDelivery - ecommerceDeliveryDiscount;
         binding.txtTotalPayment.setText("đ" + formatter.format(total));
@@ -147,7 +167,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private double getTotalProductsFee() {
         double fee = 0;
-        for (CartItem item : cart) {
+        for (CartItem item : payment) {
             for (Product product : item.getListProducts()) {
                 if (product.getCheckedStatus()) {
                     fee += (product.getNewPrice() * product.getNumberInCart());

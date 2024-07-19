@@ -31,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -53,17 +54,17 @@
                 android:text="Phân loại: XANH-Trend, SIZE L"
                 android:textColor="@color/text1" />
 
-            <TextView
+<!--            <TextView-->
 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/custom_border_primary_color"
-                android:paddingHorizontal="4dp"
-                android:paddingVertical="2dp"
-                android:text="Đổi ý miễn phí"
-                android:textColor="@color/primary_color"
-                android:textSize="12sp" />
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="8dp"-->
+<!--                android:background="@drawable/custom_border_primary_color"-->
+<!--                android:paddingHorizontal="4dp"-->
+<!--                android:paddingVertical="2dp"-->
+<!--                android:text="Đổi ý miễn phí"-->
+<!--                android:textColor="@color/primary_color"-->
+<!--                android:textSize="12sp" />-->
 
             <RelativeLayout
                 android:layout_width="match_parent"

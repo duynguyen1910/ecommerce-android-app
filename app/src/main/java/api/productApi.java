@@ -33,7 +33,7 @@ import interfaces.UpdateDocumentCallback;
 import models.Product;
 import models.Store;
 
-public class productApi{
+public class productApi implements Serializable{
     private FirebaseFirestore db;
 
     public productApi() {

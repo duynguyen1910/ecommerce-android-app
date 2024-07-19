@@ -66,7 +66,8 @@ public class ViewMyStoreActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
 
 
-        String storeId = sharedPreferences.getString(STORE_ID, null);
+        String storeId = getIntent().getStringExtra("storeId");
+
         // lấy thông tin avatar, invoice
 
 

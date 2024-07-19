@@ -306,24 +306,23 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/ic_arrow_right_24"
-                        android:drawableTint="@color/text1"
                         android:paddingVertical="10dp"
                         android:text="Mô tả sản phẩm"
                         android:textColor="@color/text1"
-
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        app:drawableEndCompat="@drawable/ic_arrow_right_24"
+                        app:drawableTint="@color/text1" />
 
                     <TextView
                         android:id="@+id/txtProdctDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/ic_arrow_right_24"
-                        android:drawableTint="@color/text1"
                         android:lineHeight="25dp"
                         android:paddingVertical="10dp"
                         android:text="@string/product_desc1"
-                        android:textColor="@color/darkgray" />
+                        android:textColor="@color/darkgray"
+                        app:drawableEndCompat="@drawable/ic_arrow_right_24"
+                        app:drawableTint="@color/text1" />
 
                 </LinearLayout>
 
@@ -455,6 +454,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="2"
+            android:id="@+id/layoutBuyNow"
             android:background="@color/primary_color"
             android:gravity="center"
             android:orientation="vertical">
@@ -463,12 +463,12 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mua với voucher"
+                android:text="Mua ngay"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/txtPriceDesc"
+                android:id="@+id/txtNewPriceInBuyNow"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="đ135.000"
