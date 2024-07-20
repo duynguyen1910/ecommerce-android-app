@@ -37,7 +37,7 @@ public class SearchRelateFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentSearchRelateBinding.inflate(getLayoutInflater());
         getBundle();
-        initProducts();
+//        initProducts();
 
         return binding.getRoot();
     }
@@ -52,6 +52,8 @@ public class SearchRelateFragment extends Fragment {
             String storeId = bundle.getString("storeId");
             initProductsByCategoryAndStoreId(storeId, categoryId);
 
+        }else {
+            initProducts();
         }
 
     }
