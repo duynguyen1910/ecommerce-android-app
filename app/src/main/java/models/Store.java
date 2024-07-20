@@ -1,7 +1,6 @@
 package models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Map;
 
 import api.storeApi;
@@ -14,7 +13,7 @@ public class Store extends BaseObject implements Serializable {
     private String storeImage;
     private int ownerID;
     private storeApi storeApi;
-    private ArrayList<Product> products;
+
 
     public Store() {
         storeApi = new storeApi();
@@ -39,13 +38,6 @@ public class Store extends BaseObject implements Serializable {
         super.baseId = storeId;
     }
 
-    public ArrayList<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(ArrayList<Product> products) {
-        this.products = products;
-    }
 
     public String getStoreImage() {
         return storeImage;
@@ -83,7 +75,7 @@ public class Store extends BaseObject implements Serializable {
     public void onCreateStore(Map<String, Object> newStore, final CreateDocumentCallback callback) {
         storeApi.createStoreApi(newStore, callback);
     }
-    public void onGetStoreData(String storeId, GetDocumentCallback callback){
-        storeApi.getStoreDataApi(storeId, callback);
+    public void onGetStoreDetail(String storeId, GetDocumentCallback callback){
+        storeApi.getStoreDetailApi(storeId, callback);
     }
 }

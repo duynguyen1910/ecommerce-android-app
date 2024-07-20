@@ -2,33 +2,21 @@ package api;
 
 import static android.content.ContentValues.TAG;
 import static constants.collectionName.STORE_COLLECTION;
-import static constants.keyName.PRODUCTS;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import constants.toastMessage;
 import interfaces.CreateDocumentCallback;
-import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
-import models.Product;
-import models.Store;
 
 public class storeApi {
     private FirebaseFirestore db;
@@ -53,7 +41,7 @@ public class storeApi {
 
     }
 
-    public void getStoreDataApi(String storeId, GetDocumentCallback callback){
+    public void getStoreDetailApi(String storeId, GetDocumentCallback callback){
         DocumentReference docRef = db.collection(STORE_COLLECTION).document(storeId);
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

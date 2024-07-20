@@ -33,11 +33,21 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySearchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getBundle();
         initUI();
         setupUI();
 
         setupEvents();
 
+    }
+
+    private void getBundle(){
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null){
+            String categoryName = bundle.getString("categoryName");
+            binding.searchEdt.setText(categoryName);
+        }
     }
 
     private void setupUI() {

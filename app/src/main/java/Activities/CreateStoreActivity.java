@@ -115,9 +115,6 @@ public class CreateStoreActivity extends AppCompatActivity {
                 storeInfo.put(STORE_NAME, storeName);
                 storeInfo.put(STORE_ADDRESS, storeAddress);
                 storeInfo.put(STORE_OWNER_ID, userId);
-                storeInfo.put(PRODUCTS, new HashMap<>()); // một map rỗng
-
-
                 // call API
                 newStore.onCreateStore(storeInfo, new CreateDocumentCallback() {
                     @Override

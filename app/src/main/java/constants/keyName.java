@@ -14,6 +14,8 @@ public class keyName {
     public static final String STORE_OWNER_ID = "storeOwnerId";
     public static final String PRODUCTS = "products";
 
+    public static final String CART = "cart";
+
 
     public static final String PRODUCT_ID = "productId";
     public static final String PRODUCT_NAME = "productName";

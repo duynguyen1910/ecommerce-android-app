@@ -1,5 +1,9 @@
 package api;
 import static constants.collectionName.CATEGORY_COLLECTION;
+import static constants.collectionName.PRODUCT_COLLECTION;
+import static constants.keyName.PRODUCT_INSTOCK;
+import static constants.keyName.STORE_ID;
+
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -11,6 +15,7 @@ import java.util.ArrayList;
 
 import interfaces.GetCollectionCallback;
 import models.Category;
+import models.Product;
 
 public class categoryApi {
     private FirebaseFirestore db;
@@ -21,7 +26,7 @@ public class categoryApi {
 
 
 
-    public void getCategoryCollectionApi(final GetCollectionCallback<Category> callback) {
+    public void getAllCategoryApi(final GetCollectionCallback<Category> callback) {
         ArrayList<Category> categories = new ArrayList<>();
         CollectionReference categoryRef = db.collection(CATEGORY_COLLECTION);
         categoryRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -30,6 +35,7 @@ public class categoryApi {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Category category = document.toObject(Category.class);
+                        category.setBaseId(document.getId());
                         categories.add(category);
                     }
                     callback.onGetDataSuccess(categories);
@@ -40,5 +46,9 @@ public class categoryApi {
         });
 
     }
+
+
+
+
 
 }

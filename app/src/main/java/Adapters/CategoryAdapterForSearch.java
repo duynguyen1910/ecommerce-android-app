@@ -1,28 +1,35 @@
 package Adapters;
-import android.app.Activity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.stores.databinding.ItemCategoryBinding;
+
 import java.util.ArrayList;
+
+import Activities.SearchActivity;
 import models.Category;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
+public class CategoryAdapterForSearch extends RecyclerView.Adapter<CategoryAdapterForSearch.ViewHolder> {
     private final Context context;
     private final ArrayList<Category> list;
+    private String storeId;
 
-    public CategoryAdapter(Context context, ArrayList<Category> list) {
+    public CategoryAdapterForSearch(Context context, ArrayList<Category> list, String storeId) {
         this.context = context;
         this.list = list;
+        this.storeId =storeId;
     }
 
     @NonNull
     @Override
-    public CategoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CategoryAdapterForSearch.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         ItemCategoryBinding binding = ItemCategoryBinding.inflate(LayoutInflater.from(context), parent, false);
         return new ViewHolder(binding);
     }
@@ -37,18 +44,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CategoryAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CategoryAdapterForSearch.ViewHolder holder, int position) {
         Category category = list.get(holder.getBindingAdapterPosition());
         holder.binding.txtCategoryName.setText(category.getCategoryName());
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent();
+            Intent intent = new Intent(context, SearchActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("categoryName", category.getCategoryName());
             bundle.putString("categoryId", category.getBaseId());
+            bundle.putString("storeId", storeId);
 
             intent.putExtras(bundle);
-            ((Activity) context).setResult(1, intent);
-            ((Activity) context).finish();
+            context.startActivity(intent);
         });
     }
 

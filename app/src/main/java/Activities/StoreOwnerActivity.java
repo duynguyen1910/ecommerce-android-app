@@ -40,7 +40,10 @@ public class StoreOwnerActivity extends AppCompatActivity {
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
         binding.btnViewStore.setOnClickListener(v -> {
+            SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+            String storeId = sharedPreferences.getString(STORE_ID, null);
             Intent intent = new Intent(StoreOwnerActivity.this, ViewMyStoreActivity.class);
+            intent.putExtra("storeId", storeId);
             startActivity(intent);
         });
 
@@ -66,7 +69,7 @@ public class StoreOwnerActivity extends AppCompatActivity {
 
         if (storeId != null) {
             Store store = new Store();
-            store.onGetStoreData(storeId, new GetDocumentCallback() {
+            store.onGetStoreDetail(storeId, new GetDocumentCallback() {
                 @Override
                 public void onGetDataSuccess(Map<String, Object> data) {
                     binding.progressBarStoreName.setVisibility(View.GONE);

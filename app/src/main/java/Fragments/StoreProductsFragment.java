@@ -4,6 +4,7 @@ import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,14 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.stores.R;
 import com.example.stores.databinding.FragmentStoreProductsBinding;
 
 import java.util.ArrayList;
 
-import Adapters.MyProductsAdapter;
 import Adapters.ProductAdapter;
 import interfaces.GetCollectionCallback;
 import models.Product;
@@ -38,24 +36,35 @@ public class StoreProductsFragment extends Fragment {
 
         return binding.getRoot();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initProducts();
+    }
+
     private void initProducts() {
         binding.progressBar.setVisibility(View.VISIBLE);
-        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(USER_INFO, MODE_PRIVATE);
-        String storeId = sharedPreferences.getString(STORE_ID, null);
-        Product product = new Product();
-        product.getProductsCollection(storeId, new GetCollectionCallback<Product>() {
-            @Override
-            public void onGetDataSuccess(ArrayList<Product> products) {
-                binding.progressBar.setVisibility(View.GONE);
-                binding.recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
-                binding.recyclerView.setAdapter(new ProductAdapter(requireActivity(), products));
-            }
 
-            @Override
-            public void onGetDataFailure(String errorMessage) {
+        Intent intent = requireActivity().getIntent();
+        if (intent != null){
+            String storeId = intent.getStringExtra("storeId");
+            Product product = new Product();
+            product.getProductsByStoreId(storeId, new GetCollectionCallback<Product>() {
+                @Override
+                public void onGetDataSuccess(ArrayList<Product> products) {
+                    binding.progressBar.setVisibility(View.GONE);
+                    binding.recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
+                    binding.recyclerView.setAdapter(new ProductAdapter(requireActivity(), products));
+                }
 
-            }
-        });
+                @Override
+                public void onGetDataFailure(String errorMessage) {
+
+                }
+            });
+        }
+
     }
 
 

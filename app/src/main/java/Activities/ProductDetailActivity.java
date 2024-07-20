@@ -13,12 +13,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
@@ -38,11 +36,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import Adapters.SliderAdapterForProductDetail;
 import interfaces.GetDocumentCallback;
 import models.CartItem;
 import models.Product;
-import models.SliderItem;
 import models.Store;
 
 public class ProductDetailActivity extends AppCompatActivity {
@@ -51,7 +47,6 @@ public class ProductDetailActivity extends AppCompatActivity {
     private String productId;
     private String storeId;
     Product thisProduct;
-
     private String storeName;
 
     @Override
@@ -82,7 +77,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         if (storeId != null && productId != null) {
             Product product = new Product();
-            product.getProductDetail(storeId, productId, new GetDocumentCallback() {
+            product.getProductDetail(productId, new GetDocumentCallback() {
                 @Override
                 public void onGetDataSuccess(Map<String, Object> productDetail) {
                     thisProduct = new Product(
@@ -137,7 +132,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         // lấy thông tin avatar, invoice
         if (storeId != null) {
             Store store = new Store();
-            store.onGetStoreData(storeId, new GetDocumentCallback() {
+            store.onGetStoreDetail(storeId, new GetDocumentCallback() {
                 @Override
                 public void onGetDataSuccess(Map<String, Object> data) {
                     storeName = (String) data.get(STORE_NAME);
@@ -158,6 +153,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void setupEvents() {
         binding.btnAddToCart.setOnClickListener(v -> {
+            // Khởi tạo UserApi update subCollection CART của Collection User
+
 
         });
         binding.imageBack.setOnClickListener(v -> finish());
@@ -178,7 +175,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding.layoutBuyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 popUpSelectVariantDialog();
 
             }
@@ -273,19 +269,14 @@ public class ProductDetailActivity extends AppCompatActivity {
 
 
     private void popUpProductImageExpandDialog() {
-        // Tạo dialog mới
         Dialog dialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         DialogProductImageExpandBinding dialogBinding = DialogProductImageExpandBinding.inflate(getLayoutInflater());
         dialog.setContentView(dialogBinding.getRoot());
-
-        // Hiển thị dialog
         dialog.show();
 
-        // Tạo hiệu ứng slide up
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         dialogBinding.getRoot().startAnimation(slideUp);
 
-        // Đặt sự kiện click cho nút đóng dialog
         dialogBinding.imageClose.setOnClickListener(v -> dialog.dismiss());
     }
 

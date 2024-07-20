@@ -15,7 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.stores.databinding.FragmentProductsInStockBinding;
+import com.example.stores.databinding.FragmentProductsOutOfStockBinding;
 
 import java.util.ArrayList;
 
@@ -34,24 +36,25 @@ public class ProductsInStockFragment extends Fragment {
         initProducts();
         return binding.getRoot();
     }
+
+    @Override
     public void onResume() {
         super.onResume();
         initProducts();
     }
-
 
     private void initProducts() {
         binding.progressBar.setVisibility(View.VISIBLE);
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(USER_INFO, MODE_PRIVATE);
         String storeId = sharedPreferences.getString(STORE_ID, null);
         Product product = new Product();
-        product.getProductsCollection(storeId, new GetCollectionCallback<Product>() {
+        product.getProductsByStoreId(storeId, new GetCollectionCallback<Product>() {
             @Override
             public void onGetDataSuccess(ArrayList<Product> products) {
                 ArrayList<Product> productsInStock = new ArrayList<>();
-                for (Product item : products){
-                    if (item.getInStock() > 0){
-                        productsInStock.add(item);
+                for (Product pr : products){
+                    if (pr.getInStock() > 0){
+                        productsInStock.add(pr);
                     }
                 }
                 binding.progressBar.setVisibility(View.GONE);
@@ -62,9 +65,9 @@ public class ProductsInStockFragment extends Fragment {
 
             @Override
             public void onGetDataFailure(String errorMessage) {
+                Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_SHORT).show();
 
             }
         });
     }
-
 }

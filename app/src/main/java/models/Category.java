@@ -9,8 +9,17 @@ public class Category extends BaseObject implements Serializable {
     private String categoryName;
     private api.categoryApi categoryApi;
 
+
+    public Category(String categoryID, String categoryName) {
+        super.baseId = categoryID;
+        this.categoryName = categoryName;
+    }
     public Category() {
         categoryApi = new categoryApi();
+    }
+
+    public Category(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getCategoryName() {
@@ -21,23 +30,21 @@ public class Category extends BaseObject implements Serializable {
         this.categoryName = categoryName;
     }
 
-    public Category(String categoryName) {
-        this.categoryName = categoryName;
-    }
+
 
     @Override
-    protected String getBaseId() {
+    public String getBaseId() {
         return super.baseId;
     }
 
     @Override
-    protected void setBaseId(String categoryId) {
+    public void setBaseId(String categoryId) {
         super.baseId = categoryId;
 
     }
 
     public void getCategoryCollection(GetCollectionCallback<Category> callback){
-       categoryApi.getCategoryCollectionApi(callback);
+       categoryApi.getAllCategoryApi(callback);
     }
 
 

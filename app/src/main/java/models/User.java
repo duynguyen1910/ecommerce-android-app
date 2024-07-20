@@ -9,6 +9,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Map;
 
 import api.userApi;
@@ -18,7 +20,7 @@ import interfaces.LoginCallback;
 import interfaces.RegisterCallback;
 import interfaces.UpdateDocumentCallback;
 
-public class User extends BaseObject {
+public class User extends BaseObject implements Serializable {
     private String phoneNumber;
     private String password;
     private String fullname;
@@ -26,6 +28,7 @@ public class User extends BaseObject {
     private UserRole role;
     private userApi userApi;
     private String storeId;
+
 
     public User() {
         userApi  = new userApi();
@@ -47,7 +50,6 @@ public class User extends BaseObject {
     @Override
     public void setBaseId(String userId) {
         validateBaseId(userId);
-
         super.baseId = userId;
     }
 

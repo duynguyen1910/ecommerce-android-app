@@ -1,5 +1,6 @@
 package Activities;
 
+import static constants.keyName.CART;
 import static constants.keyName.FULLNAME;
 import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;
@@ -21,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.stores.databinding.ActivityLoginBinding;
 import com.example.stores.databinding.ActivityRegisterBinding;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -93,8 +95,6 @@ public class RegisterActivity extends AppCompatActivity {
         newUser.put(FULLNAME, fullname);
         newUser.put(PASSWORD, rePassword);
         newUser.put(USER_ROLE, UserRole.CUSTOMER_ROLE.getRoleValue());
-        newUser.put(STORE_ID, null);
-
 
         user.onRegister(newUser, new RegisterCallback() {
             @Override

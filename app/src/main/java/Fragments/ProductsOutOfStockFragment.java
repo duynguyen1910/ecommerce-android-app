@@ -46,17 +46,11 @@ public class ProductsOutOfStockFragment extends Fragment {
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(USER_INFO, MODE_PRIVATE);
         String storeId = sharedPreferences.getString(STORE_ID, null);
         Product product = new Product();
-        product.getProductsCollection(storeId, new GetCollectionCallback<Product>() {
+        product.getProductsOutOfStockByStoreId(storeId, new GetCollectionCallback<Product>() {
             @Override
             public void onGetDataSuccess(ArrayList<Product> products) {
-                ArrayList<Product> productsInStock = new ArrayList<>();
-                for (Product item : products){
-                    if (item.getInStock() == 0){
-                        productsInStock.add(item);
-                    }
-                }
                 binding.progressBar.setVisibility(View.GONE);
-                MyProductsAdapter adapter = new MyProductsAdapter(requireActivity(), productsInStock);
+                MyProductsAdapter adapter = new MyProductsAdapter(requireActivity(), products);
                 binding.recyclerView.setAdapter(adapter);
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
             }

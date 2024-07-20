@@ -1,11 +1,9 @@
 package Activities;
 
-import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 import static constants.keyName.USER_INFO;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,11 +25,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import Adapters.ViewPager2Adapter;
-import Fragments.InvoiceAwaitConfirmationFragment;
-import Fragments.InvoiceAwaitDeliveryFragment;
-import Fragments.InvoiceAwaitPickupFragment;
-import Fragments.InvoiceCancelFragment;
-import Fragments.InvoiceCompletedFragment;
 import Fragments.StoreCategoriesFragment;
 import Fragments.StoreProductsFragment;
 import interfaces.GetDocumentCallback;
@@ -63,7 +56,7 @@ public class ViewMyStoreActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         binding.progressBar.setVisibility(View.VISIBLE);
-        SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+
 
 
         String storeId = getIntent().getStringExtra("storeId");
@@ -74,7 +67,7 @@ public class ViewMyStoreActivity extends AppCompatActivity {
 
         if (storeId != null) {
             Store store = new Store();
-            store.onGetStoreData(storeId, new GetDocumentCallback() {
+            store.onGetStoreDetail(storeId, new GetDocumentCallback() {
                 @Override
                 public void onGetDataSuccess(Map<String, Object> data) {
                     binding.progressBar.setVisibility(View.GONE);

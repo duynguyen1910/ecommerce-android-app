@@ -1,5 +1,6 @@
 package Activities;
 
+import static constants.keyName.CATEGORY_ID;
 import static constants.keyName.CATEGORY_NAME;
 import static constants.keyName.PRODUCT_DESC;
 import static constants.keyName.PRODUCT_ID;
@@ -24,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.stores.databinding.ActivityAddProductsBinding;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -36,6 +38,7 @@ public class AddProductsActivity extends AppCompatActivity {
 
     ActivityAddProductsBinding binding;
     String storeId;
+    String categoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +61,9 @@ public class AddProductsActivity extends AppCompatActivity {
 
         binding.btnSave.setOnClickListener(v -> {
             Map<String, Object> productData = validateForm();
-            if (productData != null){
+            if (productData != null) {
                 Product product = new Product();
-                product.onCreateProduct(productData, storeId, new CreateDocumentCallback() {
+                product.onCreateProduct(productData, new CreateDocumentCallback() {
                     @Override
                     public void onCreateSuccess(String documentId) {
                         Toast.makeText(AddProductsActivity.this, CREATE_PRODUCT_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
@@ -89,11 +92,13 @@ public class AddProductsActivity extends AppCompatActivity {
             result -> {
                 if (result.getResultCode() == 1) {
                     Intent intent = result.getData();
-                    if (intent != null){
-                        String data = intent.getStringExtra("data");
-                        if (data != null){
+                    if (intent != null) {
+                        Bundle bundle = intent.getExtras();
+                        if (bundle != null){
+                            String categoryName = bundle.getString("categoryName");
+                            categoryId = bundle.getString("categoryId") ;
                             binding.txtChooseCategory.setText("Ngành hàng: ");
-                            binding.edtCategory.setText(data);
+                            binding.edtCategory.setText(categoryName);
                         }
                     }
                 }
@@ -134,15 +139,16 @@ public class AddProductsActivity extends AppCompatActivity {
         }
 
         if (isValid) {
-            Map<String, Object> productData = new HashMap<>();
-            productData.put(PRODUCT_NAME, productName);
-            productData.put(PRODUCT_DESC, description);
-            productData.put(PRODUCT_NEW_PRICE, Double.parseDouble(price));
-            productData.put(PRODUCT_OLD_PRICE, Double.parseDouble(price));
-            productData.put(PRODUCT_INSTOCK, Integer.parseInt(inStock));
-            productData.put(CATEGORY_NAME, categoryName);
-            productData.put(STORE_ID, storeId);
-            return productData;
+            Map<String, Object> product = new HashMap<>();
+            product.put(PRODUCT_NAME, productName);
+            product.put(PRODUCT_DESC, description);
+            product.put(PRODUCT_NEW_PRICE, Double.parseDouble(price));
+            product.put(PRODUCT_OLD_PRICE, Double.parseDouble(price));
+            product.put(PRODUCT_INSTOCK, Integer.parseInt(inStock));
+            product.put(CATEGORY_ID, categoryId);
+            product.put(CATEGORY_NAME, categoryName);
+            product.put(STORE_ID, storeId);
+            return product;
         } else {
             return null;
         }

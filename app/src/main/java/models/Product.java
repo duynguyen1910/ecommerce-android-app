@@ -1,5 +1,12 @@
 package models;
 
+import static constants.collectionName.PRODUCT_COLLECTION;
+import static constants.keyName.PRODUCT_INSTOCK;
+import static constants.keyName.STORE_ID;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
@@ -17,6 +24,7 @@ public class Product extends BaseObject implements Serializable {
     private double oldPrice;
     private int inStock;
     private String categoryName;
+    private String categoryId;
     private String storeId;
     private int numberInCart;
     private boolean checkedStatus;
@@ -32,6 +40,18 @@ public class Product extends BaseObject implements Serializable {
         this.storeId = storeId;
         this.numberInCart = numberInCart;
     }
+
+    public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String categoryName, String storeId) {
+        this.productName = productName;
+        this.description = description;
+        this.newPrice = newPrice;
+        this.oldPrice = oldPrice;
+        this.inStock = inStock;
+        this.categoryName = categoryName;
+        this.storeId = storeId;
+    }
+
+
 
 
     public Product() {
@@ -54,6 +74,13 @@ public class Product extends BaseObject implements Serializable {
         this.categoryName = categoryName;
     }
 
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
 
     public int getInStock() {
         return inStock;
@@ -122,14 +149,14 @@ public class Product extends BaseObject implements Serializable {
     }
 
 
-    public void onCreateProduct(Map<String, Object> productData, String storeId, final CreateDocumentCallback callback) {
-        productApi.createProductApi(productData, storeId, callback);
+    public void onCreateProduct(Map<String, Object> productData, final CreateDocumentCallback callback) {
+        productApi.createProductApi(productData, callback);
     }
 
 
 
-    public void getProductDetail(String storeId, String productId, GetDocumentCallback callback){
-        productApi.getProductDetailApi(storeId, productId, callback);
+    public void getProductDetail(String productId, GetDocumentCallback callback){
+        productApi.getProductDetailApi(productId, callback);
     }
 
 
@@ -138,12 +165,16 @@ public class Product extends BaseObject implements Serializable {
     }
 
 
-    public void getProductsCollection(String storeId, final GetCollectionCallback<Product> callback){
-        productApi.getProductsCollectionApi(storeId, callback);
+    public void getAllProducts(final GetCollectionCallback<Product> callback){
+        productApi.getAllProductApi(callback);
     }
 
-    public void getAllProducts(final GetCollectionCallback<Product> callback) {
-        productApi.getAllProductsApi(callback);
+    public void getProductsByStoreId(String storeId, GetCollectionCallback<Product> callback) {
+        productApi.getProductsByStoreIdApi(storeId, callback);
+    }
+
+    public void getProductsOutOfStockByStoreId(String storeId, GetCollectionCallback<Product> callback) {
+        productApi.getProductsOutOfStockByStoreIdApi(storeId, callback);
     }
 
     @Override
