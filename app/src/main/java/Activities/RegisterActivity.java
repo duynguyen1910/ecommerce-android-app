@@ -3,6 +3,7 @@ package Activities;
 import static constants.keyName.FULLNAME;
 import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;
+import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_ROLE;
 
 import android.content.Intent;
@@ -22,7 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import constants.toastMessage;
-import interfaces.RegisterCallback;
+import interfaces.StatusCallback;
 import models.User;
 import enums.UserRole;
 
@@ -82,16 +83,20 @@ public class RegisterActivity extends AppCompatActivity {
         binding.progressBar.getIndeterminateDrawable()
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
-        User user = new User();
-        Map<String, Object> newUser = new HashMap<>();
-        newUser.put(PHONE_NUMBER, phoneNumber);
-        newUser.put(FULLNAME, fullname);
-        newUser.put(PASSWORD, rePassword);
-        newUser.put(USER_ROLE, UserRole.CUSTOMER_ROLE.getRoleValue());
+        User user = new User(phoneNumber, fullname, password);
+        user.setRole(UserRole.CUSTOMER_ROLE.getRoleValue());
 
-        user.onRegister(newUser, new RegisterCallback() {
+        Map<String, Object> newUser = new HashMap<>();
+        newUser.put(PHONE_NUMBER, user.getPhoneNumber());
+        newUser.put(FULLNAME, user.getFullname());
+        newUser.put(PASSWORD, user.getPassword());
+        newUser.put(USER_ROLE, user.getRole().getRoleValue());
+        newUser.put(STORE_ID, null);
+
+
+        user.onRegister(newUser, new StatusCallback() {
             @Override
-            public void onRegisterSuccess(String successMessage) {
+            public void onSuccess(String successMessage) {
                 binding.progressBar.setVisibility(View.GONE);
                 Toast.makeText(RegisterActivity.this, successMessage, Toast.LENGTH_SHORT).show();
 
@@ -102,7 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onRegisterFailure(String errorMessage) {
+            public void onFailure(String errorMessage) {
                 binding.progressBar.setVisibility(View.GONE);
                 Toast.makeText(RegisterActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }

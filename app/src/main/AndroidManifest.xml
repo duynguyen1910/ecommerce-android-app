@@ -32,6 +32,19 @@
             android:name="Activities.PaymentMethodActivity"
             android:exported="false" />
         <activity
+            android:name="Activities.SelectCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.RegisterActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="Activities.SelectAddressActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.CartActivity"
+            android:exported="false" />
+        <activity
             android:name="Activities.SelectProductsToCategoryActivity"
             android:exported="false" />
         <activity
@@ -115,21 +128,8 @@
             android:exported="false">
         </activity>
         <activity
-            android:name="Activities.RegisterActivity"
-            android:exported="false">
-        </activity>
-        <activity
             android:name="Activities.MainActivity"
             android:exported="true" />
-        <activity
-            android:name="Activities.CartActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

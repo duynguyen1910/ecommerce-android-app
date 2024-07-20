@@ -17,7 +17,6 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-
         <ImageView
             android:id="@+id/imageBack"
             android:layout_width="24dp"
@@ -395,8 +394,8 @@
         </LinearLayout>
 
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnPay"
+        <Button
+            android:id="@+id/btnBooking"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="6dp"

@@ -22,10 +22,10 @@ import java.util.ArrayList;
 
 import Activities.CartActivity;
 import Activities.StatisticsActivity;
-import Adapters.PopularBrandAdapter;
+import Adapters.BrandAdapter;
 import Adapters.ProductAdapter;
 import Adapters.SliderAdapter;
-import models.OfficialBrand;
+import models.Brand;
 import models.Product;
 import models.SliderItem;
 
@@ -100,17 +100,17 @@ public class HomeFragment extends Fragment {
     private void initOfficialBrand() {
 //        DatabaseReference popularRef = database.getReference("Items");
 //        binding.progressBarOfficialBrand.setVisibility(View.VISIBLE);
-        ArrayList<OfficialBrand> list = new ArrayList<>();
+        ArrayList<Brand> list = new ArrayList<>();
 
-        list.add(new OfficialBrand("Adidas", 1, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1dtlrN5hP1x-m9AwA-NqGuUv2rwyehMoIkg&s"));
-        list.add(new OfficialBrand("Nike", 2, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcWxm80LumKRT5BMbTqslFU9otu470BgW6LA&s"));
-        list.add(new OfficialBrand("Puma", 3, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCP0XlN_ojXgAauWzIj9rk1XEGh-X-ixbieQ&s"));
-        list.add(new OfficialBrand("Zara", 4, "https://cdn.icon-icons.com/icons2/2845/PNG/512/zara_logo_icon_181327.png"));
-        list.add(new OfficialBrand("Chanel", 5, "https://i.pinimg.com/736x/d1/aa/c9/d1aac9ca68abe81dfbab955a9073167c.jpg"));
+        list.add(new Brand("Adidas", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1dtlrN5hP1x-m9AwA-NqGuUv2rwyehMoIkg&s"));
+        list.add(new Brand("Nike", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcWxm80LumKRT5BMbTqslFU9otu470BgW6LA&s"));
+        list.add(new Brand("Puma", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCP0XlN_ojXgAauWzIj9rk1XEGh-X-ixbieQ&s"));
+        list.add(new Brand("Zara", "https://cdn.icon-icons.com/icons2/2845/PNG/512/zara_logo_icon_181327.png"));
+        list.add(new Brand("Chanel", "https://i.pinimg.com/736x/d1/aa/c9/d1aac9ca68abe81dfbab955a9073167c.jpg"));
 
         if (!list.isEmpty()) {
             binding.recyclerViewOfficialBrand.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false));
-            binding.recyclerViewOfficialBrand.setAdapter(new PopularBrandAdapter(requireActivity(), list));
+            binding.recyclerViewOfficialBrand.setAdapter(new BrandAdapter(requireActivity(), list));
         }
         binding.progressBarOfficialBrand.setVisibility(View.GONE);
 

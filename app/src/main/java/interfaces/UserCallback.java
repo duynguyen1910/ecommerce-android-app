@@ -3,6 +3,6 @@ package interfaces;
 import models.User;
 
 public interface UserCallback {
-    void onGetUserInfoSuccess(User user);
-    void onGetUserInfoFailure(String errorMessage);
+    void getUserInfoSuccess(User user);
+    void getUserInfoFailure(String errorMessage);
 }

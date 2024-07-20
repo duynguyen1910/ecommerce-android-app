@@ -19,11 +19,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.Map;
 
 import interfaces.ImageCallback;
-import interfaces.UpdateCallback;
+import interfaces.StatusCallback;
 import interfaces.UserCallback;
-import interfaces.RegisterCallback;
-import constants.toastMessage;
 import models.User;
+import constants.toastMessage;
 
 public class userApi {
     private FirebaseFirestore db;
@@ -40,19 +39,19 @@ public class userApi {
                 .addOnCompleteListener(listener);
     }
 
-    public void createUserApi(Map<String, Object> newUser, final RegisterCallback callback) {
+    public void createUserApi(Map<String, Object> newUser, final StatusCallback callback) {
         db.collection(USER_COLLECTION)
                 .add(newUser)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        callback.onRegisterSuccess(toastMessage.REGISTER_SUCCESSFULLY);
+                        callback.onSuccess(toastMessage.REGISTER_SUCCESSFULLY);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        callback.onRegisterFailure(toastMessage.REGISTER_FAILED);
+                        callback.onFailure(toastMessage.REGISTER_FAILED);
                     }
                 });
 
@@ -64,16 +63,15 @@ public class userApi {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-//                        Toast.makeText(getContext(), "Image URL saved to Firestore", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(getContext(), "Failed to save image URL to Firestore: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
                     }
                 });
-    }
+    };
 
     public void getUserImageApi(String userId, final ImageCallback callback) {
         db.collection(USER_COLLECTION).document(userId).get()
@@ -103,32 +101,34 @@ public class userApi {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
                             User user = documentSnapshot.toObject(User.class);
-                            callback.onGetUserInfoSuccess(user);
+                            callback.getUserInfoSuccess(user);
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        callback.onGetUserInfoFailure(e.getMessage());
+                        callback.getUserInfoFailure(e.getMessage());
                     }
                 });
     }
 
-    public void updateUserInfoApi(String userId, Map<String, Object> userUpdates, final UpdateCallback callback) {
+    public void updateUserInfoApi(String userId, Map<String, Object> userUpdates, final StatusCallback callback) {
         db.collection(USER_COLLECTION).document(userId)
                 .update(userUpdates)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        callback.updateSuccess(toastMessage.UPDATE_SUCCESSFULLY);
+                        callback.onSuccess(toastMessage.UPDATE_SUCCESSFULLY);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        callback.updateFailure(e.getMessage());
+                        callback.onFailure(e.getMessage());
                     }
                 });
+
+
     }
 }

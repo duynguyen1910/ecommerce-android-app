@@ -36,7 +36,8 @@ android {
 }
 
 dependencies {
-
+    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.github.SudoDios:StepProgressbar:1.3.0")
     implementation("me.relex:circleindicator:2.1.6")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")

@@ -19,6 +19,7 @@ import java.util.Map;
 
 import Activities.InvoiceDetailActivity;
 import models.CartItem;
+
 import models.Invoice;
 import models.Product;
 
@@ -59,19 +60,19 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         String invoiceID = invoiceIDs.get(holder.getBindingAdapterPosition());
         Invoice invoice = map.get(invoiceID);
 
-        CartItem cartItem = invoice.getCartItem();
-        holder.binding.txtStoreName.setText(cartItem.getStoreName());
-        ProductsListAdapterForInvoiceItem adapter = new ProductsListAdapterForInvoiceItem(context, cartItem.getListProducts(), true);
-
-        holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
-        holder.binding.recyclerViewProducts.setAdapter(adapter);
-
-        holder.binding.txtQuantityProducts.setText(cartItem.getListProducts().size() + " sản phẩm");
-        holder.binding.txtCreatedDate.setText(invoice.getCreatedDate());
-
-
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        holder.binding.txtTotal.setText("đ" + formatter.format(getCartItemFee(cartItem)));
+//        CartItem cartItem = invoice.getCartItem();
+//        holder.binding.txtStoreName.setText(cartItem.getStoreName());
+//        ProductsListAdapterForInvoiceItem adapter = new ProductsListAdapterForInvoiceItem(context, cartItem.getListProducts(), true);
+//
+//        holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
+//        holder.binding.recyclerViewProducts.setAdapter(adapter);
+//
+//        holder.binding.txtQuantityProducts.setText(cartItem.getListProducts().size() + " sản phẩm");
+////        holder.binding.txtCreatedDate.setText(invoice.getCreatedDate());
+//
+//
+//        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+//        holder.binding.txtTotal.setText("đ" + formatter.format(getCartItemFee(cartItem)));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

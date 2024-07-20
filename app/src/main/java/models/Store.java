@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.Map;
 
 import api.storeApi;
-import interfaces.RegisterCallback;
+import interfaces.CreateStoreCallback;
+import interfaces.GetStoreDataCallback;
 
 public class Store extends BaseObject implements Serializable {
     private String storeName;
@@ -13,24 +14,27 @@ public class Store extends BaseObject implements Serializable {
     private int ownerID;
     private storeApi storeApi;
 
+    public Store() {
+        storeApi = new storeApi();
+    }
 
     public Store(String storeID, String storeName, String storeAddress, String storeImage) {
-        super.baseId = storeID;
+        super.baseID = storeID;
         this.storeName = storeName;
         this.storeAddress = storeAddress;
         this.storeImage = storeImage;
     }
 
     @Override
-    public String getBaseId() {
-        return super.baseId;
+    public String getBaseID() {
+        return super.baseID;
     }
 
     @Override
-    public void setBaseId(String storeId) {
-        validateBaseId(storeId);
+    public void setBaseID(String storeID) {
+        validateBaseID(storeID);
 
-        super.baseId = storeId;
+        super.baseID = storeID;
     }
 
     public String getStoreImage() {
@@ -66,7 +70,10 @@ public class Store extends BaseObject implements Serializable {
         this.ownerID = ownerID;
     }
 
-    public void onCreateStore(Map<String, Object> newStore, final RegisterCallback callback) {
+    public void onCreateStore(Map<String, Object> newStore, final CreateStoreCallback callback) {
         storeApi.createStoreApi(newStore, callback);
+    }
+    public void onGetStoreData(String storeId, GetStoreDataCallback callback){
+        storeApi.getStoreDataApi(storeId, callback);
     }
 }

@@ -1,4 +1,4 @@
-package Fragments;
+package Fragments.Invoice;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import java.util.Map;
 import Adapters.InvoiceAdapter;
 import models.Invoice;
 
-public class InvoiceAwaitConfirmationFragment extends Fragment {
+public class ConfirmationFragment extends Fragment {
     FragmentInvoiceAwaitConfirmationBinding binding;
 
     @Nullable
@@ -24,22 +24,18 @@ public class InvoiceAwaitConfirmationFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentInvoiceAwaitConfirmationBinding.inflate(getLayoutInflater());
-        getBundles();
+
+        setupUI();
+
         return binding.getRoot();
     }
 
-    private void getBundles() {
-        Intent intent = requireActivity().getIntent();
-        if (intent != null) {
-            Map<String, Invoice> invoicesMap = (Map<String, Invoice>) intent.getSerializableExtra("invoicesMap");
-            if (invoicesMap != null){
-                InvoiceAdapter invoiceAdapter = new InvoiceAdapter(requireActivity(), invoicesMap);
-                binding.recyclerView.setAdapter(invoiceAdapter);
-                binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
-            }
+    private void setupUI() {
 
-        }
+
+//        InvoiceAdapter invoiceAdapter = new InvoiceAdapter(requireActivity(), invoicesMap);
+//        binding.recyclerView.setAdapter(invoiceAdapter);
+//        binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
     }
-
 
 }

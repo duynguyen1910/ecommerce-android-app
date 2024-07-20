@@ -2,8 +2,6 @@ package models;
 
 import static constants.keyName.USER_ROLE;
 
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -13,13 +11,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Map;
 
+import api.userApi;
 import constants.toastMessage;
 import enums.UserRole;
 import interfaces.ImageCallback;
-import interfaces.UpdateCallback;
+import interfaces.StatusCallback;
 import interfaces.UserCallback;
-import api.userApi;
-import interfaces.RegisterCallback;
 
 public class User extends BaseObject {
     private String phoneNumber;
@@ -29,9 +26,25 @@ public class User extends BaseObject {
     private String email;
     private UserRole role;
     private userApi userApi;
+    private String storeId;
 
     public User() {
         userApi  = new userApi();
+    };
+
+    public User(String phoneNumber, String password) {
+        userApi  = new userApi();
+
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+    }
+
+    public User(String phoneNumber, String password, String fullname) {
+        userApi  = new userApi();
+
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.fullname = fullname;
     }
 
     public User(String phoneNumber, String password, String fullname, String imageUrl, String email, UserRole role, api.userApi userApi) {
@@ -45,17 +58,23 @@ public class User extends BaseObject {
     }
 
     @Override
-    public String getBaseId() {
-        return super.baseId;
+    public String getBaseID() {
+        return super.baseID;
     }
 
     @Override
-    public void setBaseId(String userId) {
-        validateBaseId(userId);
+    public void setBaseID(String userId) {
+        validateBaseID(userId);
 
-        super.baseId = userId;
+        super.baseID = userId;
+    }
+    public String getStoreId() {
+        return storeId;
     }
 
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -105,7 +124,6 @@ public class User extends BaseObject {
         this.role = UserRole.fromInt(role);
     }
 
-
     public void onLogin(String phoneNumber, String password, final UserCallback callback) {
         userApi.checkUserCredentialsApi(phoneNumber, password, new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -113,22 +131,21 @@ public class User extends BaseObject {
                 if(task.isSuccessful() && !task.getResult().isEmpty()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         User user = document.toObject(User.class);
-
                         String documentId = document.getId();
-                        user.setBaseId(documentId);
+                        user.setBaseID(documentId);
                         int roleValue = document.getLong(USER_ROLE).intValue();
                         user.setRole(roleValue);
 
-                        callback.onGetUserInfoSuccess(user);
+                        callback.getUserInfoSuccess(user);
                     }
                 } else {
-                    callback.onGetUserInfoFailure(toastMessage.LOGIN_FAILED);
+                    callback.getUserInfoFailure(toastMessage.LOGIN_FAILED);
                 }
             }
         });
     }
 
-    public void onRegister(Map<String, Object> newUser, final RegisterCallback callback) {
+    public void onRegister(Map<String, Object> newUser, final StatusCallback callback) {
         userApi.createUserApi(newUser, callback);
     }
 
@@ -144,7 +161,7 @@ public class User extends BaseObject {
         userApi.getUserInfoApi(userId, callback);
     }
 
-    public void updateUserInfo(String userId, Map<String, Object> userUpdates, final UpdateCallback callback) {
+    public void updateUserInfo(String userId, Map<String, Object> userUpdates, final StatusCallback callback) {
         userApi.updateUserInfoApi(userId, userUpdates, callback);
     }
 }

@@ -29,6 +29,9 @@ public class ViewPager2Adapter extends FragmentStateAdapter {
         fragmentList.add(fragment);
         titleList.add(title);
     }
+    public Fragment getFragment(int position){
+        return fragmentList.get(position);
+    }
     public String getPageTitle(int position){
         return titleList.get(position);
     }

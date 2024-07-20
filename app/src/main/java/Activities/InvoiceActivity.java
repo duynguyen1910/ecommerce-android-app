@@ -15,11 +15,11 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.Objects;
 import Adapters.ViewPager2Adapter;
-import Fragments.InvoiceAwaitConfirmationFragment;
-import Fragments.InvoiceAwaitDeliveryFragment;
-import Fragments.InvoiceAwaitPickupFragment;
-import Fragments.InvoiceCancelFragment;
-import Fragments.InvoiceCompletedFragment;
+import Fragments.Invoice.ConfirmationFragment;
+import Fragments.Invoice.DeliveryFragment;
+import Fragments.Invoice.PickupFragment;
+import Fragments.Invoice.CancelFragment;
+import Fragments.Invoice.CompletedFragment;
 
 public class InvoiceActivity extends AppCompatActivity {
 
@@ -39,11 +39,11 @@ public class InvoiceActivity extends AppCompatActivity {
 
     private void setupUI() {
         ViewPager2Adapter viewPager2Adapter = new ViewPager2Adapter(this);
-        viewPager2Adapter.addFragment(new InvoiceAwaitConfirmationFragment(), "Chờ xác nhận");//0
-        viewPager2Adapter.addFragment(new InvoiceAwaitDeliveryFragment(), "Chờ giao hàng");//1
-        viewPager2Adapter.addFragment(new InvoiceAwaitPickupFragment(), "Chờ lấy hàng");//2
-        viewPager2Adapter.addFragment(new InvoiceCompletedFragment(), "Hoàn thành");//3
-        viewPager2Adapter.addFragment(new InvoiceCancelFragment(), "Đã hủy");//4
+        viewPager2Adapter.addFragment(new ConfirmationFragment(), "Chờ xác nhận");//0
+        viewPager2Adapter.addFragment(new DeliveryFragment(), "Chờ giao hàng");//1
+        viewPager2Adapter.addFragment(new PickupFragment(), "Chờ lấy hàng");//2
+        viewPager2Adapter.addFragment(new CompletedFragment(), "Hoàn thành");//3
+        viewPager2Adapter.addFragment(new CancelFragment(), "Đã hủy");//4
         binding.viewPager2.setAdapter(viewPager2Adapter);
 
 

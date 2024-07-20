@@ -1,7 +1,6 @@
 package Activities;
 import static constants.keyName.EMAIL;
 import static constants.keyName.FULLNAME;
-import static constants.keyName.PHONE_NUMBER;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.IMAGE_REQUIRE;
@@ -30,7 +29,7 @@ import java.util.Objects;
 
 import api.uploadApi;
 import interfaces.ImageCallback;
-import interfaces.UpdateCallback;
+import interfaces.StatusCallback;
 import interfaces.UploadCallback;
 import interfaces.UserCallback;
 import models.User;
@@ -75,7 +74,6 @@ public class UpdateProfileActivity extends AppCompatActivity {
             }
         });
 
-
         binding.updateProfileImv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,15 +94,15 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 userUpdates.put(FULLNAME, binding.txtFullname.getText().toString());
                 userUpdates.put(EMAIL, binding.txtEmail.getText().toString());
 
-                user.updateUserInfo(userId, userUpdates, new UpdateCallback() {
+                user.updateUserInfo(userId, userUpdates, new StatusCallback() {
                     @Override
-                    public void updateSuccess(String successMessage) {
+                    public void onSuccess(String successMessage) {
                         Toast.makeText(UpdateProfileActivity.this, successMessage, Toast.LENGTH_SHORT).show();
                         finish();
                     }
 
                     @Override
-                    public void updateFailure(String errorMessage) {
+                    public void onFailure(String errorMessage) {
                         Toast.makeText(UpdateProfileActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -133,14 +131,14 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
         user.getUserInfo(userId, new UserCallback() {
             @Override
-            public void onGetUserInfoSuccess(User user) {
+            public void getUserInfoSuccess(User user) {
                 binding.txtFullname.setText(user.getFullname());
                 binding.txtPhoneNumber.setText(user.getPhoneNumber());
                 binding.txtEmail.setText(user.getEmail() != null ? user.getEmail() : "");
             }
 
             @Override
-            public void onGetUserInfoFailure(String errorMessage) {
+            public void getUserInfoFailure(String errorMessage) {
                 Toast.makeText(UpdateProfileActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });

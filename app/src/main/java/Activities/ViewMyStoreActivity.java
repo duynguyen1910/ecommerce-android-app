@@ -20,11 +20,6 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.Objects;
 
 import Adapters.ViewPager2Adapter;
-import Fragments.InvoiceAwaitConfirmationFragment;
-import Fragments.InvoiceAwaitDeliveryFragment;
-import Fragments.InvoiceAwaitPickupFragment;
-import Fragments.InvoiceCancelFragment;
-import Fragments.InvoiceCompletedFragment;
 import Fragments.StoreCategoriesFragment;
 import Fragments.StoreProductsFragment;
 

@@ -1,4 +1,4 @@
-package Fragments;
+package Fragments.Invoice;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,15 +8,17 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import com.example.stores.databinding.FragmentInvoiceCompletedBinding;
 
-public class InvoiceCompletedFragment extends Fragment {
-    FragmentInvoiceCompletedBinding binding;
+import com.example.stores.databinding.FragmentInvoiceAwaitPickupBinding;
+
+
+public class PickupFragment extends Fragment {
+    FragmentInvoiceAwaitPickupBinding binding;
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentInvoiceCompletedBinding.inflate(getLayoutInflater());
+        binding = FragmentInvoiceAwaitPickupBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 }

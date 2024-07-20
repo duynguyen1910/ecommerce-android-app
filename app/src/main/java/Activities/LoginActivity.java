@@ -1,7 +1,9 @@
 package Activities;
+
 import static constants.keyName.FULLNAME;
 import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;
+import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.keyName.USER_ROLE;
@@ -15,8 +17,11 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.stores.databinding.ActivityLoginBinding;
+
 import java.util.Objects;
 
 import interfaces.UserCallback;
@@ -38,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         setupEvents();
     }
 
-    private void setupEvents(){
+    private void setupEvents() {
         binding.registerRedirectTv.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
 
@@ -49,7 +54,9 @@ public class LoginActivity extends AppCompatActivity {
         binding.btnLoginCt.setOnClickListener(v -> {
             onLogin();
         });
-    };
+    }
+
+    ;
 
     private void onLogin() {
         String phoneNumber = binding.edtPhoneNumber.getText().toString();
@@ -70,10 +77,9 @@ public class LoginActivity extends AppCompatActivity {
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
         User user = new User();
-
        user.onLogin(phoneNumber, password, new UserCallback() {
            @Override
-           public void onGetUserInfoSuccess(User user) {
+           public void getUserInfoSuccess(User user) {
                binding.progressBar.setVisibility(View.GONE);
                Toast.makeText(LoginActivity.this, LOGIN_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
 
@@ -85,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                finish();
            }
            @Override
-           public void onGetUserInfoFailure(String errorMessage) {
+           public void getUserInfoFailure(String errorMessage) {
                binding.progressBar.setVisibility(View.GONE);
                Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
            }
@@ -96,11 +102,12 @@ public class LoginActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString(USER_ID, user.getBaseId());
+        editor.putString(USER_ID, user.getBaseID());
         editor.putString(PHONE_NUMBER, user.getPhoneNumber());
         editor.putString(FULLNAME, user.getFullname());
         editor.putString(PASSWORD, user.getPassword());
         editor.putInt(USER_ROLE, user.getRole().getRoleValue());
+        editor.putString(STORE_ID, user.getStoreId());
         editor.apply();
     }
 
@@ -109,12 +116,12 @@ public class LoginActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("dataRememberLogin", MODE_PRIVATE);
         boolean checkedStatus = sharedPreferences.getBoolean("checked", false);
         binding.chkRemember.setChecked(checkedStatus);  // Set the checkbox status
-        if (checkedStatus){
+        if (checkedStatus) {
             String key_phoneNumber = sharedPreferences.getString("phoneNumber", "");
             String key_password = sharedPreferences.getString("password", "");
             binding.edtPhoneNumber.setText(key_phoneNumber);
             binding.edtPassword.setText(key_password);
-        }else {
+        } else {
             binding.edtPhoneNumber.setText("");
             binding.edtPassword.setText("");
         }

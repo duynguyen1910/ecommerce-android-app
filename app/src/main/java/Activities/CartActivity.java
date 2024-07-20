@@ -141,7 +141,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
     private ArrayList<CartItem> groupProductsByStore() {
         HashMap<Integer, ArrayList<Product>> hashMap = new HashMap<>();
         for (Product product : listProductsInCart) {
-            int storeId = product.getStoreID();
+            int storeId = product.getStoreId();
             if (!hashMap.containsKey(storeId)) {
                 hashMap.put(storeId, new ArrayList<>());
             }

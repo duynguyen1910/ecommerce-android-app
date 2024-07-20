@@ -2,6 +2,7 @@ package api;
 
 import static android.content.ContentValues.TAG;
 import static constants.collectionName.STORE_COLLECTION;
+import static constants.keyName.STORE_PRODUCTS;
 
 import android.util.Log;
 
@@ -18,38 +19,42 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Map;
 
 import constants.toastMessage;
-import interfaces.CreateStoreCallback;
-import interfaces.GetStoreDataCallback;
+import interfaces.CreateProductCallback;
+import interfaces.GetProductDataCallback;
 
-public class storeApi {
+public class productApi {
     private FirebaseFirestore db;
-    public storeApi() {
+
+    public productApi() {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void createStoreApi(Map<String, Object> newStore, final CreateStoreCallback callback) {
-        db.collection(STORE_COLLECTION)
-                .add(newStore)
+    public void createProductApi(Map<String, Object> productData, String storeId, CreateProductCallback callback) {
+        // Sản phẩm nằm trong Store
+        // Tìm reference của Collection Store
+        DocumentReference storeRef = db.collection(STORE_COLLECTION).document(storeId);
+
+        // Vào trường storeProducts của CollectionStore,đây là 1 subCollection, add productData vào subCollection này
+        storeRef.collection(STORE_PRODUCTS)
+                .add(productData)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-
-                        // documentReference.getId() trong trường hợp này là storeId
-                        callback.onCreateSuccess(documentReference.getId());
+                        callback.onCreateSuccess(toastMessage.CREATE_PRODUCT_SUCCESSFULLY);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        callback.onCreateFailure(toastMessage.REGISTER_FAILED);
+                        callback.onCreateFailure(toastMessage.CREATE_PRODUCT_FAILED);
                     }
                 });
 
     }
 
-    public void getStoreDataApi(String storeId, GetStoreDataCallback callback){
-        DocumentReference docRef = db.collection(STORE_COLLECTION).document(storeId);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+    public void getProductDetailDataApi(String storeId, String productId, GetProductDataCallback callback) {
+        DocumentReference productRef = db.collection(STORE_COLLECTION).document(storeId).collection(STORE_PRODUCTS).document(productId);
+        productRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -57,7 +62,7 @@ public class storeApi {
                     if (document.exists()) {
                         callback.onGetDataSuccess(document.getData());
                     } else {
-                        callback.onGetDataFailure(toastMessage.REGISTER_FAILED);
+                        callback.onGetDataFailure(toastMessage.GET_PRODUCT_FAILED);
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());

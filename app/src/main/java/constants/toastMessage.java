@@ -12,4 +12,12 @@ public class toastMessage {
     public static final String UPLOAD_FAILED = "Tải lên không thành công";
     public static final String URL_NOT_FOUND = "Không tìm thấy URL";
     public static final String UPDATE_SUCCESSFULLY = "Cập nhật thành công";
+    public static final String STORENAME_REQUIRE = "Vui lòng nhập tên cửa hàng";
+    public static final String STOREA_ADDRESS_REQUIRE = "Vui lòng nhập địa chỉ cửa hàng";
+    public static final String DEFAULT_REQUIRE = "Vui lòng nhập trường này";
+    public static final String INTERNET_ERROR = "Uiii, Lỗi mạng rồi :((";
+    public static final String CREATE_PRODUCT_FAILED = "Thêm sản phẩm thất bại";
+    public static final String CREATE_PRODUCT_SUCCESSFULLY = "Thêm sản phẩm thành công";
+    public static final String GET_PRODUCT_SUCCESSFULLY = "Lấy thông tin sản phẩm thành công";
+    public static final String GET_PRODUCT_FAILED = "Lấy thông tin sản phẩm thất bại";
 }

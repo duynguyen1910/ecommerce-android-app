@@ -16,9 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:padding="16dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:padding="16dp"
             android:paddingVertical="10dp">
 
 
@@ -104,14 +104,24 @@
                     android:src="@mipmap/meo" />
             </androidx.cardview.widget.CardView>
 
+            <ProgressBar
+                android:id="@+id/progressBarStoreName"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/txtStoreName"
+                android:layout_toEndOf="@id/layoutAvatar"
+                android:indeterminateTintMode="src_atop"
+                android:visibility="visible" />
+
             <TextView
                 android:id="@+id/txtStoreName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="10dp"
-                android:layout_toEndOf="@id/layoutAvatar"
-                android:text="Bot Store"
+                android:layout_toEndOf="@id/progressBarStoreName"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -268,20 +278,21 @@
             </LinearLayout>
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:weightSum="2"
             android:background="@color/white"
-            android:paddingVertical="10dp">
+            android:paddingVertical="10dp"
+            android:weightSum="2">
 
             <LinearLayout
+                android:id="@+id/layoutProducts"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:id="@+id/layoutProducts"
                 android:orientation="vertical">
 
                 <ImageView
@@ -300,10 +311,10 @@
 
 
             <LinearLayout
+                android:id="@+id/layoutRevenue"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:id="@+id/layoutRevenue"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -320,11 +331,6 @@
                     android:text="Doanh thu"
                     android:textColor="@color/black" />
             </LinearLayout>
-
-
-
-
-
 
 
         </LinearLayout>

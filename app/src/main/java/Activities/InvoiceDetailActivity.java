@@ -40,34 +40,38 @@ public class InvoiceDetailActivity extends AppCompatActivity {
             Invoice invoice = (Invoice) bundle.getSerializable("invoice");
             if (invoice != null){
                 binding.txtAddress.setText(invoice.getDeliveryAddress());
-                binding.txtStoreName.setText(invoice.getCartItem().getStoreName());
+//                binding.txtStoreName.setText(invoice.getCartItem().getStoreName());
 
                 NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
                 binding.txtTotal.setText("đ" + formatter.format(invoice.getTotal()));
 
-                ProductsListAdapterForInvoiceDetail adapter = new ProductsListAdapterForInvoiceDetail(InvoiceDetailActivity.this, invoice.getCartItem().getListProducts());
-                binding.recyclerView.setAdapter(adapter);
-                binding.recyclerView.setLayoutManager(new LinearLayoutManager(InvoiceDetailActivity.this, LinearLayoutManager.VERTICAL, false));
+//                ProductsListAdapterForInvoiceDetail adapter =
+//                        new ProductsListAdapterForInvoiceDetail(InvoiceDetailActivity.this,
+//                                invoice.getCartItem().getListProducts());
+//                binding.recyclerView.setAdapter(adapter);
+//                binding.recyclerView.setLayoutManager(new LinearLayoutManager(
+//                        InvoiceDetailActivity.this, LinearLayoutManager.VERTICAL,
+//                        false));
 
-                binding.txtPaidDate.setText(invoice.getPaidDate());
-                if (invoice.getPaidDate() == ""){
-                    binding.txtPaidDate.setText("Chưa thanh toán");
-                }
-                binding.txtGiveToDeliveryDate.setText(invoice.getGiveToDeliveryDate());
-                if (invoice.getPaidDate() == ""){
-                    binding.txtGiveToDeliveryDate.setText("Chưa bàn giao");
-                }
-                binding.txtCompletedDate.setText(invoice.getCompletedDate());
-                if (invoice.getPaidDate() == ""){
-                    binding.txtCompletedDate.setText("Chưa hoàn thành");
-                }
-
-                if (invoice.getPaymentMethod() == 0){
-                    binding.txtPaymentMethod.setText("Thanh toán khi nhận hàng");
-                }
-
-                binding.txtInvoiceID.setText(invoiceID);
-                binding.txtCreatedDate.setText(invoice.getCreatedDate());
+//                binding.txtPaidDate.setText(invoice.getPaidDate());
+//                if (invoice.getPaidDate() == ""){
+//                    binding.txtPaidDate.setText("Chưa thanh toán");
+//                }
+//                binding.txtGiveToDeliveryDate.setText(invoice.getGiveToDeliveryDate());
+//                if (invoice.getPaidDate() == ""){
+//                    binding.txtGiveToDeliveryDate.setText("Chưa bàn giao");
+//                }
+//                binding.txtCompletedDate.setText(invoice.getCompletedDate());
+//                if (invoice.getPaidDate() == ""){
+//                    binding.txtCompletedDate.setText("Chưa hoàn thành");
+//                }
+//
+//                if (invoice.getPaymentMethod() == 0){
+//                    binding.txtPaymentMethod.setText("Thanh toán khi nhận hàng");
+//                }
+//
+//                binding.txtInvoiceID.setText(invoiceID);
+//                binding.txtCreatedDate.setText(invoice.getCreatedDate());
             }
 
         }
