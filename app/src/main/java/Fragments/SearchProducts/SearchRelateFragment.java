@@ -1,4 +1,7 @@
 package Fragments.SearchProducts;
+import static constants.keyName.CATEGORY_ID;
+import static constants.keyName.CATEGORY_NAME;
+import static constants.keyName.STORE_ID;
 import static constants.toastMessage.INTERNET_ERROR;
 import android.content.Intent;
 import android.os.Bundle;
@@ -67,20 +70,20 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
 
         if (bundle != null) {
             //Bundle nhận từ nhiều nguồn khác nhau, có thể từ Home, từ chính fragment này hoặc từ chỗ khác....
-            String categoryId = bundle.getString("categoryId");
-            categoryName = bundle.getString("categoryName");
+            String categoryId = bundle.getString(CATEGORY_ID);
+            categoryName = bundle.getString(CATEGORY_NAME);
             binding.txtSelectedCategory.setText(categoryName);
             transferedselectedPosition = bundle.getInt("selectedPosition");
-            String storeId = bundle.getString("storeId");
+            String storeId = bundle.getString(STORE_ID);
 
             if (storeId != null) {
                 // Nhận storeId và categoroId từ StoreCategoriesFragments
                 // Khởi tạo list products từ chính storeId và categoryId được yêu cầu
-                initProductsByCategoryAndStoreId(storeId, categoryId);
+                fetchProductsByCategoryAndStoreId(storeId, categoryId);
             } else {
                 // Nhận categoryId từ home hoặc chọn category trên chính fragment này
                 // Khởi tạo list products bằng cách lấy toàn bộ Collection Products thỏa mãn categoryId
-                initProductsByCategorId(categoryId);
+                fetchProductsByCategoryId(categoryId);
             }
         }
     }
@@ -96,23 +99,21 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
         binding.txtSelectCategory.setOnClickListener(v -> popUpCategoryDialog());
     }
 
-    private void initProductsByCategorId(String categoryId) {
-        binding.progressBar.setVisibility(View.VISIBLE);
+    private void fetchProductsByCategoryId(String categoryId) {
+        setLoadingState(true);
 
         Product product = new Product();
         product.getAllProductByCategoryId(categoryId, new GetCollectionCallback<Product>() {
             @Override
             public void onGetDataSuccess(ArrayList<Product> products) {
-
+                setLoadingState(false);
                 binding.txtSelectedCategory.setVisibility(View.VISIBLE);
                 listProducts = new ArrayList<>(products);
-                binding.progressBar.setVisibility(View.GONE);
+
                 if (listProducts.isEmpty()) {
                     binding.layoutEmpty.setVisibility(View.VISIBLE);
                 } else {
-
                     binding.layoutEmpty.setVisibility(View.GONE);
-
                 }
 
                 adapter.updateProducts(listProducts);
@@ -120,10 +121,11 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
 
             @Override
             public void onGetDataFailure(String errorMessage) {
-                Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+                showErrorToast(errorMessage);
             }
         });
     }
+
 
     private void popUpCategoryDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
@@ -148,7 +150,7 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
         categoryBinding.progressBarCategory.setVisibility(View.VISIBLE);
         categoryBinding.progressBarCategory.setVisibility(View.GONE);
         CategoryGridForDialogAdapter categoryAdapter = new CategoryGridForDialogAdapter(requireActivity(), allCategories, SearchRelateFragment.this, transferedselectedPosition);
-        categoryBinding.recyclerViewCategory.setLayoutManager(new GridLayoutManager(requireActivity(), 4, GridLayoutManager.VERTICAL, false));
+        categoryBinding.recyclerViewCategory.setLayoutManager(new GridLayoutManager(requireActivity(), 3, GridLayoutManager.VERTICAL, false));
         categoryBinding.recyclerViewCategory.setAdapter(categoryAdapter);
 
         categoryBinding.btnReset.setOnClickListener(new View.OnClickListener() {
@@ -161,15 +163,17 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
         });
 
         categoryBinding.btnSubmit.setOnClickListener(v -> {
-
             if (transferedselectedPosition != -1 ){
                 listProducts.clear();
-                initProductsByCategorId(transferedCategoryId);
+                fetchProductsByCategoryId(transferedCategoryId);
                 binding.txtSelectedCategory.setText(transferedCategoryName);
                 dialog.dismiss();
             }
 
         });
+    }
+    private void setLoadingState(boolean isLoading) {
+        binding.progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
 
     private void getCategoriesRequest() {
@@ -182,32 +186,36 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
 
             @Override
             public void onGetDataFailure(String errorMessage) {
-                Toast.makeText(requireActivity(), INTERNET_ERROR, Toast.LENGTH_SHORT).show();
+                showErrorToast(errorMessage);
             }
         });
     }
 
-    private void initProductsByCategoryAndStoreId(String storeId, String categoryId) {
-        binding.progressBar.setVisibility(View.VISIBLE);
+    private void fetchProductsByCategoryAndStoreId(String storeId, String categoryId) {
+        setLoadingState(true);
+
 
         Product product = new Product();
         product.getAllProductByStoreIdAndCategoryId(storeId, categoryId, new GetCollectionCallback<Product>() {
             @Override
             public void onGetDataSuccess(ArrayList<Product> products) {
-
+                setLoadingState(false);
                 binding.txtSelectedCategory.setVisibility(View.VISIBLE);
                 listProducts = new ArrayList<>(products);
                 if (!listProducts.isEmpty()) {
-                    binding.progressBar.setVisibility(View.GONE);
+                    setLoadingState(false);
                 }
                 adapter.updateProducts(listProducts);
             }
 
             @Override
             public void onGetDataFailure(String errorMessage) {
-                Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+                showErrorToast(errorMessage);
             }
         });
+    }
+    private void showErrorToast(String errorMessage) {
+        Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override

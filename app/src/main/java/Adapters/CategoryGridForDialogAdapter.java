@@ -23,10 +23,8 @@ import models.Category;
 public class CategoryGridForDialogAdapter extends RecyclerView.Adapter<CategoryGridForDialogAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<Category> list;
-    private CategoryDialogListener listener;
+    private final CategoryDialogListener listener;
     private int selectedPosition = -1;
-
-
 
 
     public CategoryGridForDialogAdapter(Context context, ArrayList<Category> list, CategoryDialogListener listener, int selectedPosition) {

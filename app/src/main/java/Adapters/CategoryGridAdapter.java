@@ -1,5 +1,8 @@
 package Adapters;
 
+import static constants.keyName.CATEGORY_ID;
+import static constants.keyName.CATEGORY_NAME;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -54,8 +57,8 @@ public class CategoryGridAdapter extends RecyclerView.Adapter<CategoryGridAdapte
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, SearchActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString("categoryName", category.getCategoryName());
-            bundle.putString("categoryId", category.getBaseId());
+            bundle.putString(CATEGORY_NAME, category.getCategoryName());
+            bundle.putString(CATEGORY_ID, category.getBaseId());
             bundle.putInt("selectedPosition", position );
             intent.putExtras(bundle);
             context.startActivity(intent);

@@ -1,4 +1,7 @@
 package Adapters;
+import static constants.keyName.PRODUCT_ID;
+import static constants.keyName.STORE_ID;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -71,8 +74,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 // truyền productId, storeId
                 Bundle bundle = new Bundle();
 
-                bundle.putString("productId", product.getBaseId());
-                bundle.putString("storeId", product.getStoreId());
+                bundle.putString(PRODUCT_ID, product.getBaseId());
+                bundle.putString(STORE_ID, product.getStoreId());
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }

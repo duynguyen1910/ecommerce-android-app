@@ -79,7 +79,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onGetDataSuccess(ArrayList<Category> categories) {
                 binding.progressBarCategory.setVisibility(View.GONE);
-                binding.recyclerViewCategory.setLayoutManager(new GridLayoutManager(requireActivity(), 4, GridLayoutManager.HORIZONTAL, false));
+                binding.recyclerViewCategory.setLayoutManager(new GridLayoutManager(requireActivity(), 3, GridLayoutManager.HORIZONTAL, false));
                 binding.recyclerViewCategory.setAdapter(new CategoryGridAdapter(requireActivity(), categories));
             }
 
