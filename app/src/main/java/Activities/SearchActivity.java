@@ -24,7 +24,7 @@ import Fragments.SearchProducts.SearchRelateFragment;
 import Fragments.SearchProducts.SearchSellingFragment;
 import Fragments.SearchProducts.SearchSortedByPriceFragment;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity{
 
     ActivitySearchBinding binding;
 
@@ -33,7 +33,7 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySearchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        getBundle();
+//        getBundle();
         initUI();
         setupUI();
 
@@ -43,14 +43,14 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
-    private void getBundle(){
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle != null){
-            String categoryName = bundle.getString("categoryName");
-            binding.searchEdt.setText(categoryName);
-        }
-    }
+//    private void getBundle(){
+//        Intent intent = getIntent();
+//        Bundle bundle = intent.getExtras();
+//        if (bundle != null){
+//            String categoryName = bundle.getString("categoryName");
+//            binding.searchEdt.setText(categoryName);
+//        }
+//    }
 
     private void setupUI() {
         ViewPager2Adapter viewPager2Adapter = new ViewPager2Adapter(this);
@@ -117,4 +117,5 @@ public class SearchActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
     }
+
 }

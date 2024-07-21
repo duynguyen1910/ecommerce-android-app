@@ -13,25 +13,6 @@
         android:src="@drawable/ic_close_24" />
 
     <LinearLayout
-        android:id="@+id/layoutProductsInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="16dp">
-
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:gravity="center_vertical"

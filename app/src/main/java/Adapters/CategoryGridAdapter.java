@@ -16,15 +16,19 @@ import com.example.stores.databinding.ItemCategoryGridBinding;
 import java.util.ArrayList;
 
 import Activities.SearchActivity;
+import interfaces.CategoryDialogListener;
 import models.Category;
 
 public class CategoryGridAdapter extends RecyclerView.Adapter<CategoryGridAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<Category> list;
 
+
+
     public CategoryGridAdapter(Context context, ArrayList<Category> list) {
         this.context = context;
         this.list = list;
+
     }
 
     @NonNull
@@ -52,6 +56,7 @@ public class CategoryGridAdapter extends RecyclerView.Adapter<CategoryGridAdapte
             Bundle bundle = new Bundle();
             bundle.putString("categoryName", category.getCategoryName());
             bundle.putString("categoryId", category.getBaseId());
+            bundle.putInt("selectedPosition", position );
             intent.putExtras(bundle);
             context.startActivity(intent);
         });

@@ -16,15 +16,6 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        android:text="Tên Store * (Tối đa 20 ký tự)"
-        android:textColor="@color/black" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +27,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/custom_edittext_no_border"
             android:gravity="center_vertical"
-            android:hint="Nhập tên Store"
+            android:hint="Nhập tên Store * (Tối đa 20 ký tự)"
             android:maxLength="20"
             android:padding="16dp"
             android:textColor="@color/black"

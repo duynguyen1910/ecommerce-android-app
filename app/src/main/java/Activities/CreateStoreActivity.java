@@ -48,8 +48,6 @@ public class CreateStoreActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     int currentState = 1;
     int steps = 4;
-    private String storeName;
-    private String emailStore;
     ViewPager2Adapter viewPager2Adapter;
 
     @Override

@@ -41,6 +41,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }
     }
 
+    public void updateProducts(ArrayList<Product> newProducts) {
+        this.list.clear();
+        this.list.addAll(newProducts);
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ProductAdapter.ViewHolder holder, int position) {
 
