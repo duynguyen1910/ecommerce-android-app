@@ -31,6 +31,7 @@ import models.Product;
 
 public class SearchRelateFragment extends Fragment {
     FragmentSearchRelateBinding binding;
+
     @Nullable
     @Override
 
@@ -42,27 +43,27 @@ public class SearchRelateFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void getBundle(){
+    private void getBundle() {
         Intent intent = requireActivity().getIntent();
         Bundle bundle = intent.getExtras();
 
-        if (bundle != null){
+        if (bundle != null) {
             //Bundle nhận từ nhiều nguồn khác nhau, có thể từ Home, từ chính fragment này hoặc từ chỗ khác....
             String categoryId = bundle.getString("categoryId");
             String storeId = bundle.getString("storeId");
 
-            if (storeId != null){
+            if (storeId != null) {
                 // Nhận storeId và categoroId từ StoreCategoriesFragments
                 // Khởi tạo list products từ chính storeId và categoryId được yêu cầu
                 initProductsByCategoryAndStoreId(storeId, categoryId);
-            }else {
+            } else {
 
                 // Nhận categoryId từ home hoặc chọn category trên chính fragment này
                 // Khởi tạo list products bằng cách lấy toàn bộ Collection Products thỏa mãn categoryId
                 initProductsByCategorId(categoryId);
             }
 
-        }else {
+        } else {
             initProducts();
         }
 
@@ -76,14 +77,14 @@ public class SearchRelateFragment extends Fragment {
             @Override
             public void onGetDataSuccess(ArrayList<Product> products) {
                 binding.progressBar.setVisibility(View.GONE);
-               if (products.isEmpty()){
-                   binding.layoutEmpty.setVisibility(View.VISIBLE);
-               }else {
-                   binding.layoutEmpty.setVisibility(View.GONE);
+                if (products.isEmpty()) {
+                    binding.layoutEmpty.setVisibility(View.VISIBLE);
+                } else {
+                    binding.layoutEmpty.setVisibility(View.GONE);
 
-                   binding.recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
-                   binding.recyclerView.setAdapter(new ProductAdapter(requireActivity(), products));
-               }
+                    binding.recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
+                    binding.recyclerView.setAdapter(new ProductAdapter(requireActivity(), products));
+                }
 
             }
 
@@ -96,22 +97,17 @@ public class SearchRelateFragment extends Fragment {
     }
 
 
-    private void initProductsByCategoryAndStoreId(String storeId,String categoryId) {
+    private void initProductsByCategoryAndStoreId(String storeId, String categoryId) {
         binding.progressBar.setVisibility(View.VISIBLE);
 
         Product product = new Product();
-        product.getProductsByStoreId(storeId, new GetCollectionCallback<Product>() {
+        product.getAllProductByStoreIdAndCategoryId(storeId, categoryId, new GetCollectionCallback<Product>() {
             @Override
             public void onGetDataSuccess(ArrayList<Product> products) {
-                ArrayList<Product> list = new ArrayList<>();
-                for (Product pr : products){
-                    if (pr.getCategoryId().equals(categoryId)){
-                        list.add(pr);
-                    }
-                }
+
                 binding.progressBar.setVisibility(View.GONE);
                 binding.recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
-                binding.recyclerView.setAdapter(new ProductAdapter(requireActivity(), list));
+                binding.recyclerView.setAdapter(new ProductAdapter(requireActivity(), products));
             }
 
             @Override
@@ -121,6 +117,7 @@ public class SearchRelateFragment extends Fragment {
             }
         });
     }
+
     private void initProducts() {
         binding.progressBar.setVisibility(View.VISIBLE);
 
@@ -129,8 +126,8 @@ public class SearchRelateFragment extends Fragment {
             @Override
             public void onGetDataSuccess(ArrayList<Product> products) {
                 ArrayList<Product> productsInStock = new ArrayList<>();
-                for (Product item : products){
-                    if (item.getInStock() > 0){
+                for (Product item : products) {
+                    if (item.getInStock() > 0) {
                         productsInStock.add(item);
                     }
                 }

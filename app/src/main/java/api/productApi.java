@@ -177,4 +177,27 @@ public class productApi implements Serializable {
             }
         });
     }
+    public void getAllProductByStoreIdAndCategoryIdApi(String storeId, String categoryId, final GetCollectionCallback<Product> callback) {
+        ArrayList<Product> products = new ArrayList<>();
+        db.collection(PRODUCT_COLLECTION)
+                .whereEqualTo(STORE_ID, storeId)
+                .whereEqualTo(CATEGORY_ID, categoryId)
+                .get().
+                addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Product product = document.toObject(Product.class);
+                                String id = document.getId();
+                                product.setBaseId(id);
+                                products.add(product);
+                            }
+                            callback.onGetDataSuccess(products);
+                        } else {
+                            callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
+                        }
+                    }
+                });
+    }
 }

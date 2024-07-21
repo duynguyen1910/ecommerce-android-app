@@ -179,6 +179,9 @@ public class Product extends BaseObject implements Serializable {
     public void getAllProductByCategoryId(String categoryId, final GetCollectionCallback<Product> callback) {
         productApi.getAllProductByCategoryIdApi(categoryId, callback);
     }
+    public void getAllProductByStoreIdAndCategoryId(String storeId, String categoryId, final GetCollectionCallback<Product> callback) {
+        productApi.getAllProductByStoreIdAndCategoryIdApi(storeId, categoryId, callback);
+    }
 
 
     @Override
