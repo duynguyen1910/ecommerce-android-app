@@ -65,5 +65,7 @@
     <color name="mediumgray">#ECEBEB</color>
     <color name="yellow">#EDD707</color>
     <color name="lightyellow">#F4E9BE</color>
+    <color name="lightlightyellow">#FAF7ED</color>
+    <color name="lightlightgreen">#EBFAF8</color>
     <color name="orange"> #E7502A</color>
 </resources>

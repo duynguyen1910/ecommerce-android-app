@@ -176,6 +176,10 @@ public class Product extends BaseObject implements Serializable {
     public void getProductsOutOfStockByStoreId(String storeId, GetCollectionCallback<Product> callback) {
         productApi.getProductsOutOfStockByStoreIdApi(storeId, callback);
     }
+    public void getAllProductByCategoryId(String categoryId, final GetCollectionCallback<Product> callback) {
+        productApi.getAllProductByCategoryIdApi(categoryId, callback);
+    }
+
 
     @Override
     public String getBaseId() {

@@ -41,6 +41,8 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+
+
     private void getBundle(){
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();

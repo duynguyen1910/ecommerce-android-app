@@ -47,16 +47,55 @@ public class SearchRelateFragment extends Fragment {
         Bundle bundle = intent.getExtras();
 
         if (bundle != null){
-//            String categoryName = bundle.getString("categoryName");
+            //Bundle nhận từ nhiều nguồn khác nhau, có thể từ Home, từ chính fragment này hoặc từ chỗ khác....
             String categoryId = bundle.getString("categoryId");
             String storeId = bundle.getString("storeId");
-            initProductsByCategoryAndStoreId(storeId, categoryId);
+
+            if (storeId != null){
+                // Nhận storeId và categoroId từ StoreCategoriesFragments
+                // Khởi tạo list products từ chính storeId và categoryId được yêu cầu
+                initProductsByCategoryAndStoreId(storeId, categoryId);
+            }else {
+
+                // Nhận categoryId từ home hoặc chọn category trên chính fragment này
+                // Khởi tạo list products bằng cách lấy toàn bộ Collection Products thỏa mãn categoryId
+                initProductsByCategorId(categoryId);
+            }
 
         }else {
             initProducts();
         }
 
     }
+
+    private void initProductsByCategorId(String categoryId) {
+        binding.progressBar.setVisibility(View.VISIBLE);
+
+        Product product = new Product();
+        product.getAllProductByCategoryId(categoryId, new GetCollectionCallback<Product>() {
+            @Override
+            public void onGetDataSuccess(ArrayList<Product> products) {
+                binding.progressBar.setVisibility(View.GONE);
+               if (products.isEmpty()){
+                   binding.layoutEmpty.setVisibility(View.VISIBLE);
+               }else {
+                   binding.layoutEmpty.setVisibility(View.GONE);
+
+                   binding.recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
+                   binding.recyclerView.setAdapter(new ProductAdapter(requireActivity(), products));
+               }
+
+            }
+
+            @Override
+            public void onGetDataFailure(String errorMessage) {
+                Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
     private void initProductsByCategoryAndStoreId(String storeId,String categoryId) {
         binding.progressBar.setVisibility(View.VISIBLE);
 

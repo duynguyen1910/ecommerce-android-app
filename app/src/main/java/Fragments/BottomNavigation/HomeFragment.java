@@ -1,11 +1,14 @@
 package Fragments.BottomNavigation;
 
+import static constants.toastMessage.INTERNET_ERROR;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,11 +25,16 @@ import java.util.ArrayList;
 
 import Activities.CartActivity;
 import Activities.SearchActivity;
+import Activities.SelectCategoryActivity;
 import Activities.StatisticsActivity;
 import Adapters.BrandAdapter;
+import Adapters.CategoryAdapter;
+import Adapters.CategoryGridAdapter;
 import Adapters.ProductAdapter;
 import Adapters.SliderAdapter;
+import interfaces.GetCollectionCallback;
 import models.Brand;
+import models.Category;
 import models.Product;
 import models.SliderItem;
 
@@ -42,6 +50,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(getLayoutInflater());
         initBanner();
+        initCategory();
         initProducts();
         setupEvents();
 
@@ -60,6 +69,29 @@ public class HomeFragment extends Fragment {
         banners(sliderItems);
         startSliderAutoCycle();
     }
+    private void initCategory(){
+
+        Category category = new Category();
+
+        binding.progressBarCategory.setVisibility(View.VISIBLE);
+
+        category.getCategoryCollection(new GetCollectionCallback<Category>() {
+            @Override
+            public void onGetDataSuccess(ArrayList<Category> categories) {
+                binding.progressBarCategory.setVisibility(View.GONE);
+                binding.recyclerViewCategory.setLayoutManager(new GridLayoutManager(requireActivity(), 4, GridLayoutManager.HORIZONTAL, false));
+                binding.recyclerViewCategory.setAdapter(new CategoryGridAdapter(requireActivity(), categories));
+            }
+
+            @Override
+            public void onGetDataFailure(String errorMessage) {
+                Toast.makeText(requireActivity(), INTERNET_ERROR, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
 
     private void startSliderAutoCycle() {
         sliderHandler = new Handler();

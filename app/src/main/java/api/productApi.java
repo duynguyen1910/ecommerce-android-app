@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 import static constants.collectionName.PRODUCT_COLLECTION;
 import static constants.collectionName.STORE_COLLECTION;
 import static constants.collectionName.USER_COLLECTION;
+import static constants.keyName.CATEGORY_ID;
 import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;
 import static constants.keyName.PRODUCTS;
@@ -137,6 +138,29 @@ public class productApi implements Serializable {
     public void getAllProductApi(final GetCollectionCallback<Product> callback) {
         ArrayList<Product> products = new ArrayList<>();
         db.collection(PRODUCT_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Product product = document.toObject(Product.class);
+                        String id = document.getId();
+                        product.setBaseId(id);
+                        products.add(product);
+                    }
+                    callback.onGetDataSuccess(products);
+                } else {
+                    callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
+                }
+            }
+        });
+    }
+
+    public void getAllProductByCategoryIdApi(String categoryId, final GetCollectionCallback<Product> callback) {
+        ArrayList<Product> products = new ArrayList<>();
+        db.collection(PRODUCT_COLLECTION)
+                .whereEqualTo(CATEGORY_ID, categoryId)
+                .get().
+                addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
