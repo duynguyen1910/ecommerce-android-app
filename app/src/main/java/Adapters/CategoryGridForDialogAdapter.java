@@ -59,7 +59,7 @@ public class CategoryGridForDialogAdapter extends RecyclerView.Adapter<CategoryG
 
 
         if (selectedPosition == holder.getBindingAdapterPosition()) {
-            holder.itemView.setBackgroundResource(R.drawable.custom_border_orange);
+            holder.itemView.setBackgroundResource(R.drawable.custom_border_primary_color);
         } else {
             holder.itemView.setBackgroundColor(Color.parseColor("#EBFAF8"));  // hoặc background mặc định của bạn
         }

@@ -151,7 +151,14 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
         categoryBinding.recyclerViewCategory.setLayoutManager(new GridLayoutManager(requireActivity(), 4, GridLayoutManager.VERTICAL, false));
         categoryBinding.recyclerViewCategory.setAdapter(categoryAdapter);
 
-        categoryBinding.btnClose.setOnClickListener(v -> dialog.dismiss());
+        categoryBinding.btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.txtSelectedCategory.setVisibility(View.GONE);
+                transferedselectedPosition = -1;
+                dialog.dismiss();
+            }
+        });
 
         categoryBinding.btnSubmit.setOnClickListener(v -> {
 
