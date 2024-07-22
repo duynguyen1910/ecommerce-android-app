@@ -20,6 +20,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -61,75 +62,11 @@ public class productApi implements Serializable {
     }
 
     public void getProductDetailApi(String productId, GetDocumentCallback callback) {
-
         db.collection(PRODUCT_COLLECTION)
                 .document(productId)
                 .get()
                 .addOnSuccessListener(task -> {
                     callback.onGetDataSuccess(task.getData());
-
-                }).addOnFailureListener(e -> {
-                    callback.onGetDataFailure(INTERNET_ERROR);
-                });
-    }
-
-    public void getProductsByStoreIdApi(String storeId, GetCollectionCallback<Product> callback) {
-        ArrayList<Product> products = new ArrayList<>();
-        db.collection(PRODUCT_COLLECTION)
-                .whereEqualTo(STORE_ID, storeId)
-                .limit(100)
-                .get()
-                .addOnSuccessListener(task -> {
-                    for (DocumentSnapshot document : task.getDocuments()) {
-                        Product product = document.toObject(Product.class);
-                        String id = document.getId();
-                        product.setBaseId(id);
-                        products.add(product);
-                    }
-                    callback.onGetDataSuccess(products);
-
-                }).addOnFailureListener(e -> {
-                    callback.onGetDataFailure(INTERNET_ERROR);
-                });
-    }
-
-    public void getProductsInStockByStoreIdApi(String storeId, GetCollectionCallback<Product> callback) {
-        ArrayList<Product> products = new ArrayList<>();
-        db.collection(PRODUCT_COLLECTION)
-                .whereEqualTo(STORE_ID, storeId)
-                .whereGreaterThan(PRODUCT_INSTOCK, 0.0)
-                .limit(100)
-                .orderBy(PRODUCT_INSTOCK, Query.Direction.ASCENDING)
-                .get()
-                .addOnSuccessListener(task -> {
-                    for (DocumentSnapshot document : task.getDocuments()) {
-                        Product product = document.toObject(Product.class);
-                        String id = document.getId();
-                        product.setBaseId(id);
-                        products.add(product);
-                    }
-                    callback.onGetDataSuccess(products);
-
-                }).addOnFailureListener(e -> {
-                    callback.onGetDataFailure(INTERNET_ERROR);
-                });
-    }
-
-    public void getProductsOutOfStockByStoreIdApi(String storeId, GetCollectionCallback<Product> callback) {
-        ArrayList<Product> products = new ArrayList<>();
-        db.collection(PRODUCT_COLLECTION)
-                .whereEqualTo(STORE_ID, storeId)
-                .whereEqualTo(PRODUCT_INSTOCK, 0)
-                .limit(100)
-                .get()
-                .addOnSuccessListener(task -> {
-                    for (DocumentSnapshot document : task.getDocuments()) {
-                        Product product = document.toObject(Product.class);
-                        String id = document.getId();
-                        product.setBaseId(id);
-                        products.add(product);
-                    }
-                    callback.onGetDataSuccess(products);
 
                 }).addOnFailureListener(e -> {
                     callback.onGetDataFailure(INTERNET_ERROR);
@@ -144,98 +81,98 @@ public class productApi implements Serializable {
                 .addOnFailureListener(e -> Log.w("Firestore", "Error updating user's STORE_ID.", e));
     }
 
-    public void getAllProductApi(final GetCollectionCallback<Product> callback) {
-        ArrayList<Product> products = new ArrayList<>();
-
-        db.collection(PRODUCT_COLLECTION)
-                .limit(100)
+    private void getProducts(Query query, int limit, final GetCollectionCallback<Product> callback) {
+        query.limit(limit)
                 .get()
                 .addOnSuccessListener(task -> {
+                    ArrayList<Product> products = new ArrayList<>();
                     for (DocumentSnapshot document : task.getDocuments()) {
                         Product product = document.toObject(Product.class);
-                        String id = document.getId();
-                        product.setBaseId(id);
-                        products.add(product);
+                        if (product != null) {
+                            product.setBaseId(document.getId());
+                            products.add(product);
+                        }
                     }
                     callback.onGetDataSuccess(products);
-                }).addOnFailureListener(e -> {
-                    callback.onGetDataFailure(INTERNET_ERROR);
-                });
-
-
-    }
-
-    public void countProductsOutOfStockByStoreIdApi(String storeId, GetCountCallback<Product> callback) {
-        db.collection(PRODUCT_COLLECTION)
-                .whereEqualTo(STORE_ID, storeId)
-                .whereEqualTo(PRODUCT_INSTOCK, 0.0)
-                .limit(100)
-                .get()
-                .addOnSuccessListener(task -> {
-                    int count = task.size();
-                    callback.onGetCountSuccess(count);
                 })
-                .addOnFailureListener(e -> {
-                    callback.onGetCountFailure(INTERNET_ERROR);
-                });
+                .addOnFailureListener(e -> callback.onGetDataFailure(INTERNET_ERROR));
     }
 
-    public void countProductsInStockByStoreIdApi(String storeId, GetCountCallback<Product> callback) {
-        db.collection(PRODUCT_COLLECTION)
+
+    public void getProductsByStoreIdApi(String storeId, GetCollectionCallback<Product> callback) {
+        Query query = db.collection(PRODUCT_COLLECTION).whereEqualTo(STORE_ID, storeId);
+        getProducts(query, 100, callback);
+    }
+
+    public void getProductsInStockByStoreIdApi(String storeId, GetCollectionCallback<Product> callback) {
+        Query query = db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(STORE_ID, storeId)
-                .whereGreaterThan(PRODUCT_INSTOCK, 0)
-                .limit(100)
-                .get()
-                .addOnSuccessListener(task -> {
-                    int count = task.size();
-                    callback.onGetCountSuccess(count);
-                })
-                .addOnFailureListener(e -> {
-                    callback.onGetCountFailure(INTERNET_ERROR);
-                });
-
-
+                .whereGreaterThan(PRODUCT_INSTOCK, 0.0)
+                .orderBy(PRODUCT_INSTOCK, Query.Direction.ASCENDING);
+        getProducts(query, 100, callback);
     }
 
+    public void getProductsOutOfStockByStoreIdApi(String storeId, GetCollectionCallback<Product> callback) {
+        Query query = db.collection(PRODUCT_COLLECTION)
+                .whereEqualTo(STORE_ID, storeId)
+                .whereEqualTo(PRODUCT_INSTOCK, 0.0);
+        getProducts(query, 100, callback);
+    }
+
+    public void getAllProductApi(final GetCollectionCallback<Product> callback) {
+        Query query = db.collection(PRODUCT_COLLECTION);
+        getProducts(query, 100, callback);
+    }
+
+    public void getAllProductAscendingByCategoryIdApi(String categoryId, final GetCollectionCallback<Product> callback) {
+        Query query = db.collection(PRODUCT_COLLECTION)
+                .whereEqualTo(CATEGORY_ID, categoryId)
+                .orderBy(PRODUCT_INSTOCK, Query.Direction.ASCENDING);
+        getProducts(query, 100, callback);
+    }
+
+    public void getAllProductDescendingByCategoryIdApi(String categoryId, final GetCollectionCallback<Product> callback) {
+        Query query = db.collection(PRODUCT_COLLECTION)
+                .whereEqualTo(CATEGORY_ID, categoryId)
+                .orderBy(PRODUCT_INSTOCK, Query.Direction.DESCENDING);
+        getProducts(query, 100, callback);
+    }
 
     public void getAllProductByCategoryIdApi(String categoryId, final GetCollectionCallback<Product> callback) {
-        ArrayList<Product> products = new ArrayList<>();
-        db.collection(PRODUCT_COLLECTION)
-                .whereEqualTo(CATEGORY_ID, categoryId)
-                .limit(100)
-                .get()
-                .addOnSuccessListener(task -> {
-                    for (DocumentSnapshot document : task.getDocuments()) {
-                        Product product = document.toObject(Product.class);
-                        String id = document.getId();
-                        product.setBaseId(id);
-                        products.add(product);
-                    }
-                    callback.onGetDataSuccess(products);
-
-                }).addOnFailureListener(e -> {
-                    callback.onGetDataFailure(INTERNET_ERROR);
-                });
+        Query query = db.collection(PRODUCT_COLLECTION)
+                .whereEqualTo(CATEGORY_ID, categoryId);
+        getProducts(query, 100, callback);
     }
 
     public void getAllProductByStoreIdAndCategoryIdApi(String storeId, String categoryId, final GetCollectionCallback<Product> callback) {
-        ArrayList<Product> products = new ArrayList<>();
-        db.collection(PRODUCT_COLLECTION)
+        Query query = db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(STORE_ID, storeId)
-                .whereEqualTo(CATEGORY_ID, categoryId)
-                .limit(100)
-                .get().addOnSuccessListener(task -> {
-
-                    for (DocumentSnapshot document : task.getDocuments()) {
-                        Product product = document.toObject(Product.class);
-                        String id = document.getId();
-                        product.setBaseId(id);
-                        products.add(product);
-                    }
-                    callback.onGetDataSuccess(products);
-
-                }).addOnFailureListener(e -> {
-                    callback.onGetDataFailure(INTERNET_ERROR);
-                });
+                .whereEqualTo(CATEGORY_ID, categoryId);
+        getProducts(query, 100, callback);
     }
+
+    private void countProducts(Query query, final GetCountCallback<Product> callback) {
+        query.get()
+                .addOnSuccessListener(task -> {
+                    int count = task.size();
+                    callback.onGetCountSuccess(count);
+                })
+                .addOnFailureListener(e -> callback.onGetCountFailure(INTERNET_ERROR));
+    }
+
+    public void countProductsOutOfStockByStoreIdApi(String storeId, GetCountCallback<Product> callback) {
+        Query query = db.collection(PRODUCT_COLLECTION)
+                .whereEqualTo(STORE_ID, storeId)
+                .whereEqualTo(PRODUCT_INSTOCK, 0.0);
+        countProducts(query, callback);
+    }
+
+    public void countProductsInStockByStoreIdApi(String storeId, GetCountCallback<Product> callback) {
+        Query query = db.collection(PRODUCT_COLLECTION)
+                .whereEqualTo(STORE_ID, storeId)
+                .whereGreaterThan(PRODUCT_INSTOCK, 0.0);
+        countProducts(query, callback);
+    }
+
+
 }

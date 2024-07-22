@@ -207,6 +207,12 @@ public class Product extends BaseObject implements Serializable {
     public void countProductsInStockByStoreId(String storeId, GetCountCallback<Product> callback){
         productApi.countProductsInStockByStoreIdApi(storeId, callback);
     }
+    public void getAllProductDescendingByCategoryId(String categoryId,final GetCollectionCallback<Product> callback) {
+        productApi.getAllProductDescendingByCategoryIdApi(categoryId, callback);
+    }
+    public void getAllProductAscendingByCategoryId(String categoryId,final GetCollectionCallback<Product> callback) {
+        productApi.getAllProductAscendingByCategoryIdApi(categoryId, callback);
+    }
 
 
     @Override
