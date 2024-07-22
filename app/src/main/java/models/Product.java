@@ -52,8 +52,6 @@ public class Product extends BaseObject implements Serializable {
     }
 
 
-
-
     public Product() {
         productApi = new productApi();
     }
@@ -154,18 +152,17 @@ public class Product extends BaseObject implements Serializable {
     }
 
 
-
-    public void getProductDetail(String productId, GetDocumentCallback callback){
+    public void getProductDetail(String productId, GetDocumentCallback callback) {
         productApi.getProductDetailApi(productId, callback);
     }
 
 
     public void updateProduct(Map<String, Object> updateData, String storeId, String productId, UpdateDocumentCallback callback) {
-       productApi.updateProductApi(updateData, storeId, productId, callback);
+        productApi.updateProductApi(updateData, storeId, productId, callback);
     }
 
 
-    public void getAllProducts(final GetCollectionCallback<Product> callback){
+    public void getAllProducts(final GetCollectionCallback<Product> callback) {
         productApi.getAllProductApi(callback);
     }
 
@@ -176,11 +173,21 @@ public class Product extends BaseObject implements Serializable {
     public void getProductsOutOfStockByStoreId(String storeId, GetCollectionCallback<Product> callback) {
         productApi.getProductsOutOfStockByStoreIdApi(storeId, callback);
     }
+
     public void getAllProductByCategoryId(String categoryId, final GetCollectionCallback<Product> callback) {
         productApi.getAllProductByCategoryIdApi(categoryId, callback);
     }
+
     public void getAllProductByStoreIdAndCategoryId(String storeId, String categoryId, final GetCollectionCallback<Product> callback) {
         productApi.getAllProductByStoreIdAndCategoryIdApi(storeId, categoryId, callback);
+    }
+
+    public void getAllProductByStringQueryApi(String stringQuery, final GetCollectionCallback<Product> callback) {
+        productApi.getAllProductByStringQueryApi(stringQuery, callback);
+    }
+
+    public ArrayList<String> chunkProductName(String productName, int size) {
+        return productApi.chunk(productName, size);
     }
 
 

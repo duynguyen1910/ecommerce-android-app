@@ -9,6 +9,8 @@ import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;
 import static constants.keyName.PRODUCTS;
 import static constants.keyName.PRODUCT_INSTOCK;
+import static constants.keyName.PRODUCT_NAME;
+import static constants.keyName.PRODUCT_NAME_CHUNK;
 import static constants.keyName.STORE_ID;
 
 import android.util.Log;
@@ -21,13 +23,16 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import constants.toastMessage;
 import interfaces.CreateDocumentCallback;
@@ -80,6 +85,7 @@ public class productApi implements Serializable {
         });
 
     }
+
     public void getProductsByStoreIdApi(String storeId, GetCollectionCallback<Product> callback) {
         ArrayList<Product> products = new ArrayList<>();
         db.collection(PRODUCT_COLLECTION)
@@ -161,22 +167,77 @@ public class productApi implements Serializable {
                 .whereEqualTo(CATEGORY_ID, categoryId)
                 .get().
                 addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Product product = document.toObject(Product.class);
-                        String id = document.getId();
-                        product.setBaseId(id);
-                        products.add(product);
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Product product = document.toObject(Product.class);
+                                String id = document.getId();
+                                product.setBaseId(id);
+                                products.add(product);
+                            }
+                            callback.onGetDataSuccess(products);
+                        } else {
+                            callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
+                        }
                     }
-                    callback.onGetDataSuccess(products);
-                } else {
-                    callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
+                });
+    }
+
+    public void getAllProductByStringQueryApi(String stringQuery, final GetCollectionCallback<Product> callback) {
+        ArrayList<Product> products = new ArrayList<>();
+        db.collection(PRODUCT_COLLECTION)
+                .whereArrayContainsAny(PRODUCT_NAME_CHUNK, chunk(stringQuery, 2))
+                .get().
+                addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Product product = document.toObject(Product.class);
+                                String id = document.getId();
+                                product.setBaseId(id);
+                                products.add(product);
+                            }
+                            callback.onGetDataSuccess(products);
+                        } else {
+                            callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
+                        }
+                    }
+                });
+    }
+
+    public static ArrayList<String> chunk(String productName, int size) {
+        ArrayList<String> result = new ArrayList<>();
+        StringBuilder temp = new StringBuilder();
+        int count = 0;
+
+        // Chuyển chuỗi sang chữ thường và loại bỏ dấu tiếng Việt
+        productName = Normalizer.normalize(productName.toLowerCase(), Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        productName = pattern.matcher(productName).replaceAll("");
+
+        for (int i = 0; i < productName.length(); i++) {
+            char currentChar = productName.charAt(i);
+            if (currentChar != ' ') {
+                temp.append(currentChar);
+                count++;
+                if (count == size) {
+                    result.add(temp.toString());
+                    temp.setLength(0);
+                    count = 0;
                 }
             }
-        });
+        }
+
+        // Thêm chuỗi còn lại nếu có
+        if (temp.length() != 0) {
+            result.add(temp.toString());
+        }
+
+        return result;
     }
+
     public void getAllProductByStoreIdAndCategoryIdApi(String storeId, String categoryId, final GetCollectionCallback<Product> callback) {
         ArrayList<Product> products = new ArrayList<>();
         db.collection(PRODUCT_COLLECTION)

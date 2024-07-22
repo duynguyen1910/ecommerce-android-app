@@ -6,6 +6,7 @@ import static constants.keyName.PRODUCT_DESC;
 import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
+import static constants.keyName.PRODUCT_NAME_CHUNK;
 import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
 import static constants.keyName.STORE_ID;
@@ -25,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.stores.databinding.ActivityAddProductsBinding;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -112,6 +114,7 @@ public class AddProductsActivity extends AppCompatActivity {
         String categoryName = Objects.requireNonNull(binding.edtCategory.getText()).toString().trim();
 
 
+
         boolean isValid = true;
 
         if (productName.isEmpty()) {
@@ -139,16 +142,21 @@ public class AddProductsActivity extends AppCompatActivity {
         }
 
         if (isValid) {
-            Map<String, Object> product = new HashMap<>();
-            product.put(PRODUCT_NAME, productName);
-            product.put(PRODUCT_DESC, description);
-            product.put(PRODUCT_NEW_PRICE, Double.parseDouble(price));
-            product.put(PRODUCT_OLD_PRICE, Double.parseDouble(price));
-            product.put(PRODUCT_INSTOCK, Integer.parseInt(inStock));
-            product.put(CATEGORY_ID, categoryId);
-            product.put(CATEGORY_NAME, categoryName);
-            product.put(STORE_ID, storeId);
-            return product;
+            Product product = new Product();
+            Map<String, Object> newProduct = new HashMap<>();
+            ArrayList<String> productNameChunk = product.chunkProductName(productName, 2);
+
+            newProduct.put(PRODUCT_NAME, productName);
+            newProduct.put(PRODUCT_DESC, description);
+            newProduct.put(PRODUCT_NEW_PRICE, Double.parseDouble(price));
+            newProduct.put(PRODUCT_OLD_PRICE, Double.parseDouble(price));
+            newProduct.put(PRODUCT_INSTOCK, Integer.parseInt(inStock));
+            newProduct.put(CATEGORY_ID, categoryId);
+            newProduct.put(CATEGORY_NAME, categoryName);
+            newProduct.put(STORE_ID, storeId);
+            newProduct.put(PRODUCT_NAME_CHUNK, productNameChunk);
+
+            return newProduct;
         } else {
             return null;
         }

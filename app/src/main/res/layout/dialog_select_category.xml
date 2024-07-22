@@ -12,26 +12,12 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <RelativeLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbarThumbHorizontal="@drawable/scrollbar_bg"
-                android:scrollbars="horizontal" />
-
-            <ProgressBar
-                android:id="@+id/progressBarCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="50dp" />
-        </RelativeLayout>
+            android:scrollbarThumbHorizontal="@drawable/scrollbar_bg"
+            android:scrollbars="horizontal" />
 
         <LinearLayout
             android:layout_width="match_parent"

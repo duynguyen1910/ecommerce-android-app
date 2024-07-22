@@ -61,9 +61,11 @@ public class HomeFragment extends Fragment {
     private void initBanner() {
 //        binding.progressBarBanner.setVisibility(View.VISIBLE);
         sliderItems = new ArrayList<>();
+
+        sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-lxuu1mpyl1w9ec_xxhdpi"));
+        sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-lxutdtxck0yj9c_xxhdpi"));
         sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-lwztkkhj1al5ec_xhdpi"));
         sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-lwztm87bnbvd54_xhdpi"));
-        sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-lwzterl4qh97a7_xxhdpi"));
         sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-lwzasb4nio637c_xxhdpi"));
         binding.progressBarBanner.setVisibility(View.GONE);
         banners(sliderItems);
@@ -163,6 +165,8 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(requireActivity(), SearchActivity.class);
+                String stringQuery = binding.searchEdt.getText().toString().trim();
+                intent.putExtra("stringQuery", stringQuery);
                 startActivity(intent);
             }
         });

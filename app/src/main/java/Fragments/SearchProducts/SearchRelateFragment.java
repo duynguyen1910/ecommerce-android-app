@@ -2,7 +2,6 @@ package Fragments.SearchProducts;
 import static constants.keyName.CATEGORY_ID;
 import static constants.keyName.CATEGORY_NAME;
 import static constants.keyName.STORE_ID;
-import static constants.toastMessage.INTERNET_ERROR;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -75,15 +74,23 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
             binding.txtSelectedCategory.setText(categoryName);
             transferedselectedPosition = bundle.getInt("selectedPosition");
             String storeId = bundle.getString(STORE_ID);
+            String stringQuery = bundle.getString("stringQuery");
+
 
             if (storeId != null) {
                 // Nhận storeId và categoroId từ StoreCategoriesFragments
                 // Khởi tạo list products từ chính storeId và categoryId được yêu cầu
                 fetchProductsByCategoryAndStoreId(storeId, categoryId);
             } else {
+                if (stringQuery != null){
+                    fetchProductsByStringQuery(stringQuery);
+                    showToast("query: " + stringQuery);
+                }else {
+                    fetchProductsByCategoryId(categoryId);
+                }
                 // Nhận categoryId từ home hoặc chọn category trên chính fragment này
                 // Khởi tạo list products bằng cách lấy toàn bộ Collection Products thỏa mãn categoryId
-                fetchProductsByCategoryId(categoryId);
+
             }
         }
     }
@@ -121,7 +128,34 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
 
             @Override
             public void onGetDataFailure(String errorMessage) {
-                showErrorToast(errorMessage);
+                showToast(errorMessage);
+            }
+        });
+    }
+    private void fetchProductsByStringQuery(String stringQuery) {
+        setLoadingState(true);
+
+        Product product = new Product();
+        product.getAllProductByStringQueryApi(stringQuery, new GetCollectionCallback<Product>() {
+            @Override
+            public void onGetDataSuccess(ArrayList<Product> products) {
+                setLoadingState(false);
+
+                showToast("productsSize: " + products.size());
+                listProducts = new ArrayList<>(products);
+
+                if (listProducts.isEmpty()) {
+                    binding.layoutEmpty.setVisibility(View.VISIBLE);
+                } else {
+                    binding.layoutEmpty.setVisibility(View.GONE);
+                }
+
+                adapter.updateProducts(listProducts);
+            }
+
+            @Override
+            public void onGetDataFailure(String errorMessage) {
+                showToast(errorMessage);
             }
         });
     }
@@ -146,9 +180,6 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
 
         dialog.setCancelable(true);
 
-
-        categoryBinding.progressBarCategory.setVisibility(View.VISIBLE);
-        categoryBinding.progressBarCategory.setVisibility(View.GONE);
         CategoryGridForDialogAdapter categoryAdapter = new CategoryGridForDialogAdapter(requireActivity(), allCategories, SearchRelateFragment.this, transferedselectedPosition);
         categoryBinding.recyclerViewCategory.setLayoutManager(new GridLayoutManager(requireActivity(), 3, GridLayoutManager.VERTICAL, false));
         categoryBinding.recyclerViewCategory.setAdapter(categoryAdapter);
@@ -177,6 +208,7 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
     }
 
     private void getCategoriesRequest() {
+        allCategories = new ArrayList<>();
         Category category = new Category();
         category.getCategoryCollection(new GetCollectionCallback<Category>() {
             @Override
@@ -186,7 +218,7 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
 
             @Override
             public void onGetDataFailure(String errorMessage) {
-                showErrorToast(errorMessage);
+                showToast(errorMessage);
             }
         });
     }
@@ -210,12 +242,12 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
 
             @Override
             public void onGetDataFailure(String errorMessage) {
-                showErrorToast(errorMessage);
+                showToast(errorMessage);
             }
         });
     }
-    private void showErrorToast(String errorMessage) {
-        Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_SHORT).show();
+    private void showToast(String message) {
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
