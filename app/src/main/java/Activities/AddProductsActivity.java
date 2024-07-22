@@ -6,7 +6,7 @@ import static constants.keyName.PRODUCT_DESC;
 import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
-import static constants.keyName.PRODUCT_NAME_CHUNK;
+import static constants.keyName.PRODUCT_NAME_SPLIT;
 import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
 import static constants.keyName.STORE_ID;
@@ -97,8 +97,8 @@ public class AddProductsActivity extends AppCompatActivity {
                     if (intent != null) {
                         Bundle bundle = intent.getExtras();
                         if (bundle != null){
-                            String categoryName = bundle.getString("categoryName");
-                            categoryId = bundle.getString("categoryId") ;
+                            String categoryName = bundle.getString(CATEGORY_NAME);
+                            categoryId = bundle.getString(CATEGORY_ID) ;
                             binding.txtChooseCategory.setText("Ngành hàng: ");
                             binding.edtCategory.setText(categoryName);
                         }
@@ -154,7 +154,7 @@ public class AddProductsActivity extends AppCompatActivity {
             newProduct.put(CATEGORY_ID, categoryId);
             newProduct.put(CATEGORY_NAME, categoryName);
             newProduct.put(STORE_ID, storeId);
-            newProduct.put(PRODUCT_NAME_CHUNK, productNameSplit);
+            newProduct.put(PRODUCT_NAME_SPLIT, productNameSplit);
 
             return newProduct;
         } else {

@@ -1,8 +1,11 @@
 package Adapters;
 
+import static constants.keyName.PRODUCT_ID;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -60,9 +63,9 @@ public class MyProductsAdapter extends RecyclerView.Adapter<MyProductsAdapter.Vi
         holder.binding.txtInStock.setText(String.valueOf(product.getInStock()));
 //        holder.binding.txtSold.setText(String.valueOf(product.getSold()));
 
-        holder.binding.btnEdit.setOnClickListener(v -> {
+        holder.binding.btnUpdate.setOnClickListener(v -> {
             Intent intent = new Intent(context, UpdateProductActivity.class);
-//            intent.putExtra("product", product);
+            intent.putExtra(PRODUCT_ID, product.getBaseId());
             context.startActivity(intent);
 
         });

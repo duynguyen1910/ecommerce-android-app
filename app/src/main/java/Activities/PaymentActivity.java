@@ -62,9 +62,12 @@ public class PaymentActivity extends AppCompatActivity {
         if (intent != null) {
             payment = (ArrayList<CartItem>) getIntent().getSerializableExtra("payment");
 
-            PaymentAdapter paymentAdapter = new PaymentAdapter(PaymentActivity.this, payment);
-            binding.recyclerViewPayment.setAdapter(paymentAdapter);
-            binding.recyclerViewPayment.setLayoutManager(new LinearLayoutManager(PaymentActivity.this, LinearLayoutManager.VERTICAL, false));
+            if (payment != null){
+                PaymentAdapter paymentAdapter = new PaymentAdapter(PaymentActivity.this, payment);
+                binding.recyclerViewPayment.setAdapter(paymentAdapter);
+                binding.recyclerViewPayment.setLayoutManager(new LinearLayoutManager(PaymentActivity.this, LinearLayoutManager.VERTICAL, false));
+            }
+
 
         }
 

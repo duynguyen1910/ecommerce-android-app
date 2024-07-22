@@ -1,15 +1,18 @@
 package Activities;
+
 import static constants.keyName.CATEGORY_ID;
 import static constants.keyName.CATEGORY_NAME;
 import static constants.keyName.PRODUCT_DESC;
+import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
-import static constants.keyName.PRODUCT_NAME_CHUNK;
+import static constants.keyName.PRODUCT_NAME_SPLIT;
 import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
 import static constants.keyName.STORE_ID;
 import static constants.toastMessage.CREATE_PRODUCT_SUCCESSFULLY;
 import static constants.toastMessage.DEFAULT_REQUIRE;
+import static constants.toastMessage.INTERNET_ERROR;
 import static constants.toastMessage.UPDATE_PRODUCT_FAILED;
 import static constants.toastMessage.UPDATE_PRODUCT_SUCCESSFULLY;
 
@@ -17,23 +20,30 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.stores.databinding.ActivityUpdateProductBinding;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
 import interfaces.CreateDocumentCallback;
+import interfaces.GetDocumentCallback;
 import interfaces.UpdateDocumentCallback;
 import models.Product;
 
 public class UpdateProductActivity extends AppCompatActivity {
 
     ActivityUpdateProductBinding binding;
-    String storeId;
     String categoryId;
     String productId;
 
@@ -44,12 +54,44 @@ public class UpdateProductActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         initUI();
+        getBundle();
         setupEvents();
 
 
-
-
     }
+
+    private void getBundle() {
+        Intent intent = getIntent();
+        if (intent != null) {
+            productId = intent.getStringExtra(PRODUCT_ID);
+            if (productId != null) {
+                Product product = new Product();
+                product.getProductDetail(productId, new GetDocumentCallback() {
+                    @Override
+                    public void onGetDataSuccess(Map<String, Object> productDetail) {
+                        binding.edtCategory.setText((CharSequence) productDetail.get(CATEGORY_NAME));
+                        binding.edtDescription.setText((CharSequence) productDetail.get(PRODUCT_DESC));
+                        binding.edtTitle.setText((CharSequence) productDetail.get(PRODUCT_NAME));
+
+                        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+                        double newPrice = (double) productDetail.get(PRODUCT_NEW_PRICE);
+                        binding.edtPrice.setText(formatter.format(newPrice));
+
+                        int inStock =   ((Long) Objects.requireNonNull(productDetail.get(PRODUCT_INSTOCK))).intValue();
+                        binding.edtInStock.setText(String.valueOf(inStock));
+
+                        categoryId = (String) productDetail.get(CATEGORY_ID);
+                    }
+
+                    @Override
+                    public void onGetDataFailure(String errorMessage) {
+                        showToast(INTERNET_ERROR);
+                    }
+                });
+            }
+        }
+    }
+
     ActivityResultLauncher<Intent> launcherSelectCategory = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -57,15 +99,16 @@ public class UpdateProductActivity extends AppCompatActivity {
                     Intent intent = result.getData();
                     if (intent != null) {
                         Bundle bundle = intent.getExtras();
-                        if (bundle != null){
-                            String categoryName = bundle.getString("categoryName");
-                            categoryId = bundle.getString("categoryId") ;
+                        if (bundle != null) {
+                            String categoryName = bundle.getString(CATEGORY_NAME);
+                            categoryId = bundle.getString(CATEGORY_ID);
                             binding.txtChooseCategory.setText("Ngành hàng: ");
                             binding.edtCategory.setText(categoryName);
                         }
                     }
                 }
             });
+
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
         binding.layoutDeliveryFee.setOnClickListener(v -> {
@@ -77,17 +120,17 @@ public class UpdateProductActivity extends AppCompatActivity {
             Map<String, Object> productData = validateForm();
             if (productData != null) {
                 Product product = new Product();
-               product.updateProduct(productData, storeId, productId, new UpdateDocumentCallback() {
-                   @Override
-                   public void onUpdateSuccess() {
-                       showToast(UPDATE_PRODUCT_SUCCESSFULLY);
-                   }
+                product.updateProduct(productData, productId, new UpdateDocumentCallback() {
+                    @Override
+                    public void onUpdateSuccess() {
+                        showToast(UPDATE_PRODUCT_SUCCESSFULLY);
+                    }
 
-                   @Override
-                   public void onUpdateFailure(String errorMessage) {
-                       showToast(UPDATE_PRODUCT_FAILED);
-                   }
-               });
+                    @Override
+                    public void onUpdateFailure(String errorMessage) {
+                        showToast(UPDATE_PRODUCT_FAILED);
+                    }
+                });
             }
 
             finish();
@@ -100,16 +143,18 @@ public class UpdateProductActivity extends AppCompatActivity {
         });
 
     }
+
     private void showToast(String message) {
         Toast.makeText(UpdateProductActivity.this, message, Toast.LENGTH_SHORT).show();
     }
+
     private Map<String, Object> validateForm() {
         String productName = Objects.requireNonNull(binding.edtTitle.getText()).toString().trim();
         String description = Objects.requireNonNull(binding.edtDescription.getText()).toString().trim();
-        String price = Objects.requireNonNull(binding.edtPrice.getText()).toString().trim();
+
+        String price = Objects.requireNonNull(binding.edtPrice.getText()).toString().trim().replace(".", "");
         String inStock = Objects.requireNonNull(binding.edtInStock.getText()).toString().trim();
         String categoryName = Objects.requireNonNull(binding.edtCategory.getText()).toString().trim();
-
 
 
         boolean isValid = true;
@@ -150,15 +195,15 @@ public class UpdateProductActivity extends AppCompatActivity {
             newProduct.put(PRODUCT_INSTOCK, Integer.parseInt(inStock));
             newProduct.put(CATEGORY_ID, categoryId);
             newProduct.put(CATEGORY_NAME, categoryName);
-            newProduct.put(STORE_ID, storeId);
-            newProduct.put(PRODUCT_NAME_CHUNK, productNameSplit);
+            newProduct.put(PRODUCT_NAME_SPLIT, productNameSplit);
 
             return newProduct;
         } else {
             return null;
         }
     }
-    private void initUI(){
+
+    private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
 

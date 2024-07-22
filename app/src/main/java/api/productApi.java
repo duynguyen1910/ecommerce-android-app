@@ -10,20 +10,24 @@ import static constants.keyName.PHONE_NUMBER;
 import static constants.keyName.PRODUCTS;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
-import static constants.keyName.PRODUCT_NAME_CHUNK;
+
+import static constants.keyName.PRODUCT_NAME_SPLIT;
 import static constants.keyName.STORE_ID;
 
 import android.util.Log;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.io.Serializable;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Pattern;
+
 import constants.toastMessage;
 import interfaces.CreateDocumentCallback;
 import interfaces.GetCollectionCallback;
@@ -105,9 +109,10 @@ public class productApi implements Serializable {
                 });
     }
 
-    public void updateProductApi(Map<String, Object> updateData, String storeId, String productId, UpdateDocumentCallback callback) {
-        DocumentReference productRef = db.collection(STORE_COLLECTION).document(storeId).collection(PRODUCTS).document(productId);
-        productRef.update(updateData)
+    public void updateProductApi(Map<String, Object> updateData,String productId, UpdateDocumentCallback callback) {
+
+        db.collection(PRODUCT_COLLECTION).document(productId)
+                .update(updateData)
                 .addOnSuccessListener(unused -> callback.onUpdateSuccess())
                 .addOnFailureListener(e -> Log.w("Firestore", "Error updating user's STORE_ID.", e));
     }
@@ -152,7 +157,7 @@ public class productApi implements Serializable {
     public void getAllProductByStringQueryApi(String stringQuery, final GetCollectionCallback<Product> callback) {
         ArrayList<Product> products = new ArrayList<>();
         db.collection(PRODUCT_COLLECTION)
-                .whereArrayContainsAny(PRODUCT_NAME_CHUNK, splitProductNameBySpace(stringQuery))
+                .whereArrayContainsAny(PRODUCT_NAME_SPLIT, splitProductNameBySpace(stringQuery))
                 .get().
                 addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

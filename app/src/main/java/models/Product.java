@@ -157,8 +157,8 @@ public class Product extends BaseObject implements Serializable {
     }
 
 
-    public void updateProduct(Map<String, Object> updateData, String storeId, String productId, UpdateDocumentCallback callback) {
-        productApi.updateProductApi(updateData, storeId, productId, callback);
+    public void updateProduct(Map<String, Object> updateData,String productId, UpdateDocumentCallback callback) {
+        productApi.updateProductApi(updateData, productId, callback);
     }
 
 

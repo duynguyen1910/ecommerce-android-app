@@ -67,7 +67,7 @@
                         android:text="đ123.000"
                         android:textColor="@color/primary_color" />
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnEdit"
+                        android:id="@+id/btnUpdate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"

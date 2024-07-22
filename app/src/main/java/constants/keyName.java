@@ -19,7 +19,7 @@ public class keyName {
 
     public static final String PRODUCT_ID = "productId";
     public static final String PRODUCT_NAME = "productName";
-    public static final String PRODUCT_NAME_CHUNK = "productNameChunk";
+    public static final String PRODUCT_NAME_SPLIT = "productNameSplit";
     public static final String PRODUCT_DESC = "description";
     public static final String PRODUCT_NEW_PRICE = "newPrice";
     public static final String PRODUCT_OLD_PRICE = "oldPrice";
