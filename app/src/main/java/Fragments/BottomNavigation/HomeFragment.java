@@ -164,10 +164,15 @@ public class HomeFragment extends Fragment {
         binding.btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(requireActivity(), SearchActivity.class);
                 String stringQuery = binding.searchEdt.getText().toString().trim();
-                intent.putExtra("stringQuery", stringQuery);
-                startActivity(intent);
+                if (stringQuery.isEmpty()){
+                    Toast.makeText(requireActivity(), "Vui lòng nhập tìm kiếm", Toast.LENGTH_SHORT).show();
+                }else {
+                    Intent intent = new Intent(requireActivity(), SearchActivity.class);
+                    intent.putExtra("stringQuery", stringQuery);
+                    startActivity(intent);
+                }
+
             }
         });
     }

@@ -186,8 +186,8 @@ public class Product extends BaseObject implements Serializable {
         productApi.getAllProductByStringQueryApi(stringQuery, callback);
     }
 
-    public ArrayList<String> chunkProductName(String productName, int size) {
-        return productApi.chunk(productName, size);
+    public ArrayList<String> splitProductNameBySpace(String productName) {
+        return productApi.splitProductNameBySpace(productName);
     }
 
 

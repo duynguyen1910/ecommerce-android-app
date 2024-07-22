@@ -83,17 +83,19 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
                 fetchProductsByCategoryAndStoreId(storeId, categoryId);
             } else {
                 if (stringQuery != null){
+                    // Nhận stringQuery từ Home hoặc từ Search Activity
                     fetchProductsByStringQuery(stringQuery);
-                    showToast("query: " + stringQuery);
                 }else {
+                    // Nhận categoryId từ home hoặc chọn category trên chính fragment này
+                    // Khởi tạo list products bằng cách lấy toàn bộ Collection Products thỏa mãn categoryId
                     fetchProductsByCategoryId(categoryId);
                 }
-                // Nhận categoryId từ home hoặc chọn category trên chính fragment này
-                // Khởi tạo list products bằng cách lấy toàn bộ Collection Products thỏa mãn categoryId
+
 
             }
         }
     }
+
 
     private void initUI() {
         listProducts = new ArrayList<>();
@@ -140,8 +142,6 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
             @Override
             public void onGetDataSuccess(ArrayList<Product> products) {
                 setLoadingState(false);
-
-                showToast("productsSize: " + products.size());
                 listProducts = new ArrayList<>(products);
 
                 if (listProducts.isEmpty()) {

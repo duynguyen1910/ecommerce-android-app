@@ -47,8 +47,11 @@ public class SearchActivity extends AppCompatActivity{
 //        Intent intent = getIntent();
 //        Bundle bundle = intent.getExtras();
 //        if (bundle != null){
-//            String categoryName = bundle.getString("categoryName");
-//            binding.searchEdt.setText(categoryName);
+//            String stringQuery = intent.getStringExtra("stringQuery");
+//            if (stringQuery != null){
+//                binding.searchEdt.setText(stringQuery);
+//            }
+//
 //        }
 //    }
 

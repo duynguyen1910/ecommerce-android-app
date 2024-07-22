@@ -144,7 +144,7 @@ public class AddProductsActivity extends AppCompatActivity {
         if (isValid) {
             Product product = new Product();
             Map<String, Object> newProduct = new HashMap<>();
-            ArrayList<String> productNameChunk = product.chunkProductName(productName, 2);
+            ArrayList<String> productNameSplit = product.splitProductNameBySpace(productName);
 
             newProduct.put(PRODUCT_NAME, productName);
             newProduct.put(PRODUCT_DESC, description);
@@ -154,7 +154,7 @@ public class AddProductsActivity extends AppCompatActivity {
             newProduct.put(CATEGORY_ID, categoryId);
             newProduct.put(CATEGORY_NAME, categoryName);
             newProduct.put(STORE_ID, storeId);
-            newProduct.put(PRODUCT_NAME_CHUNK, productNameChunk);
+            newProduct.put(PRODUCT_NAME_CHUNK, productNameSplit);
 
             return newProduct;
         } else {
