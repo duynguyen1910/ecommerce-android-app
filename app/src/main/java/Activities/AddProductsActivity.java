@@ -79,8 +79,8 @@ public class AddProductsActivity extends AppCompatActivity {
             }
 
             finish();
-
         });
+
 
         binding.layoutCategory.setOnClickListener(v -> {
             Intent intent = new Intent(AddProductsActivity.this, SelectCategoryActivity.class);
@@ -109,11 +109,9 @@ public class AddProductsActivity extends AppCompatActivity {
     private Map<String, Object> validateForm() {
         String productName = Objects.requireNonNull(binding.edtTitle.getText()).toString().trim();
         String description = Objects.requireNonNull(binding.edtDescription.getText()).toString().trim();
-        String price = Objects.requireNonNull(binding.edtPrice.getText()).toString().trim();
-        String inStock = Objects.requireNonNull(binding.edtInStock.getText()).toString().trim();
+        String priceStr = Objects.requireNonNull(binding.edtPrice.getText()).toString().trim();
+        String inStockStr = Objects.requireNonNull(binding.edtInStock.getText()).toString().trim();
         String categoryName = Objects.requireNonNull(binding.edtCategory.getText()).toString().trim();
-
-
 
         boolean isValid = true;
 
@@ -127,40 +125,49 @@ public class AddProductsActivity extends AppCompatActivity {
             isValid = false;
         }
 
-        if (price.isEmpty()) {
+        if (priceStr.isEmpty()) {
             binding.edtPrice.setError(DEFAULT_REQUIRE);
             isValid = false;
         }
 
-        if (inStock.isEmpty()) {
+        if (inStockStr.isEmpty()) {
             binding.edtInStock.setError(DEFAULT_REQUIRE);
             isValid = false;
         }
+
         if (categoryName.isEmpty()) {
             binding.edtCategory.setError(DEFAULT_REQUIRE);
             isValid = false;
         }
 
         if (isValid) {
-            Product product = new Product();
-            Map<String, Object> newProduct = new HashMap<>();
-            ArrayList<String> productNameSplit = product.splitProductNameBySpace(productName);
+            try {
+                double price = Double.parseDouble(priceStr.replace(",", ""));
+                int inStock = Integer.parseInt(inStockStr.replace(",", ""));
 
-            newProduct.put(PRODUCT_NAME, productName);
-            newProduct.put(PRODUCT_DESC, description);
-            newProduct.put(PRODUCT_NEW_PRICE, Double.parseDouble(price));
-            newProduct.put(PRODUCT_OLD_PRICE, Double.parseDouble(price));
-            newProduct.put(PRODUCT_INSTOCK, Integer.parseInt(inStock));
-            newProduct.put(CATEGORY_ID, categoryId);
-            newProduct.put(CATEGORY_NAME, categoryName);
-            newProduct.put(STORE_ID, storeId);
-            newProduct.put(PRODUCT_NAME_SPLIT, productNameSplit);
+                Product product = new Product();
+                Map<String, Object> newProduct = new HashMap<>();
+                ArrayList<String> productNameSplit = product.splitProductNameBySpace(productName);
 
-            return newProduct;
-        } else {
-            return null;
+                newProduct.put(PRODUCT_NAME, productName);
+                newProduct.put(PRODUCT_DESC, description);
+                newProduct.put(PRODUCT_NEW_PRICE, price);
+                newProduct.put(PRODUCT_OLD_PRICE, price);
+                newProduct.put(PRODUCT_INSTOCK, inStock);
+                newProduct.put(CATEGORY_ID, categoryId);
+                newProduct.put(CATEGORY_NAME, categoryName);
+                newProduct.put(STORE_ID, storeId);
+                newProduct.put(PRODUCT_NAME_SPLIT, productNameSplit);
+
+                return newProduct;
+            } catch (NumberFormatException ignored) {
+
+            }
         }
+
+        return null;
     }
+
 
 
     private void initUI() {

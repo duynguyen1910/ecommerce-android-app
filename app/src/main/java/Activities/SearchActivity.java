@@ -51,7 +51,6 @@ public class SearchActivity extends AppCompatActivity{
             if (stringQuery != null){
                 binding.searchEdt.setText(stringQuery);
             }
-
         }
     }
 

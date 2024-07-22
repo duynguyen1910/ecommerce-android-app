@@ -1,12 +1,17 @@
 package Activities;
 
+import static constants.keyName.STORE_ID;
+import static constants.keyName.USER_INFO;
+
 import android.annotation.SuppressLint;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,16 +23,22 @@ import com.example.stores.databinding.ItemTabLayoutProductsBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import Adapters.ViewPager2Adapter;
-import Fragments.ProductsHiddenFragment;
 import Fragments.ProductsInStockFragment;
 import Fragments.ProductsOutOfStockFragment;
+import interfaces.GetCountCallback;
+import models.CartItem;
+import models.Product;
 
 public class MyProductsActivity extends AppCompatActivity {
 
     ActivityMyProductsBinding binding;
+    int inStock = -1;
+    int outOfStock = -1;
+    int countCompleted = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +47,56 @@ public class MyProductsActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         initUI();
         setupUI();
-
+        getCountOfProduct();
         setupEvents();
 
+    }
+
+    private void getCountOfProduct() {
+        SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        String storeId = sharedPreferences.getString(STORE_ID, null);
+        Toast.makeText(this, "storeId: " + storeId, Toast.LENGTH_SHORT).show();
+        Product product = new Product();
+
+        product.countProductsOutOfStockByStoreId(storeId, new GetCountCallback<Product>() {
+            @Override
+            public void onGetCountSuccess(int count) {
+                outOfStock = count;
+                countCompleted++;
+                updateTabQuantity();
+                Toast.makeText(MyProductsActivity.this, "outofstock: " + outOfStock, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onGetCountFailure(String errorMessage) {
+                countCompleted++;
+                updateTabQuantity();
+                Toast.makeText(MyProductsActivity.this, "khong lay dc outOfStock ", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        product.countProductsInStockByStoreId(storeId, new GetCountCallback<Product>() {
+            @Override
+            public void onGetCountSuccess(int count) {
+                inStock = count;
+                countCompleted++;
+                updateTabQuantity();
+                Toast.makeText(MyProductsActivity.this, "instock: " + inStock, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onGetCountFailure(String errorMessage) {
+                countCompleted++;
+                updateTabQuantity();
+                Toast.makeText(MyProductsActivity.this, "khong lay dc instock ", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setupUI() {
         ViewPager2Adapter viewPager2Adapter = new ViewPager2Adapter(this);
         viewPager2Adapter.addFragment(new ProductsInStockFragment(), "Còn hàng");
         viewPager2Adapter.addFragment(new ProductsOutOfStockFragment(), "Hết hàng");
-
 
         binding.viewPager2.setAdapter(viewPager2Adapter);
         binding.viewPager2.setCurrentItem(0);
@@ -59,62 +110,39 @@ public class MyProductsActivity extends AppCompatActivity {
                 tab.setCustomView(tabLayoutBinding.getRoot());
             }
         }).attach();
-        // Đặt màu hồng cho tab đầu tiên sau khi attach()
-        TabLayout.Tab firstTab = binding.tabLayout.getTabAt(0);
-        if (firstTab != null && firstTab.getCustomView() != null) {
-            TextView tabLabel = firstTab.getCustomView().findViewById(R.id.tabLabel);
-            TextView tabQuantity = firstTab.getCustomView().findViewById(R.id.tabQuantity);
-            tabLabel.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
-            tabQuantity.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
+    }
+
+    private void updateTabQuantity() {
+        if (countCompleted >= 2) {
+            updateTabUI(0, inStock);
+            updateTabUI(1, outOfStock);
         }
+    }
 
-        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @SuppressLint("ResourceAsColor")
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                View customView = tab.getCustomView();
-                if (customView != null) {
-                    TextView tabLabel = customView.findViewById(R.id.tabLabel);
-                    TextView tabQuantity = customView.findViewById(R.id.tabQuantity);
-                    tabLabel.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
-                    tabQuantity.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
-                }
+    private void updateTabUI(int index, int quantity) {
+        TabLayout.Tab tab = binding.tabLayout.getTabAt(index);
+        if (tab != null && tab.getCustomView() != null) {
+            TextView tabQuantity = tab.getCustomView().findViewById(R.id.tabQuantity);
+            TextView tabLabel = tab.getCustomView().findViewById(R.id.tabLabel);
+            if (index == 0){
+                tabLabel.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
+                tabQuantity.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
             }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                View customView = tab.getCustomView();
-                if (customView != null) {
-                    TextView tabLabel = customView.findViewById(R.id.tabLabel);
-                    TextView tabQuantity = customView.findViewById(R.id.tabQuantity);
-                    tabLabel.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.darkgray));
-                    tabQuantity.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.darkgray));
-                }
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+            tabQuantity.setText("(" + quantity + ")");
+        }
     }
 
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
-        binding.btnAddProducts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyProductsActivity.this, AddProductsActivity.class);
-                startActivity(intent);
-            }
+        binding.btnAddProducts.setOnClickListener(v -> {
+            Intent intent = new Intent(MyProductsActivity.this, AddProductsActivity.class);
+            startActivity(intent);
         });
-
     }
 
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
-
-
     }
 }

@@ -4,6 +4,7 @@ import static constants.collectionName.PRODUCT_COLLECTION;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.STORE_ID;
 
+import com.example.stores.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -14,6 +15,7 @@ import java.util.Map;
 import api.productApi;
 import interfaces.CreateDocumentCallback;
 import interfaces.GetCollectionCallback;
+import interfaces.GetCountCallback;
 import interfaces.GetDocumentCallback;
 import interfaces.UpdateDocumentCallback;
 
@@ -30,6 +32,8 @@ public class Product extends BaseObject implements Serializable {
     private boolean checkedStatus;
     private api.productApi productApi;
     private ArrayList<String> productImages;
+    private ArrayList<String> productNameSplit;
+
 
     public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String storeId, int numberInCart) {
         this.productName = productName;
@@ -51,6 +55,27 @@ public class Product extends BaseObject implements Serializable {
         this.storeId = storeId;
     }
 
+    public Product(String productName, String description,ArrayList<String> productImages, double newPrice, double oldPrice, int inStock, int numberInCart, String storeId,  boolean checkedStatus) {
+        this.productName = productName;
+        this.description = description;
+        this.newPrice = newPrice;
+        this.oldPrice = oldPrice;
+        this.inStock = inStock;
+        this.storeId = storeId;
+        this.numberInCart = numberInCart;
+        this.checkedStatus = checkedStatus;
+        this.productImages = productImages;
+    }
+
+
+
+    public ArrayList<String> getProductNameSplit() {
+        return productNameSplit;
+    }
+
+    public void setProductNameSplit(ArrayList<String> productNameSplit) {
+        this.productNameSplit = productNameSplit;
+    }
 
     public Product() {
         productApi = new productApi();
@@ -188,6 +213,14 @@ public class Product extends BaseObject implements Serializable {
 
     public ArrayList<String> splitProductNameBySpace(String productName) {
         return productApi.splitProductNameBySpace(productName);
+    }
+
+    public void countProductsOutOfStockByStoreId(String storeId, GetCountCallback<Product> callback){
+        productApi.countProductsOutOfStockByStoreIdApi(storeId, callback);
+    }
+
+    public void countProductsInStockByStoreId(String storeId, GetCountCallback<Product> callback){
+        productApi.countProductsInStockByStoreIdApi(storeId, callback);
     }
 
 

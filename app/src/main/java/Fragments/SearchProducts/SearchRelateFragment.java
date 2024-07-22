@@ -138,16 +138,22 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
         setLoadingState(true);
 
         Product product = new Product();
-        product.getAllProductByStringQueryApi(stringQuery, new GetCollectionCallback<Product>() {
+        product.getAllProducts(new GetCollectionCallback<Product>() {
             @Override
             public void onGetDataSuccess(ArrayList<Product> products) {
-                setLoadingState(false);
-                listProducts = new ArrayList<>(products);
 
-                if (listProducts.isEmpty()) {
+                setLoadingState(false);
+                listProducts = new ArrayList<>();
+                if (products.isEmpty()) {
                     binding.layoutEmpty.setVisibility(View.VISIBLE);
+
                 } else {
                     binding.layoutEmpty.setVisibility(View.GONE);
+                    for (Product item : products){
+                        if (item.getProductName().toLowerCase().contains(stringQuery.toLowerCase())){
+                            listProducts.add(item);
+                        }
+                    }
                 }
 
                 adapter.updateProducts(listProducts);

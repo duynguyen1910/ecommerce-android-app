@@ -77,33 +77,29 @@ public class PaymentActivity extends AppCompatActivity {
 
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
-//        binding.btnPay.setOnClickListener(v -> {
-//
-//            String deliveryAddress = "Ngọc Đại | 012345678\nFPT Polytechnic TP.HCM - Tòa F,\nCông Viên Phần Mềm Quang Trung, Tòa nhà GenPacific \nLô 3 đường 16, Trung Mỹ Tây, Quận 12, Hồ Chí Minh";
-//            String createdDate = generateTime();
-//            String paidDate = "";
-//            String giveToDeliveryDate = "";
-//            String completedDate = "";
-//            String note = "";
-//            int paymentMethod = 0; // 0: Thanh toán khi nhận hàng
-//            int orderStatus = 0; // 0: Chờ xác nhận
-//            int customerID = 1; // 1: Ngọc Đại
-//
-//            HashMap<String, Invoice> invoicesMap = new HashMap<>();
-//
-//            for (int i = 0; i < cart.size(); i++) {
-//                Invoice newInvoice = new Invoice(deliveryAddress, createdDate, paidDate, giveToDeliveryDate, completedDate, getTotalForCartItem(cart.get(i)), note, paymentMethod, orderStatus, cart.get(i), customerID);
-//                invoicesMap.put(generateInvoiceId(i), newInvoice);
-//            }
-//            Intent intent = new Intent(PaymentActivity.this, InvoiceActivity.class);
-//            intent.putExtra("invoicesMap", invoicesMap);
-//            startActivity(intent);
-//            // call API gửi order cho Người bán
-//        });
-//        binding.txtPaymentMethod.setOnClickListener(v -> {
-//            Intent intent = new Intent(PaymentActivity.this, PaymentMethodActivity.class);
-//            startActivity(intent);
-//        });
+        binding.btnPay.setOnClickListener(v -> {
+
+            String deliveryAddress = "Ngọc Đại | 012345678\nFPT Polytechnic TP.HCM - Tòa F,\nCông Viên Phần Mềm Quang Trung, Tòa nhà GenPacific \nLô 3 đường 16, Trung Mỹ Tây, Quận 12, Hồ Chí Minh";
+            String createdDate = generateTime();
+            String paidDate = "";
+            String giveToDeliveryDate = "";
+            String completedDate = "";
+            String note = "";
+            int paymentMethod = 0; // 0: Thanh toán khi nhận hàng
+            int orderStatus = 0; // 0: Chờ xác nhận
+            int customerID = 1; // 1: Ngọc Đại
+
+            HashMap<String, Invoice> invoicesMap = new HashMap<>();
+
+            for (int i = 0; i < payment.size(); i++) {
+                Invoice newInvoice = new Invoice(deliveryAddress, createdDate, paidDate, giveToDeliveryDate, completedDate, getTotalForCartItem(payment.get(i)), note, paymentMethod, orderStatus, payment.get(i), customerID);
+                invoicesMap.put(generateInvoiceId(i), newInvoice);
+            }
+            Intent intent = new Intent(PaymentActivity.this, InvoiceActivity.class);
+            intent.putExtra("invoicesMap", invoicesMap);
+            startActivity(intent);
+            // call API gửi order cho Người bán
+        });
 
     }
 
