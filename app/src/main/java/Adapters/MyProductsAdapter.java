@@ -3,26 +3,19 @@ package Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
-import com.example.stores.R;
+
 import com.example.stores.databinding.ItemMyProductBinding;
-import com.example.stores.databinding.LayoutProductDetailBinding;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Objects;
 
-import Activities.UpdateProductsActivity;
+import Activities.UpdateProductActivity;
 import models.Product;
 
 public class MyProductsAdapter extends RecyclerView.Adapter<MyProductsAdapter.ViewHolder> {
@@ -68,7 +61,7 @@ public class MyProductsAdapter extends RecyclerView.Adapter<MyProductsAdapter.Vi
 //        holder.binding.txtSold.setText(String.valueOf(product.getSold()));
 
         holder.binding.btnEdit.setOnClickListener(v -> {
-            Intent intent = new Intent(context, UpdateProductsActivity.class);
+            Intent intent = new Intent(context, UpdateProductActivity.class);
 //            intent.putExtra("product", product);
             context.startActivity(intent);
 

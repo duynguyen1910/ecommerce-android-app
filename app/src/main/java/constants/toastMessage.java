@@ -19,6 +19,8 @@ public class toastMessage {
 
     public static final String CREATE_PRODUCT_FAILED = "Thêm sản phẩm thất bại";
     public static final String CREATE_PRODUCT_SUCCESSFULLY = "Thêm sản phẩm thành công";
+    public static final String UPDATE_PRODUCT_SUCCESSFULLY = "Chỉnh sửa sản phẩm thành công";
+    public static final String UPDATE_PRODUCT_FAILED = "Chỉnh sửa sản phẩm thất bại";
 
 
 }

@@ -62,7 +62,7 @@
             android:name="Activities.DecorateMyStoreActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.UpdateProductsActivity"
+            android:name="Activities.UpdateProductActivity"
             android:exported="false" />
         <activity
             android:name="Activities.DeliveryFeeActivity"
