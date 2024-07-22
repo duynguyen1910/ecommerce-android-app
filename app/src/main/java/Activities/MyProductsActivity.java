@@ -52,10 +52,17 @@ public class MyProductsActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupUI();
+        getCountOfProduct();
+
+    }
+
     private void getCountOfProduct() {
         SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
         String storeId = sharedPreferences.getString(STORE_ID, null);
-        Toast.makeText(this, "storeId: " + storeId, Toast.LENGTH_SHORT).show();
         Product product = new Product();
 
         product.countProductsOutOfStockByStoreId(storeId, new GetCountCallback<Product>() {
@@ -64,14 +71,12 @@ public class MyProductsActivity extends AppCompatActivity {
                 outOfStock = count;
                 countCompleted++;
                 updateTabQuantity();
-                Toast.makeText(MyProductsActivity.this, "outofstock: " + outOfStock, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onGetCountFailure(String errorMessage) {
                 countCompleted++;
                 updateTabQuantity();
-                Toast.makeText(MyProductsActivity.this, "khong lay dc outOfStock ", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -81,14 +86,12 @@ public class MyProductsActivity extends AppCompatActivity {
                 inStock = count;
                 countCompleted++;
                 updateTabQuantity();
-                Toast.makeText(MyProductsActivity.this, "instock: " + inStock, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onGetCountFailure(String errorMessage) {
                 countCompleted++;
                 updateTabQuantity();
-                Toast.makeText(MyProductsActivity.this, "khong lay dc instock ", Toast.LENGTH_SHORT).show();
             }
         });
     }

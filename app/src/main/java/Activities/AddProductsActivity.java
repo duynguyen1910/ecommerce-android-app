@@ -144,10 +144,7 @@ public class AddProductsActivity extends AppCompatActivity {
             try {
                 double price = Double.parseDouble(priceStr.replace(",", ""));
                 int inStock = Integer.parseInt(inStockStr.replace(",", ""));
-
-                Product product = new Product();
                 Map<String, Object> newProduct = new HashMap<>();
-                ArrayList<String> productNameSplit = product.splitProductNameBySpace(productName);
 
                 newProduct.put(PRODUCT_NAME, productName);
                 newProduct.put(PRODUCT_DESC, description);
@@ -157,7 +154,6 @@ public class AddProductsActivity extends AppCompatActivity {
                 newProduct.put(CATEGORY_ID, categoryId);
                 newProduct.put(CATEGORY_NAME, categoryName);
                 newProduct.put(STORE_ID, storeId);
-                newProduct.put(PRODUCT_NAME_SPLIT, productNameSplit);
 
                 return newProduct;
             } catch (NumberFormatException ignored) {

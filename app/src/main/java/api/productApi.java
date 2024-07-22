@@ -61,40 +61,35 @@ public class productApi implements Serializable {
     }
 
     public void getProductDetailApi(String productId, GetDocumentCallback callback) {
-        DocumentReference productRef = db.collection(PRODUCT_COLLECTION).document(productId);
-        productRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DocumentSnapshot document = task.getResult();
-                if (document.exists()) {
-                    callback.onGetDataSuccess(document.getData());
-                } else {
-                    callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
-                }
-            } else {
-                Log.d(TAG, "get failed with ", task.getException());
-            }
-        });
 
+        db.collection(PRODUCT_COLLECTION)
+                .document(productId)
+                .get()
+                .addOnSuccessListener(task -> {
+                    callback.onGetDataSuccess(task.getData());
+
+                }).addOnFailureListener(e -> {
+                    callback.onGetDataFailure(INTERNET_ERROR);
+                });
     }
 
     public void getProductsByStoreIdApi(String storeId, GetCollectionCallback<Product> callback) {
         ArrayList<Product> products = new ArrayList<>();
         db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(STORE_ID, storeId)
+                .limit(100)
                 .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Product product = document.toObject(Product.class);
-                            String id = document.getId();
-                            product.setBaseId(id);
-                            products.add(product);
-                        }
-                        callback.onGetDataSuccess(products);
-                    } else {
-                        Log.e("Firestore Query", "Lỗi khi lấy tài liệu: ", task.getException());
-                        callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
+                .addOnSuccessListener(task -> {
+                    for (DocumentSnapshot document : task.getDocuments()) {
+                        Product product = document.toObject(Product.class);
+                        String id = document.getId();
+                        product.setBaseId(id);
+                        products.add(product);
                     }
+                    callback.onGetDataSuccess(products);
+
+                }).addOnFailureListener(e -> {
+                    callback.onGetDataFailure(INTERNET_ERROR);
                 });
     }
 
@@ -103,20 +98,20 @@ public class productApi implements Serializable {
         db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(STORE_ID, storeId)
                 .whereGreaterThan(PRODUCT_INSTOCK, 0.0)
+                .limit(100)
                 .orderBy(PRODUCT_INSTOCK, Query.Direction.ASCENDING)
                 .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Product product = document.toObject(Product.class);
-                            String id = document.getId();
-                            product.setBaseId(id);
-                            products.add(product);
-                        }
-                        callback.onGetDataSuccess(products);
-                    } else {
-                        callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
+                .addOnSuccessListener(task -> {
+                    for (DocumentSnapshot document : task.getDocuments()) {
+                        Product product = document.toObject(Product.class);
+                        String id = document.getId();
+                        product.setBaseId(id);
+                        products.add(product);
                     }
+                    callback.onGetDataSuccess(products);
+
+                }).addOnFailureListener(e -> {
+                    callback.onGetDataFailure(INTERNET_ERROR);
                 });
     }
 
@@ -125,19 +120,19 @@ public class productApi implements Serializable {
         db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(STORE_ID, storeId)
                 .whereEqualTo(PRODUCT_INSTOCK, 0)
+                .limit(100)
                 .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Product product = document.toObject(Product.class);
-                            String id = document.getId();
-                            product.setBaseId(id);
-                            products.add(product);
-                        }
-                        callback.onGetDataSuccess(products);
-                    } else {
-                        callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
+                .addOnSuccessListener(task -> {
+                    for (DocumentSnapshot document : task.getDocuments()) {
+                        Product product = document.toObject(Product.class);
+                        String id = document.getId();
+                        product.setBaseId(id);
+                        products.add(product);
                     }
+                    callback.onGetDataSuccess(products);
+
+                }).addOnFailureListener(e -> {
+                    callback.onGetDataFailure(INTERNET_ERROR);
                 });
     }
 
@@ -153,9 +148,9 @@ public class productApi implements Serializable {
         ArrayList<Product> products = new ArrayList<>();
 
         db.collection(PRODUCT_COLLECTION)
+                .limit(100)
                 .get()
                 .addOnSuccessListener(task -> {
-
                     for (DocumentSnapshot document : task.getDocuments()) {
                         Product product = document.toObject(Product.class);
                         String id = document.getId();
@@ -163,7 +158,6 @@ public class productApi implements Serializable {
                         products.add(product);
                     }
                     callback.onGetDataSuccess(products);
-
                 }).addOnFailureListener(e -> {
                     callback.onGetDataFailure(INTERNET_ERROR);
                 });
@@ -175,6 +169,7 @@ public class productApi implements Serializable {
         db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(STORE_ID, storeId)
                 .whereEqualTo(PRODUCT_INSTOCK, 0.0)
+                .limit(100)
                 .get()
                 .addOnSuccessListener(task -> {
                     int count = task.size();
@@ -188,7 +183,7 @@ public class productApi implements Serializable {
     public void countProductsInStockByStoreIdApi(String storeId, GetCountCallback<Product> callback) {
         db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(STORE_ID, storeId)
-                .whereGreaterThanOrEqualTo(PRODUCT_INSTOCK, 0)
+                .whereGreaterThan(PRODUCT_INSTOCK, 0)
                 .limit(100)
                 .get()
                 .addOnSuccessListener(task -> {
@@ -207,74 +202,20 @@ public class productApi implements Serializable {
         ArrayList<Product> products = new ArrayList<>();
         db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(CATEGORY_ID, categoryId)
-                .get().
-                addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Product product = document.toObject(Product.class);
-                            String id = document.getId();
-                            product.setBaseId(id);
-                            products.add(product);
-                        }
-                        callback.onGetDataSuccess(products);
-                    } else {
-                        callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
-                    }
-                });
-    }
-
-    public void getAllProductByStringQueryApi(String stringQuery, final GetCollectionCallback<Product> callback) {
-        ArrayList<Product> products = new ArrayList<>();
-        db.collection(PRODUCT_COLLECTION)
-                .whereArrayContainsAny(PRODUCT_NAME_SPLIT, splitProductNameBySpace(stringQuery))
+                .limit(100)
                 .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Product product = document.toObject(Product.class);
-                            String id = document.getId();
-                            product.setBaseId(id);
-                            products.add(product);
-                        }
-                        callback.onGetDataSuccess(products);
-                    } else {
-                        callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
+                .addOnSuccessListener(task -> {
+                    for (DocumentSnapshot document : task.getDocuments()) {
+                        Product product = document.toObject(Product.class);
+                        String id = document.getId();
+                        product.setBaseId(id);
+                        products.add(product);
                     }
+                    callback.onGetDataSuccess(products);
+
+                }).addOnFailureListener(e -> {
+                    callback.onGetDataFailure(INTERNET_ERROR);
                 });
-    }
-
-    public ArrayList<String> splitProductNameBySpace(String productName) {
-        productName = Normalizer.normalize(productName.toLowerCase(), Normalizer.Form.NFD);
-        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-        productName = pattern.matcher(productName).replaceAll("");
-        String[] parts = productName.split("\\s+");
-        return new ArrayList<>(Arrays.asList(parts));
-    }
-
-
-    public static ArrayList<String> chunk(String productName, int size) {
-        ArrayList<String> result = new ArrayList<>();
-        StringBuilder temp = new StringBuilder();
-        int count = 0;
-        for (int i = 0; i < productName.length(); i++) {
-            char currentChar = productName.charAt(i);
-            if (currentChar != ' ') {
-                temp.append(currentChar);
-                count++;
-                if (count == size) {
-                    result.add(temp.toString());
-                    temp.setLength(0);
-                    count = 0;
-                }
-            }
-        }
-
-        // Thêm chuỗi còn lại nếu có
-        if (temp.length() != 0) {
-            result.add(temp.toString());
-        }
-
-        return result;
     }
 
     public void getAllProductByStoreIdAndCategoryIdApi(String storeId, String categoryId, final GetCollectionCallback<Product> callback) {
@@ -282,19 +223,19 @@ public class productApi implements Serializable {
         db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(STORE_ID, storeId)
                 .whereEqualTo(CATEGORY_ID, categoryId)
-                .get().
-                addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Product product = document.toObject(Product.class);
-                            String id = document.getId();
-                            product.setBaseId(id);
-                            products.add(product);
-                        }
-                        callback.onGetDataSuccess(products);
-                    } else {
-                        callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
+                .limit(100)
+                .get().addOnSuccessListener(task -> {
+
+                    for (DocumentSnapshot document : task.getDocuments()) {
+                        Product product = document.toObject(Product.class);
+                        String id = document.getId();
+                        product.setBaseId(id);
+                        products.add(product);
                     }
+                    callback.onGetDataSuccess(products);
+
+                }).addOnFailureListener(e -> {
+                    callback.onGetDataFailure(INTERNET_ERROR);
                 });
     }
 }

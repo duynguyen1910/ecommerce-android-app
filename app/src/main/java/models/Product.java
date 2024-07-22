@@ -32,7 +32,7 @@ public class Product extends BaseObject implements Serializable {
     private boolean checkedStatus;
     private api.productApi productApi;
     private ArrayList<String> productImages;
-    private ArrayList<String> productNameSplit;
+
 
 
     public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String storeId, int numberInCart) {
@@ -65,16 +65,6 @@ public class Product extends BaseObject implements Serializable {
         this.numberInCart = numberInCart;
         this.checkedStatus = checkedStatus;
         this.productImages = productImages;
-    }
-
-
-
-    public ArrayList<String> getProductNameSplit() {
-        return productNameSplit;
-    }
-
-    public void setProductNameSplit(ArrayList<String> productNameSplit) {
-        this.productNameSplit = productNameSplit;
     }
 
     public Product() {
@@ -194,6 +184,9 @@ public class Product extends BaseObject implements Serializable {
     public void getProductsByStoreId(String storeId, GetCollectionCallback<Product> callback) {
         productApi.getProductsByStoreIdApi(storeId, callback);
     }
+    public void getProductsInStockByStoreId(String storeId, GetCollectionCallback<Product> callback) {
+        productApi.getProductsInStockByStoreIdApi(storeId, callback);
+    }
 
     public void getProductsOutOfStockByStoreId(String storeId, GetCollectionCallback<Product> callback) {
         productApi.getProductsOutOfStockByStoreIdApi(storeId, callback);
@@ -205,14 +198,6 @@ public class Product extends BaseObject implements Serializable {
 
     public void getAllProductByStoreIdAndCategoryId(String storeId, String categoryId, final GetCollectionCallback<Product> callback) {
         productApi.getAllProductByStoreIdAndCategoryIdApi(storeId, categoryId, callback);
-    }
-
-    public void getAllProductByStringQueryApi(String stringQuery, final GetCollectionCallback<Product> callback) {
-        productApi.getAllProductByStringQueryApi(stringQuery, callback);
-    }
-
-    public ArrayList<String> splitProductNameBySpace(String productName) {
-        return productApi.splitProductNameBySpace(productName);
     }
 
     public void countProductsOutOfStockByStoreId(String storeId, GetCountCallback<Product> callback){

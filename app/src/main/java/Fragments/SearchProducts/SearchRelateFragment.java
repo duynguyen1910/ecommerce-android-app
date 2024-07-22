@@ -23,8 +23,11 @@ import com.example.stores.R;
 import com.example.stores.databinding.DialogSelectCategoryBinding;
 import com.example.stores.databinding.FragmentSearchRelateBinding;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 import Adapters.CategoryGridForDialogAdapter;
 import Adapters.ProductAdapter;
@@ -134,8 +137,9 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
             }
         });
     }
-    private void fetchProductsByStringQuery(String stringQuery) {
+    public void fetchProductsByStringQuery(String stringQuery) {
         setLoadingState(true);
+        binding.txtSelectedCategory.setVisibility(View.GONE);
 
         Product product = new Product();
         product.getAllProducts(new GetCollectionCallback<Product>() {
@@ -150,7 +154,7 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
                 } else {
                     binding.layoutEmpty.setVisibility(View.GONE);
                     for (Product item : products){
-                        if (item.getProductName().toLowerCase().contains(stringQuery.toLowerCase())){
+                        if (toNormalCase(item.getProductName()).contains(toNormalCase(stringQuery))){
                             listProducts.add(item);
                         }
                     }
@@ -164,6 +168,12 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
                 showToast(errorMessage);
             }
         });
+    }
+    public String toNormalCase(String productName) {
+        productName = Normalizer.normalize(productName.toLowerCase(), Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        productName = pattern.matcher(productName).replaceAll("");
+        return productName;
     }
 
 

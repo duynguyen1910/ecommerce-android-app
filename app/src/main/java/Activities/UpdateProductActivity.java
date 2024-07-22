@@ -123,7 +123,9 @@ public class UpdateProductActivity extends AppCompatActivity {
                 product.updateProduct(productData, productId, new UpdateDocumentCallback() {
                     @Override
                     public void onUpdateSuccess() {
+
                         showToast(UPDATE_PRODUCT_SUCCESSFULLY);
+                        finish();
                     }
 
                     @Override
@@ -133,7 +135,7 @@ public class UpdateProductActivity extends AppCompatActivity {
                 });
             }
 
-            finish();
+
 
         });
 
@@ -184,10 +186,7 @@ public class UpdateProductActivity extends AppCompatActivity {
         }
 
         if (isValid) {
-            Product product = new Product();
             Map<String, Object> newProduct = new HashMap<>();
-            ArrayList<String> productNameSplit = product.splitProductNameBySpace(productName);
-
             newProduct.put(PRODUCT_NAME, productName);
             newProduct.put(PRODUCT_DESC, description);
             newProduct.put(PRODUCT_NEW_PRICE, Double.parseDouble(price));
@@ -195,7 +194,7 @@ public class UpdateProductActivity extends AppCompatActivity {
             newProduct.put(PRODUCT_INSTOCK, Integer.parseInt(inStock));
             newProduct.put(CATEGORY_ID, categoryId);
             newProduct.put(CATEGORY_NAME, categoryName);
-            newProduct.put(PRODUCT_NAME_SPLIT, productNameSplit);
+
 
             return newProduct;
         } else {
