@@ -14,14 +14,16 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import models.InvoiceDetail;
 import models.Product;
 
 public class ProductsListAdapterForInvoiceItem extends RecyclerView.Adapter<ProductsListAdapterForInvoiceItem.ViewHolder> {
     private final Context context;
-    private final ArrayList<Product> list;
-    private boolean showOnlyFirstItem;
+    private final ArrayList<InvoiceDetail> list;
+    private final boolean showOnlyFirstItem;
 
-    public ProductsListAdapterForInvoiceItem(Context context, ArrayList<Product> list, boolean showOnlyFirstItem) {
+    public ProductsListAdapterForInvoiceItem(Context context, ArrayList<InvoiceDetail> list,
+                                             boolean showOnlyFirstItem) {
         this.context = context;
         this.list = list;
         this.showOnlyFirstItem = showOnlyFirstItem;
@@ -48,39 +50,14 @@ public class ProductsListAdapterForInvoiceItem extends RecyclerView.Adapter<Prod
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Product product = list.get(holder.getBindingAdapterPosition());
-
-        holder.binding.txtProductTitle.setText(product.getTitle());
+        InvoiceDetail detail = list.get(holder.getBindingAdapterPosition());
+        holder.binding.txtProductTitle.setText(detail.getProductName());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedPrice = formatter.format(product.getPrice() * (1 - product.getSaleoff() / 100));
+        String formattedPrice = formatter.format(detail.getNewPrice());
         holder.binding.txtPrice.setText("đ" + formattedPrice);
-
-        holder.binding.txtQuantity.setText("x" + product.getNumberInCart());
-        Glide.with(context).load(product.getPicUrl().get(0)).into(holder.binding.imageView);
-
+//        holder.binding.txtQuantity.setText("x" + detail.getNumberInCart());
+//        Glide.with(context).load(detail.getProductImages().get(0)).into(holder.binding.imageView);
     }
-
-    private int getQuantityChecked() {
-        int count = 0;
-        for (Product product : list) {
-            if (product.getCheckedStatus()) {
-                count += 1;
-            }
-        }
-        return count;
-    }
-
-    private double getTotalFee() {
-        double fee = 0;
-        for (Product product : list) {
-            if (product.getCheckedStatus()) {
-                fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
-            }
-
-        }
-        return fee;
-    }
-
     @Override
     public int getItemCount() {
         return showOnlyFirstItem ? Math.min(list.size(), 1) : list.size();

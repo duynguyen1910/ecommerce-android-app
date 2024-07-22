@@ -2,6 +2,7 @@ package Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -41,7 +42,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder.binding.txtCategoryName.setText(category.getCategoryName());
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.putExtra("data", category.getCategoryName());
+            Bundle bundle = new Bundle();
+            bundle.putString("categoryName", category.getCategoryName());
+            bundle.putString("categoryId", category.getBaseID());
+
+            intent.putExtras(bundle);
             ((Activity) context).setResult(1, intent);
             ((Activity) context).finish();
         });

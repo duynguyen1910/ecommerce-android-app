@@ -28,6 +28,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="Activities.SearchActivity"
+            android:exported="false" />
         <activity
             android:name="Activities.PaymentMethodActivity"
             android:exported="false" />
@@ -66,16 +70,16 @@
             android:name="Activities.AddProductsActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.ViewMyStoreActivity"
+            android:name="Activities.StoreSetup.ViewMyStoreActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.MyProductsActivity"
+            android:name="Activities.StoreSetup.MyProductsActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.CreateStoreActivity"
+            android:name="Activities.StoreSetup.CreateStoreActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.RegisterStoreSuccessfulActivity"
+            android:name="Activities.StoreSetup.RegisterStoreSuccessfulActivity"
             android:exported="false" />
         <activity
             android:name="Activities.RegisteredBusinessAddressActivity"
@@ -87,10 +91,10 @@
             android:name="Activities.CreateAddressActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.StoreOwnerActivity"
+            android:name="Activities.StoreSetup.StoreOwnerActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.ActivateStoreActivity"
+            android:name="Activities.StoreSetup.ActivateStoreActivity"
             android:exported="false" />
         <activity
             android:name="Activities.InvoiceDetailActivity"

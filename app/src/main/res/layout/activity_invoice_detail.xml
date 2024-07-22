@@ -43,6 +43,15 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/progressBar"
+        android:indeterminateTintMode="src_atop"
+        />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -113,7 +122,7 @@
                         android:gravity="center_vertical"
                         android:lineHeight="20dp"
                         android:paddingHorizontal="26dp"
-                        android:text="@string/address"
+                        android:text="..."
                         android:textColor="@color/black" />
                 </LinearLayout>
 
@@ -297,81 +306,6 @@
                             app:backgroundTint="@null" />
 
                     </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingVertical="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-
-                            android:text="Thời gian thanh toán"
-                            android:textColor="@color/black" />
-
-                        <TextView
-
-                            android:id="@+id/txtPaidDate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerInParent="true"
-                            android:text="2024/07/03, 08:54"
-                            android:textColor="@color/darkgray"
-                            app:backgroundTint="@null" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingVertical="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Thời gian giao hàng cho vận chuyển"
-                            android:textColor="@color/black" />
-
-                        <TextView
-
-                            android:id="@+id/txtGiveToDeliveryDate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerInParent="true"
-                            android:text="2024/07/03, 08:54"
-                            android:textColor="@color/darkgray"
-                            app:backgroundTint="@null" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingVertical="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Thời gian hoàn thành"
-                            android:textColor="@color/black" />
-
-                        <TextView
-
-                            android:id="@+id/txtCompletedDate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerInParent="true"
-                            android:text="2024/07/03, 08:54"
-                            android:textColor="@color/darkgray"
-                            app:backgroundTint="@null" />
-
-                    </RelativeLayout>
-
-
                 </LinearLayout>
             </LinearLayout>
 

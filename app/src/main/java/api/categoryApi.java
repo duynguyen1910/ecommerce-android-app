@@ -1,5 +1,9 @@
 package api;
 import static constants.collectionName.CATEGORY_COLLECTION;
+import static constants.collectionName.PRODUCT_COLLECTION;
+import static constants.keyName.PRODUCT_INSTOCK;
+import static constants.keyName.STORE_ID;
+
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -9,9 +13,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
-import constants.toastMessage;
-import interfaces.GetCategoryCollectionCallback;
+import interfaces.GetCollectionCallback;
 import models.Category;
+import models.Product;
 
 public class categoryApi {
     private FirebaseFirestore db;
@@ -20,7 +24,8 @@ public class categoryApi {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void getCategoryCollectionApi(final GetCategoryCollectionCallback callback) {
+
+    public void getAllCategoryApi(final GetCollectionCallback<Category> callback) {
         ArrayList<Category> categories = new ArrayList<>();
         CollectionReference categoryRef = db.collection(CATEGORY_COLLECTION);
         categoryRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -29,15 +34,20 @@ public class categoryApi {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Category category = document.toObject(Category.class);
+                        category.setBaseID(document.getId());
                         categories.add(category);
                     }
-                    callback.onGetDataSuccess(categories);
+                    callback.onGetListSuccess(categories);
                 } else {
-                    callback.onGetDataFailure(toastMessage.GET_PRODUCT_FAILED);
+                    callback.onGetListFailure("Lấy thông tin sản phẩm thất bại");
                 }
             }
         });
 
     }
+
+
+
+
 
 }

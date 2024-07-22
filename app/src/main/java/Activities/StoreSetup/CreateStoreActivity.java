@@ -1,9 +1,8 @@
-package Activities;
+package Activities.StoreSetup;
 import static constants.keyName.STORE_ADDRESS;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 import static constants.keyName.STORE_OWNER_ID;
-import static constants.keyName.STORE_PRODUCTS;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.INTERNET_ERROR;
@@ -31,13 +30,14 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
 import Adapters.ViewPager2Adapter;
 import Fragments.StoreSettings.SettingDeliveryFragment;
 import Fragments.StoreSettings.StoreIdentifierInfoFragment;
 import Fragments.StoreSettings.StoreInfoFragment;
 import Fragments.StoreSettings.TaxInfoFragment;
-import interfaces.CreateStoreCallback;
-import interfaces.StatusCallback;
+import interfaces.CreateDocumentCallback;
+import interfaces.UpdateDocumentCallback;
 import kotlin.Pair;
 import models.Store;
 import models.User;
@@ -48,6 +48,8 @@ public class CreateStoreActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     int currentState = 1;
     int steps = 4;
+    private String storeName;
+    private String emailStore;
     ViewPager2Adapter viewPager2Adapter;
 
     @Override
@@ -113,22 +115,19 @@ public class CreateStoreActivity extends AppCompatActivity {
                 storeInfo.put(STORE_NAME, storeName);
                 storeInfo.put(STORE_ADDRESS, storeAddress);
                 storeInfo.put(STORE_OWNER_ID, userId);
-                storeInfo.put(STORE_PRODUCTS, new HashMap<>()); // một map rỗng
-
-
                 // call API
-                newStore.onCreateStore(storeInfo, new CreateStoreCallback() {
+                newStore.onCreateStore(storeInfo, new CreateDocumentCallback() {
                     @Override
-                    public void onCreateSuccess(String storeId) {
+                    public void onCreateSuccess(String documentId) {
                         // Sau khi tạo  store xong, ta lấy storeId vừa tạo, call api update user
                         User user = new User();
                         Map<String, Object> updateData = new HashMap<>();
-                        updateData.put(STORE_ID, storeId);
-                        user.updateUserInfo(userId, updateData, new StatusCallback() {
+                        updateData.put(STORE_ID, documentId);
+                        user.onUpdate(updateData, userId, new UpdateDocumentCallback() {
                             @Override
-                            public void onSuccess(String successMessage) {
+                            public void onUpdateSuccess() {
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putString(STORE_ID, storeId);
+                                editor.putString(STORE_ID, documentId);
                                 editor.apply();
 
                                 binding.progressBar.setVisibility(View.GONE);
@@ -138,10 +137,13 @@ public class CreateStoreActivity extends AppCompatActivity {
                             }
 
                             @Override
-                            public void onFailure(String errorMessage) {
+                            public void onUpdateFailure(String errorMessage) {
                                 Toast.makeText(CreateStoreActivity.this, INTERNET_ERROR, Toast.LENGTH_SHORT).show();
                             }
                         });
+
+
+
                     }
 
                     @Override
@@ -252,6 +254,7 @@ public class CreateStoreActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
     }
+
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {

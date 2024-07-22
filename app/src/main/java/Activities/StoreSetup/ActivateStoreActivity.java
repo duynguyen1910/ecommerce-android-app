@@ -1,4 +1,4 @@
-package Activities;
+package Activities.StoreSetup;
 
 import android.content.Intent;
 import android.graphics.Color;

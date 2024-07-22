@@ -9,6 +9,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Map;
 
 import api.userApi;
@@ -17,8 +19,9 @@ import enums.UserRole;
 import interfaces.ImageCallback;
 import interfaces.StatusCallback;
 import interfaces.UserCallback;
+import interfaces.UpdateDocumentCallback;
 
-public class User extends BaseObject {
+public class User extends BaseObject implements Serializable {
     private String phoneNumber;
     private String password;
     private String fullname;
@@ -27,6 +30,7 @@ public class User extends BaseObject {
     private UserRole role;
     private userApi userApi;
     private String storeId;
+
 
     public User() {
         userApi  = new userApi();
@@ -64,10 +68,12 @@ public class User extends BaseObject {
 
     @Override
     public void setBaseID(String userId) {
-        validateBaseID(userId);
+        super.validateBaseID(userId);
 
         super.baseID = userId;
+
     }
+
     public String getStoreId() {
         return storeId;
     }
@@ -151,6 +157,9 @@ public class User extends BaseObject {
 
     public void onSaveUserImage(String downloadUri, String userId) {
         userApi.saveImageUriApi(downloadUri, userId);
+    }
+    public void onUpdate(Map<String, Object> updateData, String userId, UpdateDocumentCallback callback){
+        userApi.updateUserApi(updateData, userId, callback);
     }
 
     public void getUserImageUrl(String userId, final ImageCallback callback) {

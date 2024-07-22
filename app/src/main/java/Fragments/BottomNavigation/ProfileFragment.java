@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -27,11 +26,11 @@ import com.example.stores.databinding.FragmentProfileBinding;
 
 import Activities.CartActivity;
 import Activities.InvoiceActivity;
-import Activities.ActivateStoreActivity;
+import Activities.StoreSetup.ActivateStoreActivity;
 import Activities.LoginActivity;
 import Activities.RegisterActivity;
 import Activities.SettingsActivity;
-import Activities.StoreOwnerActivity;
+import Activities.StoreSetup.StoreOwnerActivity;
 import Activities.UpdateProfileActivity;
 import enums.UserRole;
 import interfaces.ImageCallback;
@@ -155,7 +154,7 @@ public class ProfileFragment extends Fragment {
         });
 
 
-        binding.txtStore.setOnClickListener(v -> {
+        binding.layoutActivateStore.setOnClickListener(v -> {
             // Nếu đã tạo store thì vào thẳng Store Owner Activity
             if (storeId != null) {
                 Intent intent = new Intent(requireActivity(), StoreOwnerActivity.class);

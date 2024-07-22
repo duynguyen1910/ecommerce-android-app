@@ -76,7 +76,6 @@
             android:src="@mipmap/empty_cart" />
 
         <TextView
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -121,27 +120,27 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="#00ffffff"
-                    android:drawableStart="@drawable/ic_voucher_24"
                     android:drawablePadding="8dp"
-                    android:drawableTint="@color/primary_color"
                     android:gravity="center_vertical"
                     android:text="Ecommerce Voucher"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    app:drawableStartCompat="@drawable/ic_voucher_24"
+                    app:drawableTint="@color/primary_color" />
 
                 <TextView
                     android:id="@+id/txtVoucher"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/custom_txt_voucher"
-                    android:drawableEnd="@drawable/ic_arrow_right_16"
-                    android:drawableTint="@color/green_persian"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="5dp"
                     android:paddingVertical="3dp"
                     android:text="Miễn Phí Vận Chuyển"
                     android:textColor="@color/green_persian"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    app:drawableEndCompat="@drawable/ic_arrow_right_16"
+                    app:drawableTint="@color/green_persian" />
 
             </LinearLayout>
 
@@ -158,13 +157,13 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:drawableStart="@drawable/ic_coin"
                     android:drawablePadding="8dp"
-                    android:drawableTint="@color/yellow"
                     android:gravity="center_vertical"
                     android:text="Sử dụng Ecommerce Coin"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    app:drawableStartCompat="@drawable/ic_coin"
+                    app:drawableTint="@color/yellow" />
 
                 <ImageView
                     android:layout_width="20dp"
@@ -175,7 +174,7 @@
                     android:src="@drawable/ic_question"
                     app:tint="@color/gray" />
 
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/switchEcommerceCoin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

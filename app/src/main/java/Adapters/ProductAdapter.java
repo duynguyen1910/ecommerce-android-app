@@ -1,6 +1,7 @@
 package Adapters;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import Activities.ProductDetailActivity;
 import models.Product;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
-    private Context context;
+    private final Context context;
     ArrayList<Product> list;
 
     public ProductAdapter(Context context, ArrayList<Product> list) {
@@ -44,21 +45,29 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     public void onBindViewHolder(@NonNull ProductAdapter.ViewHolder holder, int position) {
 
         Product product = list.get(holder.getBindingAdapterPosition());
-        holder.binding.txtTitle.setText(product.getTitle());
+        holder.binding.txtTitle.setText(product.getProductName());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedPrice = formatter.format(product.getOldPrice()*(100-product.getSaleoff())/100);
+        String formattedPrice = formatter.format(product.getNewPrice());
 
+        if (product.getInStock() == 0){
+            holder.binding.layoutOutOfStock.setVisibility(View.VISIBLE);
+        }
         holder.binding.txtPrice.setText("đ" + formattedPrice);
-        holder.binding.txtSold.setText("Đã bán " + product.getSold());
-        holder.binding.txtSaleoff.setText("-" + product.getSaleoff() + "%");
-        holder.binding.txtRating.setText("(" + product.getRating() + ")");
-        holder.binding.ratingBar.setRating((float) product.getRating());
-        Glide.with(context).load(product.getPicUrl().get(0)).into(holder.binding.imageView);
+        holder.binding.txtSold.setText("Đã bán " + 200);
+        holder.binding.txtSaleoff.setText("-" + 40 + "%");
+        holder.binding.txtRating.setText("(" + 4.5 + ")");
+        holder.binding.ratingBar.setRating(4.5F);
+//        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ProductDetailActivity.class);
-                intent.putExtra("object", product);
+                // truyền productId, storeId
+                Bundle bundle = new Bundle();
+
+                bundle.putString("productId", product.getBaseID());
+                bundle.putString("storeId", product.getStoreId());
+                intent.putExtras(bundle);
                 context.startActivity(intent);
             }
         });

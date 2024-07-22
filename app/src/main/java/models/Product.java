@@ -1,80 +1,79 @@
 package models;
 
+import static constants.collectionName.PRODUCT_COLLECTION;
+import static constants.keyName.PRODUCT_INSTOCK;
+import static constants.keyName.STORE_ID;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
 import api.productApi;
-import interfaces.CreateProductCallback;
-import interfaces.GetProductDataCallback;
+import interfaces.CreateDocumentCallback;
+import interfaces.GetCollectionCallback;
+import interfaces.GetDocumentCallback;
+import interfaces.UpdateDocumentCallback;
 
-public class Product implements Serializable {
-    private String title;
+public class Product extends BaseObject implements Serializable {
+    private String productName;
     private String description;
-    private ArrayList<String> picUrl;
-    private double price;
+    private double newPrice;
     private double oldPrice;
-    private int review;
-    private double rating;
-    private int numberInCart;
-    private int sold;
-    private int saleoff;
-    private int storeId;
-    private boolean checkedStatus;
     private int inStock;
-    private int likes;
-    private int views;
-    private api.productApi productApi;
     private String categoryName;
+    private String categoryId;
+    private String storeId;
+    private int numberInCart;
+    private boolean checkedStatus;
+    private api.productApi productApi;
+    private ArrayList<String> productImages;
+
+    public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String storeId, int numberInCart) {
+        this.productName = productName;
+        this.description = description;
+        this.newPrice = newPrice;
+        this.oldPrice = oldPrice;
+        this.inStock = inStock;
+        this.storeId = storeId;
+        this.numberInCart = numberInCart;
+    }
+
+    public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String categoryName, String storeId) {
+        this.productName = productName;
+        this.description = description;
+        this.newPrice = newPrice;
+        this.oldPrice = oldPrice;
+        this.inStock = inStock;
+        this.categoryName = categoryName;
+        this.storeId = storeId;
+    }
 
 
-    private boolean hiddenStatus;
+    @Override
+    public String getBaseID() {
+        return super.baseID;
+    }
+
+    @Override
+    public void setBaseID(String productID) {
+        super.validateBaseID(productID);
+        super.baseID = productID;
+
+    }
 
     public Product() {
         productApi = new productApi();
     }
 
-
-    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice, double rating, int sold, int saleoff, int storeId) {
-        this.title = title;
-        this.description = description;
-        this.picUrl = picUrl;
-        this.price = price;
-        this.oldPrice = oldPrice;
-        this.rating = rating;
-        this.sold = sold;
-        this.saleoff = saleoff;
-        this.storeId = storeId;
+    public String getProductName() {
+        return productName;
     }
 
-    public Product(String title, String description, ArrayList<String> picUrl, double price, double oldPrice, double rating, int sold, int saleoff, int numberInCart, int storeId, boolean checkedStatus) {
-        this.title = title;
-        this.description = description;
-        this.picUrl = picUrl;
-        this.price = price;
-        this.oldPrice = oldPrice;
-        this.rating = rating;
-        this.sold = sold;
-        this.saleoff = saleoff;
-        this.numberInCart = numberInCart;
-        this.storeId = storeId;
-        this.checkedStatus = checkedStatus;
-    }
-
-
-
-    // constructor for MyProduct Item
-    public Product(String title, String description, ArrayList<String> picUrl, double oldPrice, int sold, int inStock, int likes, int views, boolean hiddenStatus, int storeId) {
-        this.title = title;
-        this.description = description;
-        this.picUrl = picUrl;
-        this.oldPrice = oldPrice;
-        this.sold = sold;
-        this.inStock = inStock;
-        this.likes = likes;
-        this.views = views;
-        this.hiddenStatus = hiddenStatus;
-        this.storeId = storeId;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getCategoryName() {
@@ -85,12 +84,12 @@ public class Product implements Serializable {
         this.categoryName = categoryName;
     }
 
-    public boolean isHiddenStatus() {
-        return hiddenStatus;
+    public String getCategoryId() {
+        return categoryId;
     }
 
-    public void setHiddenStatus(boolean hiddenStatus) {
-        this.hiddenStatus = hiddenStatus;
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
     public int getInStock() {
@@ -101,21 +100,6 @@ public class Product implements Serializable {
         this.inStock = inStock;
     }
 
-    public int getLikes() {
-        return likes;
-    }
-
-    public void setLikes(int likes) {
-        this.likes = likes;
-    }
-
-    public int getViews() {
-        return views;
-    }
-
-    public void setViews(int views) {
-        this.views = views;
-    }
 
     public boolean getCheckedStatus() {
         return checkedStatus;
@@ -125,39 +109,14 @@ public class Product implements Serializable {
         this.checkedStatus = checkedStatus;
     }
 
-    public int getStoreId() {
+    public String getStoreId() {
         return storeId;
     }
 
-    public void setStoreId(int storeId) {
+    public void setStoreId(String storeId) {
         this.storeId = storeId;
     }
 
-    public int getSaleoff() {
-        return saleoff;
-    }
-
-    public void setSaleoff(int saleoff) {
-        this.saleoff = saleoff;
-    }
-
-    public int getSold() {
-        return sold;
-    }
-
-    public void setSold(int sold) {
-        this.sold = sold;
-    }
-
-
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getDescription() {
         return description;
@@ -167,20 +126,12 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public ArrayList<String> getPicUrl() {
-        return picUrl;
+    public ArrayList<String> getProductImages() {
+        return productImages;
     }
 
-    public void setPicUrl(ArrayList<String> picUrl) {
-        this.picUrl = picUrl;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
+    public void setProductImages(ArrayList<String> productImages) {
+        this.productImages = productImages;
     }
 
     public double getOldPrice() {
@@ -191,20 +142,12 @@ public class Product implements Serializable {
         this.oldPrice = oldPrice;
     }
 
-    public int getReview() {
-        return review;
+    public double getNewPrice() {
+        return newPrice;
     }
 
-    public void setReview(int review) {
-        this.review = review;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
+    public void setNewPrice(double newPrice) {
+        this.newPrice = newPrice;
     }
 
     public int getNumberInCart() {
@@ -216,11 +159,32 @@ public class Product implements Serializable {
     }
 
 
-    public void onCreateProduct(Map<String, Object> productData, String storeId, final CreateProductCallback callback) {
-        productApi.createProductApi(productData, storeId, callback);
+    public void onCreateProduct(Map<String, Object> productData, final CreateDocumentCallback callback) {
+        productApi.createProductApi(productData, callback);
     }
 
-    public void getProductDetailData(String storeId, String productId, GetProductDataCallback callback){
-        productApi.getProductDetailDataApi(storeId, productId, callback);
+
+
+    public void getProductDetail(String productId, GetDocumentCallback callback){
+        productApi.getProductDetailApi(productId, callback);
     }
+
+
+    public void updateProduct(Map<String, Object> updateData, String storeId, String productId, UpdateDocumentCallback callback) {
+       productApi.updateProductApi(updateData, storeId, productId, callback);
+    }
+
+
+    public void getAllProducts(final GetCollectionCallback<Product> callback){
+        productApi.getAllProductApi(callback);
+    }
+
+    public void getProductsByStoreId(String storeId, GetCollectionCallback<Product> callback) {
+        productApi.getProductsByStoreIdApi(storeId, callback);
+    }
+
+    public void getProductsOutOfStockByStoreId(String storeId, GetCollectionCallback<Product> callback) {
+        productApi.getProductsOutOfStockByStoreIdApi(storeId, callback);
+    }
+
 }

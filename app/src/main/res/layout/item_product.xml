@@ -9,6 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
@@ -17,19 +18,18 @@
             android:src="@mipmap/lovito_dress" />
 
         <TextView
+            android:id="@+id/txtSaleoff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="3dp"
-            android:id="@+id/txtSaleoff"
-            android:textAlignment="center"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="3dp"
             android:background="@drawable/bg_sale_off"
+            android:padding="3dp"
             android:text="-50%"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="12sp" />
     </RelativeLayout>
-
 
 
     <LinearLayout
@@ -72,15 +72,17 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="10dp"
         android:ellipsize="end"
-        android:lines="2"
         android:maxLines="2"
         android:text="Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057"
         android:textColor="@color/black"
-        android:textSize="12sp"
-      />
+        android:textSize="12sp" />
+
+
+
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_marginBottom="8dp"
         android:layout_height="wrap_content">
 
 
@@ -108,4 +110,27 @@
 
 
     </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/layoutOutOfStock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/empty_cart" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Hết hàng"
+            android:textColor="@color/text_warning"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 </LinearLayout>

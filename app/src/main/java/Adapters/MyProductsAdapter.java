@@ -57,57 +57,24 @@ public class MyProductsAdapter extends RecyclerView.Adapter<MyProductsAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = list.get(holder.getBindingAdapterPosition());
 
-        holder.binding.txtTitle.setText(product.getTitle());
+        holder.binding.txtTitle.setText(product.getProductName());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedOldPrice = formatter.format(product.getOldPrice());
-        holder.binding.txtOldPrice.setText("đ" + formattedOldPrice);
+        String formattedNewPrice = formatter.format(product.getNewPrice());
+        holder.binding.txtNewPrice.setText("đ" + formattedNewPrice);
 
-        Glide.with(context).load(product.getPicUrl().get(0)).into(holder.binding.imageView);
+//        Glide.with(context).load(product.getPicUrl().get(0)).into(holder.binding.imageView);
 
         holder.binding.txtInStock.setText(String.valueOf(product.getInStock()));
-        holder.binding.txtSold.setText(String.valueOf(product.getSold()));
+//        holder.binding.txtSold.setText(String.valueOf(product.getSold()));
 
         holder.binding.btnEdit.setOnClickListener(v -> {
             Intent intent = new Intent(context, UpdateProductsActivity.class);
-            intent.putExtra("product", product);
+//            intent.putExtra("product", product);
             context.startActivity(intent);
 
         });
 
-
     }
-
-    private void popUpProductDetailDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        LayoutProductDetailBinding detailBinding = LayoutProductDetailBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
-        builder.setView(detailBinding.getRoot());
-        AlertDialog dialog = builder.create();
-
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.custom_edit_text_border);
-        dialog.show();
-
-        // Set the dialog window attributes
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            window.setGravity(Gravity.BOTTOM);
-
-        }
-
-        detailBinding.imageCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        detailBinding.btnClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-    }
-
 
     @Override
     public int getItemCount() {

@@ -1,6 +1,8 @@
 package Activities;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -18,7 +20,6 @@ import Fragments.BottomNavigation.ProfileFragment;
 import Fragments.BottomNavigation.HistoryFragment;
 
 public class MainActivity extends AppCompatActivity {
-
 
     private ActivityMainBinding binding;
     @Override
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -63,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
+        getWindow().setStatusBarColor(Color.parseColor("#FFFFFF")); // Đặt màu cho thanh trạng thái
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); // Đặt văn bản và biểu tượng thành màu đen
         getWindow().setNavigationBarColor(Color.parseColor("#EFEFEF"));
         Objects.requireNonNull(getSupportActionBar()).hide();
         binding.bottomNavigation.setSelectedItemId(R.id.homeMenu);

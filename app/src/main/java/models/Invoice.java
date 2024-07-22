@@ -4,18 +4,14 @@ import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import api.invoiceApi;
 import enums.OrderStatus;
-import interfaces.CreateCallback;
-import interfaces.StatusCallback;
 
 public class Invoice extends BaseObject implements Serializable {
     private String customerID;
     private String deliveryAddress;
+    private String storeID;
     private double total;
     private OrderStatus status;
     private Timestamp createdAt;
@@ -68,6 +64,7 @@ public class Invoice extends BaseObject implements Serializable {
         this.deliveryAddress = deliveryAddress;
     }
 
+
     public double getTotal() {
         return total;
     }
@@ -80,8 +77,8 @@ public class Invoice extends BaseObject implements Serializable {
         return status;
     }
 
-    public void setStatus(OrderStatus status) {
-        this.status = status;
+    public void setStatus(int status) {
+        this.status = OrderStatus.fromInt(status);
     }
 
     public Timestamp getCreatedAt() {

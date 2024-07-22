@@ -16,8 +16,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import Adapters.CategoryAdapter;
-import interfaces.GetCategoryCollectionCallback;
+import interfaces.GetCollectionCallback;
 import models.Category;
+import models.Product;
 
 public class SelectCategoryActivity extends AppCompatActivity {
 
@@ -42,9 +43,10 @@ public class SelectCategoryActivity extends AppCompatActivity {
         Category category = new Category();
 
         binding.progressBar.setVisibility(View.VISIBLE);
-        category.getCategoryCollection(new GetCategoryCollectionCallback() {
+
+        category.getCategoryCollection(new GetCollectionCallback<Category>() {
             @Override
-            public void onGetDataSuccess(ArrayList<Category> categories) {
+            public void onGetListSuccess(ArrayList<Category> categories) {
                 binding.progressBar.setVisibility(View.GONE);
                 CategoryAdapter adapter = new CategoryAdapter(SelectCategoryActivity.this, categories);
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(SelectCategoryActivity.this));
@@ -52,11 +54,11 @@ public class SelectCategoryActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onGetDataFailure(String errorMessage) {
+            public void onGetListFailure(String errorMessage) {
                 Toast.makeText(SelectCategoryActivity.this, INTERNET_ERROR, Toast.LENGTH_SHORT).show();
-
             }
         });
+
 
     }
     private void initUI(){

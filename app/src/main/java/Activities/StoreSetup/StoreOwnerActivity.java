@@ -1,4 +1,4 @@
-package Activities;
+package Activities.StoreSetup;
 
 import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
@@ -18,13 +18,12 @@ import com.example.stores.databinding.ActivityStoreOwnerBinding;
 import java.util.Map;
 import java.util.Objects;
 
-import interfaces.GetStoreDataCallback;
+import interfaces.GetDocumentCallback;
 import models.Store;
 
 public class StoreOwnerActivity extends AppCompatActivity {
 
     ActivityStoreOwnerBinding binding;
-    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,10 @@ public class StoreOwnerActivity extends AppCompatActivity {
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
         binding.btnViewStore.setOnClickListener(v -> {
+            SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+            String storeId = sharedPreferences.getString(STORE_ID, null);
             Intent intent = new Intent(StoreOwnerActivity.this, ViewMyStoreActivity.class);
+            intent.putExtra("storeId", storeId);
             startActivity(intent);
         });
 
@@ -57,7 +59,7 @@ public class StoreOwnerActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
         binding.progressBarStoreName.setVisibility(View.VISIBLE);
-        sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
 
 
         String storeId = sharedPreferences.getString(STORE_ID, null);
@@ -67,7 +69,7 @@ public class StoreOwnerActivity extends AppCompatActivity {
 
         if (storeId != null) {
             Store store = new Store();
-            store.onGetStoreData(storeId, new GetStoreDataCallback() {
+            store.onGetStoreDetail(storeId, new GetDocumentCallback() {
                 @Override
                 public void onGetDataSuccess(Map<String, Object> data) {
                     binding.progressBarStoreName.setVisibility(View.GONE);

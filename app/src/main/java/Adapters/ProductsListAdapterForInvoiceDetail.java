@@ -13,13 +13,14 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import models.InvoiceDetail;
 import models.Product;
 
 public class ProductsListAdapterForInvoiceDetail extends RecyclerView.Adapter<ProductsListAdapterForInvoiceDetail.ViewHolder> {
     private final Context context;
-    private final ArrayList<Product> list;
+    private final ArrayList<InvoiceDetail> list;
 
-    public ProductsListAdapterForInvoiceDetail(Context context, ArrayList<Product> list) {
+    public ProductsListAdapterForInvoiceDetail(Context context, ArrayList<InvoiceDetail> list) {
         this.context = context;
         this.list = list;
     }
@@ -45,19 +46,19 @@ public class ProductsListAdapterForInvoiceDetail extends RecyclerView.Adapter<Pr
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Product product = list.get(holder.getBindingAdapterPosition());
+        InvoiceDetail detail = list.get(holder.getBindingAdapterPosition());
 
-        holder.binding.txtProductTitle.setText(product.getTitle());
+        holder.binding.txtProductTitle.setText(detail.getProductName());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedOldPrice = formatter.format(product.getOldPrice());
+        String formattedOldPrice = formatter.format(detail.getOldPrice());
         holder.binding.txtOldPrice.setText("đ" + formattedOldPrice);
         holder.binding.txtOldPrice.setPaintFlags(holder.binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        String formattedPrice = formatter.format(product.getOldPrice() * (100 - product.getSaleoff()) / 100);
+        String formattedPrice = formatter.format(detail.getOldPrice());
 
         holder.binding.txtPrice.setText(formattedPrice);
 
-        holder.binding.txtQuantity.setText("x" + product.getNumberInCart());
-        Glide.with(context).load(product.getPicUrl().get(0)).into(holder.binding.imageView);
+//        holder.binding.txtQuantity.setText("x" + product.getNumberInCart());
+//        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
 
     }
 

@@ -1,8 +1,11 @@
 package api;
 
 import static android.content.ContentValues.TAG;
+import static constants.collectionName.PRODUCT_COLLECTION;
 import static constants.collectionName.STORE_COLLECTION;
-import static constants.keyName.STORE_PRODUCTS;
+import static constants.keyName.PRODUCTS;
+import static constants.keyName.PRODUCT_INSTOCK;
+import static constants.keyName.STORE_ID;
 
 import android.util.Log;
 
@@ -15,32 +18,36 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import constants.toastMessage;
-import interfaces.CreateProductCallback;
-import interfaces.GetProductDataCallback;
+import interfaces.CreateDocumentCallback;
+import interfaces.GetCollectionCallback;
+import interfaces.GetDocumentCallback;
+import interfaces.UpdateDocumentCallback;
+import models.InvoiceDetail;
+import models.Product;
 
-public class productApi {
+public class productApi implements Serializable {
     private FirebaseFirestore db;
 
     public productApi() {
         db = FirebaseFirestore.getInstance();
     }
 
-    public void createProductApi(Map<String, Object> productData, String storeId, CreateProductCallback callback) {
-        // Sản phẩm nằm trong Store
-        // Tìm reference của Collection Store
-        DocumentReference storeRef = db.collection(STORE_COLLECTION).document(storeId);
-
-        // Vào trường storeProducts của CollectionStore,đây là 1 subCollection, add productData vào subCollection này
-        storeRef.collection(STORE_PRODUCTS)
-                .add(productData)
+    public void createProductApi(Map<String, Object> newProduct, CreateDocumentCallback callback) {
+        db.collection(PRODUCT_COLLECTION)
+                .add(newProduct)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        callback.onCreateSuccess(toastMessage.CREATE_PRODUCT_SUCCESSFULLY);
+                        callback.onCreateSuccess(documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -52,8 +59,8 @@ public class productApi {
 
     }
 
-    public void getProductDetailDataApi(String storeId, String productId, GetProductDataCallback callback) {
-        DocumentReference productRef = db.collection(STORE_COLLECTION).document(storeId).collection(STORE_PRODUCTS).document(productId);
+    public void getProductDetailApi(String productId, GetDocumentCallback callback) {
+        DocumentReference productRef = db.collection(PRODUCT_COLLECTION).document(productId);
         productRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -62,7 +69,7 @@ public class productApi {
                     if (document.exists()) {
                         callback.onGetDataSuccess(document.getData());
                     } else {
-                        callback.onGetDataFailure(toastMessage.GET_PRODUCT_FAILED);
+                        callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
@@ -71,4 +78,79 @@ public class productApi {
         });
 
     }
+    public void getProductsByStoreIdApi(String storeId, GetCollectionCallback<Product> callback) {
+        ArrayList<Product> products = new ArrayList<>();
+        db.collection(PRODUCT_COLLECTION)
+                .whereEqualTo(STORE_ID, storeId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Product product = document.toObject(Product.class);
+                                String id = document.getId();
+                                product.setBaseID(id);
+                                products.add(product);
+                            }
+                            callback.onGetListSuccess(products);
+                        } else {
+                            Log.e("Firestore Query", "Lỗi khi lấy tài liệu: ", task.getException());
+                            callback.onGetListFailure("Lấy thông tin sản phẩm thất bại");
+                        }
+                    }
+                });
+    }
+
+    public void getProductsOutOfStockByStoreIdApi(String storeId, GetCollectionCallback<Product> callback) {
+        ArrayList<Product> products = new ArrayList<>();
+        db.collection(PRODUCT_COLLECTION)
+                .whereEqualTo(STORE_ID, storeId)
+                .whereEqualTo(PRODUCT_INSTOCK, 0)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Product product = document.toObject(Product.class);
+                                String id = document.getId();
+                                product.setBaseID(id);
+                                products.add(product);
+                            }
+                            callback.onGetListSuccess(products);
+                        } else {
+                            callback.onGetListFailure("Lấy thông tin sản phẩm thất bại");
+                        }
+                    }
+                });
+    }
+
+    public void updateProductApi(Map<String, Object> updateData, String storeId, String productId, UpdateDocumentCallback callback) {
+        DocumentReference productRef = db.collection(STORE_COLLECTION).document(storeId).collection(PRODUCTS).document(productId);
+        productRef.update(updateData)
+                .addOnSuccessListener(unused -> callback.onUpdateSuccess())
+                .addOnFailureListener(e -> Log.w("Firestore", "Error updating user's STORE_ID.", e));
+    }
+
+    public void getAllProductApi(final GetCollectionCallback<Product> callback) {
+        ArrayList<Product> products = new ArrayList<>();
+        db.collection(PRODUCT_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Product product = document.toObject(Product.class);
+                        String id = document.getId();
+                        product.setBaseID(id);
+                        products.add(product);
+                    }
+                    callback.onGetListSuccess(products);
+                } else {
+                    callback.onGetListFailure("Lấy thông tin sản phẩm thất bại");
+                }
+            }
+        });
+    }
+
 }

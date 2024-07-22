@@ -17,11 +17,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Map;
-
 import interfaces.ImageCallback;
 import interfaces.StatusCallback;
 import interfaces.UserCallback;
 import models.User;
+import interfaces.UpdateDocumentCallback;
 import constants.toastMessage;
 
 public class userApi {
@@ -61,6 +61,21 @@ public class userApi {
         db.collection(USER_COLLECTION).document(userId)
                 .update(USER_IMAGE_URL, downloadUri)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+    }
+    public void updateUserApi(Map<String, Object> updateData, String userId, UpdateDocumentCallback callback) {
+        DocumentReference userRef = db.collection(USER_COLLECTION).document(userId);
+        userRef.update(updateData).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                     }

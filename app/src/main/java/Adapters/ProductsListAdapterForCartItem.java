@@ -3,6 +3,7 @@ package Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -20,18 +21,19 @@ import java.util.Locale;
 
 import interfaces.CartItemListener;
 import interfaces.ToTalFeeCallback;
+import models.InvoiceDetail;
 import models.Product;
 
 public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<ProductsListAdapterForCartItem.ViewHolder> {
     private final Context context;
-    private final ArrayList<Product> list;
-    private ToTalFeeCallback callbackClass;
-    private CartItemListener cartItemListener;
+    private final ArrayList<InvoiceDetail> productList;
+    private final ToTalFeeCallback callbackClass;
+    private final CartItemListener cartItemListener;
 
 
-    public ProductsListAdapterForCartItem(Context context, ArrayList<Product> list, ToTalFeeCallback callbackClass, CartItemListener cartItemListener) {
+    public ProductsListAdapterForCartItem(Context context, ArrayList<InvoiceDetail> productList, ToTalFeeCallback callbackClass, CartItemListener cartItemListener) {
         this.context = context;
-        this.list = list;
+        this.productList = productList;
         this.callbackClass = callbackClass;
         this.cartItemListener = cartItemListener;
     }
@@ -57,15 +59,15 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Product product = list.get(holder.getBindingAdapterPosition());
+        InvoiceDetail detail = productList.get(holder.getBindingAdapterPosition());
         holder.binding.checkbox.setOnCheckedChangeListener(null);
 
-        holder.binding.checkbox.setChecked(product.getCheckedStatus());
+//        holder.binding.checkbox.setChecked(product.getCheckedStatus());
         holder.binding.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                product.setCheckedStatus(isChecked);
-                if (getQuantityChecked() == list.size()) {
+//                product.setCheckedStatus(isChecked);
+                if (getQuantityChecked() == productList.size()) {
                     // Nếu tất cả các checkbox items được check, check checkboxAll
                     cartItemListener.updateCheckboxAllStatus(true);
                 } else if (getQuantityChecked() == 0) {
@@ -76,24 +78,21 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
             }
         });
 
-
-        holder.binding.txtTitle.setText(product.getTitle());
+        holder.binding.txtTitle.setText(detail.getProductName());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedOldPrice = formatter.format(product.getOldPrice());
-        holder.binding.txtOldPrice.setText("đ" + formattedOldPrice);
+//        String formattedOldPrice = formatter.format(product.getOldPrice());
+//        holder.binding.txtOldPrice.setText("đ" + formattedOldPrice);
         holder.binding.txtOldPrice.setPaintFlags(holder.binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        String formattedPrice = formatter.format(product.getOldPrice() * (100 - product.getSaleoff()) / 100);
-
+        String formattedPrice = formatter.format(detail.getNewPrice());
         holder.binding.txtPrice.setText(formattedPrice);
-
-        holder.binding.txtQuantity.setText(String.valueOf(product.getNumberInCart()));
-        Glide.with(context).load(product.getPicUrl().get(0)).into(holder.binding.imageView);
+        holder.binding.txtQuantity.setText(String.valueOf(detail.getQuantity()));
+//        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
 
         holder.binding.btnPlus.setOnClickListener(v -> {
 
             int quantity = Integer.parseInt(holder.binding.txtQuantity.getText().toString().trim());
             holder.binding.txtQuantity.setText((quantity + 1) + "");
-            product.setNumberInCart(quantity + 1);
+//            product.setNumberInCart(quantity + 1);
             if (holder.binding.checkbox.isChecked()) {
                 callbackClass.totalFeeUpdate(getTotalFee());
             }
@@ -105,14 +104,14 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
             int quantity = Integer.parseInt(holder.binding.txtQuantity.getText().toString().trim());
             int currentPosition = holder.getBindingAdapterPosition();
             if (quantity == 1) {
-                list.remove(currentPosition);
+                productList.remove(currentPosition);
                 notifyItemRemoved(currentPosition);
-                if (list.isEmpty()) {
+                if (productList.isEmpty()) {
                     cartItemListener.updateCartItem();
                 }
             } else {
                 holder.binding.txtQuantity.setText((quantity - 1) + "");
-                product.setNumberInCart(quantity - 1);
+//                product.setNumberInCart(quantity - 1);
 
             }
             if (holder.binding.checkbox.isChecked()) {
@@ -124,27 +123,27 @@ public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<Product
 
     private int getQuantityChecked() {
         int count = 0;
-        for (Product product : list) {
-            if (product.getCheckedStatus()) {
-                count += 1;
-            }
+        for (InvoiceDetail product : productList) {
+//            if (product.getCheckedStatus()) {
+//                count += 1;
+//            }
         }
         return count;
     }
 
     private double getTotalFee() {
         double fee = 0;
-        for (Product product : list) {
-            if (product.getCheckedStatus()) {
-                fee += (product.getPrice() * (1 - product.getSaleoff() / 100) * product.getNumberInCart());
-            }
-
-        }
+//        for (InvoiceDetail product : productList) {
+//            if (product.getCheckedStatus()) {
+//                fee += (product.getNewPrice()  * product.getNumberInCart());
+//            }
+//
+//        }
         return fee;
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return productList.size();
     }
 }

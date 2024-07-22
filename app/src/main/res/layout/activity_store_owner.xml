@@ -101,7 +101,7 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:scaleType="fitXY"
-                    android:src="@mipmap/meo" />
+                    android:src="@mipmap/logo_lovito" />
             </androidx.cardview.widget.CardView>
 
             <ProgressBar

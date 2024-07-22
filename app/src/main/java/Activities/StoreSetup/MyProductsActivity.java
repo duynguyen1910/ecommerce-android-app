@@ -1,4 +1,4 @@
-package Activities;
+package Activities.StoreSetup;
 
 import android.annotation.SuppressLint;
 
@@ -20,8 +20,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Objects;
 
+import Activities.AddProductsActivity;
 import Adapters.ViewPager2Adapter;
-import Fragments.ProductsHiddenFragment;
 import Fragments.ProductsInStockFragment;
 import Fragments.ProductsOutOfStockFragment;
 
