@@ -61,7 +61,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         ArrayList<Product> listProducts = cartItem.getListProducts();
 
         holder.binding.txtStoreName.setText(cartItem.getStoreName());
-        ProductsListAdapterForCartItem adapter = new ProductsListAdapterForCartItem(context, cartItem.getListProducts(), totalFeeCallback, new CartItemListener() {
+        ProductsAdapterForCartItem adapter = new ProductsAdapterForCartItem(context, cartItem.getListProducts(), totalFeeCallback, new CartItemListener() {
             @Override
             public void updateCartItem() {
                 int cartItemPosition = holder.getBindingAdapterPosition();

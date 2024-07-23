@@ -421,21 +421,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="3">
+        android:weightSum="2">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnChat"
-            style="@android:style/Widget.Button"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:paddingVertical="4dp"
-            android:background="@drawable/bg_button_add_to_cart"
-            android:drawableTop="@drawable/ic_sms"
-            android:drawableTint="@color/primary_color"
-            android:text="Chat ngay"
-            android:textColor="@color/black"
-            android:textSize="12sp" />
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnAddToCart"

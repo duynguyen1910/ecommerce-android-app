@@ -68,7 +68,6 @@ public class productApi implements Serializable {
                         Product product = document.toObject(Product.class);
                         product.setBaseID(document.getId());
                         products.add(product);
-
                     }
                     callback.onGetDataSuccess(products);
                 })

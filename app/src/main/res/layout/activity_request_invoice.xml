@@ -34,7 +34,7 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:text="Đơn mua"
+            android:text="Đơn đặt hàng"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -52,11 +52,9 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_marginVertical="8dp"
         android:background="@color/white"
-        app:tabGravity="fill"
         app:tabIndicatorColor="@color/primary_color"
-        app:tabMode="scrollable"
         app:tabSelectedTextColor="@color/primary_color"
         app:tabTextColor="@color/custom_scroll_tab_layout" />
 

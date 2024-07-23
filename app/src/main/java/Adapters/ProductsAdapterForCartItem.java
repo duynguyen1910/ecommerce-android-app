@@ -22,14 +22,14 @@ import interfaces.CartItemListener;
 import interfaces.ToTalFeeCallback;
 import models.Product;
 
-public class ProductsListAdapterForCartItem extends RecyclerView.Adapter<ProductsListAdapterForCartItem.ViewHolder> {
+public class ProductsAdapterForCartItem extends RecyclerView.Adapter<ProductsAdapterForCartItem.ViewHolder> {
     private final Context context;
     private final ArrayList<Product> list;
     private final ToTalFeeCallback callbackClass;
     private final CartItemListener cartItemListener;
 
 
-    public ProductsListAdapterForCartItem(Context context, ArrayList<Product> list, ToTalFeeCallback callbackClass, CartItemListener cartItemListener) {
+    public ProductsAdapterForCartItem(Context context, ArrayList<Product> list, ToTalFeeCallback callbackClass, CartItemListener cartItemListener) {
         this.context = context;
         this.list = list;
         this.callbackClass = callbackClass;

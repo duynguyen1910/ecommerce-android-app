@@ -15,11 +15,11 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.Objects;
 import Adapters.ViewPager2Adapter;
-import Fragments.InvoiceAwaitConfirmationFragment;
-import Fragments.InvoiceAwaitDeliveryFragment;
-import Fragments.InvoiceAwaitPickupFragment;
-import Fragments.InvoiceCancelFragment;
-import Fragments.InvoiceCompletedFragment;
+import Fragments.CustomerInvoices.InvoiceAwaitConfirmationFragment;
+import Fragments.CustomerInvoices.InvoiceAwaitDeliveryFragment;
+import Fragments.CustomerInvoices.InvoiceAwaitPickupFragment;
+import Fragments.CustomerInvoices.InvoiceCancelFragment;
+import Fragments.CustomerInvoices.InvoiceCompletedFragment;
 
 public class InvoiceActivity extends AppCompatActivity {
 

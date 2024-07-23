@@ -1,4 +1,4 @@
-package Fragments;
+package Fragments.RequestedInvoices;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,15 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import com.example.stores.databinding.FragmentInvoiceCompletedBinding;
+import com.example.stores.databinding.FragmentRequestInvoiceCancelBinding;
 
-public class InvoiceCompletedFragment extends Fragment {
-    FragmentInvoiceCompletedBinding binding;
+public class RequestInvoiceCancelFragment extends Fragment {
+    FragmentRequestInvoiceCancelBinding binding;
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentInvoiceCompletedBinding.inflate(getLayoutInflater());
+        binding = FragmentRequestInvoiceCancelBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 }

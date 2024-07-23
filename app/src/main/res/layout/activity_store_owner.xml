@@ -45,38 +45,14 @@
                 android:textStyle="bold" />
 
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/imvSettings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
                 android:gravity="end"
-                android:paddingEnd="16dp">
-
-                <ImageView
-                    android:id="@+id/imvSettings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_settings_24"
-                    app:tint="@color/primary_color" />
-
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginHorizontal="10dp"
-                    android:src="@drawable/ic_notification"
-                    app:tint="@color/primary_color" />
-
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_sms"
-                    app:tint="@color/primary_color" />
-            </LinearLayout>
+                android:src="@drawable/ic_settings_24"
+                app:tint="@color/primary_color" />
 
         </LinearLayout>
 
@@ -153,21 +129,23 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             android:background="@color/white"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="10dp">
+            android:paddingHorizontal="16dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingVertical="16dp"
                 android:text="Đơn hàng"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtViewHistory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:gravity="center_vertical"
+                android:paddingVertical="16dp"
                 android:text="Xem lịch sử đơn hàng"
                 android:textColor="@color/darkgray"
                 app:drawableEndCompat="@drawable/ic_arrow_right_24"
@@ -182,13 +160,15 @@
             android:paddingVertical="10dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/layoutAwaitConfirmedInvoice"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/txtAwaitConfirmedInvoice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -206,13 +186,15 @@
 
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/layoutCanceledInvoice"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/txtCanceledInvoice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -228,111 +210,62 @@
                     android:textColor="@color/black" />
             </LinearLayout>
 
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Trả hàng/\nHoàn tiền"
-                    android:textColor="@color/black" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Đánh giá"
-                    android:textColor="@color/black" />
-            </LinearLayout>
-
         </LinearLayout>
 
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
+        android:paddingVertical="10dp"
+        android:weightSum="2">
+
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/layoutProducts"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@color/white"
-            android:paddingVertical="10dp"
-            android:weightSum="2">
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/layoutProducts"
-                android:layout_width="0dp"
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_box_24"
+                app:tint="@color/green" />
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:src="@drawable/ic_box_24"
-                    app:tint="@color/green" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Sản phẩm của tôi"
-                    android:textColor="@color/black" />
-            </LinearLayout>
+                android:layout_marginTop="8dp"
+                android:text="Sản phẩm của tôi"
+                android:textColor="@color/black" />
+        </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/layoutRevenue"
-                android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/layoutRevenue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_finance_24"
+                app:tint="@color/yellow" />
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:src="@drawable/ic_finance_24"
-                    app:tint="@color/yellow" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Doanh thu"
-                    android:textColor="@color/black" />
-            </LinearLayout>
-
-
+                android:layout_marginTop="8dp"
+                android:text="Doanh thu"
+                android:textColor="@color/black" />
         </LinearLayout>
 
 

@@ -2,10 +2,7 @@ package Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Paint;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -19,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 
-import Activities.DeliveryMethodActivity;
 import models.CartItem;
 import models.Product;
 
@@ -58,7 +54,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
         ArrayList<Product> listProducts = cartItem.getListProducts();
 
         holder.binding.txtStoreName.setText(cartItem.getStoreName());
-        ProductsListAdapterForPaymentItem adapter = new ProductsListAdapterForPaymentItem(context, cartItem.getListProducts());
+        ProductsAdapterForPaymentItem adapter = new ProductsAdapterForPaymentItem(context, cartItem.getListProducts());
 
         holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
         holder.binding.recyclerViewProducts.setAdapter(adapter);

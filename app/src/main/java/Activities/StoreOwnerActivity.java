@@ -24,6 +24,7 @@ import models.Store;
 public class StoreOwnerActivity extends AppCompatActivity {
 
     ActivityStoreOwnerBinding binding;
+    String storeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,26 @@ public class StoreOwnerActivity extends AppCompatActivity {
             Intent intent = new Intent(StoreOwnerActivity.this, MyProductsActivity.class);
             startActivity(intent);
         });
+        binding.txtViewHistory.setOnClickListener(v -> {
+            Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
+            intent.putExtra(STORE_ID, storeId);
+            startActivity(intent);
+        });
+
+        binding.layoutAwaitConfirmedInvoice.setOnClickListener(v -> {
+            Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
+
+//            intent.putExtra(STORE_ID, storeId);
+//            intent.putExtra("invoiceStatus", 0);
+            startActivity(intent);
+        });
+        binding.layoutCanceledInvoice.setOnClickListener(v -> {
+            Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
+
+//            intent.putExtra(STORE_ID, storeId);
+//            intent.putExtra("invoiceStatus", 0);
+            startActivity(intent);
+        });
 
     }
 
@@ -62,7 +83,7 @@ public class StoreOwnerActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
 
 
-        String storeId = sharedPreferences.getString(STORE_ID, null);
+        storeId = sharedPreferences.getString(STORE_ID, null);
         // lấy thông tin avatar, invoice
 
 

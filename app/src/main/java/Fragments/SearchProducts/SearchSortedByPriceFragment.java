@@ -91,7 +91,7 @@ public class SearchSortedByPriceFragment extends Fragment implements CategoryDia
                 }else {
                     // Nhận categoryId từ home hoặc chọn category trên chính fragment này
                     // Khởi tạo list products bằng cách lấy toàn bộ Collection Products thỏa mãn categoryId
-                    fetchProductsByCategoryId(categoryId);
+                    fetchProductsAscendingByCategoryId(categoryId);
                 }
 
 
@@ -111,11 +111,11 @@ public class SearchSortedByPriceFragment extends Fragment implements CategoryDia
         binding.txtSelectCategory.setOnClickListener(v -> popUpCategoryDialog());
     }
 
-    private void fetchProductsByCategoryId(String categoryId) {
+    private void fetchProductsAscendingByCategoryId(String categoryId) {
         setLoadingState(true);
 
         Product product = new Product();
-        product.getAllProductByCategoryId(categoryId, new GetCollectionCallback<Product>() {
+        product.getAllProductAscendingByCategoryId(categoryId, new GetCollectionCallback<Product>() {
             @Override
             public void onGetDataSuccess(ArrayList<Product> products) {
                 setLoadingState(false);
@@ -212,11 +212,10 @@ public class SearchSortedByPriceFragment extends Fragment implements CategoryDia
         categoryBinding.btnSubmit.setOnClickListener(v -> {
             if (transferedselectedPosition != -1 ){
                 listProducts.clear();
-                fetchProductsByCategoryId(transferedCategoryId);
+                fetchProductsAscendingByCategoryId(transferedCategoryId);
                 binding.txtSelectedCategory.setText(transferedCategoryName);
                 dialog.dismiss();
             }
-
         });
     }
     private void setLoadingState(boolean isLoading) {

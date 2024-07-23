@@ -12,7 +12,7 @@ import com.example.stores.databinding.ActivityInvoiceDetailBinding;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Objects;
-import Adapters.ProductsListAdapterForInvoiceDetail;
+import Adapters.ProductsAdapterForInvoiceDetail;
 import models.Invoice;
 
 public class InvoiceDetailActivity extends AppCompatActivity {
@@ -45,7 +45,7 @@ public class InvoiceDetailActivity extends AppCompatActivity {
                 NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
                 binding.txtTotal.setText("đ" + formatter.format(invoice.getTotal()));
 
-                ProductsListAdapterForInvoiceDetail adapter = new ProductsListAdapterForInvoiceDetail(InvoiceDetailActivity.this, invoice.getCartItem().getListProducts());
+                ProductsAdapterForInvoiceDetail adapter = new ProductsAdapterForInvoiceDetail(InvoiceDetailActivity.this, invoice.getCartItem().getListProducts());
                 binding.recyclerView.setAdapter(adapter);
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(InvoiceDetailActivity.this, LinearLayoutManager.VERTICAL, false));
 

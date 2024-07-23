@@ -62,7 +62,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
 
         CartItem cartItem = invoice.getCartItem();
         holder.binding.txtStoreName.setText(cartItem.getStoreName());
-        ProductsListAdapterForInvoiceItem adapter = new ProductsListAdapterForInvoiceItem(context, cartItem.getListProducts(), true);
+        ProductsAdapterForInvoiceItem adapter = new ProductsAdapterForInvoiceItem(context, cartItem.getListProducts(), true);
 
         holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
         holder.binding.recyclerViewProducts.setAdapter(adapter);

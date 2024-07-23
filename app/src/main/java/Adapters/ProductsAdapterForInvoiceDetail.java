@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
 import com.example.stores.databinding.ItemProductForInvoiceDetailBinding;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -15,11 +15,11 @@ import java.util.Locale;
 
 import models.Product;
 
-public class ProductsListAdapterForInvoiceDetail extends RecyclerView.Adapter<ProductsListAdapterForInvoiceDetail.ViewHolder> {
+public class ProductsAdapterForInvoiceDetail extends RecyclerView.Adapter<ProductsAdapterForInvoiceDetail.ViewHolder> {
     private final Context context;
     private final ArrayList<Product> list;
 
-    public ProductsListAdapterForInvoiceDetail(Context context, ArrayList<Product> list) {
+    public ProductsAdapterForInvoiceDetail(Context context, ArrayList<Product> list) {
         this.context = context;
         this.list = list;
     }
