@@ -68,6 +68,7 @@ public class AddProductsActivity extends AppCompatActivity {
                     @Override
                     public void onCreateSuccess(String documentId) {
                         Toast.makeText(AddProductsActivity.this, CREATE_PRODUCT_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
+                        finish();
                     }
 
                     @Override
@@ -75,9 +76,12 @@ public class AddProductsActivity extends AppCompatActivity {
                         Toast.makeText(AddProductsActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
+
+            } else {
+                showToast("Vui lòng điền đầy đủ thông tin");
             }
 
-            finish();
+
         });
 
 
@@ -88,6 +92,10 @@ public class AddProductsActivity extends AppCompatActivity {
 
     }
 
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
     ActivityResultLauncher<Intent> launcherSelectCategory = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -95,9 +103,9 @@ public class AddProductsActivity extends AppCompatActivity {
                     Intent intent = result.getData();
                     if (intent != null) {
                         Bundle bundle = intent.getExtras();
-                        if (bundle != null){
+                        if (bundle != null) {
                             String categoryName = bundle.getString(CATEGORY_NAME);
-                            categoryId = bundle.getString(CATEGORY_ID) ;
+                            categoryId = bundle.getString(CATEGORY_ID);
                             binding.txtChooseCategory.setText("Ngành hàng: ");
                             binding.edtCategory.setText(categoryName);
                         }
@@ -162,7 +170,6 @@ public class AddProductsActivity extends AppCompatActivity {
 
         return null;
     }
-
 
 
     private void initUI() {

@@ -55,6 +55,7 @@ public class ProfileFragment extends Fragment{
         return binding.getRoot();
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

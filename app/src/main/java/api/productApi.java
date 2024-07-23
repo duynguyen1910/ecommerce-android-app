@@ -7,6 +7,7 @@ import static constants.keyName.STORE_ID;
 import static constants.toastMessage.INTERNET_ERROR;
 
 import android.util.Log;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -65,7 +66,7 @@ public class productApi implements Serializable {
                     ArrayList<Product> products = new ArrayList<>();
                     for (DocumentSnapshot document : task.getDocuments()) {
                         Product product = document.toObject(Product.class);
-                       product.setBaseID(document.getId());
+                        product.setBaseID(document.getId());
                         products.add(product);
 
                     }
