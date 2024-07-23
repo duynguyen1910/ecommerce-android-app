@@ -25,8 +25,6 @@ public class Product extends BaseObject implements Serializable {
     private api.productApi productApi;
     private ArrayList<String> productImages;
 
-
-
     public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String storeID, int numberInCart) {
         this.productName = productName;
         this.description = description;
