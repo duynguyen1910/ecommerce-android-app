@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.stores.databinding.FragmentInvoiceAwaitConfirmationBinding;
+
+import java.util.ArrayList;
 import java.util.Map;
 import Adapters.InvoiceAdapter;
 import models.Invoice;
@@ -31,9 +33,9 @@ public class InvoiceAwaitConfirmationFragment extends Fragment {
     private void getBundles() {
         Intent intent = requireActivity().getIntent();
         if (intent != null) {
-            Map<String, Invoice> invoicesMap = (Map<String, Invoice>) intent.getSerializableExtra("invoicesMap");
-            if (invoicesMap != null){
-                InvoiceAdapter invoiceAdapter = new InvoiceAdapter(requireActivity(), invoicesMap);
+            ArrayList<Invoice> invoices = (ArrayList<Invoice>) intent.getSerializableExtra("invoices");
+            if (invoices != null){
+                InvoiceAdapter invoiceAdapter = new InvoiceAdapter(requireActivity(), invoices);
                 binding.recyclerView.setAdapter(invoiceAdapter);
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
             }

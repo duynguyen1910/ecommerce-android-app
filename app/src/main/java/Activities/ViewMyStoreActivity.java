@@ -2,10 +2,8 @@ package Activities;
 
 import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
-import static constants.keyName.USER_INFO;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -26,8 +24,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import Adapters.ViewPager2Adapter;
-import Fragments.StoreCategoriesFragment;
-import Fragments.StoreProductsFragment;
+import Fragments.Store.StoreCategoriesFragment;
+import Fragments.Store.StoreProductsFragment;
 import interfaces.GetDocumentCallback;
 import models.Store;
 

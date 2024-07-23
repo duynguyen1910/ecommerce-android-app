@@ -3,7 +3,7 @@ package models;
 import java.io.Serializable;
 
 public class Invoice implements Serializable {
-    private int invoiceID;
+    private String invoiceID;
     private String deliveryAddress;
     private String createdDate;
     private String paidDate;
@@ -14,9 +14,10 @@ public class Invoice implements Serializable {
     private int paymentMethod; // 0: Thanh toán khi nhận hàng
     private int invoiceStatus; // 0: Chờ xác nhận
     private CartItem cartItem;
-    private int customerID;
+    private String customerID;
+    private String customerName;
 
-    public Invoice(String deliveryAddress, String createdDate, String paidDate, String giveToDeliveryDate, String completedDate, double total, String note, int paymentMethod, int invoiceStatus, CartItem cartItem, int customerID) {
+    public Invoice(String deliveryAddress, String createdDate, String paidDate, String giveToDeliveryDate, String completedDate, double total, String note, int paymentMethod, int invoiceStatus, CartItem cartItem, String customerID,String customerName) {
         this.deliveryAddress = deliveryAddress;
         this.createdDate = createdDate;
         this.paidDate = paidDate;
@@ -31,6 +32,14 @@ public class Invoice implements Serializable {
 
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
     public CartItem getCartItem() {
         return cartItem;
     }
@@ -39,11 +48,11 @@ public class Invoice implements Serializable {
         this.cartItem = cartItem;
     }
 
-    public int getInvoiceID() {
+    public String getInvoiceID() {
         return invoiceID;
     }
 
-    public void setInvoiceID(int invoiceID) {
+    public void setInvoiceID(String invoiceID) {
         this.invoiceID = invoiceID;
     }
 
@@ -123,11 +132,11 @@ public class Invoice implements Serializable {
         this.invoiceStatus = invoiceStatus;
     }
 
-    public int getCustomerID() {
+    public String getCustomerID() {
         return customerID;
     }
 
-    public void setCustomerID(int customerID) {
+    public void setCustomerID(String customerID) {
         this.customerID = customerID;
     }
 

@@ -10,10 +10,18 @@
         android:layout_height="wrap_content"
         android:text="Đơn Chờ xác nhận"
         android:textColor="@color/primary_color"
-        android:textSize="24sp" />
+        android:textSize="14sp" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_height="match_parent" />
 </LinearLayout>

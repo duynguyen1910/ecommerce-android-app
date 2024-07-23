@@ -1,4 +1,4 @@
-package Fragments;
+package Fragments.Store;
 
 import static constants.keyName.STORE_ID;
 

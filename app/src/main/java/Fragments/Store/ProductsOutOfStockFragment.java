@@ -1,4 +1,4 @@
-package Fragments;
+package Fragments.Store;
 
 import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.STORE_ID;

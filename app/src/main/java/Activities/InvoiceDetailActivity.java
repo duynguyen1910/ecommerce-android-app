@@ -35,9 +35,7 @@ public class InvoiceDetailActivity extends AppCompatActivity {
     private void setupUI(){
         Intent intent = getIntent();
         if (intent != null) {
-            Bundle bundle = intent.getExtras();
-            String invoiceID = bundle.getString("invoiceID");
-            Invoice invoice = (Invoice) bundle.getSerializable("invoice");
+            Invoice invoice = (Invoice) intent.getSerializableExtra("invoice");
             if (invoice != null){
                 binding.txtAddress.setText(invoice.getDeliveryAddress());
                 binding.txtStoreName.setText(invoice.getCartItem().getStoreName());
@@ -66,7 +64,7 @@ public class InvoiceDetailActivity extends AppCompatActivity {
                     binding.txtPaymentMethod.setText("Thanh toán khi nhận hàng");
                 }
 
-                binding.txtInvoiceID.setText(invoiceID);
+                binding.txtInvoiceID.setText(invoice.getInvoiceID());
                 binding.txtCreatedDate.setText(invoice.getCreatedDate());
             }
 

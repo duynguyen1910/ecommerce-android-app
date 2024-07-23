@@ -1,29 +1,18 @@
 package Activities;
-
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityRequestInvoiceBinding;
-import com.example.stores.databinding.ItemTabLayoutInvoiceBinding;
 import com.example.stores.databinding.ItemTabLayoutProductsBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
 import java.util.Objects;
-
 import Adapters.ViewPager2Adapter;
-import Fragments.CustomerInvoices.InvoiceAwaitConfirmationFragment;
-import Fragments.CustomerInvoices.InvoiceAwaitDeliveryFragment;
-import Fragments.ProductsInStockFragment;
-import Fragments.ProductsOutOfStockFragment;
 import Fragments.RequestedInvoices.RequestInvoiceAwaitConfirmFragment;
 import Fragments.RequestedInvoices.RequestInvoiceCancelFragment;
 
@@ -81,27 +70,12 @@ public class RequestInvoiceActivity extends AppCompatActivity {
 
 
 
-        new TabLayoutMediator(binding.tabLayout, binding.viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                ItemTabLayoutProductsBinding tabLayoutBinding = ItemTabLayoutProductsBinding.inflate(getLayoutInflater());
-                TextView tabLabel = tabLayoutBinding.tabLabel;
-                tabLabel.setText(viewPager2Adapter.getPageTitle(position));
-                tab.setCustomView(tabLayoutBinding.getRoot());
-            }
+        new TabLayoutMediator(binding.tabLayout, binding.viewPager2, (tab, position) -> {
+            ItemTabLayoutProductsBinding tabLayoutBinding = ItemTabLayoutProductsBinding.inflate(getLayoutInflater());
+            TextView tabLabel = tabLayoutBinding.tabLabel;
+            tabLabel.setText(viewPager2Adapter.getPageTitle(position));
+            tab.setCustomView(tabLayoutBinding.getRoot());
         }).attach();
-
-//        Intent intent = getIntent();
-//        if (intent!= null){
-//            int invoiceStatus = intent.getIntExtra("invoiceStatus", 0);
-//            binding.viewPager2.setCurrentItem(invoiceStatus);
-//
-//            TabLayout.Tab firstTab = binding.tabLayout.getTabAt(invoiceStatus);
-//            if (firstTab != null && firstTab.getCustomView() != null) {
-//                TextView tabLabel = firstTab.getCustomView().findViewById(R.id.tabLabel);
-//                tabLabel.setTextColor(ContextCompat.getColor(RequestInvoiceActivity.this, R.color.primary_color));
-//            }
-//        }
     }
 
 

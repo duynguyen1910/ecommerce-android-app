@@ -11,24 +11,22 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.stores.databinding.ItemInvoiceBinding;
+import com.example.stores.databinding.ItemRequestInvoiceBinding;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
-
 import Activities.InvoiceDetailActivity;
 import models.CartItem;
-
 import models.Invoice;
 import models.Product;
 
-public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHolder> {
+public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<Invoice> list;
 
 
-    public InvoiceAdapter(Context context, ArrayList<Invoice> list) {
+    public RequestInvoiceAdapter(Context context, ArrayList<Invoice> list) {
         this.context = context;
         this.list = list;
     }
@@ -36,15 +34,15 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemInvoiceBinding binding = ItemInvoiceBinding.inflate(LayoutInflater.from(context), parent, false);
+        ItemRequestInvoiceBinding binding = ItemRequestInvoiceBinding.inflate(LayoutInflater.from(context), parent, false);
         return new ViewHolder(binding);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        ItemInvoiceBinding binding;
+        ItemRequestInvoiceBinding binding;
 
-        public ViewHolder(ItemInvoiceBinding binding) {
+        public ViewHolder(ItemRequestInvoiceBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -58,7 +56,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         Invoice invoice = list.get(holder.getBindingAdapterPosition());
 
         CartItem cartItem = invoice.getCartItem();
-        holder.binding.txtStoreName.setText(cartItem.getStoreName());
+        holder.binding.txtCustomerName.setText(invoice.getCustomerID());
         ProductsAdapterForInvoiceItem adapter = new ProductsAdapterForInvoiceItem(context, cartItem.getListProducts(), true);
 
         holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
@@ -72,15 +70,10 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         holder.binding.txtTotal.setText("đ" + formatter.format(getCartItemFee(cartItem)));
         invoice.setTotal(getCartItemFee(cartItem));
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, InvoiceDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("invoice", invoice);
-                intent.putExtras(bundle);
-                context.startActivity(intent);
-            }
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, InvoiceDetailActivity.class);
+            intent.putExtra("invoice", invoice);
+            context.startActivity(intent);
         });
 
     }

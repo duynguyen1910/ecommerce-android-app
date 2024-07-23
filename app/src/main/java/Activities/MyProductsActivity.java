@@ -3,15 +3,11 @@ package Activities;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 
-import android.annotation.SuppressLint;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,14 +19,12 @@ import com.example.stores.databinding.ItemTabLayoutProductsBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 import Adapters.ViewPager2Adapter;
-import Fragments.ProductsInStockFragment;
-import Fragments.ProductsOutOfStockFragment;
+import Fragments.Store.ProductsInStockFragment;
+import Fragments.Store.ProductsOutOfStockFragment;
 import interfaces.GetCountCallback;
-import models.CartItem;
 import models.Product;
 
 public class MyProductsActivity extends AppCompatActivity {

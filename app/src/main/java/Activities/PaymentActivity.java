@@ -1,27 +1,13 @@
 package Activities;
-
-import static constants.keyName.PRODUCT_DESC;
-import static constants.keyName.PRODUCT_NAME;
-import static constants.keyName.PRODUCT_NEW_PRICE;
-import static constants.keyName.PRODUCT_OLD_PRICE;
-import static constants.keyName.STORE_NAME;
-import static constants.toastMessage.INTERNET_ERROR;
-
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityPaymentBinding;
 import com.example.stores.databinding.LayoutOrderBinding;
-
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,15 +15,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
-
 import Adapters.PaymentAdapter;
-import interfaces.GetDocumentCallback;
 import models.CartItem;
 import models.Invoice;
 import models.Product;
-import models.Store;
 
 public class PaymentActivity extends AppCompatActivity {
 
@@ -87,16 +69,19 @@ public class PaymentActivity extends AppCompatActivity {
             String note = "";
             int paymentMethod = 0; // 0: Thanh toán khi nhận hàng
             int orderStatus = 0; // 0: Chờ xác nhận
-            int customerID = 1; // 1: Ngọc Đại
+            String customerID = "abc";
+            String customerName = "Ngọc Đại";
 
+            ArrayList<Invoice> invoices = new ArrayList<>();
             HashMap<String, Invoice> invoicesMap = new HashMap<>();
 
             for (int i = 0; i < payment.size(); i++) {
-                Invoice newInvoice = new Invoice(deliveryAddress, createdDate, paidDate, giveToDeliveryDate, completedDate, getTotalForCartItem(payment.get(i)), note, paymentMethod, orderStatus, payment.get(i), customerID);
-                invoicesMap.put(generateInvoiceId(i), newInvoice);
+                Invoice newInvoice = new Invoice(deliveryAddress, createdDate, paidDate, giveToDeliveryDate, completedDate, getTotalForCartItem(payment.get(i)), note, paymentMethod, orderStatus, payment.get(i), customerID, customerName);
+                newInvoice.setInvoiceID(generateInvoiceId(i));
+                invoices.add(newInvoice);
             }
             Intent intent = new Intent(PaymentActivity.this, InvoiceActivity.class);
-            intent.putExtra("invoicesMap", invoicesMap);
+            intent.putExtra("invoices", invoices);
             startActivity(intent);
             // call API gửi order cho Người bán
         });
