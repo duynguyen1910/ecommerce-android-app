@@ -62,14 +62,14 @@ public class StoreOwnerActivity extends AppCompatActivity {
             Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
 
 //            intent.putExtra(STORE_ID, storeId);
-//            intent.putExtra("invoiceStatus", 0);
+            intent.putExtra("invoiceStatus", 0);
             startActivity(intent);
         });
         binding.layoutCanceledInvoice.setOnClickListener(v -> {
             Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
 
 //            intent.putExtra(STORE_ID, storeId);
-//            intent.putExtra("invoiceStatus", 0);
+            intent.putExtra("invoiceStatus", 1);
             startActivity(intent);
         });
 

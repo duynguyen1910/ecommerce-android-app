@@ -56,9 +56,14 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
         Invoice invoice = list.get(holder.getBindingAdapterPosition());
 
         CartItem cartItem = invoice.getCartItem();
-        holder.binding.txtCustomerName.setText(invoice.getCustomerID());
-        ProductsAdapterForInvoiceItem adapter = new ProductsAdapterForInvoiceItem(context, cartItem.getListProducts(), true);
+        holder.binding.txtCustomerName.setText(invoice.getCustomerName());
+        ProductsAdapterForRequestInvoice adapter = new ProductsAdapterForRequestInvoice(context, cartItem.getListProducts(), true);
 
+        if (invoice.getInvoiceStatus() == 0){
+            holder.binding.txtInvoiceStatus.setText("Chờ xác nhận");
+        }else {
+            holder.binding.txtInvoiceStatus.setText("Đã hủy");
+        }
         holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
         holder.binding.recyclerViewProducts.setAdapter(adapter);
 

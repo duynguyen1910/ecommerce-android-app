@@ -73,7 +73,6 @@ public class PaymentActivity extends AppCompatActivity {
             String customerName = "Ngọc Đại";
 
             ArrayList<Invoice> invoices = new ArrayList<>();
-            HashMap<String, Invoice> invoicesMap = new HashMap<>();
 
             for (int i = 0; i < payment.size(); i++) {
                 Invoice newInvoice = new Invoice(deliveryAddress, createdDate, paidDate, giveToDeliveryDate, completedDate, getTotalForCartItem(payment.get(i)), note, paymentMethod, orderStatus, payment.get(i), customerID, customerName);

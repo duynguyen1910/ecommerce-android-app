@@ -3,10 +3,12 @@ package Activities;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -107,25 +109,48 @@ public class MyProductsActivity extends AppCompatActivity {
                 tab.setCustomView(tabLayoutBinding.getRoot());
             }
         }).attach();
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                View customView = tab.getCustomView();
+                if (customView != null) {
+                    TextView tabLabel = customView.findViewById(R.id.tabLabel);
+                    TextView tabQuantity = tab.getCustomView().findViewById(R.id.tabQuantity);
+                    tabLabel.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
+                    tabQuantity.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                View customView = tab.getCustomView();
+                if (customView != null) {
+                    TextView tabLabel = customView.findViewById(R.id.tabLabel);
+                    TextView tabQuantity = tab.getCustomView().findViewById(R.id.tabQuantity);
+                    tabLabel.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.darkgray));
+                    tabQuantity.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.darkgray));
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     private void updateTabQuantity() {
         if (countCompleted >= 2) {
-            updateTabUI(0, inStock);
-            updateTabUI(1, outOfStock);
+            updateTabLayout(0, inStock);
+            updateTabLayout(1, outOfStock);
         }
     }
 
-    private void updateTabUI(int index, int quantity) {
+    private void updateTabLayout(int index, int quantity) {
         TabLayout.Tab tab = binding.tabLayout.getTabAt(index);
         if (tab != null && tab.getCustomView() != null) {
             TextView tabQuantity = tab.getCustomView().findViewById(R.id.tabQuantity);
-            TextView tabLabel = tab.getCustomView().findViewById(R.id.tabLabel);
-            if (index == 0){
-                tabLabel.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
-                tabQuantity.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
-            }
-
             tabQuantity.setText("(" + quantity + ")");
         }
     }

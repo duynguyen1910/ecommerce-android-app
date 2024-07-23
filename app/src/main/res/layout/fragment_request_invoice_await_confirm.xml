@@ -5,12 +5,7 @@
     android:gravity="center"
     android:background="@color/white"
     android:layout_height="match_parent">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Đơn Chờ xác nhận"
-        android:textColor="@color/primary_color"
-        android:textSize="14sp" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="40dp"

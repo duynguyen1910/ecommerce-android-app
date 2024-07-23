@@ -13,7 +13,7 @@
         android:background="@color/white"
         android:gravity="center_vertical"
         android:paddingHorizontal="10dp"
-        android:paddingVertical="16dp">
+        android:paddingVertical="8dp">
 
 
         <LinearLayout
@@ -73,13 +73,15 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewProducts"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_border_top_bottom"
-        android:padding="16dp">
+        android:layout_marginBottom="4dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
 
         <TextView
             android:id="@+id/txtQuantityProducts"
@@ -108,9 +110,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:gravity="center_vertical"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="16dp">
+        android:paddingVertical="8dp">
 
         <TextView
             android:id="@+id/txtCreatedDate"
@@ -143,42 +146,31 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnAddToCart"
-            style="@android:style/Widget.Button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/btnReset"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="10dp"
             android:layout_weight="1"
-            android:paddingVertical="4dp"
-            android:drawablePadding="4dp"
-            android:background="@color/gray"
-            android:drawableTop="@drawable/ic_cancel"
-            android:drawableTint="@color/black"
-            android:text="Huỷ đơn hàng"
+            android:background="@drawable/custom_edit_text_border"
+            android:text="Hủy đơn"
+            android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
         <androidx.appcompat.widget.AppCompatButton
-
-            style="@android:style/Widget.Button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="10dp"
             android:layout_weight="1"
-            android:paddingVertical="4dp"
-            android:drawablePadding="4dp"
-            android:background="@color/green"
-            android:drawableTop="@drawable/ic_tick_fill_24"
-            android:drawableTint="@color/white"
-            android:text="Xác nhận đơn hàng"
+            android:background="@drawable/custom_button_secondary"
+            android:text="Xác nhận"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="14sp" />
-
     </LinearLayout>
 
 

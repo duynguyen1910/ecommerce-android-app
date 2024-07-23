@@ -29,7 +29,7 @@ public class Invoice implements Serializable {
         this.invoiceStatus = invoiceStatus;
         this.cartItem = cartItem;
         this.customerID = customerID;
-
+        this.customerName = customerName;
     }
 
     public String getCustomerName() {
