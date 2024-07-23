@@ -8,7 +8,7 @@ public class keyName {
     public static final String PASSWORD = "password";
     public static final String USER_ROLE = "role";
 
-    public static final String STORE_ID = "storeId";
+    public static final String STORE_ID = "storeID";
     public static final String STORE_NAME = "storeName";
     public static final String STORE_ADDRESS = "storeAddress";
     public static final String STORE_OWNER_ID = "storeOwnerId";
@@ -17,9 +17,8 @@ public class keyName {
     public static final String CART = "cart";
 
 
-    public static final String PRODUCT_ID = "productId";
+    public static final String PRODUCT_ID = "productID";
     public static final String PRODUCT_NAME = "productName";
-    public static final String PRODUCT_NAME_SPLIT = "productNameSplit";
     public static final String PRODUCT_DESC = "description";
     public static final String PRODUCT_NEW_PRICE = "newPrice";
     public static final String PRODUCT_OLD_PRICE = "oldPrice";
@@ -28,7 +27,7 @@ public class keyName {
 
 
 
-    public static final String CATEGORY_ID = "categoryId";
+    public static final String CATEGORY_ID = "categoryID";
     public static final String CATEGORY_NAME = "categoryName";
 
 

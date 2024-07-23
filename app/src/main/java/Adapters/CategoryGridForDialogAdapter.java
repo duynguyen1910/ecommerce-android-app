@@ -1,9 +1,7 @@
 package Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -11,12 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.stores.R;
-import com.example.stores.databinding.ItemCategoryGridBinding;
 import com.example.stores.databinding.ItemCategoryGridForDialogBinding;
 
 import java.util.ArrayList;
 
-import Activities.SearchActivity;
 import interfaces.CategoryDialogListener;
 import models.Category;
 
@@ -68,7 +64,7 @@ public class CategoryGridForDialogAdapter extends RecyclerView.Adapter<CategoryG
             // Cập nhật background cho item trước đó và item hiện tại
             notifyItemChanged(previousSelectedPosition);
             notifyItemChanged(selectedPosition);
-            listener.transferCategory(selectedPosition, category.getBaseId(), category.getCategoryName());
+            listener.transferCategory(selectedPosition, category.getBaseID(), category.getCategoryName());
         });
 
     }

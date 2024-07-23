@@ -48,7 +48,7 @@ public class StoreProductsFragment extends Fragment {
 
         Intent intent = requireActivity().getIntent();
         if (intent != null){
-            String storeId = intent.getStringExtra("storeId");
+            String storeId = intent.getStringExtra(STORE_ID);
             Product product = new Product();
             product.getProductsByStoreId(storeId, new GetCollectionCallback<Product>() {
                 @Override

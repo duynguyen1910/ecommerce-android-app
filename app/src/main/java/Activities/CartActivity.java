@@ -142,7 +142,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
     private ArrayList<CartItem> groupProductsByStore() {
         HashMap<String, ArrayList<Product>> hashMap = new HashMap<>();
         for (Product product : listProductsInCart) {
-            String storeId = product.getStoreId();
+            String storeId = product.getStoreID();
             if (!hashMap.containsKey(storeId)) {
                 hashMap.put(storeId, new ArrayList<>());
             }
@@ -159,7 +159,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
             // Tìm tên cửa hàng theo storeId
             String storeName = "";
             for (Store store : listStores) {
-                if (store.getBaseId() == storeId) {
+                if (store.getBaseID() == storeId) {
                     storeName = store.getStoreName();
                     break;
                 }

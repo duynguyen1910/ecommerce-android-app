@@ -20,22 +20,22 @@ public class Store extends BaseObject implements Serializable {
     }
 
     public Store(String storeID, String storeName, String storeAddress, String storeImage) {
-        super.baseId = storeID;
+        super.baseID = storeID;
         this.storeName = storeName;
         this.storeAddress = storeAddress;
         this.storeImage = storeImage;
     }
 
     @Override
-    public String getBaseId() {
-        return super.baseId;
+    public String getBaseID() {
+        return super.baseID;
     }
 
     @Override
-    public void setBaseId(String storeId) {
+    public void setBaseID(String storeId) {
         validateBaseId(storeId);
 
-        super.baseId = storeId;
+        super.baseID = storeId;
     }
 
 

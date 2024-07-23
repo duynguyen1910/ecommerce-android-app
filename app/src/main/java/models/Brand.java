@@ -31,12 +31,12 @@ public class Brand extends BaseObject implements Serializable {
     }
 
     @Override
-    protected String getBaseId() {
-        return super.baseId;
+    protected String getBaseID() {
+        return super.baseID;
     }
 
     @Override
-    protected void setBaseId(String brandId) {
-        super.baseId = brandId;
+    protected void setBaseID(String brandId) {
+        super.baseID = brandId;
     }
 }

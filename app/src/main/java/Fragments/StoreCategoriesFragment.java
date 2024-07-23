@@ -1,5 +1,7 @@
 package Fragments;
 
+import static constants.keyName.STORE_ID;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,21 +12,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.stores.databinding.FragmentStoreCategoriesBinding;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
-import Activities.SelectCategoryActivity;
-import Adapters.CategoryAdapter;
 import Adapters.CategoryAdapterForSearch;
-import Adapters.ProductAdapter;
 import interfaces.GetCollectionCallback;
 import models.Category;
 import models.Product;
@@ -51,7 +47,7 @@ public class StoreCategoriesFragment extends Fragment {
 
         Intent intent = requireActivity().getIntent();
         if (intent != null) {
-            String storeId = intent.getStringExtra("storeId");
+            String storeId = intent.getStringExtra(STORE_ID);
             Product product = new Product();
             product.getProductsByStoreId(storeId, new GetCollectionCallback<Product>() {
                 @Override
@@ -59,8 +55,8 @@ public class StoreCategoriesFragment extends Fragment {
                     binding.progressBar.setVisibility(View.GONE);
                     Map<String, Category> categoryMap = new HashMap<>();
                     for (Product item : products){
-                        String key = item.getCategoryId();
-                        Category category = new Category(item.getCategoryId(), item.getCategoryName());
+                        String key = item.getCategoryID();
+                        Category category = new Category(item.getCategoryID(), item.getCategoryName());
                         if (!categoryMap.containsKey(key)){
                             categoryMap.put(key, category);
                         }

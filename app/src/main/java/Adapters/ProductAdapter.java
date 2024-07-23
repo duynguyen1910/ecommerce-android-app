@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
 import com.example.stores.databinding.ItemProductBinding;
 
 import java.text.NumberFormat;
@@ -74,8 +74,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 // truyền productId, storeId
                 Bundle bundle = new Bundle();
 
-                bundle.putString(PRODUCT_ID, product.getBaseId());
-                bundle.putString(STORE_ID, product.getStoreId());
+                bundle.putString(PRODUCT_ID, product.getBaseID());
+                bundle.putString(STORE_ID, product.getStoreID());
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }

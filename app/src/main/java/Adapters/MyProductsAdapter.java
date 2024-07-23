@@ -5,7 +5,6 @@ import static constants.keyName.PRODUCT_ID;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -65,7 +64,7 @@ public class MyProductsAdapter extends RecyclerView.Adapter<MyProductsAdapter.Vi
 
         holder.binding.btnUpdate.setOnClickListener(v -> {
             Intent intent = new Intent(context, UpdateProductActivity.class);
-            intent.putExtra(PRODUCT_ID, product.getBaseId());
+            intent.putExtra(PRODUCT_ID, product.getBaseID());
             context.startActivity(intent);
 
         });

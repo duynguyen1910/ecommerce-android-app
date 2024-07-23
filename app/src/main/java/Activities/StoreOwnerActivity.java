@@ -43,7 +43,7 @@ public class StoreOwnerActivity extends AppCompatActivity {
             SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
             String storeId = sharedPreferences.getString(STORE_ID, null);
             Intent intent = new Intent(StoreOwnerActivity.this, ViewMyStoreActivity.class);
-            intent.putExtra("storeId", storeId);
+            intent.putExtra(STORE_ID, storeId);
             startActivity(intent);
         });
 

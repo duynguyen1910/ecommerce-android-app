@@ -11,7 +11,7 @@ public class Category extends BaseObject implements Serializable {
 
 
     public Category(String categoryID, String categoryName) {
-        super.baseId = categoryID;
+        super.baseID = categoryID;
         this.categoryName = categoryName;
     }
     public Category() {
@@ -33,13 +33,13 @@ public class Category extends BaseObject implements Serializable {
 
 
     @Override
-    public String getBaseId() {
-        return super.baseId;
+    public String getBaseID() {
+        return super.baseID;
     }
 
     @Override
-    public void setBaseId(String categoryId) {
-        super.baseId = categoryId;
+    public void setBaseID(String categoryId) {
+        super.baseID = categoryId;
 
     }
 

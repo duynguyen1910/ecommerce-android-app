@@ -6,7 +6,6 @@ import static constants.keyName.PRODUCT_DESC;
 import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
-import static constants.keyName.PRODUCT_NAME_SPLIT;
 import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
 import static constants.keyName.STORE_ID;
@@ -144,10 +143,7 @@ public class AddProductsActivity extends AppCompatActivity {
             try {
                 double price = Double.parseDouble(priceStr.replace(",", ""));
                 int inStock = Integer.parseInt(inStockStr.replace(",", ""));
-
-                Product product = new Product();
                 Map<String, Object> newProduct = new HashMap<>();
-                ArrayList<String> productNameSplit = product.splitProductNameBySpace(productName);
 
                 newProduct.put(PRODUCT_NAME, productName);
                 newProduct.put(PRODUCT_DESC, description);
@@ -157,7 +153,6 @@ public class AddProductsActivity extends AppCompatActivity {
                 newProduct.put(CATEGORY_ID, categoryId);
                 newProduct.put(CATEGORY_NAME, categoryName);
                 newProduct.put(STORE_ID, storeId);
-                newProduct.put(PRODUCT_NAME_SPLIT, productNameSplit);
 
                 return newProduct;
             } catch (NumberFormatException ignored) {

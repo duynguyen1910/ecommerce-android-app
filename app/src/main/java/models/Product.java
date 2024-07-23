@@ -1,13 +1,5 @@
 package models;
 
-import static constants.collectionName.PRODUCT_COLLECTION;
-import static constants.keyName.PRODUCT_INSTOCK;
-import static constants.keyName.STORE_ID;
-
-import com.example.stores.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.firestore.QuerySnapshot;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
@@ -26,55 +18,45 @@ public class Product extends BaseObject implements Serializable {
     private double oldPrice;
     private int inStock;
     private String categoryName;
-    private String categoryId;
-    private String storeId;
+    private String categoryID;
+    private String storeID;
     private int numberInCart;
     private boolean checkedStatus;
     private api.productApi productApi;
     private ArrayList<String> productImages;
-    private ArrayList<String> productNameSplit;
 
 
-    public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String storeId, int numberInCart) {
+
+    public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String storeID, int numberInCart) {
         this.productName = productName;
         this.description = description;
         this.newPrice = newPrice;
         this.oldPrice = oldPrice;
         this.inStock = inStock;
-        this.storeId = storeId;
+        this.storeID = storeID;
         this.numberInCart = numberInCart;
     }
 
-    public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String categoryName, String storeId) {
+    public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String categoryName, String storeID) {
         this.productName = productName;
         this.description = description;
         this.newPrice = newPrice;
         this.oldPrice = oldPrice;
         this.inStock = inStock;
         this.categoryName = categoryName;
-        this.storeId = storeId;
+        this.storeID = storeID;
     }
 
-    public Product(String productName, String description,ArrayList<String> productImages, double newPrice, double oldPrice, int inStock, int numberInCart, String storeId,  boolean checkedStatus) {
+    public Product(String productName, String description, ArrayList<String> productImages, double newPrice, double oldPrice, int inStock, int numberInCart, String storeID, boolean checkedStatus) {
         this.productName = productName;
         this.description = description;
         this.newPrice = newPrice;
         this.oldPrice = oldPrice;
         this.inStock = inStock;
-        this.storeId = storeId;
+        this.storeID = storeID;
         this.numberInCart = numberInCart;
         this.checkedStatus = checkedStatus;
         this.productImages = productImages;
-    }
-
-
-
-    public ArrayList<String> getProductNameSplit() {
-        return productNameSplit;
-    }
-
-    public void setProductNameSplit(ArrayList<String> productNameSplit) {
-        this.productNameSplit = productNameSplit;
     }
 
     public Product() {
@@ -97,12 +79,12 @@ public class Product extends BaseObject implements Serializable {
         this.categoryName = categoryName;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public String getCategoryID() {
+        return categoryID;
     }
 
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryID(String categoryID) {
+        this.categoryID = categoryID;
     }
 
     public int getInStock() {
@@ -122,12 +104,12 @@ public class Product extends BaseObject implements Serializable {
         this.checkedStatus = checkedStatus;
     }
 
-    public String getStoreId() {
-        return storeId;
+    public String getStoreID() {
+        return storeID;
     }
 
-    public void setStoreId(String storeId) {
-        this.storeId = storeId;
+    public void setStoreID(String storeID) {
+        this.storeID = storeID;
     }
 
 
@@ -194,6 +176,9 @@ public class Product extends BaseObject implements Serializable {
     public void getProductsByStoreId(String storeId, GetCollectionCallback<Product> callback) {
         productApi.getProductsByStoreIdApi(storeId, callback);
     }
+    public void getProductsInStockByStoreId(String storeId, GetCollectionCallback<Product> callback) {
+        productApi.getProductsInStockByStoreIdApi(storeId, callback);
+    }
 
     public void getProductsOutOfStockByStoreId(String storeId, GetCollectionCallback<Product> callback) {
         productApi.getProductsOutOfStockByStoreIdApi(storeId, callback);
@@ -207,14 +192,6 @@ public class Product extends BaseObject implements Serializable {
         productApi.getAllProductByStoreIdAndCategoryIdApi(storeId, categoryId, callback);
     }
 
-    public void getAllProductByStringQueryApi(String stringQuery, final GetCollectionCallback<Product> callback) {
-        productApi.getAllProductByStringQueryApi(stringQuery, callback);
-    }
-
-    public ArrayList<String> splitProductNameBySpace(String productName) {
-        return productApi.splitProductNameBySpace(productName);
-    }
-
     public void countProductsOutOfStockByStoreId(String storeId, GetCountCallback<Product> callback){
         productApi.countProductsOutOfStockByStoreIdApi(storeId, callback);
     }
@@ -222,16 +199,22 @@ public class Product extends BaseObject implements Serializable {
     public void countProductsInStockByStoreId(String storeId, GetCountCallback<Product> callback){
         productApi.countProductsInStockByStoreIdApi(storeId, callback);
     }
+    public void getAllProductDescendingByCategoryId(String categoryId,final GetCollectionCallback<Product> callback) {
+        productApi.getAllProductDescendingByCategoryIdApi(categoryId, callback);
+    }
+    public void getAllProductAscendingByCategoryId(String categoryId,final GetCollectionCallback<Product> callback) {
+        productApi.getAllProductAscendingByCategoryIdApi(categoryId, callback);
+    }
 
 
     @Override
-    public String getBaseId() {
-        return super.baseId;
+    public String getBaseID() {
+        return super.baseID;
     }
 
     @Override
-    public void setBaseId(String productId) {
-        super.baseId = productId;
+    public void setBaseID(String productId) {
+        super.baseID = productId;
 
     }
 }

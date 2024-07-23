@@ -10,7 +10,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Map;
 
 import api.userApi;
@@ -27,7 +26,7 @@ public class User extends BaseObject implements Serializable {
     private String imageUrl;
     private UserRole role;
     private userApi userApi;
-    private String storeId;
+    private String storeID;
 
 
     public User() {
@@ -43,22 +42,22 @@ public class User extends BaseObject implements Serializable {
     }
 
     @Override
-    public String getBaseId() {
-        return super.baseId;
+    public String getBaseID() {
+        return super.baseID;
     }
 
     @Override
-    public void setBaseId(String userId) {
+    public void setBaseID(String userId) {
         validateBaseId(userId);
-        super.baseId = userId;
+        super.baseID = userId;
     }
 
-    public String getStoreId() {
-        return storeId;
+    public String getStoreID() {
+        return storeID;
     }
 
-    public void setStoreId(String storeId) {
-        this.storeId = storeId;
+    public void setStoreID(String storeID) {
+        this.storeID = storeID;
     }
 
     public String getPhoneNumber() {
@@ -109,7 +108,7 @@ public class User extends BaseObject implements Serializable {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         User user = document.toObject(User.class);
                         String documentId = document.getId();
-                        user.setBaseId(documentId);
+                        user.setBaseID(documentId);
                         int roleValue = document.getLong(USER_ROLE).intValue();
                         user.setRole(roleValue);
 

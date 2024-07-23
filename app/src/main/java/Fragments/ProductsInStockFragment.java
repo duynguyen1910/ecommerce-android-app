@@ -48,17 +48,11 @@ public class ProductsInStockFragment extends Fragment {
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(USER_INFO, MODE_PRIVATE);
         String storeId = sharedPreferences.getString(STORE_ID, null);
         Product product = new Product();
-        product.getProductsByStoreId(storeId, new GetCollectionCallback<Product>() {
+        product.getProductsInStockByStoreId(storeId, new GetCollectionCallback<Product>() {
             @Override
             public void onGetDataSuccess(ArrayList<Product> products) {
-                ArrayList<Product> productsInStock = new ArrayList<>();
-                for (Product pr : products){
-                    if (pr.getInStock() > 0){
-                        productsInStock.add(pr);
-                    }
-                }
                 binding.progressBar.setVisibility(View.GONE);
-                MyProductsAdapter adapter = new MyProductsAdapter(requireActivity(), productsInStock);
+                MyProductsAdapter adapter = new MyProductsAdapter(requireActivity(), products);
                 binding.recyclerView.setAdapter(adapter);
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
             }

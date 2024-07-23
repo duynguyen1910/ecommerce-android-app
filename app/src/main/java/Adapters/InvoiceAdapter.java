@@ -73,6 +73,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
 
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         holder.binding.txtTotal.setText("đ" + formatter.format(getCartItemFee(cartItem)));
+        invoice.setTotal(getCartItemFee(cartItem));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

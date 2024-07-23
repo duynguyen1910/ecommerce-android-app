@@ -1,10 +1,12 @@
 package Activities;
 
 import static constants.keyName.PRODUCT_DESC;
+import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
 import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
+import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 import static constants.toastMessage.INTERNET_ERROR;
 
@@ -65,8 +67,8 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void getBundle() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            productId = bundle.getString("productId", null);
-            storeId = bundle.getString("storeId", null);
+            productId = bundle.getString(PRODUCT_ID, null);
+            storeId = bundle.getString(STORE_ID, null);
         }
     }
 
@@ -168,7 +170,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         binding.btnViewStore.setOnClickListener(v -> {
             Intent intent = new Intent(ProductDetailActivity.this, ViewMyStoreActivity.class);
-            intent.putExtra("storeId", storeId);
+            intent.putExtra(STORE_ID, storeId);
             startActivity(intent);
         });
 

@@ -104,12 +104,12 @@ public class LoginActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString(USER_ID, user.getBaseId());
+        editor.putString(USER_ID, user.getBaseID());
         editor.putString(PHONE_NUMBER, user.getPhoneNumber());
         editor.putString(FULLNAME, user.getFullname());
         editor.putString(PASSWORD, user.getPassword());
         editor.putInt(USER_ROLE, user.getRole().getRoleValue());
-        editor.putString(STORE_ID, user.getStoreId());
+        editor.putString(STORE_ID, user.getStoreID());
         editor.apply();
     }
 

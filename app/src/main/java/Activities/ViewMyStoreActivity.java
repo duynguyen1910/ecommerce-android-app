@@ -1,5 +1,6 @@
 package Activities;
 
+import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 import static constants.keyName.USER_INFO;
 
@@ -59,7 +60,7 @@ public class ViewMyStoreActivity extends AppCompatActivity {
 
 
 
-        String storeId = getIntent().getStringExtra("storeId");
+        String storeId = getIntent().getStringExtra(STORE_ID);
 
         // lấy thông tin avatar, invoice
 

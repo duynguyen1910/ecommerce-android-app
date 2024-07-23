@@ -57,7 +57,7 @@ public class ProductsListAdapterForInvoiceDetail extends RecyclerView.Adapter<Pr
         holder.binding.txtPrice.setText(formattedPrice);
 
         holder.binding.txtQuantity.setText("x" + product.getNumberInCart());
-        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
+//        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
 
     }
 

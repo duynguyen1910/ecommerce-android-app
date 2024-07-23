@@ -3,7 +3,6 @@ package Adapters;
 import static constants.keyName.CATEGORY_ID;
 import static constants.keyName.CATEGORY_NAME;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,13 +12,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.stores.databinding.ItemCategoryBinding;
 import com.example.stores.databinding.ItemCategoryGridBinding;
 
 import java.util.ArrayList;
 
 import Activities.SearchActivity;
-import interfaces.CategoryDialogListener;
 import models.Category;
 
 public class CategoryGridAdapter extends RecyclerView.Adapter<CategoryGridAdapter.ViewHolder> {
@@ -58,7 +55,7 @@ public class CategoryGridAdapter extends RecyclerView.Adapter<CategoryGridAdapte
             Intent intent = new Intent(context, SearchActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(CATEGORY_NAME, category.getCategoryName());
-            bundle.putString(CATEGORY_ID, category.getBaseId());
+            bundle.putString(CATEGORY_ID, category.getBaseID());
             bundle.putInt("selectedPosition", position );
             intent.putExtras(bundle);
             context.startActivity(intent);
