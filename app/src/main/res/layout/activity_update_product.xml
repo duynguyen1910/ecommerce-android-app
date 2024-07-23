@@ -334,7 +334,7 @@
         android:gravity="center"
         android:text="Lưu thay đổi"
         android:textAllCaps="false"
-        android:textColor="@color/green_persian" />
+        android:textColor="@color/secondary_color" />
 
 
 </LinearLayout>

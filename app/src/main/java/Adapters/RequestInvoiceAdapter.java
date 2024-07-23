@@ -3,7 +3,6 @@ package Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,7 @@ import com.example.stores.databinding.ItemRequestInvoiceBinding;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Map;
+
 import Activities.InvoiceDetailActivity;
 import models.CartItem;
 import models.Invoice;
@@ -64,11 +63,11 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
 
         if (invoice.getInvoiceStatus() == 0){
             holder.binding.txtInvoiceStatus.setText("Chờ xác nhận");
-            holder.binding.txtInvoiceStatus.setTextColor(ContextCompat.getColor(context, R.color.darkgray));
+            holder.binding.txtInvoiceStatus.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
             holder.binding.layoutControl.setVisibility(View.VISIBLE);
         }else if(invoice.getInvoiceStatus() == 1) {
             holder.binding.txtInvoiceStatus.setText("Đã xác nhận");
-            holder.binding.txtInvoiceStatus.setTextColor(ContextCompat.getColor(context, R.color.green_persian));
+            holder.binding.txtInvoiceStatus.setTextColor(ContextCompat.getColor(context, R.color.secondary_color));
             holder.binding.layoutControl.setVisibility(View.VISIBLE);
             holder.binding.btnSubmit.setVisibility(View.GONE);
         }else if(invoice.getInvoiceStatus() == 2){
@@ -92,19 +91,13 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
             intent.putExtra("invoice", invoice);
             context.startActivity(intent);
         });
-        holder.binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                invoice.setInvoiceStatus(1); //đã xác nhận đơn hàng
-                holder.binding.txtInvoiceStatus.setText("Đã xác nhận");
-            }
+        holder.binding.btnSubmit.setOnClickListener(v -> {
+            invoice.setInvoiceStatus(1); //đã xác nhận đơn hàng
+            holder.binding.txtInvoiceStatus.setText("Đã xác nhận");
         });
-        holder.binding.btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                invoice.setInvoiceStatus(2); //đã hủy
-                holder.binding.txtInvoiceStatus.setText("Đã hủy");
-            }
+        holder.binding.btnCancel.setOnClickListener(v -> {
+            invoice.setInvoiceStatus(2); //đã hủy
+            holder.binding.txtInvoiceStatus.setText("Đã hủy");
         });
 
     }

@@ -2,6 +2,6 @@
 <!-- res/drawable/custom_scrollbar.xml -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@color/green_persian" /> <!-- Thay đổi màu ở đây -->
+    <solid android:color="@color/secondary_color" /> <!-- Thay đổi màu ở đây -->
     <size android:width="4dp" /> <!-- Chiều rộng của scrollbar -->
 </shape>

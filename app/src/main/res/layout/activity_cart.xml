@@ -137,10 +137,10 @@
                     android:paddingHorizontal="5dp"
                     android:paddingVertical="3dp"
                     android:text="Miễn Phí Vận Chuyển"
-                    android:textColor="@color/green_persian"
+                    android:textColor="@color/secondary_color"
                     android:textSize="12sp"
                     app:drawableEndCompat="@drawable/ic_arrow_right_16"
-                    app:drawableTint="@color/green_persian" />
+                    app:drawableTint="@color/secondary_color" />
 
             </LinearLayout>
 
