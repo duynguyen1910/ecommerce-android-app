@@ -7,25 +7,26 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.example.stores.databinding.FragmentRequestInvoiceCancelBinding;
+import com.example.stores.databinding.FragmentRequestInvoiceConfirmedBinding;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
 import Adapters.RequestInvoiceAdapter;
 import models.CartItem;
 import models.Invoice;
 import models.Product;
 
-public class RequestInvoiceCancelFragment extends Fragment {
-    FragmentRequestInvoiceCancelBinding binding;
+public class RequestInvoiceConfirmedFragment extends Fragment {
+    FragmentRequestInvoiceConfirmedBinding binding;
     ArrayList<Invoice> invoices = new ArrayList<>();
 
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentRequestInvoiceCancelBinding.inflate(getLayoutInflater());
+        binding = FragmentRequestInvoiceConfirmedBinding.inflate(getLayoutInflater());
         fakeInvoices();
         initProducts();
         return binding.getRoot();
@@ -52,37 +53,37 @@ public class RequestInvoiceCancelFragment extends Fragment {
         CartItem cartItem = new CartItem();
         ArrayList<Product> listProducts = new ArrayList<>();
         Product product1 = new Product(
-                "Trang phục Custom Luffy GEAR 4 Arc Dressrosa cực cháy",
-                "Trang phục Custom Luffy GEAR 4 Arc Dressrosa cực cháy",
-                359000,
-                359000,
-                130,
-                "o4qWt9OUVo6UE3i6dizL",
-                1);
-        Product product2 = new Product(
-                "Trang phục Custom Zoro Arc Wanno phiên bản giới hạn",
-                "Trang phục Custom Zoro Arc Wanno phiên bản giới hạn",
-                399000,
-                399000,
-                110,
+                "Áo thun Unisex hàng nhập Quảng Châu 2024",
+                "Áo thun Unisex hàng nhập Quảng Châu 2024",
+                99000,
+                99000,
+                13,
                 "o4qWt9OUVo6UE3i6dizL",
                 2);
+        Product product2 = new Product(
+                "Quần Kaki màu đen Quảng Châu cho Nam",
+                "Quần Kaki màu đen Quảng Châu cho Nam",
+                99000,
+                99000,
+                112,
+                "o4qWt9OUVo6UE3i6dizL",
+                1);
         listProducts.add(product1);
         listProducts.add(product2);
         cartItem.setStoreName("One Piece Clothes");
         cartItem.setListProducts(listProducts);
 
 
-        String deliveryAddress = "Ngoc Dai | 0968191001\nQuận 12, Hồ Chí Minh";
+        String deliveryAddress = "Đại Ngọc | 0968191001\nQuận 12, Hồ Chí Minh";
         String createdDate = generateTime();
         String paidDate = "";
         String giveToDeliveryDate = "";
         String completedDate = "";
         String note = "";
         int paymentMethod = 0; // 0: Thanh toán khi nhận hàng
-        int orderStatus = 2; // 2: Đã hủy
-        String customerID = "wGtZaW1XiQjnZDGz702F";
-        String customerName = "Ngoc Dai";
+        int orderStatus = 1; // 0: Đã xác nhận
+        String customerID = "rN1sLvf2d6M0tgbtGd9X";
+        String customerName = "Đại Ngọc";
 
         Invoice newInvoice = new Invoice(
                 deliveryAddress,
@@ -97,7 +98,7 @@ public class RequestInvoiceCancelFragment extends Fragment {
                 cartItem,
                 customerID,
                 customerName);
-        newInvoice.setInvoiceID(generateInvoiceId(15));
+        newInvoice.setInvoiceID(generateInvoiceId(12));
 
         invoices.add(newInvoice);
     }

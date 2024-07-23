@@ -62,14 +62,21 @@ public class StoreOwnerActivity extends AppCompatActivity {
             Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
 
 //            intent.putExtra(STORE_ID, storeId);
-            intent.putExtra("invoiceStatus", 0);
+            intent.putExtra("invoiceStatus", 0); //0 chờ xác nhận
+            startActivity(intent);
+        });
+        binding.layoutConfirmedInvoice.setOnClickListener(v -> {
+            Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
+
+//            intent.putExtra(STORE_ID, storeId);
+            intent.putExtra("invoiceStatus", 1); //1 đã xác nhận
             startActivity(intent);
         });
         binding.layoutCanceledInvoice.setOnClickListener(v -> {
             Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
 
 //            intent.putExtra(STORE_ID, storeId);
-            intent.putExtra("invoiceStatus", 1);
+            intent.putExtra("invoiceStatus", 2); //2 đã hủy
             startActivity(intent);
         });
 

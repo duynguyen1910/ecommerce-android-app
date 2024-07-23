@@ -21,12 +21,15 @@ import java.util.Objects;
 import Adapters.ViewPager2Adapter;
 import Fragments.RequestedInvoices.RequestInvoiceAwaitConfirmFragment;
 import Fragments.RequestedInvoices.RequestInvoiceCancelFragment;
+import Fragments.RequestedInvoices.RequestInvoiceConfirmedFragment;
 
 public class RequestInvoiceActivity extends AppCompatActivity {
 
     ActivityRequestInvoiceBinding binding;
     int awaitConfirmQuantity = -1;
     int canceledQuantity = -1;
+    int confirmedQuantity = -1;
+
     int countCompleted = 0;
 
     @Override
@@ -42,16 +45,17 @@ public class RequestInvoiceActivity extends AppCompatActivity {
     }
 
     private void getCountOfInvoices() {
-        countCompleted = 2;
+        countCompleted = 3;
         // call api đếm số lượng invoices của từng loại sau đó update tabQuantity
         // xem MyProductsActivity để xem rõ hơn
         updateTabQuantity();
     }
 
     private void updateTabQuantity() {
-        if (countCompleted >= 2) {
+        if (countCompleted >= 3) {
             updateTabLayout(0, awaitConfirmQuantity);
-            updateTabLayout(1, canceledQuantity);
+            updateTabLayout(1, confirmedQuantity);
+            updateTabLayout(2, canceledQuantity);
         }
     }
 
@@ -65,8 +69,9 @@ public class RequestInvoiceActivity extends AppCompatActivity {
 
     private void setupUI() {
         ViewPager2Adapter viewPager2Adapter = new ViewPager2Adapter(this);
-        viewPager2Adapter.addFragment(new RequestInvoiceAwaitConfirmFragment(), "Đơn chờ xác nhận");
-        viewPager2Adapter.addFragment(new RequestInvoiceCancelFragment(), "Đơn hủy");
+        viewPager2Adapter.addFragment(new RequestInvoiceAwaitConfirmFragment(), "Chờ xác nhận"); // 0
+        viewPager2Adapter.addFragment(new RequestInvoiceConfirmedFragment(), "Đã xác nhận"); // 1
+        viewPager2Adapter.addFragment(new RequestInvoiceCancelFragment(), "Đơn hủy"); // 2
 
         binding.viewPager2.setAdapter(viewPager2Adapter);
 

@@ -146,10 +146,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:id="@+id/layoutControl"
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnReset"
+            android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginHorizontal="10dp"

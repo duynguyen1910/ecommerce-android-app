@@ -69,7 +69,7 @@ public class RequestInvoiceAwaitConfirmFragment extends Fragment {
                 1);
         listProducts.add(product1);
         listProducts.add(product2);
-        cartItem.setStoreName("Bot Shoes Store");
+        cartItem.setStoreName("One Piece Clothes");
         cartItem.setListProducts(listProducts);
 
 

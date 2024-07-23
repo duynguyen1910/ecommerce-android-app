@@ -52,8 +52,9 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="8dp"
+        android:layout_gravity="bottom"
         android:background="@color/white"
+        app:tabGravity="fill"
         app:tabIndicatorColor="@color/primary_color"
         app:tabSelectedTextColor="@color/primary_color"
         app:tabTextColor="@color/custom_scroll_tab_layout" />

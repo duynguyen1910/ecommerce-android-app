@@ -9,8 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.stores.R;
 import com.example.stores.databinding.ItemRequestInvoiceBinding;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -61,8 +64,17 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
 
         if (invoice.getInvoiceStatus() == 0){
             holder.binding.txtInvoiceStatus.setText("Chờ xác nhận");
-        }else {
+            holder.binding.txtInvoiceStatus.setTextColor(ContextCompat.getColor(context, R.color.darkgray));
+            holder.binding.layoutControl.setVisibility(View.VISIBLE);
+        }else if(invoice.getInvoiceStatus() == 1) {
+            holder.binding.txtInvoiceStatus.setText("Đã xác nhận");
+            holder.binding.txtInvoiceStatus.setTextColor(ContextCompat.getColor(context, R.color.green_persian));
+            holder.binding.layoutControl.setVisibility(View.VISIBLE);
+            holder.binding.btnSubmit.setVisibility(View.GONE);
+        }else if(invoice.getInvoiceStatus() == 2){
             holder.binding.txtInvoiceStatus.setText("Đã hủy");
+            holder.binding.txtInvoiceStatus.setTextColor(ContextCompat.getColor(context, R.color.black));
+            holder.binding.layoutControl.setVisibility(View.GONE);
         }
         holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
         holder.binding.recyclerViewProducts.setAdapter(adapter);
@@ -79,6 +91,20 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
             Intent intent = new Intent(context, InvoiceDetailActivity.class);
             intent.putExtra("invoice", invoice);
             context.startActivity(intent);
+        });
+        holder.binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                invoice.setInvoiceStatus(1); //đã xác nhận đơn hàng
+                holder.binding.txtInvoiceStatus.setText("Đã xác nhận");
+            }
+        });
+        holder.binding.btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                invoice.setInvoiceStatus(2); //đã hủy
+                holder.binding.txtInvoiceStatus.setText("Đã hủy");
+            }
         });
 
     }
