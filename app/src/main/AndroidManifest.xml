@@ -62,7 +62,7 @@
             android:name="Activities.AddCategoryActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.CategoryActivity"
+            android:name="Activities.AddVariantActivity"
             android:exported="false" />
         <activity
             android:name="Activities.DecorateMyStoreActivity"

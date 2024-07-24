@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightgray"
@@ -27,7 +26,7 @@
             app:tint="@color/primary_color" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_weight="1"
@@ -35,7 +34,7 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:text="Chỉnh sửa danh mục"
+            android:text="Thêm phân loại hàng"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -63,8 +62,7 @@
             android:drawablePadding="5dp"
             android:fontFamily="sans-serif-light"
             android:background="@color/white"
-            android:text="Thêm danh mục"
-
+            android:text="Thêm phân loại hàng"
             android:gravity="center"
             android:textColor="@color/primary_color"
             android:textStyle="bold"
@@ -77,22 +75,22 @@
         android:layout_width="match_parent"
         android:background="@color/white"
         android:layout_weight="1"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp">
 
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_margin="16dp"
+        android:layout_margin="10dp"
         android:layout_gravity="center_horizontal"
         android:id="@+id/btnCategory"
-        android:background="@drawable/custom_edit_text_border"
-        android:text="Áp dụng"
+        android:background="@drawable/custom_button_primary"
+        android:text="Tiếp theo: Cài đặt thông tin cho phân loại"
         android:textAllCaps="false"
-        android:textColor="@color/primary_color"
+        android:textColor="@color/white"
         android:textSize="14sp"
-        android:textStyle="bold" />
+       />
 
 
 

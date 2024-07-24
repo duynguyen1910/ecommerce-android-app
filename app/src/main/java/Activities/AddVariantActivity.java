@@ -6,17 +6,18 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.stores.databinding.ActivityCategoryBinding;
+
+import com.example.stores.databinding.ActivityAddVariantBinding;
 import java.util.Objects;
 
-public class CategoryActivity extends AppCompatActivity {
+public class AddVariantActivity extends AppCompatActivity {
 
-    ActivityCategoryBinding binding;
+    ActivityAddVariantBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityCategoryBinding.inflate(getLayoutInflater());
+        binding = ActivityAddVariantBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         initUI();
@@ -32,7 +33,7 @@ public class CategoryActivity extends AppCompatActivity {
         binding.layoutAddCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CategoryActivity.this, AddCategoryActivity.class);
+                Intent intent = new Intent(AddVariantActivity.this, AddCategoryActivity.class);
                 startActivity(intent);
             }
         });
