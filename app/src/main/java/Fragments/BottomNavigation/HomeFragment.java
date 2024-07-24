@@ -1,6 +1,8 @@
 package Fragments.BottomNavigation;
 
 import static constants.toastMessage.INTERNET_ERROR;
+import static utils.Utils.getQuantityProductsIncart;
+import static utils.Utils.updateQuantityInCart;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,6 +52,7 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(getLayoutInflater());
+        updateQuantityInCart(binding.txtQuantityInCart);
         initBanner();
         initCategory();
         initProducts();
@@ -57,6 +61,16 @@ public class HomeFragment extends Fragment {
         return binding.getRoot();
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateQuantityInCart(binding.txtQuantityInCart);
+        initBanner();
+        initCategory();
+        initProducts();
+    }
+
 
     private void initBanner() {
 //        binding.progressBarBanner.setVisibility(View.VISIBLE);
@@ -71,7 +85,8 @@ public class HomeFragment extends Fragment {
         banners(sliderItems);
         startSliderAutoCycle();
     }
-    private void initCategory(){
+
+    private void initCategory() {
 
         Category category = new Category();
 
@@ -144,7 +159,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void setupEvents(){
+    private void setupEvents() {
         binding.iconCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,9 +180,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String stringQuery = binding.searchEdt.getText().toString().trim();
-                if (stringQuery.isEmpty()){
+                if (stringQuery.isEmpty()) {
                     Toast.makeText(requireActivity(), "Vui lòng nhập tìm kiếm", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     Intent intent = new Intent(requireActivity(), SearchActivity.class);
                     intent.putExtra("stringQuery", stringQuery);
                     startActivity(intent);

@@ -241,6 +241,7 @@
                 android:background="@drawable/bg_quantity_in_cart"
                 android:gravity="center"
                 android:text="04"
+                android:id="@+id/txtQuantityInCart"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
         </LinearLayout>

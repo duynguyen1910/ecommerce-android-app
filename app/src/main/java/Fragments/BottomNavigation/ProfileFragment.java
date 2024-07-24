@@ -8,7 +8,7 @@ import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.keyName.USER_ROLE;
 import static constants.toastMessage.LOGIN_SUCCESSFULLY;
-
+import static utils.Utils.updateQuantityInCart;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,16 +16,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.example.stores.databinding.FragmentProfileBinding;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import Activities.CartActivity;
 import Activities.InvoiceActivity;
 import Activities.ActivateStoreActivity;
@@ -49,10 +46,14 @@ public class ProfileFragment extends Fragment{
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(getLayoutInflater());
-
+        initUI();
         setupEvents();
         handleGetUserInfo();
         return binding.getRoot();
+    }
+
+    private void initUI(){
+        updateQuantityInCart(binding.txtQuantityInCart);
     }
 
 
@@ -154,7 +155,7 @@ public class ProfileFragment extends Fragment{
             // Nếu đã tạo store thì vào thẳng Store Owner Activity
             if (storeId != null){
                 Intent intent = new Intent(requireActivity(), StoreOwnerActivity.class);
-                intent.putExtra("storeId", storeId);
+                intent.putExtra(STORE_ID, storeId);
                 startActivity(intent);
             }else {
                 Intent intent = new Intent(requireActivity(), ActivateStoreActivity.class);

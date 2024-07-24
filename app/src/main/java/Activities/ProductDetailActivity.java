@@ -10,7 +10,9 @@ import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 import static constants.toastMessage.INTERNET_ERROR;
 import static utils.Utils.MYCART;
+import static utils.Utils.getQuantityProductsIncart;
 import static utils.Utils.showToast;
+import static utils.Utils.updateQuantityInCart;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -193,7 +195,6 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
 
-
     private void setupEvents() {
         binding.btnAddToCart.setOnClickListener(v -> {
             popUpAddToCartDialog();
@@ -276,6 +277,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             } else {
                 int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
                 addToCart(storeName, thisProduct, quantity);
+                updateQuantityInCart(binding.txtQuantityInCart);
                 dialog.dismiss();
             }
 
@@ -314,15 +316,12 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         dialogBinding.txtQuantity.setText(String.valueOf(1));
 
-        dialogBinding.btnPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
-                if (quantity < 99) {
-                    dialogBinding.txtQuantity.setText(String.valueOf(quantity + 1));
-                }
-
+        dialogBinding.btnPlus.setOnClickListener(v -> {
+            int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
+            if (quantity < 99) {
+                dialogBinding.txtQuantity.setText(String.valueOf(quantity + 1));
             }
+
         });
 
         dialogBinding.imageExpand.setOnClickListener(v -> popUpProductImageExpandDialog());
@@ -400,5 +399,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         getWindow().setNavigationBarColor(Color.parseColor("#EFEFEF"));
         Objects.requireNonNull(getSupportActionBar()).hide();
+        updateQuantityInCart(binding.txtQuantityInCart);
     }
 }

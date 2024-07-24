@@ -1,5 +1,7 @@
 package Activities;
 import static utils.Utils.MYCART;
+import static utils.Utils.getQuantityProductsIncart;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -118,13 +120,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         binding.txtTotal.setText("đ" + formatter.format(total));
 
     }
-    private int getQuantityProductsIncart(){
-        int count = 0;
-        for (CartItem item : MYCART) {
-            count += item.getListProducts().size();
-        }
-        return count;
-    }
+
 
 
     private double getTotalFee() {
