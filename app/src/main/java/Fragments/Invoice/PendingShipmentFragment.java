@@ -8,16 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import com.example.stores.databinding.FragmentInvoiceAwaitDeliveryBinding;
 
-import com.example.stores.databinding.FragmentInvoiceCancelBinding;
-
-public class CancelFragment extends Fragment {
-    FragmentInvoiceCancelBinding binding;
+public class PendingShipmentFragment extends Fragment {
+    FragmentInvoiceAwaitDeliveryBinding binding;
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentInvoiceCancelBinding.inflate(getLayoutInflater());
+        binding = FragmentInvoiceAwaitDeliveryBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 }

@@ -3,7 +3,6 @@ package Activities;
 import static constants.keyName.CATEGORY_ID;
 import static constants.keyName.CATEGORY_NAME;
 import static constants.keyName.PRODUCT_DESC;
-import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
 import static constants.keyName.PRODUCT_NEW_PRICE;

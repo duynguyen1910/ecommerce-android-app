@@ -7,22 +7,28 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
 import com.example.stores.databinding.ItemProductForInvoiceDetailBinding;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
 import models.InvoiceDetail;
-import models.Product;
 
-public class ProductsListAdapterForInvoiceDetail extends RecyclerView.Adapter<ProductsListAdapterForInvoiceDetail.ViewHolder> {
+public class InvoiceDetailAdapter extends RecyclerView.Adapter<InvoiceDetailAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<InvoiceDetail> list;
+    private int itemCount = 0;
 
-    public ProductsListAdapterForInvoiceDetail(Context context, ArrayList<InvoiceDetail> list) {
+    public InvoiceDetailAdapter(Context context, ArrayList<InvoiceDetail> list) {
         this.context = context;
         this.list = list;
+    }
+
+    public InvoiceDetailAdapter(Context context, ArrayList<InvoiceDetail> list, int itemCount) {
+        this.context = context;
+        this.list = list;
+        this.itemCount = itemCount;
     }
 
     @NonNull
@@ -50,20 +56,18 @@ public class ProductsListAdapterForInvoiceDetail extends RecyclerView.Adapter<Pr
 
         holder.binding.txtProductTitle.setText(detail.getProductName());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedOldPrice = formatter.format(detail.getOldPrice());
-        holder.binding.txtOldPrice.setText("đ" + formattedOldPrice);
+
+        holder.binding.txtNewPrice.setText("đ" + formatter.format(detail.getNewPrice()));
+        holder.binding.txtOldPrice.setText("đ" + formatter.format(detail.getOldPrice()));
         holder.binding.txtOldPrice.setPaintFlags(holder.binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        String formattedPrice = formatter.format(detail.getOldPrice());
 
-        holder.binding.txtPrice.setText(formattedPrice);
-
-//        holder.binding.txtQuantity.setText("x" + product.getNumberInCart());
+        holder.binding.txtQuantity.setText("x" + detail.getQuantity());
 //        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
 
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return itemCount > 0 ? itemCount : list.size();
     }
 }

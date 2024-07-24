@@ -66,7 +66,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 Bundle bundle = new Bundle();
 
                 bundle.putString("productId", product.getBaseID());
-                bundle.putString("storeId", product.getStoreId());
+                bundle.putString("storeId", product.getStoreID());
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }

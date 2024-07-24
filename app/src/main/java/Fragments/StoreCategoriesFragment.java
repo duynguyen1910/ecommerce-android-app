@@ -59,8 +59,8 @@ public class StoreCategoriesFragment extends Fragment {
                     binding.progressBar.setVisibility(View.GONE);
                     Map<String, Category> categoryMap = new HashMap<>();
                     for (Product item : products){
-                        String key = item.getCategoryId();
-                        Category category = new Category(item.getCategoryId(), item.getCategoryName());
+                        String key = item.getCategoryID();
+                        Category category = new Category(item.getCategoryID(), item.getCategoryName());
                         if (!categoryMap.containsKey(key)){
                             categoryMap.put(key, category);
                         }

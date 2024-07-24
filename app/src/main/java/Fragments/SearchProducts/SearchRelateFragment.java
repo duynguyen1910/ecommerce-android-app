@@ -66,7 +66,7 @@ public class SearchRelateFragment extends Fragment {
             public void onGetListSuccess(ArrayList<Product> products) {
                 ArrayList<Product> list = new ArrayList<>();
                 for (Product pr : products){
-                    if (pr.getCategoryId().equals(categoryId)){
+                    if (pr.getCategoryID().equals(categoryId)){
                         list.add(pr);
                     }
                 }

@@ -87,17 +87,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:gravity="center_vertical">
-
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="đ"
-                        android:textColor="@color/primary_color"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/txtPrice"
+                        android:id="@+id/txtNewPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginEnd="10dp"

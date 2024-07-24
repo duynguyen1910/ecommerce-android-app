@@ -43,15 +43,6 @@
 
     </LinearLayout>
 
-    <ProgressBar
-        android:visibility="gone"
-        android:layout_gravity="center"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:id="@+id/progressBar"
-        android:indeterminateTintMode="src_atop"
-        />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -77,6 +68,7 @@
                     android:paddingVertical="6dp">
 
                     <TextView
+                        android:id="@+id/txtInvoiceStatus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
@@ -98,6 +90,7 @@
                             android:layout_height="wrap_content"
                             android:drawablePadding="6dp"
                             android:text="Địa chỉ nhận hàng"
+                            android:textStyle="bold"
                             android:textColor="@color/black"
                             app:drawableStartCompat="@drawable/ic_location_16"
                             app:drawableTint="@color/primary_color" />
@@ -147,7 +140,7 @@
                         android:ellipsize="end"
                         android:fontFamily="sans-serif-light"
                         android:maxLines="1"
-                        android:text="Zozo_Unisex"
+                        android:text=""
                         android:textAlignment="textStart"
                         android:textColor="@color/black"
                         android:textSize="15sp"
@@ -170,6 +163,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
+
+                <ProgressBar
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/progressBar"
+                    android:indeterminateTintMode="src_atop"
+                    />
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -251,7 +255,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp">
 
                         <TextView
                             android:id="@+id/textView2"
@@ -282,16 +287,14 @@
                             app:drawableTint="@color/green_persian" />
                     </RelativeLayout>
 
-
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="16dp">
+                        android:paddingVertical="8dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
                             android:text="Thời gian đặt hàng"
                             android:textColor="@color/black" />
 
@@ -304,7 +307,78 @@
                             android:text="2024/07/03, 08:54"
                             android:textColor="@color/darkgray"
                             app:backgroundTint="@null" />
+                    </RelativeLayout>
 
+                    <RelativeLayout
+                        android:id="@+id/confirmedAtRL"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Chủ hàng xác nhận đơn"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/txtConfirmedAt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerInParent="true"
+                            android:text="2024/07/03, 08:54"
+                            android:textColor="@color/darkgray"
+                            app:backgroundTint="@null" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/shippedAtRL"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Giao cho đơn vị vận chuyển"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/txtShippedAt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerInParent="true"
+                            android:text="2024/07/03, 08:54"
+                            android:textColor="@color/darkgray"
+                            app:backgroundTint="@null" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/deliveredAtRL"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Đã nhận được hàng"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/txtDeliveredAt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerInParent="true"
+                            android:text="2024/07/03, 08:54"
+                            android:textColor="@color/darkgray"
+                            app:backgroundTint="@null" />
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>

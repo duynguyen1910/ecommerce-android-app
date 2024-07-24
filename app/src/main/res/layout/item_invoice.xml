@@ -6,14 +6,7 @@
     android:layout_marginBottom="5dp"
     android:background="@drawable/custom_edit_text_border"
     android:orientation="vertical">
-    <ProgressBar
-        android:visibility="gone"
-        android:layout_gravity="center"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:id="@+id/progressBar"
-        android:indeterminateTintMode="src_atop"
-        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,6 +50,15 @@
         android:layout_height="wrap_content"
       />
 
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/progressBar"
+        android:indeterminateTintMode="src_atop"
+        />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -76,51 +78,29 @@
             android:textColor="@color/white"
             android:textSize="12sp" />
 
-
-        <TextView
-            android:id="@+id/txtSeeDetail"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Xem chi tiết"
-            android:textColor="@color/green_persian"
-            app:backgroundTint="@null" />
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/txtTotal"
+                android:text="Thành tiền: "
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="đ128.000"
+                android:textSize="15sp"
+                android:textColor="@color/primary_color"
+                android:textStyle="bold" />
+        </LinearLayout>
     </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="16dp">
-
-        <TextView
-            android:id="@+id/txtCreatedDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:text="2024/07/03, 08:54"
-            android:textColor="@color/darkgray"
-            app:backgroundTint="@null" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/txtTotal"
-            android:text="Thành tiền: "
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/txtTotal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:text="đ128.000"
-            android:textColor="@color/primary_color"
-            android:textStyle="bold" />
-
-    </RelativeLayout>
-
 
 </LinearLayout>

@@ -1,6 +1,10 @@
 package Fragments.Invoice;
 
-import android.content.Intent;
+import static android.content.Context.MODE_PRIVATE;
+import static constants.keyName.USER_ID;
+import static constants.keyName.USER_INFO;
+
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -17,17 +21,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.stores.databinding.FragmentInvoiceAwaitConfirmationBinding;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-import Activities.CartActivity;
-import Adapters.CartAdapter;
 import Adapters.InvoiceAdapter;
 import api.invoiceApi;
+import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
-import interfaces.ToTalFeeCallback;
 import models.Invoice;
 
-public class ConfirmationFragment extends Fragment {
+public class PendingConfirmationFragment extends Fragment {
     FragmentInvoiceAwaitConfirmationBinding binding;
 
     @Nullable
@@ -43,12 +44,16 @@ public class ConfirmationFragment extends Fragment {
 
     private void setupUI() {
         invoiceApi invoiceApi = new invoiceApi();
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        String userID = sharedPreferences.getString(USER_ID, null);
 
+        if(userID == null) return;
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.progressBar.getIndeterminateDrawable()
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
-        invoiceApi.getAllInvoices(new GetCollectionCallback<Invoice>() {
+
+        invoiceApi.getInvoicesByStatus(userID, OrderStatus.PENDING_CONFIRMATION.getOrderStatusValue() ,new GetCollectionCallback<Invoice>() {
             @Override
             public void onGetListSuccess(ArrayList<Invoice> cartList) {
                 binding.progressBar.setVisibility(View.GONE);

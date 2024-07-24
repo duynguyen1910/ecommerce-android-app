@@ -14,6 +14,7 @@ public class InvoiceDetail {
     private double oldPrice;
     private int quantity;
     private String storeID;
+    public static int ITEM_TO_DISPLAY = 1;
 
     public InvoiceDetail() {
     }

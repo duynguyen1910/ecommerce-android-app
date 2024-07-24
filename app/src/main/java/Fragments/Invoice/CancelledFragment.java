@@ -9,16 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.stores.databinding.FragmentInvoiceAwaitPickupBinding;
+import com.example.stores.databinding.FragmentInvoiceCancelBinding;
 
-
-public class PickupFragment extends Fragment {
-    FragmentInvoiceAwaitPickupBinding binding;
+public class CancelledFragment extends Fragment {
+    FragmentInvoiceCancelBinding binding;
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentInvoiceAwaitPickupBinding.inflate(getLayoutInflater());
+        binding = FragmentInvoiceCancelBinding.inflate(getLayoutInflater());
         return binding.getRoot();
     }
 }

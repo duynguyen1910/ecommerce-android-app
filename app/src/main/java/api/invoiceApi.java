@@ -4,6 +4,11 @@ import static android.content.ContentValues.TAG;
 import static constants.collectionName.INVOICE_COLLECTION;
 import static constants.collectionName.INVOICE_DETAIL_COLLECTION;
 import static constants.collectionName.PRODUCT_COLLECTION;
+import static constants.keyName.CUSTOMER_ID;
+import static constants.keyName.INVOICE_ID;
+import static constants.keyName.PASSWORD;
+import static constants.keyName.PHONE_NUMBER;
+import static constants.keyName.STATUS;
 
 import android.util.Log;
 
@@ -80,8 +85,10 @@ public class invoiceApi {
         });
     }
 
-    public void getAllInvoices(final GetCollectionCallback<Invoice> callback) {
+    public void getInvoicesByStatus(String customerID, int invoiceStatus, final GetCollectionCallback<Invoice> callback) {
         db.collection(INVOICE_COLLECTION)
+                .whereEqualTo(CUSTOMER_ID, customerID)
+                .whereEqualTo(STATUS, invoiceStatus)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -91,7 +98,7 @@ public class invoiceApi {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Invoice invoice = document.toObject(Invoice.class);
                                 invoice.setBaseID(document.getId());
-                                invoice.setStatus(document.getLong("status").intValue());
+                                invoice.setStatus(document.getLong(STATUS).intValue());
 
                                 invoices.add(invoice);
                             }
@@ -106,7 +113,7 @@ public class invoiceApi {
     
     public void getInvoiceDetail(String invoiceID, final GetCollectionCallback<InvoiceDetail> callback) {
         db.collection(INVOICE_DETAIL_COLLECTION)
-                .whereEqualTo("invoiceID", invoiceID)
+                .whereEqualTo(INVOICE_ID, invoiceID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -153,7 +160,7 @@ public class invoiceApi {
                                     if (product != null) {
                                         detail.setProductName(product.getProductName());
                                         detail.setNewPrice(product.getNewPrice());
-                                        detail.setStoreID(product.getStoreId());
+                                        detail.setStoreID(product.getStoreID());
                                     }
                                 }
                                 callback.onGetListSuccess(invoiceDetails);

@@ -42,7 +42,6 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
 
 
         initUI();
-        initCartUI();
 //        calculatorCart();
         setupEvents();
     }
@@ -93,11 +92,11 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
     private ArrayList<InvoiceDetail> groupProductsByStore() {
         HashMap<String, ArrayList<Product>> hashMap = new HashMap<>();
         for (Product product : listProductsInCart) {
-            String storeId = product.getStoreId();
-            if (!hashMap.containsKey(storeId)) {
-                hashMap.put(storeId, new ArrayList<>());
+            String storeID = product.getStoreID();
+            if (!hashMap.containsKey(storeID)) {
+                hashMap.put(storeID, new ArrayList<>());
             }
-            Objects.requireNonNull(hashMap.get(storeId)).add(product);
+            Objects.requireNonNull(hashMap.get(storeID)).add(product);
         }
 
         ArrayList<InvoiceDetail> cartItems = new ArrayList<>();
@@ -122,43 +121,6 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         }
 
         return cartItems;
-    }
-
-
-    private void initCartUI() {
-        storeList = new ArrayList<>();
-        invoiceApi invoiceApi = new invoiceApi();
-
-        invoiceApi.getAllInvoices(new GetCollectionCallback<Invoice>() {
-            @Override
-            public void onGetListSuccess(ArrayList<Invoice> cartList) {
-                if (!cartList.isEmpty()) {
-                    binding.layoutEmptyCart.setVisibility(View.GONE);
-                    binding.layoutCart.setVisibility(View.VISIBLE);
-
-                    cartAdapter = new CartAdapter(CartActivity.this, cartList, new ToTalFeeCallback() {
-                        @Override
-                        public void totalFeeUpdate(double totalFee) {
-
-                        }
-                    });
-                    binding.recyclerViewCart.setAdapter(cartAdapter);
-                    binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(CartActivity.this, LinearLayoutManager.VERTICAL, false));
-                } else {
-
-                    binding.layoutEmptyCart.setVisibility(View.VISIBLE);
-                    binding.layoutCart.setVisibility(View.GONE);
-                }
-
-
-            }
-
-            @Override
-            public void onGetListFailure(String errorMessage) {
-                Toast.makeText(CartActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-            }
-        });
-
     }
 
     private void initUI() {

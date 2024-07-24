@@ -24,31 +24,31 @@ public class Product extends BaseObject implements Serializable {
     private double oldPrice;
     private int inStock;
     private String categoryName;
-    private String categoryId;
-    private String storeId;
+    private String categoryID;
+    private String storeID;
     private int numberInCart;
     private boolean checkedStatus;
     private api.productApi productApi;
     private ArrayList<String> productImages;
 
-    public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String storeId, int numberInCart) {
+    public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String storeID, int numberInCart) {
         this.productName = productName;
         this.description = description;
         this.newPrice = newPrice;
         this.oldPrice = oldPrice;
         this.inStock = inStock;
-        this.storeId = storeId;
+        this.storeID = storeID;
         this.numberInCart = numberInCart;
     }
 
-    public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String categoryName, String storeId) {
+    public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String categoryName, String storeID) {
         this.productName = productName;
         this.description = description;
         this.newPrice = newPrice;
         this.oldPrice = oldPrice;
         this.inStock = inStock;
         this.categoryName = categoryName;
-        this.storeId = storeId;
+        this.storeID = storeID;
     }
 
 
@@ -84,12 +84,12 @@ public class Product extends BaseObject implements Serializable {
         this.categoryName = categoryName;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public String getCategoryID() {
+        return categoryID;
     }
 
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryID(String categoryID) {
+        this.categoryID = categoryID;
     }
 
     public int getInStock() {
@@ -109,12 +109,12 @@ public class Product extends BaseObject implements Serializable {
         this.checkedStatus = checkedStatus;
     }
 
-    public String getStoreId() {
-        return storeId;
+    public String getStoreID() {
+        return storeID;
     }
 
-    public void setStoreId(String storeId) {
-        this.storeId = storeId;
+    public void setStoreID(String storeID) {
+        this.storeID = storeID;
     }
 
 

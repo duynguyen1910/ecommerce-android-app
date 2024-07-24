@@ -39,13 +39,11 @@ import models.InvoiceDetail;
 public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<Invoice> invoiceList;
-//    private final ArrayList<String> invoiceIDs;
 
 
     public InvoiceAdapter(Context context, ArrayList<Invoice> invoiceList) {
         this.context = context;
         this.invoiceList = invoiceList;
-//        this.invoiceIDs = new ArrayList<>(map.keySet());
     }
 
     @NonNull
@@ -56,7 +54,6 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         ItemInvoiceBinding binding;
 
         public ViewHolder(ItemInvoiceBinding binding) {
@@ -70,10 +67,14 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Invoice invoice = invoiceList.get(holder.getBindingAdapterPosition());
 
-
         holder.binding.progressBar.setVisibility(View.VISIBLE);
         holder.binding.progressBar.getIndeterminateDrawable()
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
+
+        holder.binding.txtInvoiceStatus.setText(invoice.getStatus().getOrderLabel());
+
+        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+        holder.binding.txtTotal.setText("đ" + formatter.format(invoice.getTotal()));
 
         invoiceApi invoiceApi = new invoiceApi();
         invoiceApi.getInvoiceDetail(invoice.getBaseID(), new GetCollectionCallback<InvoiceDetail>() {
@@ -82,9 +83,10 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
                 holder.binding.progressBar.setVisibility(View.GONE);
 
                 getStoreNameByID(productList, holder.binding.txtStoreName);
+                holder.binding.txtQuantityProducts.setText(productList.size() + " sản phẩm");
 
-                ProductsListAdapterForInvoiceItem adapter = new ProductsListAdapterForInvoiceItem(context,
-                        productList, true);
+                InvoiceDetailAdapter adapter = new InvoiceDetailAdapter(context,
+                        productList, InvoiceDetail.ITEM_TO_DISPLAY);
                 holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
                 holder.binding.recyclerViewProducts.setAdapter(adapter);
 
@@ -97,19 +99,6 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
             }
         });
 
-        holder.binding.txtQuantityProducts.setText(invoiceList.size() + " sản phẩm");
-
-        Timestamp timestamp = invoice.getCreatedAt();
-        Date date = timestamp.toDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy, HH:mm", Locale.getDefault());
-        String formattedDate = sdf.format(date);
-
-        holder.binding.txtCreatedDate.setText(formattedDate);
-
-
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        holder.binding.txtTotal.setText("đ" + formatter.format(invoice.getTotal()));
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,9 +107,14 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
 
                 bundle.putString("invoiceID", invoice.getBaseID());
                 bundle.putString("deliveryAddress", invoice.getDeliveryAddress());
-                bundle.putString("createdAt", formattedDate);
-                bundle.putDouble("invoiceTotal", invoice.getTotal());
+                bundle.putString("invoiceStatusLabel", invoice.getStatus().getOrderLabel());
 
+                bundle.putString("createdAt", formatDateTime(invoice.getCreatedAt()));
+                bundle.putString("confirmedAt", formatDateTime(invoice.getConfirmedAt()));
+                bundle.putString("shippedAt", formatDateTime(invoice.getShippedAt()));
+                bundle.putString("deliveredAt", formatDateTime(invoice.getDeliveredAt()));
+
+                bundle.putDouble("invoiceTotal", invoice.getTotal());
 
                 intent.putExtras(bundle);
                 context.startActivity(intent);
@@ -129,8 +123,19 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
 
     }
 
+    private String formatDateTime(Timestamp timestamp) {
+        if(timestamp == null) return "";
+
+        Date date = timestamp.toDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy | HH:mm", Locale.getDefault());
+        String formattedDate = sdf.format(date);
+
+        return formattedDate;
+    }
+
 
     private void getStoreNameByID(ArrayList<InvoiceDetail> productList, TextView txtStoreName) {
+
         storeApi storeApi = new storeApi();
         storeApi.getStoreDetailApi(productList.get(0).getStoreID(), new GetDocumentCallback() {
             @Override

@@ -11,7 +11,6 @@ import enums.OrderStatus;
 public class Invoice extends BaseObject implements Serializable {
     private String customerID;
     private String deliveryAddress;
-    private String storeID;
     private double total;
     private OrderStatus status;
     private Timestamp createdAt;
