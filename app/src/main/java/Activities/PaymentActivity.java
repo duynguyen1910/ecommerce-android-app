@@ -80,7 +80,7 @@ public class PaymentActivity extends AppCompatActivity {
                 invoices.add(newInvoice);
             }
             Intent intent = new Intent(PaymentActivity.this, InvoiceActivity.class);
-            intent.putExtra("invoices", invoices);
+//            intent.putExtra("invoices", invoices);
             startActivity(intent);
             // call API gửi order cho Người bán
         });
