@@ -14,6 +14,7 @@ import static constants.toastMessage.DEFAULT_REQUIRE;
 import static constants.toastMessage.INTERNET_ERROR;
 import static constants.toastMessage.UPDATE_PRODUCT_FAILED;
 import static constants.toastMessage.UPDATE_PRODUCT_SUCCESSFULLY;
+import static utils.Utils.showToast;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -84,7 +85,7 @@ public class UpdateProductActivity extends AppCompatActivity {
 
                     @Override
                     public void onGetDataFailure(String errorMessage) {
-                        showToast(INTERNET_ERROR);
+                        showToast(UpdateProductActivity.this,INTERNET_ERROR);
                     }
                 });
             }
@@ -123,13 +124,13 @@ public class UpdateProductActivity extends AppCompatActivity {
                     @Override
                     public void onUpdateSuccess() {
 
-                        showToast(UPDATE_PRODUCT_SUCCESSFULLY);
+                        showToast(UpdateProductActivity.this, UPDATE_PRODUCT_SUCCESSFULLY);
                         finish();
                     }
 
                     @Override
                     public void onUpdateFailure(String errorMessage) {
-                        showToast(UPDATE_PRODUCT_FAILED);
+                        showToast(UpdateProductActivity.this, UPDATE_PRODUCT_FAILED);
                     }
                 });
             }
@@ -145,9 +146,7 @@ public class UpdateProductActivity extends AppCompatActivity {
 
     }
 
-    private void showToast(String message) {
-        Toast.makeText(UpdateProductActivity.this, message, Toast.LENGTH_SHORT).show();
-    }
+
 
     private Map<String, Object> validateForm() {
         String productName = Objects.requireNonNull(binding.edtTitle.getText()).toString().trim();

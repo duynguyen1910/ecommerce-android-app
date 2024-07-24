@@ -87,7 +87,7 @@ public class ProductsAdapterForCartItem extends RecyclerView.Adapter<ProductsAda
         holder.binding.txtPrice.setText(formattedPrice);
 
         holder.binding.txtQuantity.setText(String.valueOf(product.getNumberInCart()));
-        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
+//        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
 
         holder.binding.btnPlus.setOnClickListener(v -> {
 

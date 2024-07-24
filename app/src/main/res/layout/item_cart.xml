@@ -21,30 +21,30 @@
 
         <ImageView
             android:layout_width="18dp"
-            android:layout_toRightOf="@id/checkboxAll"
+            android:layout_toEndOf="@id/checkboxAll"
             android:layout_height="18dp"
             android:id="@+id/ic_store"
             android:layout_centerVertical="true"
             android:layout_marginStart="6dp"
-            android:src="@drawable/ic_store" />
+            android:src="@drawable/ic_store"
+            app:tint="@color/black" />
 
         <TextView
             android:id="@+id/txtStoreName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:layout_toRightOf="@id/ic_store"
+            android:layout_toEndOf="@id/ic_store"
             android:maxLines="1"
             android:textAlignment="textStart"
             android:layout_centerVertical="true"
             android:drawablePadding="2dp"
-            android:drawableEnd="@drawable/ic_arrow_right_16"
             android:layout_marginStart="6dp"
             android:textStyle="bold"
             android:text="Zozo_Unisex"
             android:textColor="@color/black"
             android:fontFamily="sans-serif-light"
-            android:textSize="13sp" />
+            app:drawableEndCompat="@drawable/ic_arrow_right_16" />
 
 
     </RelativeLayout>

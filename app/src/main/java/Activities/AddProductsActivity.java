@@ -12,6 +12,7 @@ import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.CREATE_PRODUCT_SUCCESSFULLY;
 import static constants.toastMessage.DEFAULT_REQUIRE;
+import static utils.Utils.showToast;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -67,7 +68,7 @@ public class AddProductsActivity extends AppCompatActivity {
                 product.onCreateProduct(productData, new CreateDocumentCallback() {
                     @Override
                     public void onCreateSuccess(String documentId) {
-                        Toast.makeText(AddProductsActivity.this, CREATE_PRODUCT_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
+                        showToast(AddProductsActivity.this, CREATE_PRODUCT_SUCCESSFULLY);
                         finish();
                     }
 
@@ -78,7 +79,7 @@ public class AddProductsActivity extends AppCompatActivity {
                 });
 
             } else {
-                showToast("Vui lòng điền đầy đủ thông tin");
+                showToast(AddProductsActivity.this, "Vui lòng điền đầy đủ thông tin");
             }
 
 
@@ -92,9 +93,7 @@ public class AddProductsActivity extends AppCompatActivity {
 
     }
 
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
+
 
     ActivityResultLauncher<Intent> launcherSelectCategory = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),

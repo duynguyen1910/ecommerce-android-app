@@ -9,6 +9,7 @@ import static constants.keyName.USER_INFO;
 import static constants.toastMessage.INTERNET_ERROR;
 import static constants.toastMessage.STOREA_ADDRESS_REQUIRE;
 import static constants.toastMessage.STORENAME_REQUIRE;
+import static utils.Utils.showToast;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -95,7 +96,7 @@ public class CreateStoreActivity extends AppCompatActivity {
                     binding.btnNext.setBackground(ContextCompat.getDrawable(CreateStoreActivity.this, R.color.primary_color));
                     binding.viewPager2.setCurrentItem(0);
                     binding.progressBar.setVisibility(View.GONE);
-                    Toast.makeText(this, STORENAME_REQUIRE, Toast.LENGTH_SHORT).show();
+                    showToast(this,STORENAME_REQUIRE );
                     return;
                 }
                 String storeAddress = storeInfoFragment.getStoreAddress();
@@ -104,7 +105,7 @@ public class CreateStoreActivity extends AppCompatActivity {
                     binding.btnNext.setBackground(ContextCompat.getDrawable(CreateStoreActivity.this, R.color.primary_color));
                     binding.progressBar.setVisibility(View.GONE);
                     binding.viewPager2.setCurrentItem(0);
-                    Toast.makeText(this, STOREA_ADDRESS_REQUIRE, Toast.LENGTH_SHORT).show();
+                    showToast(this,STOREA_ADDRESS_REQUIRE );
                     return;
                 }
 
@@ -136,7 +137,7 @@ public class CreateStoreActivity extends AppCompatActivity {
 
                             @Override
                             public void onUpdateFailure(String errorMessage) {
-                                Toast.makeText(CreateStoreActivity.this, INTERNET_ERROR, Toast.LENGTH_SHORT).show();
+                                showToast(CreateStoreActivity.this, STOREA_ADDRESS_REQUIRE);
                             }
                         });
 
