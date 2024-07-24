@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightgray"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:background="@color/white"
+        android:id="@+id/header"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+
+        <ImageView
+            android:id="@+id/imageBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="6dp"
+            android:src="@drawable/ic_back"
+            app:tint="@color/primary_color" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:drawablePadding="2dp"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="Thiết lập tài khoản"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="15dp"
+                android:drawablePadding="2dp"
+                android:text="Tài khoản"
+                android:textColor="@color/darkgray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:drawableEnd="@drawable/ic_arrow_right_24"
+                    android:drawableTint="@color/darkgray"
+                    android:gravity="center_vertical"
+                    android:id="@+id/txtAccountAndSecurity"
+                    android:padding="16dp"
+                    android:text="Tài khoản &amp; Bảo mật"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:drawableEnd="@drawable/ic_arrow_right_24"
+                    android:drawableTint="@color/darkgray"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:text="Địa Chỉ"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:drawableEnd="@drawable/ic_arrow_right_24"
+                    android:drawableTint="@color/darkgray"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:text="Tài khoản / Thẻ Ngân hàng"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="15dp"
+                android:drawablePadding="2dp"
+                android:text="Cài đặt"
+                android:textColor="@color/darkgray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:drawableEnd="@drawable/ic_arrow_right_24"
+                    android:drawableTint="@color/darkgray"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:text="Cài đặt Thông báo"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:drawableEnd="@drawable/ic_arrow_right_24"
+                    android:drawableTint="@color/darkgray"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:text="Ngôn ngữ / Language"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="15dp"
+                android:drawablePadding="2dp"
+                android:text="Hỗ trợ"
+                android:textColor="@color/darkgray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:drawableEnd="@drawable/ic_arrow_right_24"
+                    android:drawableTint="@color/darkgray"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:text="Trung tâm hỗ trợ"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:drawableEnd="@drawable/ic_arrow_right_24"
+                    android:drawableTint="@color/darkgray"
+                    android:gravity="center_vertical"
+                    android:padding="16dp"
+                    android:text="Điều khoản "
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="30dp"
+        android:background="@drawable/custom_border_primary_color"
+        android:text="Đăng xuất"
+        android:textAllCaps="false"
+        android:textColor="@color/orange"
+        android:textSize="16sp" />
+
+</LinearLayout>

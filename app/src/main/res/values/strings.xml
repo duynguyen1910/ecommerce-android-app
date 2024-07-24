@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">MiniStore</string>
-
+    <string name="app_name">Ecommerce</string>
+    <string name="price"></string>
     <string name="book_desc">Lớn lên trên đảo vắng”
         được viết bởi nhà văn Johann David Wyss –
         người đã được truyền cảm hứng từ tác phẩm Robinson Crusoe của Daniel Defoe.
@@ -12,4 +12,79 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="product_desc1">
+        Mô hình: Ditsy Floral\n
+        Phong cách: Giản dị\n
+        Loại váy: A-Line\n
+        Cộng với kích thước: Không\n
+        Chất liệu: polyeste\n
+        Thành phần: 100% Polyester\n
+        Loại phù hợp: Phù hợp thường xuyên\n
+        Trong suốt: Không\n
+        Kéo dài: Không căng\n
+        Xuất xứ: Trung Quốc đại lục\n
+    </string>
+
+    <string name="product_desc2">
+        Thương hiệu: Sanda\n
+        Chiều dài dây đeo: 25,5cm\n
+        Phong cách: Thể thao\n
+        Phong trào: Thạch anh, màn hình kép\n
+        Độ sâu chống thấm nước: 5Bar\n
+        Loại khóa: Khóa chốt\n
+        Xuất xứ: CN (Xuất xứ)\n
+        Chất liệu vỏ: Vỏ nhựa. Độ dày: 17mm\n
+        Chất liệu hộp và hộp: Không đóng gói\n
+        Loại vật liệu dây đeo: Cao su\n
+        Mô hình: 3133 - Đồng hồ thể thao\n
+        Chiều rộng băng: 25mm\n
+        Các tính năng: Đồng hồ bấm giờ, Đèn nền, Chống va đập, Màn hình LED, Ngày tự động, Đồng hồ bấm giờ, Chống nước, Báo thức, Bơi lội, Ngày trong tuần\n
+        Vật liệu cửa sổ DisplayDial\n
+        Loại: mặt hàng acrylic\n
+        Loại: Đường kính mặt số đồng hồ thạch anh: 57mm\n
+        Chứng nhận: CE\n
+    </string>
+
+    <string name="product_desc3">
+     ♬23-2.29\n
+        Gói bao gồm: 1 * đầu\n
+    Chất liệu: Bông + sợi polyeste + khác\n
+    “Chỉ để tham khảo, không có tiêu chuẩn thực tế ”\n
+    ❤ Do màn hình hiển thị và hiệu ứng ánh sáng khác nhau, màu sắc thực tế của mặt hàng có thể hơi khác so với màu hiển thị trong hình ảnh. Cảm ơn bạn.\n
+    ❤ Nếu sản phẩm của chúng tôi không có kích thước hoặc màu sắc yêu thích của bạn, hoặc bạn muốn tìm hiểu thêm thông tin, vui lòng liên hệ với chúng tôi. Cảm ơn bạn.\n
+    ❤ Nếu có vấn đề gì khi nhận hàng vui lòng liên hệ để được hỗ trợ xử lý, chúng tôi sẽ giải đáp thỏa đáng cho bạn.\n
+    ❤ Tất cả các sản phẩm được gửi từ nước ngoài, chất lượng siêu tốt với giá rẻ, nếu thích thì đừng quên chia sẻ với bạn bè nhé\n
+    </string>
+    <string name="channel_name">Ecommerce</string>
+    <string name="channel_description">Welcome to Ecommerce</string>
+    <string name="message_order">
+        Đơn hàng của bạn đã được\ngửi đến người bán</string>
+
+    <string name="address">
+        Ngọc Đại | 012345678\nFPT Polytechnic TP.HCM - Tòa F,\nCông Viên Phần Mềm Quang Trung, Tòa nhà GenPacific \nLô 3 đường 16, Trung Mỹ Tây, Quận 12, Hồ Chí Minh
+    </string>
+    <string name="address1">
+        FPT Polytechnic TP.HCM - Tòa F,\nCông Viên Phần Mềm Quang Trung, Tòa nhà GenPacific \nLô 3 đường 16, Trung Mỹ Tây, Quận 12, Hồ Chí Minh
+    </string>
+    <string name="activate_store">Vui lòng cung cấp thông tin để kích hoạt\ntài khoản người bán trên Ecommerce nhé!</string>
+    <string name="tax_info">
+        Việc thu thập Thông Tin Thuế và Thông Tin Định Danh là bắt buộc theo quy định của Luật an ninh mạng,
+        \nThương mại điện tử và Thuế của Việt Nam. Thông Tin Thuế và Thông Tin Định Danh sẽ được bảo vệ theo chính sách bảo mật của Ecommerce.
+        \nNgười bán hoàn toàn chịu trách nhiệm về tính chính xác của thông tin.
+    </string>
+    <string name="identifier_info">
+        Vui lòng cung cấp Thông tin Định Danh của Chủ Shop (nếu là cá nhân), hoặc Người Đại Diện Pháp Lý trên giấy đăng ký kinh doanh
+    </string>
+    <string name="promise_identifier">
+        Tôi xác nhận tất cả dữ liệu đã cung cấp là chính xác và trung thực.
+        Tôi đã đọc và đồng ý với Chính sách Bảo Mật của Ecommerce
+    </string>
+    <string name="delivery_hoa_toc"><b>Hỏa Tốc</b> (≤ 30.000 gram)</string>
+    <string name="delivery_nhanh"><b>Nhanh</b> (1~15.000 gram)</string>
+    <string name="delivery_tiet_kiem"><b>Tiết Kiệm</b> (1~15.000 gram)</string>
+    <string name="delivery_cong_kenh"><b>Cồng Kềnh</b> (≤ 200.000 gram)</string>
+    <string name="decorate_my_store_desc">
+        Bạn có thể dễ dàng chính sửa bố cục, nội dung, và hình ảnh để làm nổi bật các sản phẩm cùng những chương trình khuyến mãi hấp dẫn theo
+        phong cách hoàn toàn độc đáo của Shop
+    </string>
 </resources>

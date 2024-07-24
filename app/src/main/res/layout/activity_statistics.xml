@@ -7,7 +7,7 @@
     android:padding="20dp"
     android:background="@color/lightgray"
     android:orientation="vertical"
-    tools:context=".Activities.StatisticsActivity">
+    tools:context="Activities.StatisticsActivity">
 
 
     <LinearLayout
@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Top sách được mượn nhiều nhất"
+        android:text="Top sản phẩm được mua nhiều nhất"
         android:textSize="14sp"
         android:layout_marginBottom="20dp"
         android:textStyle="bold"
