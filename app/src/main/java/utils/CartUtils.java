@@ -5,7 +5,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import models.CartItem;
 
-public class Utils {
+public class CartUtils {
     public static ArrayList<CartItem> MYCART = new ArrayList<>();
 
     public static void showToast(Context context, String message) {

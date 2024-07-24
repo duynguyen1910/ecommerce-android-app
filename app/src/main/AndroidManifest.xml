@@ -29,6 +29,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="Activities.DeliveryActivity"
+            android:exported="false" />
+        <activity
             android:name="Activities.RequestInvoiceActivity"
             android:exported="false" />
 

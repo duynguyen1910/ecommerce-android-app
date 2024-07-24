@@ -9,10 +9,10 @@ import static constants.keyName.PRODUCT_OLD_PRICE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 import static constants.toastMessage.INTERNET_ERROR;
-import static utils.Utils.MYCART;
-import static utils.Utils.getQuantityProductsIncart;
-import static utils.Utils.showToast;
-import static utils.Utils.updateQuantityInCart;
+import static utils.AnimationUtils.translateAnimation;
+import static utils.CartUtils.MYCART;
+import static utils.CartUtils.showToast;
+import static utils.CartUtils.updateQuantityInCart;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -277,8 +277,12 @@ public class ProductDetailActivity extends AppCompatActivity {
             } else {
                 int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
                 addToCart(storeName, thisProduct, quantity);
+                showToast(ProductDetailActivity.this, "Đã thêm sản phẩm vào giỏ hàng");
                 updateQuantityInCart(binding.txtQuantityInCart);
                 dialog.dismiss();
+
+
+
             }
 
         });

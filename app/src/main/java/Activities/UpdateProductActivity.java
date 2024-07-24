@@ -8,18 +8,15 @@ import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
 import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
-import static constants.keyName.STORE_ID;
-import static constants.toastMessage.CREATE_PRODUCT_SUCCESSFULLY;
 import static constants.toastMessage.DEFAULT_REQUIRE;
 import static constants.toastMessage.INTERNET_ERROR;
 import static constants.toastMessage.UPDATE_PRODUCT_FAILED;
 import static constants.toastMessage.UPDATE_PRODUCT_SUCCESSFULLY;
-import static utils.Utils.showToast;
+import static utils.CartUtils.showToast;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -27,16 +24,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.stores.databinding.ActivityUpdateProductBinding;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
-import interfaces.CreateDocumentCallback;
 import interfaces.GetDocumentCallback;
 import interfaces.UpdateDocumentCallback;
 import models.Product;

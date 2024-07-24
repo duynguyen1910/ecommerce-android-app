@@ -3,13 +3,11 @@ import static constants.keyName.STORE_ADDRESS;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 import static constants.keyName.STORE_OWNER_ID;
-import static constants.keyName.PRODUCTS;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
-import static constants.toastMessage.INTERNET_ERROR;
 import static constants.toastMessage.STOREA_ADDRESS_REQUIRE;
 import static constants.toastMessage.STORENAME_REQUIRE;
-import static utils.Utils.showToast;
+import static utils.CartUtils.showToast;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

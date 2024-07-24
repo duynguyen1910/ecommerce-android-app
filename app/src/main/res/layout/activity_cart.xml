@@ -179,6 +179,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_border_top_bottom">
 
@@ -187,6 +188,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:paddingVertical="8dp"
                     android:gravity="center"
                     android:orientation="vertical">
 
@@ -214,6 +216,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginStart="6dp"
+                    android:paddingVertical="8dp"
                     android:background="@color/darkgray"
                     android:gravity="center"
                     android:paddingHorizontal="15dp"

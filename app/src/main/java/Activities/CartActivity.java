@@ -1,6 +1,6 @@
 package Activities;
-import static utils.Utils.MYCART;
-import static utils.Utils.getQuantityProductsIncart;
+import static utils.CartUtils.MYCART;
+import static utils.CartUtils.getQuantityProductsIncart;
 
 import android.content.Intent;
 import android.graphics.Color;

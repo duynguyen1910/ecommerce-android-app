@@ -397,7 +397,28 @@
                 android:textColor="@color/black"
                 android:textStyle="bold" />
         </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/layoutLogistics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="10dp">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_truck_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đơn hàng cần vận chuyển"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/layoutLogoutLn"
             android:layout_width="match_parent"

@@ -3,7 +3,6 @@ package Activities;
 import static constants.keyName.CATEGORY_ID;
 import static constants.keyName.CATEGORY_NAME;
 import static constants.keyName.PRODUCT_DESC;
-import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
 import static constants.keyName.PRODUCT_NEW_PRICE;
@@ -12,7 +11,7 @@ import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.CREATE_PRODUCT_SUCCESSFULLY;
 import static constants.toastMessage.DEFAULT_REQUIRE;
-import static utils.Utils.showToast;
+import static utils.CartUtils.showToast;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,14 +25,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.stores.databinding.ActivityAddProductsBinding;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 import interfaces.CreateDocumentCallback;
-import interfaces.UpdateDocumentCallback;
 import models.Product;
 
 public class AddProductsActivity extends AppCompatActivity {

@@ -8,7 +8,7 @@ import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.keyName.USER_ROLE;
 import static constants.toastMessage.LOGIN_SUCCESSFULLY;
-import static utils.Utils.updateQuantityInCart;
+import static utils.CartUtils.updateQuantityInCart;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import com.example.stores.databinding.FragmentProfileBinding;
 import com.google.firebase.firestore.FirebaseFirestore;
 import Activities.CartActivity;
+import Activities.DeliveryActivity;
 import Activities.InvoiceActivity;
 import Activities.ActivateStoreActivity;
 import Activities.LoginActivity;
@@ -118,6 +119,10 @@ public class ProfileFragment extends Fragment{
             Intent intent = new Intent(requireActivity(), SettingsActivity.class);
             startActivity(intent);
 
+        });
+        binding.layoutLogistics.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), DeliveryActivity.class);
+            startActivity(intent);
         });
 
         binding.iconCart.setOnClickListener(v -> {

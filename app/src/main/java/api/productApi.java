@@ -96,13 +96,14 @@ public class productApi implements Serializable {
     }
 
     public void getAllProductApi(final GetCollectionCallback<Product> callback) {
-        Query query = db.collection(PRODUCT_COLLECTION);
+        Query query = db.collection(PRODUCT_COLLECTION).whereGreaterThan(PRODUCT_INSTOCK, 0);
         getProducts(query, 100, callback);
     }
 
     public void getAllProductAscendingByCategoryIdApi(String categoryId, final GetCollectionCallback<Product> callback) {
         Query query = db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(CATEGORY_ID, categoryId)
+                .whereGreaterThan(PRODUCT_INSTOCK, 0)
                 .orderBy(PRODUCT_INSTOCK, Query.Direction.ASCENDING);
         getProducts(query, 100, callback);
     }
@@ -110,13 +111,14 @@ public class productApi implements Serializable {
     public void getAllProductDescendingByCategoryIdApi(String categoryId, final GetCollectionCallback<Product> callback) {
         Query query = db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(CATEGORY_ID, categoryId)
+                .whereGreaterThan(PRODUCT_INSTOCK, 0)
                 .orderBy(PRODUCT_INSTOCK, Query.Direction.DESCENDING);
         getProducts(query, 100, callback);
     }
 
     public void getAllProductByCategoryIdApi(String categoryId, final GetCollectionCallback<Product> callback) {
         Query query = db.collection(PRODUCT_COLLECTION)
-                .whereEqualTo(CATEGORY_ID, categoryId);
+                .whereEqualTo(CATEGORY_ID, categoryId).whereGreaterThan(PRODUCT_INSTOCK, 0);
         getProducts(query, 100, callback);
     }
 
