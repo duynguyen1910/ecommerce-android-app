@@ -1,5 +1,6 @@
 package Activities.StoreSetup;
 
+import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 
 import android.annotation.SuppressLint;
@@ -23,8 +24,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import Adapters.ViewPager2Adapter;
-import Fragments.StoreCategoriesFragment;
-import Fragments.StoreProductsFragment;
+import Fragments.Store.StoreCategoriesFragment;
+import Fragments.Store.StoreProductsFragment;
 import interfaces.GetDocumentCallback;
 import models.Store;
 
@@ -57,7 +58,7 @@ public class ViewMyStoreActivity extends AppCompatActivity {
 
 
 
-        String storeId = getIntent().getStringExtra("storeId");
+        String storeId = getIntent().getStringExtra(STORE_ID);
 
         // lấy thông tin avatar, invoice
 

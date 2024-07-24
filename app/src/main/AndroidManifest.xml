@@ -28,6 +28,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="Activities.DeliveryActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.RequestInvoiceActivity"
+            android:exported="false" />
 
         <activity
             android:name="Activities.SearchActivity"
@@ -61,7 +67,7 @@
             android:name="Activities.DecorateMyStoreActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.UpdateProductsActivity"
+            android:name="Activities.UpdateProductActivity"
             android:exported="false" />
         <activity
             android:name="Activities.DeliveryFeeActivity"

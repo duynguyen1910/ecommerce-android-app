@@ -1,7 +1,11 @@
 package Adapters;
 
+import static utils.CartUtils.getCartItemFee;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -15,15 +19,17 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import models.InvoiceDetail;
+
+import Activities.DeliveryMethodActivity;
+import models.CartItem;
 import models.Product;
 
 
 public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHolder> {
     private final Context context;
-    private final ArrayList<InvoiceDetail> list;
+    private final ArrayList<CartItem> list;
 
-    public PaymentAdapter(Context context, ArrayList<InvoiceDetail> list) {
+    public PaymentAdapter(Context context, ArrayList<CartItem> list) {
         this.context = context;
         this.list = list;
     }
@@ -49,42 +55,38 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        InvoiceDetail cartItem = list.get(holder.getBindingAdapterPosition());
-//        ArrayList<Product> listProducts = cartItem.getListProducts();
-//
-//        holder.binding.txtStoreName.setText(cartItem.getStoreName());
-//        ProductsListAdapterForPaymentItem adapter = new ProductsListAdapterForPaymentItem(context, cartItem.getListProducts());
+        CartItem cartItem = list.get(holder.getBindingAdapterPosition());
+        ArrayList<Product> listProducts = cartItem.getListProducts();
 
-//        holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
-//        holder.binding.recyclerViewProducts.setAdapter(adapter);
+        holder.binding.txtStoreName.setText(cartItem.getStoreName());
+        ProductsAdapterForPaymentItem adapter = new ProductsAdapterForPaymentItem(context, cartItem.getListProducts());
 
-//        holder.binding.txtQuantityProducts.setText("Tổng số tiền (" + listProducts.size() + " sản phẩm)");
+        holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
+        holder.binding.recyclerViewProducts.setAdapter(adapter);
+
+        holder.binding.txtQuantityProducts.setText("Tổng số tiền (" + listProducts.size() + " sản phẩm)");
 
 
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-//        holder.binding.txtTotal.setText("đ" + formatter.format(getCartItemFee(cartItem)));
+        holder.binding.txtTotal.setText("đ" + formatter.format(getCartItemFee(cartItem)));
 
-        double oldDelivery = 38000;
-//        holder.binding.txtOldDelivery.setText("đ" + formatter.format(oldDelivery));
-//        holder.binding.txtOldDelivery.setPaintFlags(holder.binding.txtOldDelivery.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
-//
-//        holder.binding.layoutDeliveryMethod.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(context, DeliveryMethodActivity.class);
-//                context.startActivity(intent);
-//            }
-//        });
+        holder.binding.txtInvoiceNote.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                cartItem.setNote(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
-
-//    private double getCartItemFee(CartItem cartItem) {
-//        double fee = 0;
-//        for (Product product : cartItem.getListProducts()) {
-//            fee += (product.getNewPrice()  * product.getNumberInCart());
-//        }
-//        return fee;
-//    }
-
 
     @Override
     public int getItemCount() {

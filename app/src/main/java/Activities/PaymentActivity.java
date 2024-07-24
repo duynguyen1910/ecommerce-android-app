@@ -1,15 +1,18 @@
 package Activities;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
+import static utils.CartUtils.getCartItemFee;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityPaymentBinding;
 import com.example.stores.databinding.LayoutOrderBinding;
@@ -20,22 +23,25 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-
+import Adapters.PaymentAdapter;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.CreateDocumentCallback;
 import interfaces.StatusCallback;
+import models.CartItem;
 import models.Invoice;
 import models.InvoiceDetail;
+import models.Product;
 
 public class PaymentActivity extends AppCompatActivity {
 
     ActivityPaymentBinding binding;
-    ArrayList<InvoiceDetail> payment = null;
+    ArrayList<CartItem> payment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,68 +50,81 @@ public class PaymentActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setupUI();
-//        getBundles();
+        getBundles();
         setupEvents();
     }
 
     private void getBundles() {
-
         Intent intent = getIntent();
+
         if (intent != null) {
-//            payment = (ArrayList<InvoiceDetail>) getIntent().getSerializableExtra("payment");
+            payment = (ArrayList<CartItem>) getIntent().getSerializableExtra("payment");
 
-//            PaymentAdapter paymentAdapter = new PaymentAdapter(PaymentActivity.this, payment);
-//            binding.recyclerViewPayment.setAdapter(paymentAdapter);
-//            binding.recyclerViewPayment.setLayoutManager(new LinearLayoutManager(PaymentActivity.this, LinearLayoutManager.VERTICAL, false));
-
+            if (payment != null){
+                PaymentAdapter paymentAdapter = new PaymentAdapter(PaymentActivity.this, payment);
+                binding.recyclerViewPayment.setAdapter(paymentAdapter);
+                binding.recyclerViewPayment.setLayoutManager(new LinearLayoutManager(PaymentActivity.this, LinearLayoutManager.VERTICAL, false));
+            }
         }
 
         calculatorPayment();
+
     }
 
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
 
         binding.btnBooking.setOnClickListener(v -> {
-            SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
-            String userId = sharedPreferences.getString(USER_ID, null);
-
-            ArrayList<Invoice> invoiceList = new ArrayList<>();
-            Invoice invoice1 = new Invoice(
-                    userId, "quận 7, Hồ Chí Minh", 120000, OrderStatus.PENDING_CONFIRMATION,
-                    new Timestamp(new java.util.Date()), "Để trước cổng lúc giao hàng"
-            );
-            invoiceList.add(invoice1);
-
-            Invoice invoice2 = new Invoice(
-                    userId, "quận Phú Nhuận, Hồ Chí Minh", 99999, OrderStatus.PENDING_CONFIRMATION,
-                    new Timestamp(new java.util.Date()), "Lấy thêm 2 loại nữa"
-            );
-            invoiceList.add(invoice2);
-
-
-            for (Invoice invoice : invoiceList) {
-                Map<String, Object> newInvoice = new HashMap<>();
-                newInvoice.put("customerID", invoice.getCustomerID());
-                newInvoice.put("deliveryAddress", invoice.getDeliveryAddress());
-                newInvoice.put("total", invoice.getTotal());
-                newInvoice.put("status", invoice.getStatus().getOrderStatusValue());
-                newInvoice.put("createdAt", invoice.getCreatedAt());
-                newInvoice.put("note", invoice.getNote());
-
-                invoiceApi invoiceApi = new invoiceApi();
-                invoiceApi.createInvoiceApi(newInvoice, new CreateDocumentCallback() {
-                    @Override
-                    public void onCreateSuccess(String documentID) {
-                        createInvoiceDetail(invoiceApi, documentID);
-                    }
-
-                    @Override
-                    public void onCreateFailure(String errorMessage) {
-
-                    }
-                });
+            for(CartItem item : payment) {
+                Log.d("item", "Store Name: " + item.getStoreName());
+                Log.d("item", "total: " + getCartItemFee(item));
+                Log.d("item", "node: " + item.getNote());
+                for (Product product : item.getListProducts()) {
+                    Log.d("item", "getBaseID: " + product.getBaseID());
+                    Log.d("item", "quantity: " + product.getNumberInCart());
+                }
             }
+
+
+//            SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+//            String userId = sharedPreferences.getString(USER_ID, null);
+//
+//            ArrayList<Invoice> invoiceList = new ArrayList<>();
+//            Invoice invoice1 = new Invoice(
+//                    userId, "quận 7, Hồ Chí Minh", 120000, OrderStatus.PENDING_CONFIRMATION,
+//                    new Timestamp(new java.util.Date()), "Để trước cổng lúc giao hàng"
+//            );
+//            invoiceList.add(invoice1);
+//
+//            Invoice invoice2 = new Invoice(
+//                    userId, "quận Phú Nhuận, Hồ Chí Minh", 99999, OrderStatus.PENDING_CONFIRMATION,
+//                    new Timestamp(new java.util.Date()), "Lấy thêm 2 loại nữa"
+//            );
+//            invoiceList.add(invoice2);
+//
+//
+//            for (Invoice invoice : invoiceList) {
+//                Map<String, Object> newInvoice = new HashMap<>();
+//                newInvoice.put("customerID", invoice.getCustomerID());
+//                newInvoice.put("deliveryAddress", invoice.getDeliveryAddress());
+//                newInvoice.put("total", invoice.getTotal());
+//                newInvoice.put("status", invoice.getStatus().getOrderStatusValue());
+//                newInvoice.put("createdAt", invoice.getCreatedAt());
+//                newInvoice.put("note", invoice.getNote());
+//
+//                invoiceApi invoiceApi = new invoiceApi();
+//                invoiceApi.createInvoiceApi(newInvoice, new CreateDocumentCallback() {
+//                    @Override
+//                    public void onCreateSuccess(String documentID) {
+//                        createInvoiceDetail(invoiceApi, documentID);
+//                    }
+//
+//                    @Override
+//                    public void onCreateFailure(String errorMessage) {
+//
+//                    }
+//                });
+//            }
 
 //            startActivity(new Intent(PaymentActivity.this, InvoiceActivity.class));
         });
@@ -134,6 +153,7 @@ public class PaymentActivity extends AppCompatActivity {
         });
     }
 
+
     private String generateTime() {
         Calendar calendar = Calendar.getInstance();
         Date currentDate = calendar.getTime();
@@ -142,18 +162,18 @@ public class PaymentActivity extends AppCompatActivity {
         return invoiceId;
     }
 
-//    private double getTotalForCartItem(CartItem cartItem) {
-//        double fee = 0;
-//
-//        for (Product product : cartItem.getListProducts()) {
-//            if (product.getCheckedStatus()) {
-//                fee += (product.getOldPrice() * product.getNumberInCart());
-//            }
-//
-//        }
-//
-//        return fee;
-//    }
+    private double getTotalForCartItem(CartItem cartItem) {
+        double fee = 0;
+
+        for (Product product : cartItem.getListProducts()) {
+            if (product.getCheckedStatus()) {
+                fee += (product.getOldPrice() * product.getNumberInCart());
+            }
+
+        }
+
+        return fee;
+    }
 
     private String generateInvoiceId(int index) {
         Calendar calendar = Calendar.getInstance();
@@ -173,7 +193,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private double calculatorPayment() {
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-//        binding.txtTotalProductsFee.setText("đ" + formatter.format(getTotalProductsFee()));
+        binding.txtTotalProductsFee.setText("đ" + formatter.format(getTotalProductsFee()));
         double delivery = 25000;
         double totalDelivery = delivery * payment.size();
         double ecommerceDeliveryDiscount = 50000;
@@ -183,23 +203,21 @@ public class PaymentActivity extends AppCompatActivity {
 //        binding.txtEcommerceDeliveryDiscount.setText("-đ" + formatter.format(ecommerceDeliveryDiscount));
 //        binding.txtTotalDiscount.setText("-đ" + formatter.format(ecommerceDeliveryDiscount));
 
-//        double total = getTotalProductsFee() + totalDelivery;
-//        binding.txtTotalPayment.setText("đ" + formatter.format(total));
-//        binding.txtTotalOrder.setText("đ" + formatter.format(total));
-//        return total;
-
-        return 999999;
+        double total = getTotalProductsFee() + totalDelivery;
+        binding.txtTotalPayment.setText("đ" + formatter.format(total));
+        binding.txtTotalOrder.setText("đ" + formatter.format(total));
+        return total;
     }
 
-//    private double getTotalProductsFee() {
-//        double fee = 0;
-//        for (CartItem item : payment) {
-//            for (Product product : item.getListProducts()) {
-//                    fee += (product.getNewPrice() * product.getNumberInCart());
-//            }
-//        }
-//        return fee;
-//    }
+    private double getTotalProductsFee() {
+        double fee = 0;
+        for (CartItem item : payment) {
+            for (Product product : item.getListProducts()) {
+                fee += (product.getNewPrice() * product.getNumberInCart());
+            }
+        }
+        return fee;
+    }
 
 
     private void showThankyouDialog() {

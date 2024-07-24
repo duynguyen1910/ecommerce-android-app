@@ -28,9 +28,10 @@
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -53,19 +54,6 @@
                 android:text="Phân loại: XANH-Trend, SIZE L"
                 android:textColor="@color/text1" />
 
-            <TextView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/custom_border_green_persian"
-                android:paddingHorizontal="4dp"
-                android:paddingVertical="2dp"
-                android:text="Trả hàng miễn phí 15 ngày"
-                android:textColor="@color/green_persian"
-                android:textSize="12sp" />
-
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -75,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="đ123.000"
-                    android:textColor="@color/darkgray"
+                    android:textColor="@color/primary_color"
                 />
 
 

@@ -44,62 +44,101 @@
                     android:layout_marginTop="-20dp"
                     tools:ignore="MissingClass" />
             </RelativeLayout>
-
-            <TextView
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="6dp"
-                android:text="Quản lý chi tiêu"
-                android:textColor="@color/text1"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:text="Danh mục"
+                    android:id="@+id/txtCategory"
+                    android:layout_marginVertical="8dp"
+                    android:textColor="@color/text1"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fadeScrollbars="false"
+                    android:layout_below="@+id/txtCategory"
+                    android:paddingHorizontal="16dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false" />
+                <ProgressBar
+                    android:id="@+id/progressBarCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="50dp" />
+            </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/layoutStatistics"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/custom_edit_text_border"
-                android:gravity="center_vertical"
-                android:padding="5dp">
-
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:src="@mipmap/ic_chart2" />
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="6dp"
+                    android:text="Quản lý chi tiêu"
+                    android:textColor="@color/text1"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="1"
+                    android:id="@+id/layoutStatistics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/custom_edit_text_border"
                     android:gravity="center_vertical"
-                    android:orientation="vertical">
+                    android:padding="5dp">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Chi tiêu của bạn"
-                        android:textColor="@color/text1"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:src="@mipmap/ic_chart2" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Theo dõi và thống kê chi tiêu của bạn"
-                        android:textColor="@color/text1"
-                        android:textSize="14sp" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Chi tiêu của bạn"
+                            android:textColor="@color/text1"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Theo dõi và thống kê chi tiêu của bạn"
+                            android:textColor="@color/text1"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_next" />
                 </LinearLayout>
-
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:src="@drawable/ic_next" />
             </LinearLayout>
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -202,6 +241,7 @@
                 android:background="@drawable/bg_quantity_in_cart"
                 android:gravity="center"
                 android:text="04"
+                android:id="@+id/txtQuantityInCart"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
         </LinearLayout>

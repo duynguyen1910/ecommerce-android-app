@@ -93,18 +93,12 @@
                         android:background="@drawable/bg_quantity_in_cart"
                         android:gravity="center"
                         android:text="04"
+                        android:id="@+id/txtQuantityInCart"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
 
 
                 </RelativeLayout>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_sms"
-                    app:tint="@color/white" />
             </LinearLayout>
 
         </LinearLayout>
@@ -302,9 +296,9 @@
                 android:layout_alignParentEnd="true"
                 android:gravity="center_vertical"
                 android:text="Xem lịch sử mua hàng"
-                android:textColor="@color/green_persian"
+                android:textColor="@color/secondary_color"
                 app:drawableEndCompat="@drawable/ic_arrow_right_24"
-                app:drawableTint="@color/green_persian" />
+                app:drawableTint="@color/secondary_color" />
         </RelativeLayout>
 
         <LinearLayout
@@ -434,7 +428,28 @@
                 android:textColor="@color/black"
                 android:textStyle="bold" />
         </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/layoutLogistics"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="10dp">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_truck_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đơn hàng cần vận chuyển"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/layoutLogoutLn"
             android:layout_width="match_parent"

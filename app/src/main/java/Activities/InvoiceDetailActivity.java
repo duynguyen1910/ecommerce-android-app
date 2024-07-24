@@ -56,57 +56,57 @@ public class InvoiceDetailActivity extends AppCompatActivity {
 
             double invoiceTotal = bundle.getDouble("invoiceTotal");
 
-               binding.progressBar.setVisibility(View.VISIBLE);
-                binding.progressBar.getIndeterminateDrawable()
-                        .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
+            binding.progressBar.setVisibility(View.VISIBLE);
+            binding.progressBar.getIndeterminateDrawable()
+                    .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
-                binding.txtAddress.setText(deliveryAddress);
-                binding.txtInvoiceStatus.setText("Đơn hàng của bạn " + invoiceStatusLabel);
-                NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-                binding.txtTotal.setText("đ" + formatter.format(invoiceTotal));
-                binding.txtInvoiceID.setText(invoiceID);
+            binding.txtAddress.setText(deliveryAddress);
+            binding.txtInvoiceStatus.setText("Đơn hàng của bạn " + invoiceStatusLabel);
+            NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+            binding.txtTotal.setText("đ" + formatter.format(invoiceTotal));
+            binding.txtInvoiceID.setText(invoiceID);
 
-                binding.txtCreatedDate.setText(createdAt);
+            binding.txtCreatedDate.setText(createdAt);
 
-                if(!confirmedAt.isEmpty()) {
-                    binding.confirmedAtRL.setVisibility(View.VISIBLE);
-                    binding.txtConfirmedAt.setText(confirmedAt);
+            if(!confirmedAt.isEmpty()) {
+                binding.confirmedAtRL.setVisibility(View.VISIBLE);
+                binding.txtConfirmedAt.setText(confirmedAt);
+            }
+
+            if(!shippedAt.isEmpty()) {
+                binding.shippedAtRL.setVisibility(View.VISIBLE);
+                binding.txtShippedAt.setText(shippedAt);
+            }
+
+            if(!deliveredAt.isEmpty()) {
+                binding.deliveredAtRL.setVisibility(View.VISIBLE);
+                binding.txtDeliveredAt.setText(deliveredAt);
+            }
+
+
+            invoiceApi invoiceApi = new invoiceApi();
+            invoiceApi.getInvoiceDetail(invoiceID, new GetCollectionCallback<InvoiceDetail>() {
+                @Override
+                public void onGetListSuccess(ArrayList<InvoiceDetail> productList) {
+                    binding.progressBar.setVisibility(View.GONE);
+
+
+                    getStoreNameByID(productList);
+                    InvoiceDetailAdapter adapter =
+                            new InvoiceDetailAdapter(InvoiceDetailActivity.this,
+                                    productList);
+                    binding.recyclerView.setAdapter(adapter);
+                    binding.recyclerView.setLayoutManager(new LinearLayoutManager(
+                            InvoiceDetailActivity.this, LinearLayoutManager.VERTICAL,
+                            false));
                 }
 
-                if(!shippedAt.isEmpty()) {
-                    binding.shippedAtRL.setVisibility(View.VISIBLE);
-                    binding.txtShippedAt.setText(shippedAt);
+                @Override
+                public void onGetListFailure(String errorMessage) {
+                    binding.progressBar.setVisibility(View.GONE);
+                    Toast.makeText(InvoiceDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }
-
-                if(!deliveredAt.isEmpty()) {
-                    binding.deliveredAtRL.setVisibility(View.VISIBLE);
-                    binding.txtDeliveredAt.setText(deliveredAt);
-                }
-
-
-                invoiceApi invoiceApi = new invoiceApi();
-                invoiceApi.getInvoiceDetail(invoiceID, new GetCollectionCallback<InvoiceDetail>() {
-                    @Override
-                    public void onGetListSuccess(ArrayList<InvoiceDetail> productList) {
-                        binding.progressBar.setVisibility(View.GONE);
-
-
-                        getStoreNameByID(productList);
-                        InvoiceDetailAdapter adapter =
-                                new InvoiceDetailAdapter(InvoiceDetailActivity.this,
-                                        productList);
-                        binding.recyclerView.setAdapter(adapter);
-                        binding.recyclerView.setLayoutManager(new LinearLayoutManager(
-                                InvoiceDetailActivity.this, LinearLayoutManager.VERTICAL,
-                                false));
-                    }
-
-                    @Override
-                    public void onGetListFailure(String errorMessage) {
-                        binding.progressBar.setVisibility(View.GONE);
-                        Toast.makeText(InvoiceDetailActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                    }
-                });
+            });
 
         }
     }

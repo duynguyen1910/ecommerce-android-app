@@ -8,6 +8,9 @@ import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.keyName.USER_ROLE;
 
+import static constants.toastMessage.LOGIN_SUCCESSFULLY;
+import static utils.CartUtils.updateQuantityInCart;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -23,8 +26,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.stores.databinding.FragmentProfileBinding;
-
 import Activities.CartActivity;
+import Activities.DeliveryActivity;
 import Activities.InvoiceActivity;
 import Activities.StoreSetup.ActivateStoreActivity;
 import Activities.LoginActivity;
@@ -54,6 +57,7 @@ public class ProfileFragment extends Fragment {
 
         return binding.getRoot();
     }
+
 
     @Override
     public void onResume() {
@@ -111,6 +115,7 @@ public class ProfileFragment extends Fragment {
 
     private void initUI() {
         user = new User();
+        updateQuantityInCart(binding.txtQuantityInCart);
     }
 
     private void setupEvents() {
@@ -118,6 +123,10 @@ public class ProfileFragment extends Fragment {
             Intent intent = new Intent(requireActivity(), SettingsActivity.class);
             startActivity(intent);
 
+        });
+        binding.layoutLogistics.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), DeliveryActivity.class);
+            startActivity(intent);
         });
 
         binding.iconCart.setOnClickListener(v -> {
@@ -158,7 +167,7 @@ public class ProfileFragment extends Fragment {
             // Nếu đã tạo store thì vào thẳng Store Owner Activity
             if (storeId != null) {
                 Intent intent = new Intent(requireActivity(), StoreOwnerActivity.class);
-                intent.putExtra("storeId", storeId);
+                intent.putExtra(STORE_ID, storeId);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(requireActivity(), ActivateStoreActivity.class);

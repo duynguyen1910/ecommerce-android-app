@@ -12,7 +12,7 @@ public class keyName {
     public static final String USER_IMAGE_URL = "userImageUrl";
 
 
-    public static final String STORE_ID = "storeId";
+    public static final String STORE_ID = "storeID";
     public static final String STORE_NAME = "storeName";
     public static final String STORE_ADDRESS = "storeAddress";
     public static final String STORE_OWNER_ID = "storeOwnerId";
@@ -29,7 +29,7 @@ public class keyName {
     public static final String PRODUCT_INSTOCK = "inStock";
 
 
-    public static final String CATEGORY_ID = "categoryId";
+    public static final String CATEGORY_ID = "categoryID";
     public static final String CATEGORY_NAME = "categoryName";
 
     public static final String INVOICE_ID = "invoiceID";

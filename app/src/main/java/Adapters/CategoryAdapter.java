@@ -1,4 +1,7 @@
 package Adapters;
+import static constants.keyName.CATEGORY_ID;
+import static constants.keyName.CATEGORY_NAME;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -43,8 +46,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
-            bundle.putString("categoryName", category.getCategoryName());
-            bundle.putString("categoryId", category.getBaseID());
+            bundle.putString(CATEGORY_NAME, category.getCategoryName());
+            bundle.putString(CATEGORY_ID, category.getBaseID());
 
             intent.putExtras(bundle);
             ((Activity) context).setResult(1, intent);

@@ -1,12 +1,5 @@
 package models;
 
-import static constants.collectionName.PRODUCT_COLLECTION;
-import static constants.keyName.PRODUCT_INSTOCK;
-import static constants.keyName.STORE_ID;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.firestore.QuerySnapshot;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
@@ -14,6 +7,7 @@ import java.util.Map;
 import api.productApi;
 import interfaces.CreateDocumentCallback;
 import interfaces.GetCollectionCallback;
+import interfaces.GetCountCallback;
 import interfaces.GetDocumentCallback;
 import interfaces.UpdateDocumentCallback;
 
@@ -51,6 +45,21 @@ public class Product extends BaseObject implements Serializable {
         this.storeID = storeID;
     }
 
+    public Product(String productName, String description, ArrayList<String> productImages, double newPrice, double oldPrice, int inStock, int numberInCart, String storeID, boolean checkedStatus) {
+        this.productName = productName;
+        this.description = description;
+        this.newPrice = newPrice;
+        this.oldPrice = oldPrice;
+        this.inStock = inStock;
+        this.storeID = storeID;
+        this.numberInCart = numberInCart;
+        this.checkedStatus = checkedStatus;
+        this.productImages = productImages;
+    }
+
+    public Product() {
+        productApi = new productApi();
+    }
 
     @Override
     public String getBaseID() {
@@ -61,11 +70,6 @@ public class Product extends BaseObject implements Serializable {
     public void setBaseID(String productID) {
         super.validateBaseID(productID);
         super.baseID = productID;
-
-    }
-
-    public Product() {
-        productApi = new productApi();
     }
 
     public String getProductName() {
@@ -164,27 +168,50 @@ public class Product extends BaseObject implements Serializable {
     }
 
 
-
-    public void getProductDetail(String productId, GetDocumentCallback callback){
+    public void getProductDetail(String productId, GetDocumentCallback callback) {
         productApi.getProductDetailApi(productId, callback);
     }
 
 
-    public void updateProduct(Map<String, Object> updateData, String storeId, String productId, UpdateDocumentCallback callback) {
-       productApi.updateProductApi(updateData, storeId, productId, callback);
+    public void updateProduct(Map<String, Object> updateData,String productId, UpdateDocumentCallback callback) {
+        productApi.updateProductApi(updateData, productId, callback);
     }
 
 
-    public void getAllProducts(final GetCollectionCallback<Product> callback){
+    public void getAllProducts(final GetCollectionCallback<Product> callback) {
         productApi.getAllProductApi(callback);
     }
 
     public void getProductsByStoreId(String storeId, GetCollectionCallback<Product> callback) {
         productApi.getProductsByStoreIdApi(storeId, callback);
     }
+    public void getProductsInStockByStoreId(String storeId, GetCollectionCallback<Product> callback) {
+        productApi.getProductsInStockByStoreIdApi(storeId, callback);
+    }
 
     public void getProductsOutOfStockByStoreId(String storeId, GetCollectionCallback<Product> callback) {
         productApi.getProductsOutOfStockByStoreIdApi(storeId, callback);
     }
 
+    public void getAllProductByCategoryId(String categoryId, final GetCollectionCallback<Product> callback) {
+        productApi.getAllProductByCategoryIdApi(categoryId, callback);
+    }
+
+    public void getAllProductByStoreIdAndCategoryId(String storeId, String categoryId, final GetCollectionCallback<Product> callback) {
+        productApi.getAllProductByStoreIdAndCategoryIdApi(storeId, categoryId, callback);
+    }
+
+    public void countProductsOutOfStockByStoreId(String storeId, GetCountCallback<Product> callback){
+        productApi.countProductsOutOfStockByStoreIdApi(storeId, callback);
+    }
+
+    public void countProductsInStockByStoreId(String storeId, GetCountCallback<Product> callback){
+        productApi.countProductsInStockByStoreIdApi(storeId, callback);
+    }
+    public void getAllProductDescendingByCategoryId(String categoryId,final GetCollectionCallback<Product> callback) {
+        productApi.getAllProductDescendingByCategoryIdApi(categoryId, callback);
+    }
+    public void getAllProductAscendingByCategoryId(String categoryId,final GetCollectionCallback<Product> callback) {
+        productApi.getAllProductAscendingByCategoryIdApi(categoryId, callback);
+    }
 }

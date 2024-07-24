@@ -1,8 +1,5 @@
 package api;
 import static constants.collectionName.CATEGORY_COLLECTION;
-import static constants.collectionName.PRODUCT_COLLECTION;
-import static constants.keyName.PRODUCT_INSTOCK;
-import static constants.keyName.STORE_ID;
 
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,7 +12,6 @@ import java.util.ArrayList;
 
 import interfaces.GetCollectionCallback;
 import models.Category;
-import models.Product;
 
 public class categoryApi {
     private FirebaseFirestore db;

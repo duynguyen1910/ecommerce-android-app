@@ -28,12 +28,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
                     android:layout_marginBottom="10dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingVertical="4dp">
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/viewPager2Slider"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:layout_weight="1"
                         android:clipChildren="false"
                         android:clipToPadding="false" />
@@ -57,15 +58,16 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:background="@color/white"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp">
+                    android:background="@color/white">
+
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:orientation="vertical"
                         android:id="@+id/layoutProductsInfo"
-                        android:visibility="gone"
-                        android:layout_height="wrap_content">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -169,7 +171,6 @@
                 </RelativeLayout>
 
 
-
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
@@ -189,13 +190,13 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="10dp"
-                            app:cardCornerRadius="30dp">
+                            app:cardCornerRadius="50dp">
 
                             <ImageView
                                 android:id="@+id/imvStoreImage"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:scaleType="centerCrop"
+                                android:scaleType="fitXY"
                                 android:src="@mipmap/logo_lovito" />
                         </androidx.cardview.widget.CardView>
 
@@ -346,7 +347,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="#80D5D4D3"
-                app:cardCornerRadius="20dp">
+                app:cardCornerRadius="30dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -372,7 +373,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_toStartOf="@id/imageShare"
                 android:background="#80D5D4D3"
-                app:cardCornerRadius="20dp">
+                app:cardCornerRadius="30dp">
 
                 <RelativeLayout
                     android:id="@+id/iconCart"
@@ -388,6 +389,7 @@
                         app:tint="@color/darkgray" />
 
                     <TextView
+                        android:id="@+id/txtQuantityInCart"
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_alignParentEnd="true"
@@ -409,7 +411,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/ic_share" />
 
@@ -422,57 +423,63 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
-        android:weightSum="4">
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnChat"
-            style="@android:style/Widget.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_button_add_to_cart"
-            android:drawableTop="@drawable/ic_sms"
-            android:drawableTint="@color/primary_color"
-            android:text="Chat ngay"
-            android:textColor="@color/black"
-            android:textSize="12sp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnAddToCart"
-            style="@android:style/Widget.Button"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:drawableTop="@drawable/ic_cart"
-            android:drawableTint="@color/primary_color"
-            android:text="Thêm vào Giỏ hàng"
-            android:textColor="@color/black"
-            android:textSize="12sp" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:id="@+id/layoutBuyNow"
-            android:background="@color/primary_color"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:id="@+id/btnAddToCart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingVertical="4dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:id="@+id/viewAnimation"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_cart"
+                app:tint="@color/primary_color" />
 
             <TextView
-
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_horizontal"
+                android:text="Thêm vào Giỏ hàng"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layoutBuyNow"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/primary_color"
+            android:orientation="vertical"
+            android:paddingVertical="4dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="Mua ngay"
+                android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txtNewPriceInBuyNow"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="đ135.000"
+                android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />

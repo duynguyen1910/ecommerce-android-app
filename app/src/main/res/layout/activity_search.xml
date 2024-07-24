@@ -29,15 +29,28 @@
             android:id="@+id/searchEdt"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:background="@drawable/custom_searchview2_primary_color"
+            android:background="@drawable/custom_searchview_primary_color"
             android:hint="Tìm kiếm thông tin"
             android:paddingHorizontal="16dp"
             android:paddingVertical="10dp"
             android:textColor="@color/black"
             android:textColorHint="@color/text1"
             android:textSize="14dp" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/custom_btnsearch_primary_color"
+            android:src="@drawable/baseline_search_24"
+            android:text="Xem Store"
+            android:textAllCaps="false"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/primary_color"
+            android:textSize="14sp"
+            android:tint="@color/white" />
 
         <LinearLayout
             android:id="@+id/layoutFilter"
@@ -60,6 +73,7 @@
         </LinearLayout>
 
     </LinearLayout>
+
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"

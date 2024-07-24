@@ -10,7 +10,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Map;
 
 import api.userApi;
@@ -29,7 +28,7 @@ public class User extends BaseObject implements Serializable {
     private String email;
     private UserRole role;
     private userApi userApi;
-    private String storeId;
+    private String storeID;
 
 
     public User() {
@@ -69,17 +68,15 @@ public class User extends BaseObject implements Serializable {
     @Override
     public void setBaseID(String userId) {
         super.validateBaseID(userId);
-
         super.baseID = userId;
-
     }
 
-    public String getStoreId() {
-        return storeId;
+    public String getStoreID() {
+        return storeID;
     }
 
-    public void setStoreId(String storeId) {
-        this.storeId = storeId;
+    public void setStoreID(String storeID) {
+        this.storeID = storeID;
     }
 
     public String getPhoneNumber() {

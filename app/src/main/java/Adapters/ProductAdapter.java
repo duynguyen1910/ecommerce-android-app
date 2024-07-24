@@ -1,4 +1,7 @@
 package Adapters;
+import static constants.keyName.PRODUCT_ID;
+import static constants.keyName.STORE_ID;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
 import com.example.stores.databinding.ItemProductBinding;
 
 import java.text.NumberFormat;
@@ -41,6 +44,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }
     }
 
+    public void updateProducts(ArrayList<Product> newProducts) {
+        this.list.clear();
+        this.list.addAll(newProducts);
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ProductAdapter.ViewHolder holder, int position) {
 
@@ -62,11 +71,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ProductDetailActivity.class);
-                // truyền productId, storeId
                 Bundle bundle = new Bundle();
 
-                bundle.putString("productId", product.getBaseID());
-                bundle.putString("storeId", product.getStoreID());
+                bundle.putString(PRODUCT_ID, product.getBaseID());
+                bundle.putString(STORE_ID, product.getStoreID());
+
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }

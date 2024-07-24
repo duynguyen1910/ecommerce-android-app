@@ -32,10 +32,10 @@ public class Store extends BaseObject implements Serializable {
     }
 
     @Override
-    public void setBaseID(String storeID) {
-        validateBaseID(storeID);
+    public void setBaseID(String storeId) {
+        validateBaseID(storeId);
 
-        super.baseID = storeID;
+        super.baseID = storeId;
     }
 
 

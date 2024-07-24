@@ -20,7 +20,7 @@ public class Invoice extends BaseObject implements Serializable {
     private Timestamp cancelledAt;
     private String note;
     private ArrayList<InvoiceDetail> invoiceItems;
-//    private CartItem cartItem;
+    //    private CartItem cartItem;
     private invoiceApi invoiceApi;
 
     public Invoice() {this.invoiceApi = new invoiceApi();}

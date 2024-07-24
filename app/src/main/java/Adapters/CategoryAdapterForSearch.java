@@ -1,5 +1,9 @@
 package Adapters;
 
+import static constants.keyName.CATEGORY_ID;
+import static constants.keyName.CATEGORY_NAME;
+import static constants.keyName.STORE_ID;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -50,9 +54,10 @@ public class CategoryAdapterForSearch extends RecyclerView.Adapter<CategoryAdapt
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, SearchActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString("categoryName", category.getCategoryName());
-            bundle.putString("categoryId", category.getBaseID());
-            bundle.putString("storeId", storeId);
+
+            bundle.putString(CATEGORY_NAME, category.getCategoryName());
+            bundle.putString(CATEGORY_ID, category.getBaseID());
+            bundle.putString(STORE_ID, storeId);
 
             intent.putExtras(bundle);
             context.startActivity(intent);

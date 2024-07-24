@@ -3,6 +3,7 @@ package models;
 public abstract class BaseObject {
     protected String baseID;
 
+
     /**
      * Retrieves the unique identifier of the object.
      *
