@@ -9,6 +9,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityAddVariantBinding;
 import com.example.stores.databinding.DialogAddVariantBinding;
@@ -17,9 +19,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
+import Adapters.MyProductsAdapter;
+import Adapters.TypeAdapter;
+import models.Type;
+import models.TypeValue;
+
 public class AddVariantActivity extends AppCompatActivity {
 
     ActivityAddVariantBinding binding;
+    ArrayList<Type> types;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +35,8 @@ public class AddVariantActivity extends AppCompatActivity {
         binding = ActivityAddVariantBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initUI();
+        fakeTypeData();
+        setupUI();
         setupEvents();
 
 
@@ -37,7 +47,44 @@ public class AddVariantActivity extends AppCompatActivity {
         binding.layoutAddVariant.setOnClickListener(v -> {
             popUpChooseVariantDialog();
         });
+    }
 
+    private void setupUI(){
+        TypeAdapter adapter = new TypeAdapter(AddVariantActivity.this, types);
+        binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(AddVariantActivity.this, LinearLayoutManager.VERTICAL, false));
+    }
+
+    private void fakeTypeData(){
+        types = new ArrayList<>();
+        ArrayList<TypeValue> listColorValues = new ArrayList<>();
+        TypeValue color1 = new TypeValue("https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lrwxcikwgrt07d", "Xanh lá đậm");
+        TypeValue color2 = new TypeValue("https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lrwxcikww81w79", "Xám tro");
+        TypeValue color3 = new TypeValue("https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lrwxcikxbo9l47", "Trắng kem");
+        TypeValue color4 = new TypeValue("https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lrwxcikww80pe0", "Hồng nhạt");
+
+        listColorValues.add(color1);
+        listColorValues.add(color2);
+        listColorValues.add(color3);
+        listColorValues.add(color4);
+        Type color = new Type("Màu sắc", listColorValues);
+
+        ArrayList<TypeValue> listSizeValues = new ArrayList<>();
+        TypeValue sizeL = new TypeValue("L");
+        TypeValue sizeM = new TypeValue("M");
+        TypeValue sizeS = new TypeValue("S");
+        TypeValue sizeXL = new TypeValue("XL");
+        TypeValue sizeXXL = new TypeValue("XXL");
+        listSizeValues.add(sizeL);
+        listSizeValues.add(sizeM);
+        listSizeValues.add(sizeS);
+        listSizeValues.add(sizeXL);
+        listSizeValues.add(sizeXXL);
+
+
+        Type size = new Type("Size", listSizeValues);
+        types.add(color);
+        types.add(size);
 
     }
 

@@ -68,6 +68,7 @@ public class HomeFragment extends Fragment {
 //        binding.progressBarBanner.setVisibility(View.VISIBLE);
         sliderItems = new ArrayList<>();
 
+        sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-ly0hr2zmqifv2e_xxhdpi"));
         sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-lxuu1mpyl1w9ec_xxhdpi"));
         sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-lxutdtxck0yj9c_xxhdpi"));
         sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-lwztkkhj1al5ec_xhdpi"));

@@ -2,9 +2,12 @@ package Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.example.stores.databinding.ItemTypeValueBinding;
 import java.util.ArrayList;
 import models.TypeValue;
@@ -40,6 +43,23 @@ public class TypeValueAdapter extends RecyclerView.Adapter<TypeValueAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TypeValue typeValue = list.get(holder.getBindingAdapterPosition());
+        holder.binding.txtValue.setText(typeValue.getValue());
+        if (typeValue.getImage() != null){
+            holder.binding.image.setVisibility(View.VISIBLE);
+            Glide.with(context).load(typeValue.getImage()).centerCrop().into(holder.binding.image);
+        }else {
+            holder.binding.image.setVisibility(View.GONE);
+        }
+
+        holder.binding.imvRemove.setOnClickListener(v -> {
+            int removePos = holder.getBindingAdapterPosition();
+            list.remove(removePos);
+            notifyItemRemoved(removePos);
+        });
+
+        holder.binding.imvEdit.setOnClickListener(v -> {
+
+        });
 
 
     }
