@@ -1,4 +1,13 @@
 package Adapters;
+import static constants.keyName.TYPE_COLOR;
+import static constants.keyName.TYPE_GENDER;
+import static constants.keyName.TYPE_SIZE_GLOBAL;
+import static constants.keyName.TYPE_SIZE_VN;
+import static utils.TypeUtils.popUpSelectColorDialog;
+import static utils.TypeUtils.popUpSelectGenderDialog;
+import static utils.TypeUtils.popUpSelectSizeGlobalDialog;
+import static utils.TypeUtils.popUpSelectSizeVnDialog;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,9 +25,11 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<Type> list;
 
+
     public TypeAdapter(Context context, ArrayList<Type> list) {
         this.context = context;
         this.list = list;
+
     }
 
     @NonNull
@@ -42,6 +53,7 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Type type = list.get(holder.getBindingAdapterPosition());
+        String selectedType = type.getTypeName();
         holder.binding.txtTypeName.setText(type.getTypeName());
         holder.binding.txtRemove.setOnClickListener(v -> {
             int removePos = holder.getBindingAdapterPosition();
@@ -49,9 +61,25 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
             notifyItemRemoved(removePos);
         });
 
-        TypeValueAdapter adapter = new TypeValueAdapter(context, type.getListValues());
+        TypeValueAdapterForSettingVariant adapter = new TypeValueAdapterForSettingVariant(context, type.getListValues(), selectedType);
         holder.binding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
         holder.binding.recyclerView.setAdapter(adapter);
+
+        holder.binding.layoutAddTypeValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedType.equals(TYPE_COLOR)){
+                    popUpSelectColorDialog(context);
+                }else if (selectedType.equals(TYPE_GENDER)){
+                    popUpSelectGenderDialog(context);
+                }
+                else if (selectedType.equals(TYPE_SIZE_VN)){
+                    popUpSelectSizeVnDialog(context);
+                }else if (selectedType.equals(TYPE_SIZE_GLOBAL)){
+                    popUpSelectSizeGlobalDialog(context);
+                }
+            }
+        });
 
     }
 

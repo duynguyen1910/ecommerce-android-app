@@ -12,13 +12,15 @@ import com.example.stores.databinding.ItemTypeValueBinding;
 import java.util.ArrayList;
 import models.TypeValue;
 
-public class TypeValueAdapter extends RecyclerView.Adapter<TypeValueAdapter.ViewHolder> {
+public class TypeValueAdapterForSettingVariant extends RecyclerView.Adapter<TypeValueAdapterForSettingVariant.ViewHolder> {
     private final Context context;
     private final ArrayList<TypeValue> list;
+    private String selectedType; // Color, Size, Gender
 
-    public TypeValueAdapter(Context context, ArrayList<TypeValue> list) {
+    public TypeValueAdapterForSettingVariant(Context context, ArrayList<TypeValue> list, String selectedType) {
         this.context = context;
         this.list = list;
+        this.selectedType = selectedType;
     }
 
     @NonNull

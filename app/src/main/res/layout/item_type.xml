@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
@@ -34,5 +35,27 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/custom_border_top_bottom"
+        android:gravity="center"
+        android:id="@+id/layoutAddTypeValue"
+        android:orientation="horizontal"
+        android:padding="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="5dp"
+            android:fontFamily="sans-serif-light"
+            android:background="@color/white"
+            android:text="Thêm giá trị phân loại"
+            android:gravity="center"
+            android:textColor="@color/primary_color"
+            android:textStyle="bold"
+            app:drawableTint="@color/primary_color"
+            app:drawableStartCompat="@drawable/ic_add_circle_24" />
+    </LinearLayout>
 
 </LinearLayout>

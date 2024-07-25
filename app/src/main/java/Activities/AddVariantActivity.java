@@ -1,4 +1,8 @@
 package Activities;
+import static constants.keyName.TYPE_COLOR;
+import static constants.keyName.TYPE_SIZE_GLOBAL;
+import static constants.keyName.TYPE_SIZE_VN;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -59,32 +63,61 @@ public class AddVariantActivity extends AppCompatActivity {
         types = new ArrayList<>();
         ArrayList<TypeValue> listColorValues = new ArrayList<>();
         TypeValue color1 = new TypeValue("https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lrwxcikwgrt07d", "Xanh lá đậm");
-        TypeValue color2 = new TypeValue("https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lrwxcikww81w79", "Xám tro");
-        TypeValue color3 = new TypeValue("https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lrwxcikxbo9l47", "Trắng kem");
-        TypeValue color4 = new TypeValue("https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lrwxcikww80pe0", "Hồng nhạt");
+//        TypeValue color2 = new TypeValue("https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lrwxcikww81w79", "Xám tro");
+//        TypeValue color3 = new TypeValue("https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lrwxcikxbo9l47", "Trắng kem");
+//        TypeValue color4 = new TypeValue("https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lrwxcikww80pe0", "Hồng nhạt");
 
         listColorValues.add(color1);
-        listColorValues.add(color2);
-        listColorValues.add(color3);
-        listColorValues.add(color4);
-        Type color = new Type("Màu sắc", listColorValues);
+//        listColorValues.add(color2);
+//        listColorValues.add(color3);
+//        listColorValues.add(color4);
+        Type color = new Type(TYPE_COLOR, listColorValues);
 
-        ArrayList<TypeValue> listSizeValues = new ArrayList<>();
+        ArrayList<TypeValue> listSizeGlobalValues = new ArrayList<>();
         TypeValue sizeL = new TypeValue("L");
         TypeValue sizeM = new TypeValue("M");
-        TypeValue sizeS = new TypeValue("S");
-        TypeValue sizeXL = new TypeValue("XL");
-        TypeValue sizeXXL = new TypeValue("XXL");
-        listSizeValues.add(sizeL);
-        listSizeValues.add(sizeM);
-        listSizeValues.add(sizeS);
-        listSizeValues.add(sizeXL);
-        listSizeValues.add(sizeXXL);
+//        TypeValue sizeS = new TypeValue("S");
+//        TypeValue sizeXL = new TypeValue("XL");
+//        TypeValue sizeXXL = new TypeValue("XXL");
+        listSizeGlobalValues.add(sizeL);
+        listSizeGlobalValues.add(sizeM);
+//        listSizeGlobalValues.add(sizeS);
+//        listSizeGlobalValues.add(sizeXL);
+//        listSizeGlobalValues.add(sizeXXL);
 
 
-        Type size = new Type("Size", listSizeValues);
+        Type sizeGlobal = new Type(TYPE_SIZE_GLOBAL, listSizeGlobalValues);
+
+
+        ArrayList<TypeValue> listSizeVnValues = new ArrayList<>();
+        TypeValue size40 = new TypeValue("40");
+        TypeValue size42 = new TypeValue("42");
+        listSizeVnValues.add(size40);
+        listSizeVnValues.add(size42);
+
+        Type sizeVn = new Type(TYPE_SIZE_VN, listSizeVnValues);
+
+
+        ArrayList<TypeValue> listGenderValues = new ArrayList<>();
+        TypeValue gender1 = new TypeValue("Bé trai");
+        TypeValue gender2 = new TypeValue("Bé gái");
+//        TypeValue gender3 = new TypeValue("Nam");
+//        TypeValue gender4 = new TypeValue("Nữ");
+//        TypeValue gender5 = new TypeValue("Unisex");
+
+        listGenderValues.add(gender1);
+        listGenderValues.add(gender2);
+//        listGenderValues.add(gender3);
+//        listGenderValues.add(gender4);
+//        listGenderValues.add(gender5);
+
+        Type gender = new Type("Giới tính", listGenderValues);
+
+
         types.add(color);
-        types.add(size);
+        types.add(sizeGlobal);
+        types.add(sizeVn);
+        types.add(gender);
 
     }
 
@@ -113,7 +146,13 @@ public class AddVariantActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        dialogBinding.txtSize.setOnClickListener(new View.OnClickListener() {
+        dialogBinding.txtSizeVN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialogBinding.txtSizeGlobal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -146,37 +185,7 @@ public class AddVariantActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
     }
 
-    private static ArrayList<String> setupColor() {
-        String[] colorArray = {
-                "Đỏ", "Cam", "Vàng", "Xanh lá", "Xanh dương",
-                "Tím", "Hồng", "Tím nhạt", "Trắng", "Bạc", "Nâu",
-                "Màu kaki", "Đen", "Vàng gold", "Xám tro", "Be",
-                "Hồng dâu", "Nâu cafe", "Vàng đồng", "Nâu đậm",
-                "Xanh lục bảo", "Xám", "Nâu nhạt", "Đen nhám", "Xanh rêu",
-                "Tím than", "Trắng kem", "Xanh ngọc bích", "Xanh lá đậm",
-                "Bạc ánh kim", "Xám lông chuột", "Bạch kim", "Xám khói"
-        };
-        return new ArrayList<>(Arrays.asList(colorArray));
-    }
 
-    private static HashMap<String, ArrayList<String>> setupSize() {
-        String[] sizeVNArray = {
-                "34", "35", "36", "37", "38", "39", "40", "41",
-                "42", "43", "44", "45", "46", "47", "48", "49"
-        };
-        String[] sizeGlobalArray = {
-                "Free Size", "L", "M", "S", "XL", "XS", "XXL", "XXS"
-        };
-        HashMap<String, ArrayList<String>> sizeMap = new HashMap<>();
-        sizeMap.put("sizeVNArray", new ArrayList<>(Arrays.asList(sizeVNArray)));
-        sizeMap.put("sizeGlobalArray", new ArrayList<>(Arrays.asList(sizeGlobalArray)));
-        return sizeMap;
-    }
-
-    private static ArrayList<String> setupGender() {
-        String[] genderArray = {"Bé trai", "Bé gái", "Nam", "Nữ", "Unisex"};
-        return new ArrayList<>(Arrays.asList(genderArray));
-    }
 
 
 }

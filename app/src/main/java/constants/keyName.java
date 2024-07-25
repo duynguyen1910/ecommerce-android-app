@@ -31,4 +31,11 @@ public class keyName {
     public static final String CATEGORY_NAME = "categoryName";
 
 
+    public static final String TYPE_COLOR = "Màu sắc";
+    public static final String TYPE_GENDER = "Giới tính";
+    public static final String TYPE_SIZE_VN = "Size (VN)";
+    public static final String TYPE_SIZE_GLOBAL = "Size (Quốc tế)";
+
+
+
 }

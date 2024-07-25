@@ -47,13 +47,24 @@
             android:textColor="@color/darkgray" />
 
         <TextView
-            android:id="@+id/txtSize"
+            android:id="@+id/txtSizeVN"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:background="@drawable/custom_border_top_bottom"
             android:padding="16dp"
-            android:text="Size"
+            android:text="Size (VN)"
+            android:textAlignment="textStart"
+            android:textColor="@color/darkgray" />
+
+        <TextView
+            android:id="@+id/txtSizeGlobal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:background="@drawable/custom_border_top_bottom"
+            android:padding="16dp"
+            android:text="Size (Quốc Tế)"
             android:textAlignment="textStart"
             android:textColor="@color/darkgray" />
 
