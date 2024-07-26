@@ -1,5 +1,7 @@
 package utils;
+
 import java.util.ArrayList;
+
 import models.TypeValue;
 
 public class TypeUtils {
@@ -16,12 +18,13 @@ public class TypeUtils {
         };
         ArrayList<TypeValue> colorValues = new ArrayList<>();
         for (String color : colorArray) {
-            TypeValue typeValue = new TypeValue(color);
+            TypeValue typeValue = new TypeValue("", color);
             colorValues.add(typeValue);
 
         }
         return colorValues;
     }
+
     public static ArrayList<TypeValue> setupSizeVn() {
         String[] sizeVNArray = {
                 "34", "35", "36", "37", "38", "39", "40", "41",
@@ -35,6 +38,7 @@ public class TypeUtils {
         }
         return sizeVNValues;
     }
+
     public static ArrayList<TypeValue> setupSizeGlobal() {
         String[] sizeGlobalArray = {
                 "Free Size", "L", "M", "S", "XL", "XS", "XXL", "XXS"
@@ -46,6 +50,7 @@ public class TypeUtils {
         }
         return sizeGlobalValues;
     }
+
     public static ArrayList<TypeValue> setupGender() {
         String[] genderArray = {"Bé trai", "Bé gái", "Nam", "Nữ", "Unisex"};
 

@@ -15,9 +15,12 @@
         android:layout_height="50dp"
         android:gravity="center_vertical"
         android:id="@+id/image"
+        android:padding="10dp"
+        android:background="@drawable/custom_stroke_primary_color"
         android:layout_marginEnd="10dp"
-        android:src="@mipmap/lovito_dress"
-        android:textColor="@color/primary_color" />
+        android:src="@drawable/ic_upload_24"
+        android:textColor="@color/primary_color"
+        app:tint="@color/primary_color" />
 
 
     <LinearLayout

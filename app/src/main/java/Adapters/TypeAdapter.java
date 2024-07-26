@@ -44,7 +44,6 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<Type> list;
     public static TypeCallback callback = null;
-
     private static final ArrayList<TypeValue> colorValues = setupColor();
     private static final ArrayList<TypeValue> genderValues = setupGender();
     private static final ArrayList<TypeValue> sizeVnValues = setupSizeVn();

@@ -3,8 +3,6 @@ import static constants.keyName.TYPE_COLOR;
 import static constants.keyName.TYPE_GENDER;
 import static constants.keyName.TYPE_SIZE_GLOBAL;
 import static constants.keyName.TYPE_SIZE_VN;
-import static utils.CartUtils.showToast;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -108,33 +106,42 @@ public class AddVariantActivity extends AppCompatActivity {
 
         dialogBinding.imageClose.setOnClickListener(v -> dialog.dismiss());
         dialogBinding.txtSizeVN.setOnClickListener(v -> {
-            Type color = new Type(TYPE_SIZE_VN, new ArrayList<>());
-            selectedTypes.add(TYPE_SIZE_VN);
-            adapter.addType(color);
+            Type type = new Type(TYPE_SIZE_VN, new ArrayList<>());
+            if (!selectedTypes.contains(type.getTypeName())){
+                adapter.addType(type);
+            }
+            selectedTypes.add(type.getTypeName());
+
             dialog.dismiss();
             adapter.updateVisibility();
 
         });
         dialogBinding.txtSizeGlobal.setOnClickListener(v -> {
-            Type color = new Type(TYPE_SIZE_GLOBAL, new ArrayList<>());
-            adapter.addType(color);
-            selectedTypes.add(TYPE_SIZE_GLOBAL);
+            Type type = new Type(TYPE_SIZE_GLOBAL, new ArrayList<>());
+            if (!selectedTypes.contains(type.getTypeName())){
+                adapter.addType(type);
+            }
+            selectedTypes.add(type.getTypeName());
             dialog.dismiss();
             adapter.updateVisibility();
 
         });
         dialogBinding.txtColor.setOnClickListener(v -> {
-            Type color = new Type(TYPE_COLOR, new ArrayList<>());
-            adapter.addType(color);
-            selectedTypes.add(TYPE_COLOR);
+            Type type = new Type(TYPE_COLOR, new ArrayList<>());
+            if (!selectedTypes.contains(type.getTypeName())){
+                adapter.addType(type);
+            }
+            selectedTypes.add(type.getTypeName());
             dialog.dismiss();
 
             adapter.updateVisibility();
         });
         dialogBinding.txtGender.setOnClickListener(v -> {
-            Type color = new Type(TYPE_GENDER, new ArrayList<>());
-            adapter.addType(color);
-            selectedTypes.add(TYPE_GENDER);
+            Type type = new Type(TYPE_GENDER, new ArrayList<>());
+            if (!selectedTypes.contains(type.getTypeName())){
+                adapter.addType(type);
+            }
+            selectedTypes.add(type.getTypeName());
             dialog.dismiss();
             adapter.updateVisibility();
 
