@@ -1,4 +1,6 @@
 package Adapters;
+import static utils.CartUtils.showToast;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -69,9 +71,9 @@ public class TypeValueAdapterForSettingVariant extends RecyclerView.Adapter<Type
 
         notifyItemInserted(list.size());
     }
-    public void removeTypeValue(int position){
-        list.remove(position);
-        notifyItemRemoved(list.size());
+    public void removeAll(ArrayList<TypeValue> removedList){
+        list.removeAll(removedList);
+        notifyDataSetChanged();
     }
     @Override
     public int getItemCount() {

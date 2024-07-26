@@ -45,7 +45,6 @@ public class TypeValueAdapterForDialog extends RecyclerView.Adapter<TypeValueAda
         holder.binding.chkValue.setText(typeValue.getValue());
 
         if (typeValue.isChecked()){
-            holder.binding.chkValue.setEnabled(false);
             holder.itemView.setBackgroundResource(R.drawable.custom_border_primary_color);
             holder.binding.chkValue.setChecked(true);
             holder.binding.chkValue.setTextColor(ContextCompat.getColor(context, R.color.primary_color));

@@ -137,13 +137,18 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
         binding.recyclerView.setAdapter(typeValueAdapter);
 
 
+        ArrayList<TypeValue> removedList = new ArrayList<>();
         binding.btnSubmit.setOnClickListener(v -> {
-            for (TypeValue item : colorValues) {
-                if (item.isChecked()) {
+            colorValues.forEach(item ->{
+                if (item.isChecked()){
                     callback.updateSelectedTypeValues(item);
                     adapter.addTypeValue(item);
+                }else {
+                    removedList.add(item);
+                    callback.updateSelectedTypeValues(item);
                 }
-            }
+            });
+            adapter.removeAll(removedList);
             dialog.dismiss();
         });
 
