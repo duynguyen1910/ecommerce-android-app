@@ -83,7 +83,7 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
             int removePos = holder.getBindingAdapterPosition();
             list.remove(removePos);
             notifyItemRemoved(removePos);
-
+            callback.updateSelectableTypeSet(type.getTypeName());
             updateVisibility();
         });
 
@@ -100,19 +100,30 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
                         popUpSelectColorDialog(typeValueAdapter, context);
                         break;
                     case TYPE_GENDER:
-                        popUpSelectGenderDialog(typeValueAdapter,context);
+                        popUpSelectGenderDialog(typeValueAdapter, context);
                         break;
                     case TYPE_SIZE_VN:
-                        popUpSelectSizeVnDialog(typeValueAdapter,context);
+                        popUpSelectSizeVnDialog(typeValueAdapter, context);
                         break;
                     case TYPE_SIZE_GLOBAL:
-                        popUpSelectSizeGlobalDialog(typeValueAdapter,context);
+                        popUpSelectSizeGlobalDialog(typeValueAdapter, context);
                         break;
                 }
             }
         });
 
     }
+
+    public void addType(Type type) {
+        list.add(type);
+        notifyItemInserted(list.size());
+    }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+
     public void updateVisibility() {
         boolean popupable = getItemCount() < 2;
         callback.controlPopUpVariantDialog(popupable);
@@ -145,11 +156,11 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
 
         ArrayList<TypeValue> removedList = new ArrayList<>();
         binding.btnSubmit.setOnClickListener(v -> {
-            colorValues.forEach(item ->{
-                if (item.isChecked()){
+            colorValues.forEach(item -> {
+                if (item.isChecked()) {
                     callback.updateSelectedTypeValues(item);
                     adapter.addTypeValue(item);
-                }else {
+                } else {
                     removedList.add(item);
                     callback.updateSelectedTypeValues(item);
                 }
@@ -163,6 +174,7 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
         });
 
     }
+
     public static void popUpSelectGenderDialog(TypeValueAdapterForSettingVariant adapter, Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         DialogSelectGenderBinding binding = DialogSelectGenderBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
@@ -201,6 +213,7 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
         });
 
     }
+
     public static void popUpSelectSizeVnDialog(TypeValueAdapterForSettingVariant adapter, Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         DialogSelectSizeVnBinding binding = DialogSelectSizeVnBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
@@ -239,6 +252,7 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
         });
 
     }
+
     public static void popUpSelectSizeGlobalDialog(TypeValueAdapterForSettingVariant adapter, Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         DialogSelectSizeGlobalBinding binding = DialogSelectSizeGlobalBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
@@ -277,15 +291,5 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
 
     }
 
-    public void addType(Type type) {
-        list.add(type);
-        notifyItemInserted(list.size());
-    }
 
-
-
-    @Override
-    public int getItemCount() {
-        return list.size();
-    }
 }

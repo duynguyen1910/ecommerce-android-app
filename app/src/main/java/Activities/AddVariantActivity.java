@@ -31,7 +31,7 @@ public class AddVariantActivity extends AppCompatActivity {
     ActivityAddVariantBinding binding;
     ArrayList<Type> types = new ArrayList<>();
     TypeAdapter adapter;
-    HashSet<String> fourTypes = new HashSet<>();
+    HashSet<String> selectableSet = new HashSet<>();
     HashSet<String> selectedTypes = new HashSet<>();
 
 
@@ -78,6 +78,11 @@ public class AddVariantActivity extends AppCompatActivity {
                 }
             }
 
+            @Override
+            public void updateSelectableTypeSet(String typeName) {
+                selectableSet.add(typeName);
+            }
+
         });
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(AddVariantActivity.this, LinearLayoutManager.VERTICAL, false));
@@ -103,15 +108,39 @@ public class AddVariantActivity extends AppCompatActivity {
             Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
             dialogBinding.getRoot().startAnimation(slideUp);
         }
+        if (selectableSet.contains(TYPE_COLOR)) {
+            dialogBinding.txtColor.setVisibility(View.VISIBLE);
+        }
+        if (selectableSet.contains(TYPE_SIZE_VN)) {
+            dialogBinding.txtSizeVN.setVisibility(View.VISIBLE);
+        }
+        if (selectableSet.contains(TYPE_SIZE_GLOBAL)) {
+            dialogBinding.txtSizeGlobal.setVisibility(View.VISIBLE);
+        }
+        if (selectableSet.contains(TYPE_GENDER)) {
+            dialogBinding.txtGender.setVisibility(View.VISIBLE);
+        }
 
         dialogBinding.imageClose.setOnClickListener(v -> dialog.dismiss());
+
+        dialogBinding.txtColor.setOnClickListener(v -> {
+            Type type = new Type(TYPE_COLOR, new ArrayList<>());
+            if (!selectedTypes.contains(type.getTypeName())){
+                adapter.addType(type);
+            }
+            selectedTypes.add(type.getTypeName());
+            selectableSet.remove(type.getTypeName());
+            dialog.dismiss();
+
+            adapter.updateVisibility();
+        });
         dialogBinding.txtSizeVN.setOnClickListener(v -> {
             Type type = new Type(TYPE_SIZE_VN, new ArrayList<>());
             if (!selectedTypes.contains(type.getTypeName())){
                 adapter.addType(type);
             }
             selectedTypes.add(type.getTypeName());
-
+            selectableSet.remove(type.getTypeName());
             dialog.dismiss();
             adapter.updateVisibility();
 
@@ -122,26 +151,19 @@ public class AddVariantActivity extends AppCompatActivity {
                 adapter.addType(type);
             }
             selectedTypes.add(type.getTypeName());
+            selectableSet.remove(type.getTypeName());
             dialog.dismiss();
             adapter.updateVisibility();
 
         });
-        dialogBinding.txtColor.setOnClickListener(v -> {
-            Type type = new Type(TYPE_COLOR, new ArrayList<>());
-            if (!selectedTypes.contains(type.getTypeName())){
-                adapter.addType(type);
-            }
-            selectedTypes.add(type.getTypeName());
-            dialog.dismiss();
 
-            adapter.updateVisibility();
-        });
         dialogBinding.txtGender.setOnClickListener(v -> {
             Type type = new Type(TYPE_GENDER, new ArrayList<>());
             if (!selectedTypes.contains(type.getTypeName())){
                 adapter.addType(type);
             }
             selectedTypes.add(type.getTypeName());
+            selectableSet.remove(type.getTypeName());
             dialog.dismiss();
             adapter.updateVisibility();
 
@@ -154,11 +176,11 @@ public class AddVariantActivity extends AppCompatActivity {
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
-        HashSet<String> fourTypes = new HashSet<>();
-        fourTypes.add(TYPE_COLOR);
-        fourTypes.add(TYPE_GENDER);
-        fourTypes.add(TYPE_SIZE_VN);
-        fourTypes.add(TYPE_SIZE_GLOBAL);
+        selectableSet = new HashSet<>();
+        selectableSet.add(TYPE_COLOR);
+        selectableSet.add(TYPE_GENDER);
+        selectableSet.add(TYPE_SIZE_VN);
+        selectableSet.add(TYPE_SIZE_GLOBAL);
 
         HashSet<String> selectedTypes = new HashSet<>();
 
