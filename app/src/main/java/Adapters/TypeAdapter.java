@@ -13,7 +13,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -81,10 +80,13 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
         holder.binding.txtTypeName.setText(type.getTypeName());
         holder.binding.txtRemove.setOnClickListener(v -> {
             int removePos = holder.getBindingAdapterPosition();
+            if (type.getTypeName().equals(TYPE_SIZE_VN) || type.getTypeName().equals(TYPE_SIZE_GLOBAL)) {
+                callback.setVisibleForSelectSizeLayout();
+            }
             list.remove(removePos);
-            notifyItemRemoved(removePos);
             callback.updateSelectableTypeSet(type.getTypeName());
-            updateVisibility();
+            setVisibleForSelectVariantDialog();
+            notifyItemRemoved(removePos);
         });
 
 
@@ -92,23 +94,20 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
         holder.binding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
         holder.binding.recyclerView.setAdapter(typeValueAdapter);
 
-        holder.binding.layoutAddTypeValue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (selectedType) {
-                    case TYPE_COLOR:
-                        popUpSelectColorDialog(typeValueAdapter, context);
-                        break;
-                    case TYPE_GENDER:
-                        popUpSelectGenderDialog(typeValueAdapter, context);
-                        break;
-                    case TYPE_SIZE_VN:
-                        popUpSelectSizeVnDialog(typeValueAdapter, context);
-                        break;
-                    case TYPE_SIZE_GLOBAL:
-                        popUpSelectSizeGlobalDialog(typeValueAdapter, context);
-                        break;
-                }
+        holder.binding.layoutAddTypeValue.setOnClickListener(v -> {
+            switch (selectedType) {
+                case TYPE_COLOR:
+                    popUpSelectColorDialog(typeValueAdapter, context);
+                    break;
+                case TYPE_GENDER:
+                    popUpSelectGenderDialog(typeValueAdapter, context);
+                    break;
+                case TYPE_SIZE_VN:
+                    popUpSelectSizeVnDialog(typeValueAdapter, context);
+                    break;
+                case TYPE_SIZE_GLOBAL:
+                    popUpSelectSizeGlobalDialog(typeValueAdapter, context);
+                    break;
             }
         });
 
@@ -124,7 +123,7 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
         return list.size();
     }
 
-    public void updateVisibility() {
+    public void setVisibleForSelectVariantDialog() {
         boolean popupable = getItemCount() < 2;
         callback.controlPopUpVariantDialog(popupable);
     }

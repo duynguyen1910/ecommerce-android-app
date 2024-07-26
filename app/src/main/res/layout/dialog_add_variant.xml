@@ -47,29 +47,38 @@
             android:textColor="@color/black"
             android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/txtSizeVN"
+        <RadioGroup
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:background="@drawable/custom_border_top_bottom"
-            android:padding="16dp"
-            android:text="Size (VN)"
-            android:textAlignment="textStart"
-            android:textColor="@color/black"
-            android:visibility="gone" />
+            android:orientation="vertical"
+            android:id="@+id/layoutSelectSize"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/rdoSizeVn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="@drawable/custom_border_top_bottom"
+                android:padding="16dp"
+                android:button="@null"
+                android:text="Size (VN)"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/txtSizeGlobal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:background="@drawable/custom_border_top_bottom"
-            android:padding="16dp"
-            android:text="Size (Quốc Tế)"
-            android:textAlignment="textStart"
-            android:textColor="@color/black"
-            android:visibility="gone" />
+            <RadioButton
+                android:id="@+id/rdoSizeGlobal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="@drawable/custom_border_top_bottom"
+                android:padding="16dp"
+                android:button="@null"
+                android:text="Size (Quốc Tế)"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:visibility="gone" />
+        </RadioGroup>
+
 
         <TextView
             android:id="@+id/txtGender"

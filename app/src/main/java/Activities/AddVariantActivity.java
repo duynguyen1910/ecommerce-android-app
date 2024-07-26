@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,14 +29,14 @@ import models.TypeValue;
 
 public class AddVariantActivity extends AppCompatActivity {
 
-    ActivityAddVariantBinding binding;
-    ArrayList<Type> types = new ArrayList<>();
-    TypeAdapter adapter;
-    HashSet<String> selectableSet = new HashSet<>();
-    HashSet<String> selectedTypes = new HashSet<>();
-
+    private ActivityAddVariantBinding binding;
+    private final ArrayList<Type> types = new ArrayList<>();
+    private TypeAdapter adapter;
+    private  HashSet<String> selectableSet = new HashSet<>();
+    private final HashSet<String> selectedTypes = new HashSet<>();
 
     private final HashSet<String> selectedTypeValuesSet = new HashSet<>();
+    private boolean isSizeTypeSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,15 @@ public class AddVariantActivity extends AppCompatActivity {
            popUpSelectVariantDialog();
         });
     }
+
+    private void setVisibleForLayoutSelectSize(View view){
+        if (isSizeTypeSelected){
+            view.setVisibility(View.GONE);
+        }else {
+            view.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     private void setupUI(){
         adapter = new TypeAdapter(AddVariantActivity.this, types, new TypeCallback() {
@@ -80,7 +90,13 @@ public class AddVariantActivity extends AppCompatActivity {
 
             @Override
             public void updateSelectableTypeSet(String typeName) {
+                selectedTypes.remove(typeName);
                 selectableSet.add(typeName);
+            }
+
+            @Override
+            public void setVisibleForSelectSizeLayout() {
+                isSizeTypeSelected = false;
             }
 
         });
@@ -99,7 +115,6 @@ public class AddVariantActivity extends AppCompatActivity {
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.custom_edit_text_border);
         dialog.show();
 
-
         Window window = dialog.getWindow();
         if (window != null) {
             window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -108,70 +123,75 @@ public class AddVariantActivity extends AppCompatActivity {
             Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
             dialogBinding.getRoot().startAnimation(slideUp);
         }
+
+        // Hiển thị các View dựa trên selectableSet
         if (selectableSet.contains(TYPE_COLOR)) {
             dialogBinding.txtColor.setVisibility(View.VISIBLE);
         }
         if (selectableSet.contains(TYPE_SIZE_VN)) {
-            dialogBinding.txtSizeVN.setVisibility(View.VISIBLE);
+            dialogBinding.rdoSizeVn.setVisibility(View.VISIBLE);
         }
         if (selectableSet.contains(TYPE_SIZE_GLOBAL)) {
-            dialogBinding.txtSizeGlobal.setVisibility(View.VISIBLE);
+            dialogBinding.rdoSizeGlobal.setVisibility(View.VISIBLE);
         }
         if (selectableSet.contains(TYPE_GENDER)) {
             dialogBinding.txtGender.setVisibility(View.VISIBLE);
         }
 
+        // Cập nhật trạng thái của layout size
+        setVisibleForLayoutSelectSize(dialogBinding.layoutSelectSize);
+
         dialogBinding.imageClose.setOnClickListener(v -> dialog.dismiss());
 
         dialogBinding.txtColor.setOnClickListener(v -> {
             Type type = new Type(TYPE_COLOR, new ArrayList<>());
-            if (!selectedTypes.contains(type.getTypeName())){
+            if (!selectedTypes.contains(type.getTypeName())) {
                 adapter.addType(type);
             }
             selectedTypes.add(type.getTypeName());
             selectableSet.remove(type.getTypeName());
             dialog.dismiss();
-
-            adapter.updateVisibility();
+            adapter.setVisibleForSelectVariantDialog();
         });
-        dialogBinding.txtSizeVN.setOnClickListener(v -> {
+
+        dialogBinding.rdoSizeVn.setOnClickListener(v -> {
             Type type = new Type(TYPE_SIZE_VN, new ArrayList<>());
-            if (!selectedTypes.contains(type.getTypeName())){
+            if (!selectedTypes.contains(type.getTypeName())) {
                 adapter.addType(type);
             }
-            selectedTypes.add(type.getTypeName());
-            selectableSet.remove(type.getTypeName());
+            selectedTypes.add(TYPE_SIZE_VN);
+            isSizeTypeSelected = true;
+            selectableSet.remove(TYPE_SIZE_VN);
             dialog.dismiss();
-            adapter.updateVisibility();
-
+            adapter.setVisibleForSelectVariantDialog();
         });
-        dialogBinding.txtSizeGlobal.setOnClickListener(v -> {
+
+        dialogBinding.rdoSizeGlobal.setOnClickListener(v -> {
             Type type = new Type(TYPE_SIZE_GLOBAL, new ArrayList<>());
-            if (!selectedTypes.contains(type.getTypeName())){
+            if (!selectedTypes.contains(type.getTypeName())) {
                 adapter.addType(type);
             }
-            selectedTypes.add(type.getTypeName());
-            selectableSet.remove(type.getTypeName());
+            selectedTypes.add(TYPE_SIZE_GLOBAL);
+            isSizeTypeSelected = true;
+            selectableSet.remove(TYPE_SIZE_GLOBAL);
             dialog.dismiss();
-            adapter.updateVisibility();
-
+            adapter.setVisibleForSelectVariantDialog();
         });
 
         dialogBinding.txtGender.setOnClickListener(v -> {
             Type type = new Type(TYPE_GENDER, new ArrayList<>());
-            if (!selectedTypes.contains(type.getTypeName())){
+            if (!selectedTypes.contains(type.getTypeName())) {
                 adapter.addType(type);
             }
             selectedTypes.add(type.getTypeName());
             selectableSet.remove(type.getTypeName());
             dialog.dismiss();
-            adapter.updateVisibility();
-
+            adapter.setVisibleForSelectVariantDialog();
         });
+
         dialogBinding.txtCustomVariant.setOnClickListener(v -> dialog.dismiss());
-
-
     }
+
 
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
