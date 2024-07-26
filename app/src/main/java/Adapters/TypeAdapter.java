@@ -84,7 +84,10 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
             int removePos = holder.getBindingAdapterPosition();
             list.remove(removePos);
             notifyItemRemoved(removePos);
+
+            updateVisibility();
         });
+
 
         TypeValueAdapterForSettingVariant typeValueAdapter = new TypeValueAdapterForSettingVariant(context, type.getListValues(), selectedType, callback);
         holder.binding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -110,6 +113,10 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
             }
         });
 
+    }
+    public void updateVisibility() {
+        boolean popupable = getItemCount() < 2;
+        callback.controlPopUpVariantDialog(popupable);
     }
 
     public static void popUpSelectColorDialog(TypeValueAdapterForSettingVariant adapter, Context context) {

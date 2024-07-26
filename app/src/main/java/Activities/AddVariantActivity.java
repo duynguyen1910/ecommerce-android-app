@@ -3,6 +3,8 @@ import static constants.keyName.TYPE_COLOR;
 import static constants.keyName.TYPE_GENDER;
 import static constants.keyName.TYPE_SIZE_GLOBAL;
 import static constants.keyName.TYPE_SIZE_VN;
+import static utils.CartUtils.showToast;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -31,8 +33,11 @@ public class AddVariantActivity extends AppCompatActivity {
     ActivityAddVariantBinding binding;
     ArrayList<Type> types = new ArrayList<>();
     TypeAdapter adapter;
+    HashSet<String> fourTypes = new HashSet<>();
+    HashSet<String> selectedTypes = new HashSet<>();
 
-    private final HashSet<String> selectedColorSet = new HashSet<>();
+
+    private final HashSet<String> selectedTypeValuesSet = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,7 @@ public class AddVariantActivity extends AppCompatActivity {
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
         binding.layoutAddVariant.setOnClickListener(v -> {
-            popUpChooseVariantDialog();
+           popUpSelectVariantDialog();
         });
     }
 
@@ -58,20 +63,31 @@ public class AddVariantActivity extends AppCompatActivity {
             @Override
             public void updateSelectedTypeValues(TypeValue typeValue) {
                 if (typeValue.isChecked()){
-                    if (selectedColorSet.contains(typeValue.getValue())){
-                        selectedColorSet.add(typeValue.getValue());
+                    if (selectedTypeValuesSet.contains(typeValue.getValue())){
+                        selectedTypeValuesSet.add(typeValue.getValue());
                     }
                 }else {
-                    selectedColorSet.remove(typeValue.getValue());
+                    selectedTypeValuesSet.remove(typeValue.getValue());
                 }
             }
+
+            @Override
+            public void controlPopUpVariantDialog(boolean popupable) {
+                if (popupable) {
+                    binding.layoutAddVariant.setVisibility(View.VISIBLE);
+                } else {
+                    binding.layoutAddVariant.setVisibility(View.GONE);
+                }
+            }
+
         });
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(AddVariantActivity.this, LinearLayoutManager.VERTICAL, false));
     }
 
 
-    private void popUpChooseVariantDialog() {
+
+    private void popUpSelectVariantDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         DialogAddVariantBinding dialogBinding = DialogAddVariantBinding.inflate(getLayoutInflater());
         builder.setView(dialogBinding.getRoot());
@@ -90,50 +106,40 @@ public class AddVariantActivity extends AppCompatActivity {
             dialogBinding.getRoot().startAnimation(slideUp);
         }
 
-        dialogBinding.imageClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
+        dialogBinding.imageClose.setOnClickListener(v -> dialog.dismiss());
+        dialogBinding.txtSizeVN.setOnClickListener(v -> {
+            Type color = new Type(TYPE_SIZE_VN, new ArrayList<>());
+            selectedTypes.add(TYPE_SIZE_VN);
+            adapter.addType(color);
+            dialog.dismiss();
+            adapter.updateVisibility();
+
         });
-        dialogBinding.txtSizeVN.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Type color = new Type(TYPE_SIZE_VN, new ArrayList<TypeValue>());
-                adapter.addType(color);
-                dialog.dismiss();
-            }
+        dialogBinding.txtSizeGlobal.setOnClickListener(v -> {
+            Type color = new Type(TYPE_SIZE_GLOBAL, new ArrayList<>());
+            adapter.addType(color);
+            selectedTypes.add(TYPE_SIZE_GLOBAL);
+            dialog.dismiss();
+            adapter.updateVisibility();
+
         });
-        dialogBinding.txtSizeGlobal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Type color = new Type(TYPE_SIZE_GLOBAL, new ArrayList<TypeValue>());
-                adapter.addType(color);
-                dialog.dismiss();
-            }
+        dialogBinding.txtColor.setOnClickListener(v -> {
+            Type color = new Type(TYPE_COLOR, new ArrayList<>());
+            adapter.addType(color);
+            selectedTypes.add(TYPE_COLOR);
+            dialog.dismiss();
+
+            adapter.updateVisibility();
         });
-        dialogBinding.txtColor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Type color = new Type(TYPE_COLOR, new ArrayList<TypeValue>());
-                adapter.addType(color);
-                dialog.dismiss();
-            }
+        dialogBinding.txtGender.setOnClickListener(v -> {
+            Type color = new Type(TYPE_GENDER, new ArrayList<>());
+            adapter.addType(color);
+            selectedTypes.add(TYPE_GENDER);
+            dialog.dismiss();
+            adapter.updateVisibility();
+
         });
-        dialogBinding.txtGender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Type color = new Type(TYPE_GENDER, new ArrayList<TypeValue>());
-                adapter.addType(color);
-                dialog.dismiss();
-            }
-        });
-        dialogBinding.txtCustomVariant.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        dialogBinding.txtCustomVariant.setOnClickListener(v -> dialog.dismiss());
 
 
     }
@@ -141,6 +147,15 @@ public class AddVariantActivity extends AppCompatActivity {
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
+        HashSet<String> fourTypes = new HashSet<>();
+        fourTypes.add(TYPE_COLOR);
+        fourTypes.add(TYPE_GENDER);
+        fourTypes.add(TYPE_SIZE_VN);
+        fourTypes.add(TYPE_SIZE_GLOBAL);
+
+        HashSet<String> selectedTypes = new HashSet<>();
+
+
     }
 
 
