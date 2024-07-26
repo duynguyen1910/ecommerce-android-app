@@ -38,6 +38,8 @@ public class HomeFragment extends Fragment {
     ArrayList<SliderItem> sliderItems;
     Handler sliderHandler;
     Runnable sliderRunnable;
+    ArrayList<Category> categoriesList = new ArrayList<>();
+    int fetchCategories = 0;
 
     @Nullable
     @Override
@@ -46,7 +48,7 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(getLayoutInflater());
         updateQuantityInCart(binding.txtQuantityInCart);
         initBanner();
-        initCategory();
+        fetchCategories();
         initProducts();
         setupEvents();
 
@@ -59,7 +61,7 @@ public class HomeFragment extends Fragment {
         super.onResume();
         updateQuantityInCart(binding.txtQuantityInCart);
         initBanner();
-        initCategory();
+        setupCategoryUI();
         initProducts();
     }
 
@@ -79,7 +81,16 @@ public class HomeFragment extends Fragment {
         startSliderAutoCycle();
     }
 
-    private void initCategory() {
+    private void setupCategoryUI(){
+        if (fetchCategories == 1){
+            binding.progressBarCategory.setVisibility(View.GONE);
+            binding.recyclerViewCategory.setLayoutManager(new GridLayoutManager(requireActivity(), 3, GridLayoutManager.HORIZONTAL, false));
+            binding.recyclerViewCategory.setAdapter(new CategoryGridAdapter(requireActivity(), categoriesList));
+        }
+
+    }
+
+    private void fetchCategories() {
 
         Category category = new Category();
 
@@ -88,9 +99,9 @@ public class HomeFragment extends Fragment {
         category.getCategoryCollection(new GetCollectionCallback<Category>() {
             @Override
             public void onGetDataSuccess(ArrayList<Category> categories) {
-                binding.progressBarCategory.setVisibility(View.GONE);
-                binding.recyclerViewCategory.setLayoutManager(new GridLayoutManager(requireActivity(), 3, GridLayoutManager.HORIZONTAL, false));
-                binding.recyclerViewCategory.setAdapter(new CategoryGridAdapter(requireActivity(), categories));
+                categoriesList = new ArrayList<>(categories);
+                fetchCategories = 1;
+                setupCategoryUI();
             }
 
             @Override

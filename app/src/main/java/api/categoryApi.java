@@ -36,7 +36,7 @@ public class categoryApi {
                     }
                     callback.onGetDataSuccess(categories);
                 } else {
-                    callback.onGetDataFailure("Lấy thông tin sản phẩm thất bại");
+                    callback.onGetDataFailure("Lấy thông tin danh mục thất bại");
                 }
             }
         });

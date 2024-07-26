@@ -3,15 +3,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.stores.R;
-import com.example.stores.databinding.ItemCategoryGridForDialogBinding;
 import com.example.stores.databinding.ItemTypeValueForDialogBinding;
-import com.google.android.material.checkbox.MaterialCheckBox;
 
 import java.util.ArrayList;
 import models.TypeValue;
@@ -47,22 +44,29 @@ public class TypeValueAdapterForDialog extends RecyclerView.Adapter<TypeValueAda
 
         holder.binding.chkValue.setText(typeValue.getValue());
 
+        if (typeValue.isChecked()){
+            holder.binding.chkValue.setEnabled(false);
+            holder.itemView.setBackgroundResource(R.drawable.custom_border_primary_color);
+            holder.binding.chkValue.setChecked(true);
+            holder.binding.chkValue.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
+        }else {
+            holder.itemView.setBackgroundColor(Color.parseColor("#EFEFEF"));
+            holder.binding.chkValue.setTextColor(ContextCompat.getColor(context, R.color.black));
+        }
+
         holder.binding.chkValue.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked){
                 holder.itemView.setBackgroundResource(R.drawable.custom_border_primary_color);
                 holder.binding.chkValue.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
+                typeValue.setChecked(true);
+
             }else {
                 holder.itemView.setBackgroundColor(Color.parseColor("#EFEFEF"));
                 holder.binding.chkValue.setTextColor(ContextCompat.getColor(context, R.color.black));
+                typeValue.setChecked(false);
             }
 
         });
-        holder.itemView.setOnClickListener(v -> {
-
-
-
-        });
-
     }
 
     @Override

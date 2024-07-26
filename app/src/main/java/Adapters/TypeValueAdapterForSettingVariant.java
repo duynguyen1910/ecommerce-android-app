@@ -2,25 +2,26 @@ package Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 import com.example.stores.databinding.ItemTypeValueBinding;
 import java.util.ArrayList;
+
+import interfaces.TypeCallback;
 import models.TypeValue;
 
 public class TypeValueAdapterForSettingVariant extends RecyclerView.Adapter<TypeValueAdapterForSettingVariant.ViewHolder> {
     private final Context context;
     private final ArrayList<TypeValue> list;
+    TypeCallback callback;
     private String selectedType; // Color, Size, Gender
 
-    public TypeValueAdapterForSettingVariant(Context context, ArrayList<TypeValue> list, String selectedType) {
+    public TypeValueAdapterForSettingVariant(Context context, ArrayList<TypeValue> list, String selectedType, TypeCallback callback) {
         this.context = context;
         this.list = list;
         this.selectedType = selectedType;
+        this.callback = callback;
     }
 
     @NonNull
@@ -46,17 +47,13 @@ public class TypeValueAdapterForSettingVariant extends RecyclerView.Adapter<Type
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         TypeValue typeValue = list.get(holder.getBindingAdapterPosition());
         holder.binding.txtValue.setText(typeValue.getValue());
-        if (typeValue.getImage() != null){
-            holder.binding.image.setVisibility(View.VISIBLE);
-            Glide.with(context).load(typeValue.getImage()).centerCrop().into(holder.binding.image);
-        }else {
-            holder.binding.image.setVisibility(View.GONE);
-        }
 
         holder.binding.imvRemove.setOnClickListener(v -> {
+            typeValue.setChecked(false);
             int removePos = holder.getBindingAdapterPosition();
             list.remove(removePos);
             notifyItemRemoved(removePos);
+            callback.updateSelectedTypeValues(typeValue);
         });
 
         holder.binding.imvEdit.setOnClickListener(v -> {
@@ -64,6 +61,17 @@ public class TypeValueAdapterForSettingVariant extends RecyclerView.Adapter<Type
         });
 
 
+    }
+    public void addTypeValue(TypeValue typeValue){
+        if (!list.contains(typeValue)){
+            list.add(typeValue);
+        }
+
+        notifyItemInserted(list.size());
+    }
+    public void removeTypeValue(int position){
+        list.remove(position);
+        notifyItemRemoved(list.size());
     }
     @Override
     public int getItemCount() {

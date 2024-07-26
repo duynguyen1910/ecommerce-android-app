@@ -33,6 +33,7 @@ public class ActivateStoreActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ActivateStoreActivity.this, CreateStoreActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

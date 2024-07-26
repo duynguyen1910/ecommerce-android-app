@@ -32,11 +32,11 @@
             android:id="@+id/txtValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/cate12"
-            android:paddingHorizontal="6dp"
-            android:paddingVertical="2dp"
+            android:background="@color/lightgray"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
             android:text="Xanh lá"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
     </LinearLayout>
 
     <LinearLayout
@@ -52,7 +52,6 @@
             android:layout_marginEnd="16dp"
             android:gravity="center_vertical"
             android:src="@drawable/ic_edit_square_24"
-            android:textColor="@color/primary_color"
             app:tint="@color/primary_color" />
 
         <ImageView
@@ -61,7 +60,6 @@
             android:layout_height="20dp"
             android:gravity="center_vertical"
             android:src="@drawable/ic_close_24"
-            android:textColor="@color/primary_color"
             app:tint="@color/primary_color" />
     </LinearLayout>
 

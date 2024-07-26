@@ -16,8 +16,9 @@
             android:layout_height="wrap_content"
             android:padding="16dp"
             android:text="Màu sắc"
+            android:textStyle="bold"
             android:textAlignment="textStart"
-            android:textColor="@color/darkgray" />
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/txtRemove"

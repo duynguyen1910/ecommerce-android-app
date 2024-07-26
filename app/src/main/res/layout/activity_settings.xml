@@ -8,11 +8,11 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:background="@color/white"
-        android:id="@+id/header"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="16dp">
@@ -71,41 +71,41 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/txtAccountAndSecurity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:drawableEnd="@drawable/ic_arrow_right_24"
-                    android:drawableTint="@color/darkgray"
                     android:gravity="center_vertical"
-                    android:id="@+id/txtAccountAndSecurity"
                     android:padding="16dp"
                     android:text="Tài khoản &amp; Bảo mật"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableEndCompat="@drawable/ic_arrow_right_24"
+                    app:drawableTint="@color/darkgray" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:drawableEnd="@drawable/ic_arrow_right_24"
-                    android:drawableTint="@color/darkgray"
                     android:gravity="center_vertical"
                     android:padding="16dp"
                     android:text="Địa Chỉ"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableEndCompat="@drawable/ic_arrow_right_24"
+                    app:drawableTint="@color/darkgray" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:drawableEnd="@drawable/ic_arrow_right_24"
-                    android:drawableTint="@color/darkgray"
                     android:gravity="center_vertical"
                     android:padding="16dp"
                     android:text="Tài khoản / Thẻ Ngân hàng"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableEndCompat="@drawable/ic_arrow_right_24"
+                    app:drawableTint="@color/darkgray" />
             </LinearLayout>
 
             <TextView
@@ -128,26 +128,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:drawableEnd="@drawable/ic_arrow_right_24"
-                    android:drawableTint="@color/darkgray"
                     android:gravity="center_vertical"
                     android:padding="16dp"
                     android:text="Cài đặt Thông báo"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableEndCompat="@drawable/ic_arrow_right_24"
+                    app:drawableTint="@color/darkgray" />
 
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:drawableEnd="@drawable/ic_arrow_right_24"
-                    android:drawableTint="@color/darkgray"
                     android:gravity="center_vertical"
                     android:padding="16dp"
                     android:text="Ngôn ngữ / Language"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableEndCompat="@drawable/ic_arrow_right_24"
+                    app:drawableTint="@color/darkgray" />
             </LinearLayout>
 
             <TextView
@@ -170,26 +170,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:drawableEnd="@drawable/ic_arrow_right_24"
-                    android:drawableTint="@color/darkgray"
                     android:gravity="center_vertical"
                     android:padding="16dp"
                     android:text="Trung tâm hỗ trợ"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableEndCompat="@drawable/ic_arrow_right_24"
+                    app:drawableTint="@color/darkgray" />
 
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:drawableEnd="@drawable/ic_arrow_right_24"
-                    android:drawableTint="@color/darkgray"
                     android:gravity="center_vertical"
                     android:padding="16dp"
                     android:text="Điều khoản "
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    app:drawableEndCompat="@drawable/ic_arrow_right_24"
+                    app:drawableTint="@color/darkgray" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -2,7 +2,7 @@ package constants;
 
 public class keyName {
     public static final String USER_INFO = "userInfo";
-    public static final String USER_ID = "userId";
+    public static final String USER_ID = "userID";
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String FULLNAME = "fullname";
     public static final String PASSWORD = "password";
@@ -11,10 +11,8 @@ public class keyName {
     public static final String STORE_ID = "storeID";
     public static final String STORE_NAME = "storeName";
     public static final String STORE_ADDRESS = "storeAddress";
-    public static final String STORE_OWNER_ID = "storeOwnerId";
+    public static final String STORE_OWNER_ID = "storeOwnerID";
     public static final String PRODUCTS = "products";
-
-    public static final String CART = "cart";
 
 
     public static final String PRODUCT_ID = "productID";
