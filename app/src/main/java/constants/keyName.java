@@ -40,6 +40,8 @@ public class keyName {
     public static final String SHIPPED_AT = "shippedAt";
     public static final String DELIVERED_AT = "deliveredAt";
     public static final String CANCELED_AT = "cancelledAt";
+    public static final String CANCELED_BY = "cancelledBy";
+    public static final String CANCELED_REASON = "cancelledReason";
 
 
     public static final String TYPES = "TYPES";

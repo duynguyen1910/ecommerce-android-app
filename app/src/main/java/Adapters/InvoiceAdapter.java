@@ -1,5 +1,8 @@
 package Adapters;
 
+import static constants.keyName.CANCELED_AT;
+import static constants.keyName.CANCELED_BY;
+import static constants.keyName.CANCELED_REASON;
 import static constants.keyName.NOTE;
 import static constants.keyName.STATUS;
 import static constants.keyName.STORE_NAME;
@@ -216,8 +219,11 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
                 invoiceUpdate.put(STATUS, OrderStatus.CANCELLED.getOrderStatusValue());
                 String otherReason = "\nOther reason: " + dialogBinding.edtOtherReason.getText().toString().trim();
                 cancelReason[0] += otherReason;
-                String note = "Cancelled By " + invoice.getCustomerID() + "\nCancel reason " + cancelReason[0];
-                invoiceUpdate.put(NOTE, note);
+                String cancelledReason = "Cancel reason " + cancelReason[0];
+                invoiceUpdate.put(CANCELED_BY, invoice.getBaseID());
+                invoiceUpdate.put(CANCELED_REASON, cancelledReason);
+                invoiceUpdate.put(CANCELED_AT, FormatHelper.getCurrentDateTime());
+
                 invoiceApi invoiceApi = new invoiceApi();
                 invoiceApi.updateStatusInvoiceApi(invoice.getBaseID(), invoiceUpdate, new UpdateDocumentCallback() {
                     @Override
