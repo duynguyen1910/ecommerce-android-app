@@ -6,10 +6,12 @@
     android:background="@color/lightgray"
     android:orientation="vertical">
 
+
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
         android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -33,7 +35,7 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:text="Chọn địa chỉ nhận hàng"
+            android:text="Cài đặt chi tiết cho phân loại"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -41,30 +43,38 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="Địa chỉ"
-        android:textColor="@color/black" />
-
-    <RadioGroup
+    <LinearLayout
         android:layout_width="match_parent"
-        android:id="@+id/layout"
-        android:layout_height="wrap_content">
-        <RadioButton
-            android:layout_width="match_parent"
-
-            android:layout_height="wrap_content"/>
-    </RadioGroup>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
         android:layout_weight="1"
-        android:background="@color/white" />
+        android:background="@color/white">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
+        android:background="@drawable/custom_button_primary"
+        android:text="Lưu"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
 
 
 </LinearLayout>

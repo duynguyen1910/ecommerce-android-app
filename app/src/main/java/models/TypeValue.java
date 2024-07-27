@@ -1,6 +1,8 @@
 package models;
 
-public class TypeValue {
+import java.io.Serializable;
+
+public class TypeValue implements Serializable {
     private String image;
     private String value;
     private boolean isChecked;

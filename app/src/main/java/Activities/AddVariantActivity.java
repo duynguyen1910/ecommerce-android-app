@@ -1,8 +1,12 @@
 package Activities;
+import static constants.keyName.TYPES;
 import static constants.keyName.TYPE_COLOR;
 import static constants.keyName.TYPE_GENDER;
 import static constants.keyName.TYPE_SIZE_GLOBAL;
 import static constants.keyName.TYPE_SIZE_VN;
+import static utils.CartUtils.showToast;
+
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,6 +18,7 @@ import android.view.animation.AnimationUtils;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.stores.R;
@@ -55,6 +60,23 @@ public class AddVariantActivity extends AppCompatActivity {
         binding.layoutAddVariant.setOnClickListener(v -> {
            popUpSelectVariantDialog();
         });
+        binding.btnSettingVariant.setOnClickListener(v -> {
+            if (countSelectedTypeValues() > 0){
+                Intent intent = new Intent(AddVariantActivity.this, SettingVariantDetailActivity.class);
+                intent.putExtra(TYPES, types);
+                startActivity(intent);
+            }else {
+               showToast(AddVariantActivity.this, "Vui lòng chọn phân loại sản phẩm!");
+            }
+        });
+    }
+
+    private int countSelectedTypeValues(){
+        int count = 0;
+        for (Type type : types){
+            count += type.getListValues().size();
+        }
+        return count;
     }
 
     private void setVisibleForLayoutSelectSize(View view){
@@ -201,10 +223,6 @@ public class AddVariantActivity extends AppCompatActivity {
         selectableSet.add(TYPE_GENDER);
         selectableSet.add(TYPE_SIZE_VN);
         selectableSet.add(TYPE_SIZE_GLOBAL);
-
-        HashSet<String> selectedTypes = new HashSet<>();
-
-
     }
 
 

@@ -56,8 +56,6 @@
                 android:id="@+id/progressBar"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_centerInParent="true"
-                android:layout_centerHorizontal="true"
                 android:indeterminateTintMode="src_atop"
                 android:visibility="gone" />
 
@@ -101,9 +99,9 @@
     <androidx.appcompat.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/btnCategory"
+        android:id="@+id/btnSettingVariant"
         android:background="@drawable/custom_button_primary"
         android:text="Tiếp theo: Cài đặt thông tin cho phân loại"
         android:textAllCaps="false"

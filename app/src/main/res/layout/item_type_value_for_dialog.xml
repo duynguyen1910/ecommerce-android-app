@@ -17,9 +17,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="8dp"
-
+        android:button="@null"
         android:text="Xanh lá"
         app:buttonTint="@color/checkbox_color" />
 
-<!--    android:button="@null"-->
+
 </LinearLayout>
