@@ -20,7 +20,7 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
-            android:name="Activities.AddAddress.CreateAddressActivity"
+            android:name="Activities.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,6 +42,9 @@
             android:name="Activities.SearchActivity"
             android:exported="false" />
         <activity
+            android:name="Activities.PaymentMethodActivity"
+            android:exported="false" />
+        <activity
             android:name="Activities.SelectCategoryActivity"
             android:exported="false" />
         <activity
@@ -52,12 +55,8 @@
             android:name="Activities.AddAddress.SelectAddressActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.PaymentMethodActivity"
-            android:exported="false" />
-        <activity
             android:name="Activities.CartActivity"
             android:exported="false" />
-
         <activity
             android:name="Activities.SelectProductsToCategoryActivity"
             android:exported="false" />
@@ -80,16 +79,16 @@
             android:name="Activities.AddProductsActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.ViewMyStoreActivity"
+            android:name="Activities.StoreSetup.ViewMyStoreActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.MyProductsActivity"
+            android:name="Activities.StoreSetup.MyProductsActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.CreateStoreActivity"
+            android:name="Activities.StoreSetup.CreateStoreActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.RegisterStoreSuccessfulActivity"
+            android:name="Activities.StoreSetup.RegisterStoreSuccessfulActivity"
             android:exported="false" />
         <activity
             android:name="Activities.RegisteredBusinessAddressActivity"
@@ -98,13 +97,13 @@
             android:name="Activities.SelectDeliveryMethodActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.SplashScreen"
+            android:name="Activities.AddAddress.CreateAddressActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.StoreOwnerActivity"
+            android:name="Activities.StoreSetup.StoreOwnerActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.ActivateStoreActivity"
+            android:name="Activities.StoreSetup.ActivateStoreActivity"
             android:exported="false" />
         <activity
             android:name="Activities.InvoiceDetailActivity"
@@ -143,7 +142,7 @@
         </activity>
         <activity
             android:name="Activities.MainActivity"
-            android:exported="false" />
+            android:exported="true" />
     </application>
 
 </manifest>

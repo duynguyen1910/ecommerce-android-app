@@ -1,4 +1,4 @@
-package Activities;
+package Activities.StoreSetup;
 
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
@@ -23,6 +23,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Objects;
 
+import Activities.AddProductsActivity;
 import Adapters.ViewPager2Adapter;
 import Fragments.Store.ProductsInStockFragment;
 import Fragments.Store.ProductsOutOfStockFragment;

@@ -21,7 +21,6 @@ public class categoryApi {
     }
 
 
-
     public void getAllCategoryApi(final GetCollectionCallback<Category> callback) {
         ArrayList<Category> categories = new ArrayList<>();
         CollectionReference categoryRef = db.collection(CATEGORY_COLLECTION);
@@ -34,9 +33,9 @@ public class categoryApi {
                         category.setBaseID(document.getId());
                         categories.add(category);
                     }
-                    callback.onGetDataSuccess(categories);
+                    callback.onGetListSuccess(categories);
                 } else {
-                    callback.onGetDataFailure("Lấy thông tin danh mục thất bại");
+                    callback.onGetListFailure("Lấy thông tin sản phẩm thất bại");
                 }
             }
         });

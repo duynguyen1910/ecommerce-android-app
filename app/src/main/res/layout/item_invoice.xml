@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
+    android:layout_marginBottom="6dp"
     android:background="@drawable/custom_edit_text_border"
     android:orientation="vertical">
 
@@ -12,7 +12,9 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:paddingHorizontal="10dp"
-        android:paddingVertical="16dp">
+        android:paddingVertical="16dp"
+        android:background="@color/white"
+        >
 
         <ImageView
             android:id="@+id/ic_store"
@@ -30,7 +32,6 @@
             android:ellipsize="end"
             android:fontFamily="sans-serif-light"
             android:maxLines="1"
-            android:text="Zozo_Unisex"
             android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="15sp"
@@ -43,7 +44,6 @@
             android:text="Chờ xác nhận"
             android:textColor="@color/primary_color" />
 
-
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -52,10 +52,19 @@
         android:layout_height="wrap_content"
       />
 
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/progressBar"
+        android:indeterminateTintMode="src_atop"
+        />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_border_top_bottom"
+        android:background="@drawable/custom_border_bottom"
         android:padding="16dp">
 
         <TextView
@@ -71,51 +80,41 @@
             android:textColor="@color/white"
             android:textSize="12sp" />
 
-
-        <TextView
-            android:id="@+id/txtSeeDetail"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Xem chi tiết"
-            android:textColor="@color/secondary_color"
-            app:backgroundTint="@null" />
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/txtTotal"
+                android:text="Thành tiền: "
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="đ128.000"
+                android:textSize="15sp"
+                android:textColor="@color/primary_color"
+                android:textStyle="bold" />
+        </LinearLayout>
     </RelativeLayout>
 
-    <RelativeLayout
+    <Button
+        android:visibility="gone"
+        android:id="@+id/btnCancelInvoice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="16dp">
-
-        <TextView
-            android:id="@+id/txtCreatedDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:text="2024/07/03, 08:54"
-            android:textColor="@color/darkgray"
-            app:backgroundTint="@null" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/txtTotal"
-            android:text="Thành tiền: "
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/txtTotal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:text="đ128.000"
-            android:textColor="@color/primary_color"
-            android:textStyle="bold" />
-
-    </RelativeLayout>
-
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/custom_button_close"
+        android:text="Hủy đơn"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
 
 </LinearLayout>

@@ -1,7 +1,12 @@
 package Adapters;
 
+import static utils.CartUtils.getCartItemFee;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -16,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 
+import Activities.DeliveryMethodActivity;
 import models.CartItem;
 import models.Product;
 
@@ -65,27 +71,23 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         holder.binding.txtTotal.setText("đ" + formatter.format(getCartItemFee(cartItem)));
 
-        double oldDelivery = 38000;
-//        holder.binding.txtOldDelivery.setText("đ" + formatter.format(oldDelivery));
-//        holder.binding.txtOldDelivery.setPaintFlags(holder.binding.txtOldDelivery.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
-//
-//        holder.binding.layoutDeliveryMethod.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(context, DeliveryMethodActivity.class);
-//                context.startActivity(intent);
-//            }
-//        });
-    }
+        holder.binding.txtInvoiceNote.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-    private double getCartItemFee(CartItem cartItem) {
-        double fee = 0;
-        for (Product product : cartItem.getListProducts()) {
-            fee += (product.getNewPrice()  * product.getNumberInCart());
-        }
-        return fee;
-    }
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                cartItem.setNote(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
 
     @Override
     public int getItemCount() {

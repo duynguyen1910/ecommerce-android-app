@@ -54,6 +54,7 @@ public class CategoryAdapterForSearch extends RecyclerView.Adapter<CategoryAdapt
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, SearchActivity.class);
             Bundle bundle = new Bundle();
+
             bundle.putString(CATEGORY_NAME, category.getCategoryName());
             bundle.putString(CATEGORY_ID, category.getBaseID());
             bundle.putString(STORE_ID, storeId);

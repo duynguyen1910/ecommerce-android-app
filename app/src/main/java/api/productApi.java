@@ -5,6 +5,7 @@ import static constants.keyName.CATEGORY_ID;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.STORE_ID;
 import static constants.toastMessage.INTERNET_ERROR;
+import static constants.toastMessage.UPDATE_SUCCESSFULLY;
 
 import android.util.Log;
 
@@ -55,7 +56,7 @@ public class productApi implements Serializable {
 
         db.collection(PRODUCT_COLLECTION).document(productId)
                 .update(updateData)
-                .addOnSuccessListener(unused -> callback.onUpdateSuccess())
+                .addOnSuccessListener(unused -> callback.onUpdateSuccess(UPDATE_SUCCESSFULLY))
                 .addOnFailureListener(e -> Log.w("Firestore", "Error updating user's STORE_ID.", e));
     }
 
@@ -69,9 +70,9 @@ public class productApi implements Serializable {
                         product.setBaseID(document.getId());
                         products.add(product);
                     }
-                    callback.onGetDataSuccess(products);
+                    callback.onGetListSuccess(products);
                 })
-                .addOnFailureListener(e -> callback.onGetDataFailure(INTERNET_ERROR));
+                .addOnFailureListener(e -> callback.onGetListFailure(INTERNET_ERROR));
     }
 
 

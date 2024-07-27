@@ -24,7 +24,7 @@ import com.example.stores.databinding.ActivityLoginBinding;
 
 import java.util.Objects;
 
-import interfaces.LoginCallback;
+import interfaces.UserCallback;
 import models.User;
 import constants.toastMessage;
 
@@ -77,27 +77,25 @@ public class LoginActivity extends AppCompatActivity {
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
         User user = new User();
+       user.onLogin(phoneNumber, password, new UserCallback() {
+           @Override
+           public void getUserInfoSuccess(User user) {
+               binding.progressBar.setVisibility(View.GONE);
+               Toast.makeText(LoginActivity.this, LOGIN_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
 
-        user.onLogin(phoneNumber, password, new LoginCallback() {
-            @Override
-            public void onLoginSuccess(User user) {
-                binding.progressBar.setVisibility(View.GONE);
-                Toast.makeText(LoginActivity.this, LOGIN_SUCCESSFULLY, Toast.LENGTH_SHORT).show();
+               onSaveUserInfo(user);
 
-                onSaveUserInfo(user);
-
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra(LOGIN_SUCCESSFULLY, true);
-                setResult(Activity.RESULT_OK, resultIntent);
-                finish();
-            }
-
-            @Override
-            public void onLoginFailure(String errorMessage) {
-                binding.progressBar.setVisibility(View.GONE);
-                Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-            }
-        });
+               Intent resultIntent = new Intent();
+               resultIntent.putExtra(LOGIN_SUCCESSFULLY, true);
+               setResult(Activity.RESULT_OK, resultIntent);
+               finish();
+           }
+           @Override
+           public void getUserInfoFailure(String errorMessage) {
+               binding.progressBar.setVisibility(View.GONE);
+               Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+           }
+       });
     }
 
     private void onSaveUserInfo(User user) {

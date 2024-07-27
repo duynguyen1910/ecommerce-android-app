@@ -25,7 +25,8 @@ public class Product extends BaseObject implements Serializable {
     private api.productApi productApi;
     private ArrayList<String> productImages;
 
-    public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String storeID, int numberInCart) {
+    public Product(String productName, String description, double newPrice, double oldPrice,
+                   int inStock, String storeID, int numberInCart) {
         this.productName = productName;
         this.description = description;
         this.newPrice = newPrice;
@@ -35,7 +36,8 @@ public class Product extends BaseObject implements Serializable {
         this.numberInCart = numberInCart;
     }
 
-    public Product(String productName, String description, double newPrice, double oldPrice, int inStock, String categoryName, String storeID) {
+    public Product(String productName, String description, double newPrice, double oldPrice,
+                   int inStock, String categoryName, String storeID) {
         this.productName = productName;
         this.description = description;
         this.newPrice = newPrice;
@@ -45,7 +47,9 @@ public class Product extends BaseObject implements Serializable {
         this.storeID = storeID;
     }
 
-    public Product(String productName, String description, ArrayList<String> productImages, double newPrice, double oldPrice, int inStock, int numberInCart, String storeID, boolean checkedStatus) {
+    public Product(String productName, String description, ArrayList<String> productImages,
+                   double newPrice, double oldPrice, int inStock, int numberInCart, String storeID,
+                   boolean checkedStatus) {
         this.productName = productName;
         this.description = description;
         this.newPrice = newPrice;
@@ -59,6 +63,17 @@ public class Product extends BaseObject implements Serializable {
 
     public Product() {
         productApi = new productApi();
+    }
+
+    @Override
+    public String getBaseID() {
+        return super.baseID;
+    }
+
+    @Override
+    public void setBaseID(String productID) {
+        super.validateBaseID(productID);
+        super.baseID = productID;
     }
 
     public String getProductName() {
@@ -202,17 +217,5 @@ public class Product extends BaseObject implements Serializable {
     }
     public void getAllProductAscendingByCategoryId(String categoryId,final GetCollectionCallback<Product> callback) {
         productApi.getAllProductAscendingByCategoryIdApi(categoryId, callback);
-    }
-
-
-    @Override
-    public String getBaseID() {
-        return super.baseID;
-    }
-
-    @Override
-    public void setBaseID(String productId) {
-        super.baseID = productId;
-
     }
 }

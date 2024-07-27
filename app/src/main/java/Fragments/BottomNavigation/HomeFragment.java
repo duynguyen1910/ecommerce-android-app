@@ -47,6 +47,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(getLayoutInflater());
         updateQuantityInCart(binding.txtQuantityInCart);
+
         initBanner();
         fetchCategories();
         initProducts();
@@ -62,7 +63,6 @@ public class HomeFragment extends Fragment {
         updateQuantityInCart(binding.txtQuantityInCart);
         initBanner();
         setupCategoryUI();
-        initProducts();
     }
 
 
@@ -81,6 +81,7 @@ public class HomeFragment extends Fragment {
         startSliderAutoCycle();
     }
 
+
     private void setupCategoryUI(){
         if (fetchCategories == 1){
             binding.progressBarCategory.setVisibility(View.GONE);
@@ -91,21 +92,20 @@ public class HomeFragment extends Fragment {
     }
 
     private void fetchCategories() {
-
         Category category = new Category();
 
         binding.progressBarCategory.setVisibility(View.VISIBLE);
-
         category.getCategoryCollection(new GetCollectionCallback<Category>() {
             @Override
-            public void onGetDataSuccess(ArrayList<Category> categories) {
+
+            public void onGetListSuccess(ArrayList<Category> categories) {
                 categoriesList = new ArrayList<>(categories);
                 fetchCategories = 1;
                 setupCategoryUI();
             }
 
             @Override
-            public void onGetDataFailure(String errorMessage) {
+            public void onGetListFailure(String errorMessage) {
                 Toast.makeText(requireActivity(), INTERNET_ERROR, Toast.LENGTH_SHORT).show();
             }
         });
@@ -125,10 +125,10 @@ public class HomeFragment extends Fragment {
                     nextItem = 0;
                 }
                 binding.viewPager2Slider.setCurrentItem(nextItem);
-                sliderHandler.postDelayed(this, 3000);
+                sliderHandler.postDelayed(this, 8000);
             }
         };
-        sliderHandler.postDelayed(sliderRunnable, 1500);
+        sliderHandler.postDelayed(sliderRunnable, 3000);
     }
 
     private void stopSliderAutoCycle() {
@@ -184,13 +184,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String stringQuery = binding.searchEdt.getText().toString().trim();
-                if (stringQuery.isEmpty()) {
-                    Toast.makeText(requireActivity(), "Vui lòng nhập tìm kiếm", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(requireActivity(), SearchActivity.class);
-                    intent.putExtra("stringQuery", stringQuery);
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(requireActivity(), SearchActivity.class);
+                intent.putExtra("stringQuery", stringQuery);
+                startActivity(intent);
 
             }
         });

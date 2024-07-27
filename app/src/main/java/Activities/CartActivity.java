@@ -1,10 +1,11 @@
 package Activities;
-import static utils.CartUtils.MYCART;
-import static utils.CartUtils.getQuantityProductsIncart;
+import static utils.CartUtils.MY_CART;
+import static utils.CartUtils.getQuantityProductsInCart;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,19 +25,19 @@ import models.CartItem;
 import models.Product;
 
 public class CartActivity extends AppCompatActivity implements ToTalFeeCallback {
-
     ActivityCartBinding binding;
     CartAdapter cartAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityCartBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         initUI();
         setupCart();
         calculatorCart();
-
 
         setupEvents();
     }
@@ -48,6 +49,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
             if (getQuantityCheckedProducts() > 0){
                 Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
                 ArrayList<CartItem> payment = setupPayment();
+
                 intent.putExtra("payment", payment);
                 startActivity(intent);
             }
@@ -61,41 +63,55 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
     }
 
     private ArrayList<CartItem> setupPayment() {
-        HashMap<String, ArrayList<Product>> hashMap = new HashMap<>();
-        for (CartItem cartItem : MYCART) {
+        HashMap<String, HashMap<String, ArrayList<Product>>> hashMap = new HashMap<>();
+
+        for (CartItem cartItem : MY_CART) {
+            String storeName = cartItem.getStoreName();
+            String storeID = cartItem.getStoreID();
+
+            if (!hashMap.containsKey(storeName)) {
+                hashMap.put(storeName, new HashMap<>());
+            }
+
+            if (!hashMap.get(storeName).containsKey(storeID)) {
+                Objects.requireNonNull(hashMap.get(storeName)).put(storeID, new ArrayList<>());
+            }
+
             for (Product product : cartItem.getListProducts()) {
                 if (product.getCheckedStatus()) {
-                    String storeName = cartItem.getStoreName();
-                    if (!hashMap.containsKey(storeName)){
-                        hashMap.put(storeName, new ArrayList<>());
-                    }
-                    Objects.requireNonNull(hashMap.get(storeName)).add(product);
+                    Objects.requireNonNull(hashMap.get(storeName)).get(storeID).add(product);
                 }
             }
         }
+
         // filter HashMap để tạo CartItem
         ArrayList<CartItem> cartItems = new ArrayList<>();
-        for (Map.Entry<String, ArrayList<Product>> entry : hashMap.entrySet()) {
-            // Tạo CartItem mới từ tên cửa hàng và danh sách sản phẩm
-            cartItems.add(new CartItem(entry.getKey(), entry.getValue()));
+        for (Map.Entry<String, HashMap<String, ArrayList<Product>>> storeEntry : hashMap.entrySet()) {
+            for (Map.Entry<String, ArrayList<Product>> entry : storeEntry.getValue().entrySet()) {
+                String storeName = storeEntry.getKey();
+                String storeID = entry.getKey();
+                ArrayList<Product> products = entry.getValue();
+                // Tạo CartItem mới từ tên cửa hàng, storeID và danh sách sản phẩm
+                cartItems.add(new CartItem(storeID, storeName, products));
+            }
         }
+
         return cartItems;
     }
 
 
 
     private void setupCart() {
-        if (!MYCART.isEmpty()) {
+        if (!MY_CART.isEmpty()) {
             binding.layoutEmptyCart.setVisibility(View.GONE);
             binding.layoutCart.setVisibility(View.VISIBLE);
-            cartAdapter = new CartAdapter(CartActivity.this, MYCART, CartActivity.this);
+            cartAdapter = new CartAdapter(CartActivity.this, MY_CART, CartActivity.this);
             binding.recyclerViewCart.setAdapter(cartAdapter);
             binding.recyclerViewCart.setLayoutManager(new LinearLayoutManager(CartActivity.this, LinearLayoutManager.VERTICAL, false));
         } else {
             binding.layoutEmptyCart.setVisibility(View.VISIBLE);
             binding.layoutCart.setVisibility(View.GONE);
         }
-
     }
 
     private void initUI() {
@@ -103,9 +119,10 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         getWindow().setNavigationBarColor(Color.parseColor("#EFEFEF"));
         Objects.requireNonNull(getSupportActionBar()).hide();
     }
+
     private void calculatorCart() {
-        int cartItemCount = MYCART.size();
-        binding.txtQuantityInCart.setText("Giỏ Hàng (" + getQuantityProductsIncart() + ")");
+        int cartItemCount = MY_CART.size();
+        binding.txtQuantityInCart.setText("Giỏ Hàng (" + getQuantityProductsInCart() + ")");
         if (cartItemCount == 0) {
             binding.layoutEmptyCart.setVisibility(View.VISIBLE);
             binding.layoutCart.setVisibility(View.GONE);
@@ -125,7 +142,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
 
     private double getTotalFee() {
         double fee = 0;
-        for (CartItem item : MYCART) {
+        for (CartItem item : MY_CART) {
             for (Product product : item.getListProducts()) {
                 if (product.getCheckedStatus()){
                     fee += (product.getNewPrice() * product.getNumberInCart());
@@ -139,7 +156,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
 
     private int getQuantityCheckedProducts() {
         int count = 0;
-        for (CartItem item : MYCART) {
+        for (CartItem item : MY_CART) {
             for (Product product : item.getListProducts()) {
                 if (product.getCheckedStatus()){
                     count += 1;

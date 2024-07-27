@@ -6,11 +6,16 @@
     android:background="@color/white"
     android:layout_height="match_parent">
 
-    <TextView
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/progressBar"
+        android:indeterminateTintMode="src_atop"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Invoice Completed"
-        android:textColor="@color/primary_color"
-        android:textSize="20sp" />
+        android:layout_weight="1" />
 </LinearLayout>

@@ -1,135 +1,53 @@
 package models;
 
+import com.google.firebase.Timestamp;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Map;
 
-public class Invoice implements Serializable {
-    private String invoiceID;
-    private String deliveryAddress;
-    private String createdDate;
-    private String paidDate;
-    private String giveToDeliveryDate;
-    private String completedDate;
-    private double total;
-    private String note;
-    private int paymentMethod; // 0: Thanh toán khi nhận hàng
-    private int invoiceStatus; // 0: Chờ xác nhận
-    private CartItem cartItem;
+import api.invoiceApi;
+import enums.OrderStatus;
+import interfaces.UpdateDocumentCallback;
+
+public class Invoice extends BaseObject implements Serializable {
     private String customerID;
-    private String customerName;
+    private String deliveryAddress;
+    private double total;
+    private OrderStatus status;
+    private Timestamp createdAt;
+    private Timestamp confirmedAt;
+    private Timestamp shippedAt;
+    private Timestamp deliveredAt;
+    private Timestamp cancelledAt;
+    private String note;
+    private String cancellationReason;
+    private ArrayList<InvoiceDetail> invoiceItems;
+    //    private CartItem cartItem;
+    private invoiceApi invoiceApi;
 
-    public Invoice(String deliveryAddress, String createdDate, String paidDate, String giveToDeliveryDate, String completedDate, double total, String note, int paymentMethod, int invoiceStatus, CartItem cartItem, String customerID,String customerName) {
-        this.deliveryAddress = deliveryAddress;
-        this.createdDate = createdDate;
-        this.paidDate = paidDate;
-        this.giveToDeliveryDate = giveToDeliveryDate;
-        this.completedDate = completedDate;
-        this.total = total;
-        this.note = note;
-        this.paymentMethod = paymentMethod;
-        this.invoiceStatus = invoiceStatus;
-        this.cartItem = cartItem;
+    public Invoice() {this.invoiceApi = new invoiceApi();}
+
+    public Invoice(String customerID, String deliveryAddress, double total, OrderStatus status,
+                   Timestamp createdAt, String note) {
         this.customerID = customerID;
-        this.customerName = customerName;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public CartItem getCartItem() {
-        return cartItem;
-    }
-
-    public void setCartItem(CartItem cartItem) {
-        this.cartItem = cartItem;
-    }
-
-    public String getInvoiceID() {
-        return invoiceID;
-    }
-
-    public void setInvoiceID(String invoiceID) {
-        this.invoiceID = invoiceID;
-    }
-
-    public String getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
+        this.deliveryAddress = deliveryAddress;
+        this.total = total;
+        this.status = status;
+        this.createdAt = createdAt;
         this.note = note;
     }
 
-    public String getDeliveryAddress() {
-        return deliveryAddress;
+    @Override
+    public String getBaseID() {
+        return super.baseID;
     }
 
-    public void setDeliveryAddress(String deliveryAddress) {
-        this.deliveryAddress = deliveryAddress;
-    }
+    @Override
+    public void setBaseID(String userID) {
+        validateBaseID(userID);
 
-    public int getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(int paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public String getPaidDate() {
-        return paidDate;
-    }
-
-    public void setPaidDate(String paidDate) {
-        this.paidDate = paidDate;
-    }
-
-    public String getGiveToDeliveryDate() {
-        return giveToDeliveryDate;
-    }
-
-    public void setGiveToDeliveryDate(String giveToDeliveryDate) {
-        this.giveToDeliveryDate = giveToDeliveryDate;
-    }
-
-    public String getCompletedDate() {
-        return completedDate;
-    }
-
-    public void setCompletedDate(String completedDate) {
-        this.completedDate = completedDate;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
-    }
-
-    public void setTotalPayment(int totalPayment) {
-        this.total = totalPayment;
-    }
-
-    public int getInvoiceStatus() {
-        return invoiceStatus;
-    }
-
-    public void setInvoiceStatus(int invoiceStatus) {
-        this.invoiceStatus = invoiceStatus;
+        super.baseID = userID;
     }
 
     public String getCustomerID() {
@@ -140,6 +58,97 @@ public class Invoice implements Serializable {
         this.customerID = customerID;
     }
 
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
 
 
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = OrderStatus.fromInt(status);
+    }
+
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Timestamp getConfirmedAt() {
+        return confirmedAt;
+    }
+
+    public void setConfirmedAt(Timestamp confirmedAt) {
+        this.confirmedAt = confirmedAt;
+    }
+
+    public Timestamp getShippedAt() {
+        return shippedAt;
+    }
+
+    public void setShippedAt(Timestamp shippedAt) {
+        this.shippedAt = shippedAt;
+    }
+
+    public Timestamp getDeliveredAt() {
+        return deliveredAt;
+    }
+
+    public void setDeliveredAt(Timestamp deliveredAt) {
+        this.deliveredAt = deliveredAt;
+    }
+
+    public Timestamp getCancelledAt() {
+        return cancelledAt;
+    }
+
+    public void setCancelledAt(Timestamp cancelledAt) {
+        this.cancelledAt = cancelledAt;
+    }
+
+    public api.invoiceApi getInvoiceApi() {
+        return invoiceApi;
+    }
+
+    public void setInvoiceApi(api.invoiceApi invoiceApi) {
+        this.invoiceApi = invoiceApi;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public ArrayList<InvoiceDetail> getInvoiceItems() {
+        return invoiceItems;
+    }
+
+    public void setInvoiceItems(ArrayList<InvoiceDetail> invoiceItems) {
+        this.invoiceItems = invoiceItems;
+    }
+
+    public void updateInvoice(String invoiceID, Map<String, Object> invoiceUpdate,
+                              final UpdateDocumentCallback callback) {
+        invoiceApi.updateStatusInvoiceApi(invoiceID, invoiceUpdate, callback);
+    }
 }

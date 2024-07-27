@@ -7,8 +7,18 @@ import interfaces.GetCollectionCallback;
 
 public class Category extends BaseObject implements Serializable {
     private String categoryName;
-    private api.categoryApi categoryApi;
+    private categoryApi categoryApi;
 
+    @Override
+    public String getBaseID() {
+        return super.baseID;
+    }
+
+    @Override
+    public void setBaseID(String categoryID) {
+        super.validateBaseID(categoryID);
+        super.baseID = categoryID;
+    }
 
     public Category(String categoryID, String categoryName) {
         super.baseID = categoryID;
@@ -31,21 +41,7 @@ public class Category extends BaseObject implements Serializable {
     }
 
 
-
-    @Override
-    public String getBaseID() {
-        return super.baseID;
-    }
-
-    @Override
-    public void setBaseID(String categoryId) {
-        super.baseID = categoryId;
-
-    }
-
     public void getCategoryCollection(GetCollectionCallback<Category> callback){
        categoryApi.getAllCategoryApi(callback);
     }
-
-
 }

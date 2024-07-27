@@ -1,4 +1,4 @@
-package Activities;
+package Activities.StoreSetup;
 
 import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
@@ -18,6 +18,7 @@ import com.example.stores.databinding.ActivityStoreOwnerBinding;
 import java.util.Map;
 import java.util.Objects;
 
+import Activities.RequestInvoiceActivity;
 import interfaces.GetDocumentCallback;
 import models.Store;
 

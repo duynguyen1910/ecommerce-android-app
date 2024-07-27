@@ -33,7 +33,7 @@ public class Store extends BaseObject implements Serializable {
 
     @Override
     public void setBaseID(String storeId) {
-        validateBaseId(storeId);
+        validateBaseID(storeId);
 
         super.baseID = storeId;
     }

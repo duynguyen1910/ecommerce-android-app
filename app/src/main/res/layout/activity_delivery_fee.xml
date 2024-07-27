@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dp"
-                android:background="@drawable/custom_border_top_bottom"
+                android:background="@drawable/custom_border_bottom"
                 android:gravity="center_vertical"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="12dp"
@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="2dp"
-                android:background="@drawable/custom_border_top_bottom"
+                android:background="@drawable/custom_border_bottom"
                 android:orientation="horizontal">
 
                 <TextView
@@ -104,7 +104,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/custom_border_top_bottom"
+                android:background="@drawable/custom_border_bottom"
                 android:orientation="horizontal"
                 android:paddingVertical="2dp"
                 android:paddingHorizontal="16dp"
@@ -134,7 +134,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/custom_border_top_bottom"
+                android:background="@drawable/custom_border_bottom"
                 android:orientation="horizontal"
                 android:paddingVertical="2dp"
                 android:paddingHorizontal="16dp"

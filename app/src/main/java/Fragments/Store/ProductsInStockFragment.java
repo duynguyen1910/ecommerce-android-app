@@ -50,7 +50,7 @@ public class ProductsInStockFragment extends Fragment {
         Product product = new Product();
         product.getProductsInStockByStoreId(storeId, new GetCollectionCallback<Product>() {
             @Override
-            public void onGetDataSuccess(ArrayList<Product> products) {
+            public void onGetListSuccess(ArrayList<Product> products) {
                 binding.progressBar.setVisibility(View.GONE);
                 MyProductsAdapter adapter = new MyProductsAdapter(requireActivity(), products);
                 binding.recyclerView.setAdapter(adapter);
@@ -58,7 +58,7 @@ public class ProductsInStockFragment extends Fragment {
             }
 
             @Override
-            public void onGetDataFailure(String errorMessage) {
+            public void onGetListFailure(String errorMessage) {
                 Toast.makeText(requireActivity(), errorMessage, Toast.LENGTH_SHORT).show();
 
             }

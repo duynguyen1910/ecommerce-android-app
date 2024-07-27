@@ -46,7 +46,7 @@ public class SelectCategoryActivity extends AppCompatActivity {
 
         category.getCategoryCollection(new GetCollectionCallback<Category>() {
             @Override
-            public void onGetDataSuccess(ArrayList<Category> categories) {
+            public void onGetListSuccess(ArrayList<Category> categories) {
                 binding.progressBar.setVisibility(View.GONE);
                 CategoryAdapter adapter = new CategoryAdapter(SelectCategoryActivity.this, categories);
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(SelectCategoryActivity.this));
@@ -54,7 +54,7 @@ public class SelectCategoryActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onGetDataFailure(String errorMessage) {
+            public void onGetListFailure(String errorMessage) {
                 Toast.makeText(SelectCategoryActivity.this, INTERNET_ERROR, Toast.LENGTH_SHORT).show();
             }
         });

@@ -15,11 +15,12 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.Objects;
 import Adapters.ViewPager2Adapter;
-import Fragments.CustomerInvoices.InvoiceAwaitConfirmationFragment;
-import Fragments.CustomerInvoices.InvoiceAwaitDeliveryFragment;
-import Fragments.CustomerInvoices.InvoiceAwaitPickupFragment;
-import Fragments.CustomerInvoices.InvoiceCancelFragment;
-import Fragments.CustomerInvoices.InvoiceCompletedFragment;
+import Fragments.Invoice.PendingConfirmationFragment;
+import Fragments.Invoice.PendingShipmentFragment;
+import Fragments.Invoice.InTransitFragment;
+import Fragments.Invoice.CancelledFragment;
+import Fragments.Invoice.DeliveredFragment;
+import enums.OrderStatus;
 
 public class InvoiceActivity extends AppCompatActivity {
 
@@ -39,11 +40,11 @@ public class InvoiceActivity extends AppCompatActivity {
 
     private void setupUI() {
         ViewPager2Adapter viewPager2Adapter = new ViewPager2Adapter(this);
-        viewPager2Adapter.addFragment(new InvoiceAwaitConfirmationFragment(), "Chờ xác nhận");//0
-        viewPager2Adapter.addFragment(new InvoiceAwaitDeliveryFragment(), "Chờ giao hàng");//1
-        viewPager2Adapter.addFragment(new InvoiceAwaitPickupFragment(), "Chờ lấy hàng");//2
-        viewPager2Adapter.addFragment(new InvoiceCompletedFragment(), "Hoàn thành");//3
-        viewPager2Adapter.addFragment(new InvoiceCancelFragment(), "Đã hủy");//4
+        viewPager2Adapter.addFragment(new PendingConfirmationFragment(), OrderStatus.PENDING_CONFIRMATION.getOrderLabel());
+        viewPager2Adapter.addFragment(new PendingShipmentFragment(), OrderStatus.PENDING_SHIPMENT.getOrderLabel());
+        viewPager2Adapter.addFragment(new InTransitFragment(), OrderStatus.IN_TRANSIT.getOrderLabel());
+        viewPager2Adapter.addFragment(new DeliveredFragment(), OrderStatus.DELIVERED.getOrderLabel());
+        viewPager2Adapter.addFragment(new CancelledFragment(), OrderStatus.CANCELLED.getOrderLabel());
         binding.viewPager2.setAdapter(viewPager2Adapter);
 
 
@@ -104,9 +105,7 @@ public class InvoiceActivity extends AppCompatActivity {
         binding.imvHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(InvoiceActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+              finish();
             }
         });
     }

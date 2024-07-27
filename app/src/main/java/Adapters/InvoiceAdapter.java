@@ -1,36 +1,49 @@
 package Adapters;
 
+import static constants.keyName.STORE_NAME;
+import static utils.FormatHelper.formatDateTime;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.stores.databinding.ItemInvoiceBinding;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 
 import Activities.InvoiceDetailActivity;
-import models.CartItem;
 
+import api.invoiceApi;
+import api.storeApi;
+import enums.OrderStatus;
+import interfaces.GetCollectionCallback;
+import interfaces.GetDocumentCallback;
 import models.Invoice;
-import models.Product;
+import models.InvoiceDetail;
+import utils.FormatHelper;
 
 public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHolder> {
     private final Context context;
-    private final ArrayList<Invoice> list;
+    private final ArrayList<Invoice> invoiceList;
 
 
-    public InvoiceAdapter(Context context, ArrayList<Invoice> list) {
+    public InvoiceAdapter(Context context, ArrayList<Invoice> invoiceList) {
         this.context = context;
-        this.list = list;
+        this.invoiceList = invoiceList;
     }
 
     @NonNull
@@ -41,7 +54,6 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         ItemInvoiceBinding binding;
 
         public ViewHolder(ItemInvoiceBinding binding) {
@@ -53,31 +65,59 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Invoice invoice = invoiceList.get(holder.getBindingAdapterPosition());
 
+        holder.binding.progressBar.setVisibility(View.VISIBLE);
+        holder.binding.progressBar.getIndeterminateDrawable()
+                .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
-        Invoice invoice = list.get(holder.getBindingAdapterPosition());
+        holder.binding.txtInvoiceStatus.setText(invoice.getStatus().getOrderLabel());
 
-        CartItem cartItem = invoice.getCartItem();
-        holder.binding.txtStoreName.setText(cartItem.getStoreName());
-        ProductsAdapterForInvoiceItem adapter = new ProductsAdapterForInvoiceItem(context, cartItem.getListProducts(), true);
+        holder.binding.txtTotal.setText(FormatHelper.formatVND(invoice.getTotal()));
 
-        holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
-        holder.binding.recyclerViewProducts.setAdapter(adapter);
+        holder.binding.btnCancelInvoice.setVisibility(
+                invoice.getStatus() == OrderStatus.PENDING_CONFIRMATION ? View.VISIBLE : View.GONE);
 
-        holder.binding.txtQuantityProducts.setText(cartItem.getListProducts().size() + " sản phẩm");
-        holder.binding.txtCreatedDate.setText(invoice.getCreatedDate());
+        invoiceApi invoiceApi = new invoiceApi();
+        invoiceApi.getInvoiceDetailApi(invoice.getBaseID(), new GetCollectionCallback<InvoiceDetail>() {
+            @Override
+            public void onGetListSuccess(ArrayList<InvoiceDetail> productList) {
+                holder.binding.progressBar.setVisibility(View.GONE);
 
+                getStoreNameByID(productList, holder.binding.txtStoreName);
+                holder.binding.txtQuantityProducts.setText(productList.size() + " sản phẩm");
 
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        holder.binding.txtTotal.setText("đ" + formatter.format(getCartItemFee(cartItem)));
-        invoice.setTotal(getCartItemFee(cartItem));
+                InvoiceDetailAdapter adapter = new InvoiceDetailAdapter(context,
+                        productList, InvoiceDetail.ITEM_TO_DISPLAY);
+                holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
+                holder.binding.recyclerViewProducts.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void onGetListFailure(String errorMessage) {
+                holder.binding.progressBar.setVisibility(View.GONE);
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, InvoiceDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("invoice", invoice);
+
+                bundle.putString("invoiceID", invoice.getBaseID());
+                bundle.putString("deliveryAddress", invoice.getDeliveryAddress());
+                bundle.putString("invoiceStatusLabel", invoice.getStatus().getOrderLabel());
+
+                bundle.putString("createdAt", formatDateTime(invoice.getCreatedAt()));
+                bundle.putString("confirmedAt", formatDateTime(invoice.getConfirmedAt()));
+                bundle.putString("shippedAt", formatDateTime(invoice.getShippedAt()));
+                bundle.putString("deliveredAt", formatDateTime(invoice.getDeliveredAt()));
+
+                bundle.putDouble("invoiceTotal", invoice.getTotal());
+
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }
@@ -85,17 +125,24 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
 
     }
 
-    private double getCartItemFee(CartItem cartItem) {
-        double fee = 0;
-        for (Product product : cartItem.getListProducts()) {
-            fee += (product.getNewPrice() * product.getNumberInCart());
-        }
-        return fee;
-    }
+    private void getStoreNameByID(ArrayList<InvoiceDetail> productList, TextView txtStoreName) {
 
+        storeApi storeApi = new storeApi();
+        storeApi.getStoreDetailApi(productList.get(0).getStoreID(), new GetDocumentCallback() {
+            @Override
+            public void onGetDataSuccess(Map<String, Object> data) {
+                txtStoreName.setText((CharSequence) data.get(STORE_NAME));
+            }
+
+            @Override
+            public void onGetDataFailure(String errorMessage) {
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return invoiceList.size();
     }
 }

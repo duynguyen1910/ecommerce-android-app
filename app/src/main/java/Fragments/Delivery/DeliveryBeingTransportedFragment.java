@@ -86,22 +86,22 @@ public class DeliveryBeingTransportedFragment extends Fragment {
         String customerID = "rN1sLvf2d6M0tgbtGd9X";
         String customerName = "Duy Nguyen Tan";
 
-        Invoice newInvoice = new Invoice(
-                deliveryAddress,
-                createdDate,
-                paidDate,
-                giveToDeliveryDate,
-                completedDate,
-                getTotalForCartItem(cartItem),
-                note,
-                paymentMethod,
-                orderStatus,
-                cartItem,
-                customerID,
-                customerName);
-        newInvoice.setInvoiceID(generateInvoiceId(29));
-
-        invoices.add(newInvoice);
+//        Invoice newInvoice = new Invoice(
+//                deliveryAddress,
+//                createdDate,
+//                paidDate,
+//                giveToDeliveryDate,
+//                completedDate,
+//                getTotalForCartItem(cartItem),
+//                note,
+//                paymentMethod,
+//                orderStatus,
+//                cartItem,
+//                customerID,
+//                customerName);
+//        newInvoice.setInvoiceID(generateInvoiceId(29));
+//
+//        invoices.add(newInvoice);
     }
 
     private double getTotalForCartItem(CartItem cartItem) {

@@ -10,6 +10,14 @@ public class toastMessage {
     public static final String FULLNAME_REQUIRE = "Vui lòng nhập họ tên";
 
 
+    public static final String IMAGE_REQUIRE = "Vui lòng chọn ảnh";
+    public static final String UPLOAD_FAILED = "Tải lên không thành công";
+    public static final String URL_NOT_FOUND = "Không tìm thấy URL";
+
+
+    public static final String UPDATE_SUCCESSFULLY = "Cập nhật thành công";
+
+
     public static final String STORENAME_REQUIRE = "Vui lòng nhập tên cửa hàng";
     public static final String STOREA_ADDRESS_REQUIRE = "Vui lòng nhập địa chỉ cửa hàng";
 
@@ -17,10 +25,13 @@ public class toastMessage {
     public static final String DEFAULT_REQUIRE = "Vui lòng nhập trường này";
     public static final String INTERNET_ERROR = "Uiii, Lỗi mạng rồi :((";
 
+
     public static final String CREATE_PRODUCT_FAILED = "Thêm sản phẩm thất bại";
     public static final String CREATE_PRODUCT_SUCCESSFULLY = "Thêm sản phẩm thành công";
     public static final String UPDATE_PRODUCT_SUCCESSFULLY = "Chỉnh sửa sản phẩm thành công";
     public static final String UPDATE_PRODUCT_FAILED = "Chỉnh sửa sản phẩm thất bại";
 
 
+    public static final String ORDER_SUCCESSFULLY = "Đặt hàng thành công";
+    public static final String CONFIRMED_ORDER_SUCCESSFULLY = "Đã xác nhận đơn";
 }

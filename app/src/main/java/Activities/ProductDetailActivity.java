@@ -8,14 +8,17 @@ import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
+import static constants.keyName.USER_ID;
+import static constants.keyName.USER_INFO;
 import static constants.toastMessage.INTERNET_ERROR;
 import static utils.AnimationUtils.translateAnimation;
-import static utils.CartUtils.MYCART;
+import static utils.CartUtils.MY_CART;
 import static utils.CartUtils.showToast;
 import static utils.CartUtils.updateQuantityInCart;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -43,18 +46,20 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import Activities.StoreSetup.ViewMyStoreActivity;
 import interfaces.GetDocumentCallback;
 import models.CartItem;
+import models.InvoiceDetail;
 import models.Product;
 import models.Store;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
     ActivityProductDetailBinding binding;
-    private String productId;
-    private String storeId;
-    Product thisProduct;
+    private String productID;
+    private String storeID;
     private String storeName;
+    Product thisProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +76,8 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void getBundle() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            productId = bundle.getString(PRODUCT_ID, null);
-            storeId = bundle.getString(STORE_ID, null);
+            productID = bundle.getString(PRODUCT_ID, null);
+            storeID = bundle.getString(STORE_ID, null);
         }
     }
 
@@ -81,9 +86,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding.layoutProductsInfo.setVisibility(View.GONE);
         binding.progressBarProduct.setVisibility(View.VISIBLE);
 
-        if (storeId != null && productId != null) {
+        if (storeID != null && productID != null) {
             Product product = new Product();
-            product.getProductDetail(productId, new GetDocumentCallback() {
+            product.getProductDetail(productID, new GetDocumentCallback() {
                 @Override
                 public void onGetDataSuccess(Map<String, Object> productDetail) {
                     thisProduct = new Product(
@@ -92,9 +97,9 @@ public class ProductDetailActivity extends AppCompatActivity {
                             (double) productDetail.get(PRODUCT_NEW_PRICE),
                             (double) productDetail.get(PRODUCT_OLD_PRICE),
                             ((Long) productDetail.get(PRODUCT_INSTOCK)).intValue(),
-                            storeId,
+                            storeID,
                             1);
-                    thisProduct.setBaseID(productId);
+                    thisProduct.setBaseID(productID);
                     binding.progressBarProduct.setVisibility(View.GONE);
                     binding.layoutProductsInfo.setVisibility(View.VISIBLE);
                     // setup product information
@@ -137,11 +142,12 @@ public class ProductDetailActivity extends AppCompatActivity {
     private void setupStoreInfo() {
         binding.progressBarStore.setVisibility(View.VISIBLE);
         // lấy thông tin avatar, invoice
-        if (storeId != null) {
+        if (storeID != null) {
             Store store = new Store();
-            store.onGetStoreDetail(storeId, new GetDocumentCallback() {
+            store.onGetStoreDetail(storeID, new GetDocumentCallback() {
                 @Override
                 public void onGetDataSuccess(Map<String, Object> data) {
+
                     storeName = (String) data.get(STORE_NAME);
                     binding.progressBarStore.setVisibility(View.GONE);
                     binding.txtStoreName.setText(storeName);
@@ -167,7 +173,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         boolean storeFound = false;
         boolean productFound = false;
 
-        for (CartItem cartItem : MYCART) {
+        for (CartItem cartItem : MY_CART) {
             if (storeName.equals(cartItem.getStoreName())) { // storeName cannot be null here
                 storeFound = true;
                 for (Product pr : cartItem.getListProducts()) {
@@ -190,7 +196,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             ArrayList<Product> products = new ArrayList<>();
             product.setNumberInCart(quantity);
             products.add(product);
-            MYCART.add(new CartItem(storeName, products));
+            MY_CART.add(new CartItem(storeID, storeName, products));
         }
     }
 
@@ -210,7 +216,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         binding.btnViewStore.setOnClickListener(v -> {
             Intent intent = new Intent(ProductDetailActivity.this, ViewMyStoreActivity.class);
-            intent.putExtra(STORE_ID, storeId);
+            intent.putExtra(STORE_ID, storeID);
             startActivity(intent);
         });
 
@@ -272,6 +278,14 @@ public class ProductDetailActivity extends AppCompatActivity {
         dialogBinding.imageClose.setOnClickListener(v -> dialog.dismiss());
 
         dialogBinding.btnAddToCart.setOnClickListener(v -> {
+            SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+            String userID = sharedPreferences.getString(USER_ID, null);
+
+            if(userID == null) {
+                startActivity(new Intent(ProductDetailActivity.this, LoginActivity.class));
+                return;
+            }
+
             if (thisProduct.getNumberInCart() > thisProduct.getInStock()) {
                 showToast(ProductDetailActivity.this, "Uiii, số lượng sản phẩm không đủ!");
             } else {
@@ -344,16 +358,16 @@ public class ProductDetailActivity extends AppCompatActivity {
                 showToast(ProductDetailActivity.this, "Uiii, số lượng sản phẩm không đủ!");
             } else {
                 Intent intent = new Intent(ProductDetailActivity.this, PaymentActivity.class);
-                ArrayList<CartItem> payment = new ArrayList<>();
-                CartItem cartItem = new CartItem();
+                ArrayList<InvoiceDetail> payment = new ArrayList<>();
+//                InvoiceDetail cartItem = new InvoiceDetail();
                 ArrayList<Product> listProducts = new ArrayList<>();
                 int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
                 thisProduct.setNumberInCart(quantity);
 
                 listProducts.add(thisProduct);
-                cartItem.setStoreName(storeName);
-                cartItem.setListProducts(listProducts);
-                payment.add(cartItem);
+//                cartItem.setStoreName(storeName);
+//                cartItem.setListProducts(listProducts);
+//                payment.add(cartItem);
 
                 intent.putExtra("payment", payment);
                 startActivity(intent);

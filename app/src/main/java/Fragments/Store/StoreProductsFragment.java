@@ -52,14 +52,14 @@ public class StoreProductsFragment extends Fragment {
             Product product = new Product();
             product.getProductsByStoreId(storeId, new GetCollectionCallback<Product>() {
                 @Override
-                public void onGetDataSuccess(ArrayList<Product> products) {
+                public void onGetListSuccess(ArrayList<Product> products) {
                     binding.progressBar.setVisibility(View.GONE);
                     binding.recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
                     binding.recyclerView.setAdapter(new ProductAdapter(requireActivity(), products));
                 }
 
                 @Override
-                public void onGetDataFailure(String errorMessage) {
+                public void onGetListFailure(String errorMessage) {
 
                 }
             });

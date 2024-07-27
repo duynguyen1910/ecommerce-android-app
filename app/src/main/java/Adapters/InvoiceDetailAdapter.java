@@ -3,6 +3,7 @@ package Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -13,15 +14,23 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import models.Product;
+import models.InvoiceDetail;
+import utils.FormatHelper;
 
-public class ProductsAdapterForInvoiceDetail extends RecyclerView.Adapter<ProductsAdapterForInvoiceDetail.ViewHolder> {
+public class InvoiceDetailAdapter extends RecyclerView.Adapter<InvoiceDetailAdapter.ViewHolder> {
     private final Context context;
-    private final ArrayList<Product> list;
+    private final ArrayList<InvoiceDetail> list;
+    private int itemCount = 0;
 
-    public ProductsAdapterForInvoiceDetail(Context context, ArrayList<Product> list) {
+    public InvoiceDetailAdapter(Context context, ArrayList<InvoiceDetail> list) {
         this.context = context;
         this.list = list;
+    }
+
+    public InvoiceDetailAdapter(Context context, ArrayList<InvoiceDetail> list, int itemCount) {
+        this.context = context;
+        this.list = list;
+        this.itemCount = itemCount;
     }
 
     @NonNull
@@ -45,24 +54,21 @@ public class ProductsAdapterForInvoiceDetail extends RecyclerView.Adapter<Produc
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Product product = list.get(holder.getBindingAdapterPosition());
+        InvoiceDetail detail = list.get(holder.getBindingAdapterPosition());
 
-        holder.binding.txtProductTitle.setText(product.getProductName());
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedOldPrice = formatter.format(product.getOldPrice());
-        holder.binding.txtOldPrice.setText("đ" + formattedOldPrice);
+        holder.binding.txtProductTitle.setText(detail.getProductName());
+
+        holder.binding.txtNewPrice.setText(FormatHelper.formatVND(detail.getNewPrice()));
+        holder.binding.txtOldPrice.setText(FormatHelper.formatVND(detail.getOldPrice()));
         holder.binding.txtOldPrice.setPaintFlags(holder.binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        String formattedPrice = formatter.format(product.getOldPrice());
 
-        holder.binding.txtPrice.setText(formattedPrice);
-
-        holder.binding.txtQuantity.setText("x" + product.getNumberInCart());
+        holder.binding.txtQuantity.setText("x" + detail.getQuantity());
 //        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
 
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return itemCount > 0 ? itemCount : list.size();
     }
 }

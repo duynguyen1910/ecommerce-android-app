@@ -17,7 +17,7 @@ import models.CartItem;
 import models.Invoice;
 import models.Product;
 
-public class RequestInvoiceCancelFragment extends Fragment {
+public class CancelledFragment extends Fragment {
     FragmentRequestInvoiceCancelBinding binding;
     ArrayList<Invoice> invoices = new ArrayList<>();
 
@@ -83,23 +83,23 @@ public class RequestInvoiceCancelFragment extends Fragment {
         int orderStatus = 2; // 2: Đã hủy
         String customerID = "wGtZaW1XiQjnZDGz702F";
         String customerName = "Ngoc Dai";
-
-        Invoice newInvoice = new Invoice(
-                deliveryAddress,
-                createdDate,
-                paidDate,
-                giveToDeliveryDate,
-                completedDate,
-                getTotalForCartItem(cartItem),
-                note,
-                paymentMethod,
-                orderStatus,
-                cartItem,
-                customerID,
-                customerName);
-        newInvoice.setInvoiceID(generateInvoiceId(15));
-
-        invoices.add(newInvoice);
+//
+//        Invoice newInvoice = new Invoice(
+//                deliveryAddress,
+//                createdDate,
+//                paidDate,
+//                giveToDeliveryDate,
+//                completedDate,
+//                getTotalForCartItem(cartItem),
+//                note,
+//                paymentMethod,
+//                orderStatus,
+//                cartItem,
+//                customerID,
+//                customerName);
+//        newInvoice.setInvoiceID(generateInvoiceId(15));
+//
+//        invoices.add(newInvoice);
     }
 
     private double getTotalForCartItem(CartItem cartItem) {

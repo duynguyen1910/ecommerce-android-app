@@ -51,7 +51,7 @@ public class StoreCategoriesFragment extends Fragment {
             Product product = new Product();
             product.getProductsByStoreId(storeId, new GetCollectionCallback<Product>() {
                 @Override
-                public void onGetDataSuccess(ArrayList<Product> products) {
+                public void onGetListSuccess(ArrayList<Product> products) {
                     binding.progressBar.setVisibility(View.GONE);
                     Map<String, Category> categoryMap = new HashMap<>();
                     for (Product item : products){
@@ -71,7 +71,7 @@ public class StoreCategoriesFragment extends Fragment {
                 }
 
                 @Override
-                public void onGetDataFailure(String errorMessage) {
+                public void onGetListFailure(String errorMessage) {
                     binding.progressBar.setVisibility(View.GONE);
                     Toast.makeText(requireActivity(), "Lỗi: " + errorMessage, Toast.LENGTH_SHORT).show();
                 }

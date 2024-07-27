@@ -71,11 +71,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ProductDetailActivity.class);
-                // truyền productId, storeId
                 Bundle bundle = new Bundle();
 
                 bundle.putString(PRODUCT_ID, product.getBaseID());
                 bundle.putString(STORE_ID, product.getStoreID());
+
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }

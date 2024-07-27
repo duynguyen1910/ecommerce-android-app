@@ -41,8 +41,10 @@ public class storeApi {
 
     }
 
-    public void getStoreDetailApi(String storeId, GetDocumentCallback callback){
-        DocumentReference docRef = db.collection(STORE_COLLECTION).document(storeId);
+    public void getStoreDetailApi(String storeID, GetDocumentCallback callback){
+        if(storeID == null) return;
+
+        DocumentReference docRef = db.collection(STORE_COLLECTION).document(storeID);
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();

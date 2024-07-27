@@ -15,15 +15,18 @@ import java.util.Map;
 import api.userApi;
 import constants.toastMessage;
 import enums.UserRole;
-import interfaces.LoginCallback;
-import interfaces.RegisterCallback;
+import interfaces.ImageCallback;
+import interfaces.StatusCallback;
+import interfaces.UserCallback;
 import interfaces.UpdateDocumentCallback;
 
 public class User extends BaseObject implements Serializable {
     private String phoneNumber;
     private String password;
     private String fullname;
-    private String imageUrl;
+    private String userImageUrl;
+    private String userAddress;
+    private String email;
     private UserRole role;
     private userApi userApi;
     private String storeID;
@@ -31,14 +34,31 @@ public class User extends BaseObject implements Serializable {
 
     public User() {
         userApi  = new userApi();
+    };
+
+    public User(String phoneNumber, String password) {
+        userApi  = new userApi();
+
+        this.phoneNumber = phoneNumber;
+        this.password = password;
     }
 
-    public User(String phoneNumber, String password, String fullname, String imageUrl, UserRole role) {
+    public User(String phoneNumber, String password, String fullname) {
+        userApi  = new userApi();
+
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.fullname = fullname;
-        this.imageUrl = imageUrl;
+    }
+
+    public User(String phoneNumber, String password, String fullname, String userImageUrl, String email, UserRole role, api.userApi userApi) {
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.fullname = fullname;
+        this.userImageUrl = userImageUrl;
+        this.email = email;
         this.role = role;
+        this.userApi = userApi;
     }
 
     @Override
@@ -48,7 +68,7 @@ public class User extends BaseObject implements Serializable {
 
     @Override
     public void setBaseID(String userId) {
-        validateBaseId(userId);
+        super.validateBaseID(userId);
         super.baseID = userId;
     }
 
@@ -84,12 +104,28 @@ public class User extends BaseObject implements Serializable {
         this.fullname = fullname;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getUserImageUrl() {
+        return userImageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setUserImageUrl(String userImageUrl) {
+        this.userImageUrl = userImageUrl;
+    }
+
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public UserRole getRole() {
@@ -100,7 +136,7 @@ public class User extends BaseObject implements Serializable {
         this.role = UserRole.fromInt(role);
     }
 
-    public void onLogin(String phoneNumber, String password, final LoginCallback callback) {
+    public void onLogin(String phoneNumber, String password, final UserCallback callback) {
         userApi.checkUserCredentialsApi(phoneNumber, password, new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -112,21 +148,35 @@ public class User extends BaseObject implements Serializable {
                         int roleValue = document.getLong(USER_ROLE).intValue();
                         user.setRole(roleValue);
 
-                        callback.onLoginSuccess(user);
+                        callback.getUserInfoSuccess(user);
                     }
                 } else {
-                    callback.onLoginFailure(toastMessage.LOGIN_FAILED);
+                    callback.getUserInfoFailure(toastMessage.LOGIN_FAILED);
                 }
             }
         });
     }
 
-    public void onRegister(Map<String, Object> newUser, final RegisterCallback callback) {
+    public void onRegister(Map<String, Object> newUser, final StatusCallback callback) {
         userApi.createUserApi(newUser, callback);
     }
 
+    public void onSaveUserImage(String downloadUri, String userId) {
+        userApi.saveImageUriApi(downloadUri, userId);
+    }
     public void onUpdate(Map<String, Object> updateData, String userId, UpdateDocumentCallback callback){
         userApi.updateUserApi(updateData, userId, callback);
     }
 
+    public void getUserImageUrl(String userId, final ImageCallback callback) {
+        userApi.getUserImageApi(userId, callback);
+    }
+
+    public void getUserInfo(String userId, final UserCallback callback) {
+        userApi.getUserInfoApi(userId, callback);
+    }
+
+    public void updateUserInfo(String userId, Map<String, Object> userUpdates, final StatusCallback callback) {
+        userApi.updateUserInfoApi(userId, userUpdates, callback);
+    }
 }

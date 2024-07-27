@@ -1,11 +1,18 @@
 package Adapters;
 
+import static constants.keyName.CANCELED_AT;
+import static constants.keyName.CONFIRMED_AT;
+import static constants.keyName.STATUS;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -14,14 +21,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.stores.R;
 import com.example.stores.databinding.ItemRequestInvoiceBinding;
-import java.text.NumberFormat;
+import com.google.firebase.Timestamp;
+
 import java.util.ArrayList;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.Map;
 
 import Activities.InvoiceDetailActivity;
-import models.CartItem;
+import api.invoiceApi;
+import enums.OrderStatus;
+import interfaces.GetCollectionCallback;
+import interfaces.UpdateDocumentCallback;
+import interfaces.UserCallback;
 import models.Invoice;
-import models.Product;
+import models.InvoiceDetail;
+import models.User;
+import utils.FormatHelper;
 
 public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAdapter.ViewHolder> {
     private final Context context;
@@ -41,7 +56,6 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         ItemRequestInvoiceBinding binding;
 
         public ViewHolder(ItemRequestInvoiceBinding binding) {
@@ -53,71 +67,115 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-
         Invoice invoice = list.get(holder.getBindingAdapterPosition());
+        User user = new User();
 
-        CartItem cartItem = invoice.getCartItem();
-        holder.binding.txtCustomerName.setText(invoice.getCustomerName());
-        ProductsAdapterForRequestInvoice adapter = new ProductsAdapterForRequestInvoice(context, cartItem.getListProducts(), true);
+        user.getUserInfo(invoice.getCustomerID(), new UserCallback() {
+            @Override
+            public void getUserInfoSuccess(User user) {
+                holder.binding.txtCustomerName.setText(user.getFullname());
+                holder.binding.txtCustomerPhone.setText(user.getPhoneNumber());
+                holder.binding.txtCustomerAddress.setText(user.getUserAddress());
+            }
 
-        // 0 Chờ người bán xác nhận
-        // 1 người bán đã xác nhận, chờ lấy hàng
-        // 2 Đã hủy
-        // 3 Đang giao hàng
-        // 4 đã hoàn thành
-        if (invoice.getInvoiceStatus() == 0){
-            holder.binding.txtInvoiceStatus.setText("Chờ xác nhận");
-            holder.binding.txtInvoiceStatus.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
-            holder.binding.layoutControl.setVisibility(View.VISIBLE);
-        }else if(invoice.getInvoiceStatus() == 1) {
-            holder.binding.txtInvoiceStatus.setText("Đã xác nhận");
-            holder.binding.txtInvoiceStatus.setTextColor(ContextCompat.getColor(context, R.color.secondary_color));
-            holder.binding.layoutControl.setVisibility(View.VISIBLE);
-            holder.binding.btnSubmit.setVisibility(View.GONE);
-        }else if(invoice.getInvoiceStatus() == 2){
-            holder.binding.txtInvoiceStatus.setText("Đã hủy");
-            holder.binding.txtInvoiceStatus.setTextColor(ContextCompat.getColor(context, R.color.black));
-            holder.binding.layoutControl.setVisibility(View.GONE);
-        }
-        holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
-        holder.binding.recyclerViewProducts.setAdapter(adapter);
+            @Override
+            public void getUserInfoFailure(String errorMessage) {
 
-        holder.binding.txtQuantityProducts.setText(cartItem.getListProducts().size() + " sản phẩm");
-        holder.binding.txtCreatedDate.setText(invoice.getCreatedDate());
-
-
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        holder.binding.txtTotal.setText("đ" + formatter.format(getCartItemFee(cartItem)));
-        invoice.setTotal(getCartItemFee(cartItem));
-
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, InvoiceDetailActivity.class);
-            intent.putExtra("invoice", invoice);
-            context.startActivity(intent);
+            }
         });
-        holder.binding.btnSubmit.setOnClickListener(v -> {
-            invoice.setInvoiceStatus(1); //đã xác nhận đơn hàng
-            holder.binding.txtInvoiceStatus.setText("Đã xác nhận");
+
+//        holder.binding.txtInvoiceStatus.setText(invoice.getStatus().getOrderLabel());
+
+        holder.binding.progressBar.setVisibility(View.VISIBLE);
+        holder.binding.progressBar.getIndeterminateDrawable()
+                .setColorFilter(ContextCompat.getColor(context, R.color.primary_color),
+                        PorterDuff.Mode.MULTIPLY);
+
+        invoiceApi invoiceApi = new invoiceApi();
+        invoiceApi.getInvoiceDetailApi(invoice.getBaseID(), new GetCollectionCallback<InvoiceDetail>() {
+            @Override
+            public void onGetListSuccess(ArrayList<InvoiceDetail> productList) {
+                holder.binding.progressBar.setVisibility(View.GONE);
+
+                InvoiceDetailAdapter adapter = new
+                        InvoiceDetailAdapter(context, productList);
+                holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
+                holder.binding.recyclerViewProducts.setAdapter(adapter);
+
+                holder.binding.txtQuantityProducts.setText(productList.size() + " sản phẩm");
+                holder.binding.txtInvoiceStatus.setText(
+                        FormatHelper.formatDateTime(setDateTimeByInvoice(invoice)));
+                holder.binding.txtTotal.setText(FormatHelper.formatVND(invoice.getTotal()));
+
+            }
+
+            @Override
+            public void onGetListFailure(String errorMessage) {
+                holder.binding.progressBar.setVisibility(View.GONE);
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+            }
         });
+
+        holder.binding.btnConfirmInvoice.setOnClickListener(v -> {
+            Map<String, Object> newMap = new HashMap<>();
+            newMap.put(STATUS, OrderStatus.PENDING_SHIPMENT.getOrderStatusValue());
+            newMap.put(CONFIRMED_AT, FormatHelper.getCurrentDateTime());
+
+            invoiceApi.updateStatusInvoiceApi(invoice.getBaseID(), newMap, new UpdateDocumentCallback() {
+                @Override
+                public void onUpdateSuccess(String successMessage) {
+                    Toast.makeText(context, successMessage, Toast.LENGTH_SHORT).show();
+                    removeItemAdapter(holder.getBindingAdapterPosition());
+                }
+
+                @Override
+                public void onUpdateFailure(String errorMessage) {
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+
         holder.binding.btnCancel.setOnClickListener(v -> {
-            invoice.setInvoiceStatus(2); //đã hủy
-            holder.binding.txtInvoiceStatus.setText("Đã hủy");
+            Map<String, Object> newMap = new HashMap<>();
+            newMap.put(STATUS, OrderStatus.CANCELLED.getOrderStatusValue());
+            newMap.put(CANCELED_AT, FormatHelper.getCurrentDateTime());
+
+            invoiceApi.updateStatusInvoiceApi(invoice.getBaseID(), newMap, new UpdateDocumentCallback() {
+                @Override
+                public void onUpdateSuccess(String successMessage) {
+
+                    Toast.makeText(context, successMessage, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onUpdateFailure(String errorMessage) {
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
     }
-
-    private double getCartItemFee(CartItem cartItem) {
-        double fee = 0;
-        for (Product product : cartItem.getListProducts()) {
-            fee += (product.getNewPrice() * product.getNumberInCart());
-        }
-        return fee;
-    }
-
 
     @Override
     public int getItemCount() {
         return list.size();
     }
+
+    private void removeItemAdapter(int position) {
+        list.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    private Timestamp setDateTimeByInvoice(Invoice invoice) {
+        switch (invoice.getStatus()) {
+            case PENDING_CONFIRMATION:
+                return invoice.getCreatedAt();
+            case PENDING_SHIPMENT:
+                return invoice.getShippedAt();
+            default:
+                return invoice.getCancelledAt();
+        }
+    }
+
 }

@@ -1,7 +1,10 @@
 package models;
 
-public abstract class BaseObject{
+import java.io.Serializable;
+
+public abstract class BaseObject implements Serializable {
     protected String baseID;
+
 
     /**
      * Retrieves the unique identifier of the object.
@@ -13,7 +16,7 @@ public abstract class BaseObject{
 
     /**
      * Sets the unique identifier of the object.
-     * Throws IllegalArgumentException if the baseId is null or empty.
+     * Throws IllegalArgumentException if the baseID is null or empty.
      *
      * @param baseID the unique identifier to set.
      */
@@ -21,14 +24,14 @@ public abstract class BaseObject{
 
 
     /**
-     * Validates the baseId to ensure it's not null or empty.
+     * Validates the baseID to ensure it's not null or empty.
      *
      * @param baseID the unique identifier to validate.
-     * @throws IllegalArgumentException if the baseId is null or empty.
+     * @throws IllegalArgumentException if the baseID is null or empty.
      */
-    protected void validateBaseId(String baseID) {
+    protected void validateBaseID(String baseID) {
         if (baseID == null || baseID.isEmpty()) {
-            throw new IllegalArgumentException("'baseId' cannot be null or empty");
+            throw new IllegalArgumentException("'baseID' cannot be null or empty");
         }
     }
 }

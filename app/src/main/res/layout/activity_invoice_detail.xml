@@ -68,6 +68,7 @@
                     android:paddingVertical="6dp">
 
                     <TextView
+                        android:id="@+id/txtInvoiceStatus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
@@ -90,6 +91,7 @@
                             android:drawablePadding="6dp"
                             android:text="Địa chỉ nhận hàng"
                             android:textColor="@color/black"
+                            android:textStyle="bold"
                             app:drawableStartCompat="@drawable/ic_location_16"
                             app:drawableTint="@color/primary_color" />
 
@@ -113,7 +115,7 @@
                         android:gravity="center_vertical"
                         android:lineHeight="20dp"
                         android:paddingHorizontal="26dp"
-                        android:text="@string/address"
+                        android:text="..."
                         android:textColor="@color/black" />
                 </LinearLayout>
 
@@ -138,7 +140,7 @@
                         android:ellipsize="end"
                         android:fontFamily="sans-serif-light"
                         android:maxLines="1"
-                        android:text="Zozo_Unisex"
+                        android:text=""
                         android:textAlignment="textStart"
                         android:textColor="@color/black"
                         android:textSize="15sp"
@@ -161,6 +163,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:indeterminateTintMode="src_atop"
+                    android:visibility="gone" />
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -171,7 +183,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_border_top_bottom"
+                    android:background="@drawable/custom_border_bottom"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="16dp">
@@ -201,7 +213,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_border_top_bottom"
+                    android:background="@drawable/custom_border_bottom"
                     android:orientation="vertical"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="16dp">
@@ -235,14 +247,15 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_border_top_bottom"
+                    android:background="@drawable/custom_border_bottom"
                     android:orientation="vertical"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="16dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp">
 
                         <TextView
                             android:id="@+id/textView2"
@@ -273,16 +286,14 @@
                             app:drawableTint="@color/secondary_color" />
                     </RelativeLayout>
 
-
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="16dp">
+                        android:paddingVertical="8dp">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
                             android:text="Thời gian đặt hàng"
                             android:textColor="@color/black" />
 
@@ -295,24 +306,23 @@
                             android:text="2024/07/03, 08:54"
                             android:textColor="@color/darkgray"
                             app:backgroundTint="@null" />
-
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/confirmedAtRL"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="16dp">
+                        android:paddingVertical="8dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-
-                            android:text="Thời gian thanh toán"
+                            android:text="Chủ hàng xác nhận đơn"
                             android:textColor="@color/black" />
 
                         <TextView
-
-                            android:id="@+id/txtPaidDate"
+                            android:id="@+id/txtConfirmedAt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
@@ -320,23 +330,23 @@
                             android:text="2024/07/03, 08:54"
                             android:textColor="@color/darkgray"
                             app:backgroundTint="@null" />
-
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/shippedAtRL"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="16dp">
+                        android:paddingVertical="8dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Thời gian giao hàng cho vận chuyển"
+                            android:text="Giao cho đơn vị vận chuyển"
                             android:textColor="@color/black" />
 
                         <TextView
-
-                            android:id="@+id/txtGiveToDeliveryDate"
+                            android:id="@+id/txtShippedAt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
@@ -344,23 +354,23 @@
                             android:text="2024/07/03, 08:54"
                             android:textColor="@color/darkgray"
                             app:backgroundTint="@null" />
-
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/deliveredAtRL"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="16dp">
+                        android:paddingVertical="8dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Thời gian hoàn thành"
+                            android:text="Đã nhận được hàng"
                             android:textColor="@color/black" />
 
                         <TextView
-
-                            android:id="@+id/txtCompletedDate"
+                            android:id="@+id/txtDeliveredAt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
@@ -368,14 +378,22 @@
                             android:text="2024/07/03, 08:54"
                             android:textColor="@color/darkgray"
                             app:backgroundTint="@null" />
-
                     </RelativeLayout>
-
-
                 </LinearLayout>
+
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/btnCancelInvoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/custom_button_close"
+                    android:text="Hủy đơn"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
             </LinearLayout>
-
-
         </LinearLayout>
     </ScrollView>
 

@@ -48,7 +48,7 @@ public class ProductsOutOfStockFragment extends Fragment {
         Product product = new Product();
         product.getProductsOutOfStockByStoreId(storeId, new GetCollectionCallback<Product>() {
             @Override
-            public void onGetDataSuccess(ArrayList<Product> products) {
+            public void onGetListSuccess(ArrayList<Product> products) {
                 binding.progressBar.setVisibility(View.GONE);
                 MyProductsAdapter adapter = new MyProductsAdapter(requireActivity(), products);
                 binding.recyclerView.setAdapter(adapter);
@@ -56,7 +56,7 @@ public class ProductsOutOfStockFragment extends Fragment {
             }
 
             @Override
-            public void onGetDataFailure(String errorMessage) {
+            public void onGetListFailure(String errorMessage) {
 
             }
         });

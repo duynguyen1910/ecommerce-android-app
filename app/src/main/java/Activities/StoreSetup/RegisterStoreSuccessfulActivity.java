@@ -1,14 +1,12 @@
-package Activities;
 
+package Activities.StoreSetup;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.stores.databinding.ActivityRegisterStoreOwnerSuccessfulBinding;
-
 import java.util.Objects;
+import Activities.MainActivity;
 
 public class RegisterStoreSuccessfulActivity extends AppCompatActivity {
 

@@ -42,7 +42,6 @@ public class ProductsAdapterForPaymentItem extends RecyclerView.Adapter<Products
         }
     }
 
-
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -52,8 +51,8 @@ public class ProductsAdapterForPaymentItem extends RecyclerView.Adapter<Products
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         String formattedPrice = formatter.format(product.getNewPrice());
         holder.binding.txtPrice.setText("đ" + formattedPrice);
-
         holder.binding.txtQuantity.setText("x" + product.getNumberInCart());
+
 //        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
 
     }

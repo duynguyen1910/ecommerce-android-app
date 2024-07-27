@@ -117,7 +117,7 @@ public class SearchSortedByPriceFragment extends Fragment implements CategoryDia
         Product product = new Product();
         product.getAllProductAscendingByCategoryId(categoryId, new GetCollectionCallback<Product>() {
             @Override
-            public void onGetDataSuccess(ArrayList<Product> products) {
+            public void onGetListSuccess(ArrayList<Product> products) {
                 setLoadingState(false);
                 binding.txtSelectedCategory.setVisibility(View.VISIBLE);
                 listProducts = new ArrayList<>(products);
@@ -132,7 +132,7 @@ public class SearchSortedByPriceFragment extends Fragment implements CategoryDia
             }
 
             @Override
-            public void onGetDataFailure(String errorMessage) {
+            public void onGetListFailure(String errorMessage) {
                 showToast(errorMessage);
             }
         });
@@ -144,7 +144,7 @@ public class SearchSortedByPriceFragment extends Fragment implements CategoryDia
         Product product = new Product();
         product.getAllProducts(new GetCollectionCallback<Product>() {
             @Override
-            public void onGetDataSuccess(ArrayList<Product> products) {
+            public void onGetListSuccess(ArrayList<Product> products) {
 
                 setLoadingState(false);
                 listProducts = new ArrayList<>();
@@ -164,7 +164,7 @@ public class SearchSortedByPriceFragment extends Fragment implements CategoryDia
             }
 
             @Override
-            public void onGetDataFailure(String errorMessage) {
+            public void onGetListFailure(String errorMessage) {
                 showToast(errorMessage);
             }
         });
@@ -227,12 +227,12 @@ public class SearchSortedByPriceFragment extends Fragment implements CategoryDia
         Category category = new Category();
         category.getCategoryCollection(new GetCollectionCallback<Category>() {
             @Override
-            public void onGetDataSuccess(ArrayList<Category> categories) {
+            public void onGetListSuccess(ArrayList<Category> categories) {
                 allCategories = new ArrayList<>(categories);
             }
 
             @Override
-            public void onGetDataFailure(String errorMessage) {
+            public void onGetListFailure(String errorMessage) {
                 showToast(errorMessage);
             }
         });
@@ -245,7 +245,7 @@ public class SearchSortedByPriceFragment extends Fragment implements CategoryDia
         Product product = new Product();
         product.getAllProductByStoreIdAndCategoryId(storeId, categoryId, new GetCollectionCallback<Product>() {
             @Override
-            public void onGetDataSuccess(ArrayList<Product> products) {
+            public void onGetListSuccess(ArrayList<Product> products) {
                 setLoadingState(false);
                 binding.txtSelectedCategory.setVisibility(View.VISIBLE);
                 listProducts = new ArrayList<>(products);
@@ -256,7 +256,7 @@ public class SearchSortedByPriceFragment extends Fragment implements CategoryDia
             }
 
             @Override
-            public void onGetDataFailure(String errorMessage) {
+            public void onGetListFailure(String errorMessage) {
                 showToast(errorMessage);
             }
         });

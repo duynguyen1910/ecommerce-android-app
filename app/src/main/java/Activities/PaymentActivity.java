@@ -1,126 +1,150 @@
 package Activities;
+import static constants.keyName.USER_ID;
+import static constants.keyName.USER_INFO;
+import static utils.CartUtils.getCartItemFee;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityPaymentBinding;
 import com.example.stores.databinding.LayoutOrderBinding;
+
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import Adapters.PaymentAdapter;
+import api.invoiceApi;
+import api.userApi;
+import enums.OrderStatus;
+import interfaces.CreateDocumentCallback;
+import interfaces.StatusCallback;
+import interfaces.UserCallback;
 import models.CartItem;
-import models.Invoice;
+import models.InvoiceDetail;
 import models.Product;
+import models.User;
+import utils.FormatHelper;
 
 public class PaymentActivity extends AppCompatActivity {
-
     ActivityPaymentBinding binding;
     ArrayList<CartItem> payment = null;
+    SharedPreferences sharedPreferences;
+    String userID = null;
+    User currentUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityPaymentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         setupUI();
         getBundles();
         setupEvents();
-
-
     }
 
     private void getBundles() {
-
         Intent intent = getIntent();
+
         if (intent != null) {
             payment = (ArrayList<CartItem>) getIntent().getSerializableExtra("payment");
-
             if (payment != null){
                 PaymentAdapter paymentAdapter = new PaymentAdapter(PaymentActivity.this, payment);
                 binding.recyclerViewPayment.setAdapter(paymentAdapter);
                 binding.recyclerViewPayment.setLayoutManager(new LinearLayoutManager(PaymentActivity.this, LinearLayoutManager.VERTICAL, false));
             }
-
-
         }
 
         calculatorPayment();
-
     }
 
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
-        binding.btnPay.setOnClickListener(v -> {
 
-            String deliveryAddress = "Ngọc Đại | 012345678\nFPT Polytechnic TP.HCM - Tòa F,\nCông Viên Phần Mềm Quang Trung, Tòa nhà GenPacific \nLô 3 đường 16, Trung Mỹ Tây, Quận 12, Hồ Chí Minh";
-            String createdDate = generateTime();
-            String paidDate = "";
-            String giveToDeliveryDate = "";
-            String completedDate = "";
-            String note = "";
-            int paymentMethod = 0; // 0: Thanh toán khi nhận hàng
-            int orderStatus = 0; // 0: Chờ xác nhận
-            String customerID = "abc";
-            String customerName = "Ngọc Đại";
+        binding.btnBooking.setOnClickListener(v -> {
+            String deliveryAddress = "quận 7, tp.Hồ Chí Minh"; // hard code
 
-            ArrayList<Invoice> invoices = new ArrayList<>();
+            for(CartItem item : payment) {
+                Map<String, Object> newInvoice = new HashMap<>();
 
-            for (int i = 0; i < payment.size(); i++) {
-                Invoice newInvoice = new Invoice(deliveryAddress, createdDate, paidDate, giveToDeliveryDate, completedDate, getTotalForCartItem(payment.get(i)), note, paymentMethod, orderStatus, payment.get(i), customerID, customerName);
-                newInvoice.setInvoiceID(generateInvoiceId(i));
-                invoices.add(newInvoice);
+                newInvoice.put("customerID", userID);
+                newInvoice.put("deliveryAddress", deliveryAddress);
+                newInvoice.put("total", getCartItemFee(item));
+                newInvoice.put("status", OrderStatus.PENDING_CONFIRMATION.getOrderStatusValue());
+                newInvoice.put("createdAt", FormatHelper.getCurrentDateTime());
+                newInvoice.put("note", item.getNote());
+                newInvoice.put("storeID", item.getStoreID());
+
+                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.progressBar.getIndeterminateDrawable()
+                        .setColorFilter(Color.parseColor("#f04d7f"), PorterDuff.Mode.MULTIPLY);
+                binding.btnBooking.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
+
+                invoiceApi invoiceApi = new invoiceApi();
+                invoiceApi.createInvoiceApi(newInvoice, new CreateDocumentCallback() {
+                    @Override
+                    public void onCreateSuccess(String documentID) {
+                        createInvoiceDetail(invoiceApi, documentID, item.getListProducts());
+                    }
+
+                    @Override
+                    public void onCreateFailure(String errorMessage) {
+                        Toast.makeText(PaymentActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                        binding.progressBar.setVisibility(View.GONE);
+                    }
+                });
             }
-            Intent intent = new Intent(PaymentActivity.this, InvoiceActivity.class);
-//            intent.putExtra("invoices", invoices);
-            startActivity(intent);
-            // call API gửi order cho Người bán
+
         });
 
+//        binding.txtPaymentMethod.setOnClickListener(v -> {
+//            Intent intent = new Intent(PaymentActivity.this, PaymentMethodActivity.class);
+//            startActivity(intent);
+//        });
     }
 
-    private String generateTime() {
-        Calendar calendar = Calendar.getInstance();
-        Date currentDate = calendar.getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd, HH:mm");
-        String invoiceId = dateFormat.format(currentDate);
-        return invoiceId;
-    }
+    private void createInvoiceDetail(invoiceApi invoiceApi, String invoiceID, ArrayList<Product> productList) {
 
-    private double getTotalForCartItem(CartItem cartItem) {
-        double fee = 0;
-
-        for (Product product : cartItem.getListProducts()) {
-            if (product.getCheckedStatus()) {
-                fee += (product.getOldPrice() * product.getNumberInCart());
-            }
-
+        ArrayList<InvoiceDetail> invoiceDetails = new ArrayList<>();
+        for (Product product : productList) {
+            invoiceDetails.add(new InvoiceDetail(invoiceID, product.getBaseID(), product.getNumberInCart()));
         }
 
-        return fee;
-    }
+        invoiceApi.createDetailInvoiceApi(invoiceDetails, new StatusCallback() {
+            @Override
+            public void onSuccess(String successMessage) {
+                binding.progressBar.setVisibility(View.GONE);
+                binding.btnBooking.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.color.primary_color));
+                Toast.makeText(PaymentActivity.this, successMessage, Toast.LENGTH_SHORT).show();
 
-    private String generateInvoiceId(int index) {
-        Calendar calendar = Calendar.getInstance();
-        Date currentDate = calendar.getTime();
-        // Định dạng chuỗi ID cho hóa đơn
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        String invoiceId = dateFormat.format(currentDate) + index;
-        return invoiceId;
-    }
+                Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
 
-    private String getDateToday() {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dinhDangNgay = new SimpleDateFormat("dd/MM/yyyy", Locale.CHINESE);
-        return dinhDangNgay.format(calendar.getTime());
+            @Override
+            public void onFailure(String errorMessage) {
+                binding.progressBar.setVisibility(View.GONE);
+                binding.btnBooking.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.color.primary_color));
+                Toast.makeText(PaymentActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
 
@@ -146,7 +170,7 @@ public class PaymentActivity extends AppCompatActivity {
         double fee = 0;
         for (CartItem item : payment) {
             for (Product product : item.getListProducts()) {
-                    fee += (product.getNewPrice() * product.getNumberInCart());
+                fee += (product.getNewPrice() * product.getNumberInCart());
             }
         }
         return fee;
@@ -167,6 +191,23 @@ public class PaymentActivity extends AppCompatActivity {
     private void setupUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
+
+        sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        userID = sharedPreferences.getString(USER_ID, null);
+
+        userApi userApi = new userApi();
+        userApi.getUserInfoApi(userID, new UserCallback() {
+            @Override
+            public void getUserInfoSuccess(User user) {
+                currentUser = user;
+                binding.txtCustomerInfo.setText(user.getFullname() + " | " + user.getPhoneNumber());
+            }
+
+            @Override
+            public void getUserInfoFailure(String errorMessage) {
+
+            }
+        });
     }
 
 
