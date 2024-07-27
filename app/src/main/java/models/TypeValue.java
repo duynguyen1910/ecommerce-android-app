@@ -12,6 +12,10 @@ public class TypeValue implements Serializable {
         this.image = image;
         this.value = value;
     }
+    public TypeValue(String value) {
+        this.value = value;
+    }
+
 
     public boolean isChecked() {
         return isChecked;
@@ -22,9 +26,7 @@ public class TypeValue implements Serializable {
     }
 
 
-    public TypeValue(String value) {
-        this.value = value;
-    }
+
 
     public String getImage() {
         return image;
