@@ -4,9 +4,11 @@ import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
 
 import api.invoiceApi;
 import enums.OrderStatus;
+import interfaces.UpdateDocumentCallback;
 
 public class Invoice extends BaseObject implements Serializable {
     private String customerID;
@@ -19,6 +21,7 @@ public class Invoice extends BaseObject implements Serializable {
     private Timestamp deliveredAt;
     private Timestamp cancelledAt;
     private String note;
+    private String cancellationReason;
     private ArrayList<InvoiceDetail> invoiceItems;
     //    private CartItem cartItem;
     private invoiceApi invoiceApi;
@@ -142,5 +145,10 @@ public class Invoice extends BaseObject implements Serializable {
 
     public void setInvoiceItems(ArrayList<InvoiceDetail> invoiceItems) {
         this.invoiceItems = invoiceItems;
+    }
+
+    public void updateInvoice(String invoiceID, Map<String, Object> invoiceUpdate,
+                              final UpdateDocumentCallback callback) {
+        invoiceApi.updateStatusInvoiceApi(invoiceID, invoiceUpdate, callback);
     }
 }

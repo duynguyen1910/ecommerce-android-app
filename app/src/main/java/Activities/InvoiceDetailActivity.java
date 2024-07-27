@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -22,9 +23,11 @@ import java.util.Objects;
 import Adapters.InvoiceDetailAdapter;
 import api.invoiceApi;
 import api.storeApi;
+import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
 import models.InvoiceDetail;
+import utils.FormatHelper;
 
 public class InvoiceDetailActivity extends AppCompatActivity {
 
@@ -62,8 +65,8 @@ public class InvoiceDetailActivity extends AppCompatActivity {
 
             binding.txtAddress.setText(deliveryAddress);
             binding.txtInvoiceStatus.setText("Đơn hàng của bạn " + invoiceStatusLabel);
-            NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-            binding.txtTotal.setText("đ" + formatter.format(invoiceTotal));
+
+            binding.txtTotal.setText(FormatHelper.formatVND(invoiceTotal));
             binding.txtInvoiceID.setText(invoiceID);
 
             binding.txtCreatedDate.setText(createdAt);
@@ -83,13 +86,15 @@ public class InvoiceDetailActivity extends AppCompatActivity {
                 binding.txtDeliveredAt.setText(deliveredAt);
             }
 
+           binding.btnCancelInvoice.setVisibility(invoiceStatusLabel.equals(
+                   OrderStatus.PENDING_CONFIRMATION.getOrderLabel()) ? View.VISIBLE : View.GONE);
+
 
             invoiceApi invoiceApi = new invoiceApi();
-            invoiceApi.getInvoiceDetail(invoiceID, new GetCollectionCallback<InvoiceDetail>() {
+            invoiceApi.getInvoiceDetailApi(invoiceID, new GetCollectionCallback<InvoiceDetail>() {
                 @Override
                 public void onGetListSuccess(ArrayList<InvoiceDetail> productList) {
                     binding.progressBar.setVisibility(View.GONE);
-
 
                     getStoreNameByID(productList);
                     InvoiceDetailAdapter adapter =

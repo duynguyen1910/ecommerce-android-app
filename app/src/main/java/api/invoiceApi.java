@@ -1,16 +1,16 @@
 package api;
 
-import static android.content.ContentValues.TAG;
 import static constants.collectionName.INVOICE_COLLECTION;
 import static constants.collectionName.INVOICE_DETAIL_COLLECTION;
 import static constants.collectionName.PRODUCT_COLLECTION;
+import static constants.collectionName.USER_COLLECTION;
 import static constants.keyName.CUSTOMER_ID;
 import static constants.keyName.INVOICE_ID;
-import static constants.keyName.PASSWORD;
-import static constants.keyName.PHONE_NUMBER;
 import static constants.keyName.STATUS;
-
-import android.util.Log;
+import static constants.keyName.STORE_ID;
+import static constants.toastMessage.CONFIRMED_ORDER_SUCCESSFULLY;
+import static constants.toastMessage.ORDER_SUCCESSFULLY;
+import static constants.toastMessage.UPDATE_SUCCESSFULLY;
 
 import androidx.annotation.NonNull;
 
@@ -33,9 +33,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import interfaces.CreateDocumentCallback;
 import interfaces.GetCollectionCallback;
 import interfaces.StatusCallback;
+import interfaces.UpdateDocumentCallback;
 import models.Invoice;
 import models.InvoiceDetail;
 import models.Product;
+import utils.CartUtils;
 
 public class invoiceApi {
     private FirebaseFirestore db;
@@ -61,7 +63,7 @@ public class invoiceApi {
                 });
     }
 
-    public void createDetailInvoice(ArrayList<InvoiceDetail> invoiceItems,
+    public void createDetailInvoiceApi(ArrayList<InvoiceDetail> invoiceItems,
                                     final StatusCallback callback) {
         WriteBatch batch = db.batch();
         for (InvoiceDetail detail : invoiceItems) {
@@ -77,7 +79,8 @@ public class invoiceApi {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    callback.onSuccess("Invoice and details created successfully");
+                    callback.onSuccess(ORDER_SUCCESSFULLY);
+                    CartUtils.clearMyCart();
                 } else {
                     callback.onFailure("Failed to create invoice details: " + task.getException().getMessage());
                 }
@@ -85,7 +88,7 @@ public class invoiceApi {
         });
     }
 
-    public void getInvoicesByStatus(String customerID, int invoiceStatus, final GetCollectionCallback<Invoice> callback) {
+    public void getInvoicesByStatusApi(String customerID, int invoiceStatus, final GetCollectionCallback<Invoice> callback) {
         db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(CUSTOMER_ID, customerID)
                 .whereEqualTo(STATUS, invoiceStatus)
@@ -110,8 +113,8 @@ public class invoiceApi {
                     }
                 });
     }
-    
-    public void getInvoiceDetail(String invoiceID, final GetCollectionCallback<InvoiceDetail> callback) {
+
+    public void getInvoiceDetailApi(String invoiceID, final GetCollectionCallback<InvoiceDetail> callback) {
         db.collection(INVOICE_DETAIL_COLLECTION)
                 .whereEqualTo(INVOICE_ID, invoiceID)
                 .get()
@@ -128,7 +131,7 @@ public class invoiceApi {
                                 productIDs.add(detail.getVariantID());
                             }
 
-                            getProductsByListIDs(invoiceDetails, productIDs, callback);
+                            getProductsByListIDsApi(invoiceDetails, productIDs, callback);
                         } else {
                             callback.onGetListFailure("Failed to get invoice details: " + task.getException().getMessage());
                         }
@@ -136,7 +139,7 @@ public class invoiceApi {
                 });
     }
 
-    private void getProductsByListIDs(final ArrayList<InvoiceDetail> invoiceDetails, ArrayList<String> productIDs, final GetCollectionCallback<InvoiceDetail> callback) {
+    private void getProductsByListIDsApi(final ArrayList<InvoiceDetail> invoiceDetails, ArrayList<String> productIDs, final GetCollectionCallback<InvoiceDetail> callback) {
         final Map<String, Product> productMap = new HashMap<>();
         final AtomicInteger pendingRequests = new AtomicInteger(productIDs.size());
 
@@ -171,4 +174,45 @@ public class invoiceApi {
 
     }
 
+    public void getInvoiceByStoreIDApi(String storeID, int invoiceStatus, final GetCollectionCallback<Invoice> callback) {
+        db.collection(INVOICE_COLLECTION)
+                .whereEqualTo(STORE_ID, storeID)
+                .whereEqualTo(STATUS, invoiceStatus)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<Invoice> invoices = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Invoice invoice = document.toObject(Invoice.class);
+                                invoice.setBaseID(document.getId());
+                                invoice.setStatus(document.getLong(STATUS).intValue());
+
+                                invoices.add(invoice);
+                            }
+
+                            callback.onGetListSuccess(invoices);
+                        } else {
+                            callback.onGetListFailure("Failed to get invoices: " + task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+
+    public void updateStatusInvoiceApi(String invoiceID, Map<String, Object> invoiceUpdate, final UpdateDocumentCallback callback) {
+        DocumentReference invoiceRef = db.collection(INVOICE_COLLECTION).document(invoiceID);
+        invoiceRef.update(invoiceUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callback.onUpdateSuccess(CONFIRMED_ORDER_SUCCESSFULLY);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onUpdateFailure(e.getMessage());
+                    }
+                });
+    }
 }

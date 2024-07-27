@@ -97,7 +97,6 @@
                         android:textColor="@color/white"
                         android:textSize="12sp" />
 
-
                 </RelativeLayout>
             </LinearLayout>
 
@@ -111,8 +110,7 @@
             android:background="@drawable/bg_gradient_primary"
             android:gravity="center_vertical"
             android:padding="16dp"
-            android:visibility="gone"
-            >
+            android:visibility="gone">
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -131,7 +129,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_account_circle" />
+                            android:src="@drawable/ic_account_black" />
 
                         <ProgressBar
                             android:visibility="gone"
@@ -432,7 +430,7 @@
             android:id="@+id/layoutLogistics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="14dp"
             android:gravity="center_vertical"
             android:paddingHorizontal="10dp">
 

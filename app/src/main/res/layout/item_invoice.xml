@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
+    android:layout_marginBottom="6dp"
     android:background="@drawable/custom_edit_text_border"
     android:orientation="vertical">
 
@@ -12,7 +12,9 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:paddingHorizontal="10dp"
-        android:paddingVertical="16dp">
+        android:paddingVertical="16dp"
+        android:background="@color/white"
+        >
 
         <ImageView
             android:id="@+id/ic_store"
@@ -62,7 +64,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_border_top_bottom"
+        android:background="@drawable/custom_border_bottom"
         android:padding="16dp">
 
         <TextView
@@ -102,5 +104,17 @@
                 android:textStyle="bold" />
         </LinearLayout>
     </RelativeLayout>
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/btnCancelInvoice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/custom_button_close"
+        android:text="Hủy đơn"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
 
 </LinearLayout>

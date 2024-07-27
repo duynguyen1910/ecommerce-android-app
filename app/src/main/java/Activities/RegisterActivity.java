@@ -85,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
         binding.progressBar.getIndeterminateDrawable()
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
-        User user = new User(phoneNumber, fullname, password);
+        User user = new User(phoneNumber, password, fullname);
         user.setRole(UserRole.CUSTOMER_ROLE.getRoleValue());
 
         Map<String, Object> newUser = new HashMap<>();

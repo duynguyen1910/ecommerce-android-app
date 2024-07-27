@@ -19,9 +19,9 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.Objects;
 
 import Adapters.ViewPager2Adapter;
-import Fragments.RequestedInvoices.RequestInvoiceAwaitConfirmFragment;
-import Fragments.RequestedInvoices.RequestInvoiceCancelFragment;
-import Fragments.RequestedInvoices.RequestInvoiceConfirmedFragment;
+import Fragments.RequestedInvoices.AwaitConfirmFragment;
+import Fragments.RequestedInvoices.CancelledFragment;
+import Fragments.RequestedInvoices.ConfirmedFragment;
 
 public class RequestInvoiceActivity extends AppCompatActivity {
 
@@ -68,9 +68,9 @@ public class RequestInvoiceActivity extends AppCompatActivity {
 
     private void setupUI() {
         ViewPager2Adapter viewPager2Adapter = new ViewPager2Adapter(this);
-        viewPager2Adapter.addFragment(new RequestInvoiceAwaitConfirmFragment(), "Chờ xác nhận"); // 0
-        viewPager2Adapter.addFragment(new RequestInvoiceConfirmedFragment(), "Đã xác nhận"); // 1
-        viewPager2Adapter.addFragment(new RequestInvoiceCancelFragment(), "Đơn hủy"); // 2
+        viewPager2Adapter.addFragment(new AwaitConfirmFragment(), "Chờ xác nhận"); // 0
+        viewPager2Adapter.addFragment(new ConfirmedFragment(), "Đã xác nhận"); // 1
+        viewPager2Adapter.addFragment(new CancelledFragment(), "Đơn hủy"); // 2
 
         binding.viewPager2.setAdapter(viewPager2Adapter);
 

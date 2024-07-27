@@ -6,23 +6,21 @@ import static utils.CartUtils.getCartItemFee;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityPaymentBinding;
 import com.example.stores.databinding.LayoutOrderBinding;
-import com.google.firebase.Timestamp;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -30,18 +28,23 @@ import java.util.Map;
 import java.util.Objects;
 import Adapters.PaymentAdapter;
 import api.invoiceApi;
+import api.userApi;
 import enums.OrderStatus;
 import interfaces.CreateDocumentCallback;
 import interfaces.StatusCallback;
+import interfaces.UserCallback;
 import models.CartItem;
-import models.Invoice;
 import models.InvoiceDetail;
 import models.Product;
+import models.User;
+import utils.FormatHelper;
 
 public class PaymentActivity extends AppCompatActivity {
-
     ActivityPaymentBinding binding;
     ArrayList<CartItem> payment = null;
+    SharedPreferences sharedPreferences;
+    String userID = null;
+    User currentUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,6 @@ public class PaymentActivity extends AppCompatActivity {
 
         if (intent != null) {
             payment = (ArrayList<CartItem>) getIntent().getSerializableExtra("payment");
-
             if (payment != null){
                 PaymentAdapter paymentAdapter = new PaymentAdapter(PaymentActivity.this, payment);
                 binding.recyclerViewPayment.setAdapter(paymentAdapter);
@@ -68,65 +70,45 @@ public class PaymentActivity extends AppCompatActivity {
         }
 
         calculatorPayment();
-
     }
 
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
 
         binding.btnBooking.setOnClickListener(v -> {
+            String deliveryAddress = "quận 7, tp.Hồ Chí Minh"; // hard code
+
             for(CartItem item : payment) {
-                Log.d("item", "Store Name: " + item.getStoreName());
-                Log.d("item", "total: " + getCartItemFee(item));
-                Log.d("item", "node: " + item.getNote());
-                for (Product product : item.getListProducts()) {
-                    Log.d("item", "getBaseID: " + product.getBaseID());
-                    Log.d("item", "quantity: " + product.getNumberInCart());
-                }
+                Map<String, Object> newInvoice = new HashMap<>();
+
+                newInvoice.put("customerID", userID);
+                newInvoice.put("deliveryAddress", deliveryAddress);
+                newInvoice.put("total", getCartItemFee(item));
+                newInvoice.put("status", OrderStatus.PENDING_CONFIRMATION.getOrderStatusValue());
+                newInvoice.put("createdAt", FormatHelper.getCurrentDateTime());
+                newInvoice.put("note", item.getNote());
+                newInvoice.put("storeID", item.getStoreID());
+
+                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.progressBar.getIndeterminateDrawable()
+                        .setColorFilter(Color.parseColor("#f04d7f"), PorterDuff.Mode.MULTIPLY);
+                binding.btnBooking.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
+
+                invoiceApi invoiceApi = new invoiceApi();
+                invoiceApi.createInvoiceApi(newInvoice, new CreateDocumentCallback() {
+                    @Override
+                    public void onCreateSuccess(String documentID) {
+                        createInvoiceDetail(invoiceApi, documentID, item.getListProducts());
+                    }
+
+                    @Override
+                    public void onCreateFailure(String errorMessage) {
+                        Toast.makeText(PaymentActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                        binding.progressBar.setVisibility(View.GONE);
+                    }
+                });
             }
 
-
-//            SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
-//            String userId = sharedPreferences.getString(USER_ID, null);
-//
-//            ArrayList<Invoice> invoiceList = new ArrayList<>();
-//            Invoice invoice1 = new Invoice(
-//                    userId, "quận 7, Hồ Chí Minh", 120000, OrderStatus.PENDING_CONFIRMATION,
-//                    new Timestamp(new java.util.Date()), "Để trước cổng lúc giao hàng"
-//            );
-//            invoiceList.add(invoice1);
-//
-//            Invoice invoice2 = new Invoice(
-//                    userId, "quận Phú Nhuận, Hồ Chí Minh", 99999, OrderStatus.PENDING_CONFIRMATION,
-//                    new Timestamp(new java.util.Date()), "Lấy thêm 2 loại nữa"
-//            );
-//            invoiceList.add(invoice2);
-//
-//
-//            for (Invoice invoice : invoiceList) {
-//                Map<String, Object> newInvoice = new HashMap<>();
-//                newInvoice.put("customerID", invoice.getCustomerID());
-//                newInvoice.put("deliveryAddress", invoice.getDeliveryAddress());
-//                newInvoice.put("total", invoice.getTotal());
-//                newInvoice.put("status", invoice.getStatus().getOrderStatusValue());
-//                newInvoice.put("createdAt", invoice.getCreatedAt());
-//                newInvoice.put("note", invoice.getNote());
-//
-//                invoiceApi invoiceApi = new invoiceApi();
-//                invoiceApi.createInvoiceApi(newInvoice, new CreateDocumentCallback() {
-//                    @Override
-//                    public void onCreateSuccess(String documentID) {
-//                        createInvoiceDetail(invoiceApi, documentID);
-//                    }
-//
-//                    @Override
-//                    public void onCreateFailure(String errorMessage) {
-//
-//                    }
-//                });
-//            }
-
-//            startActivity(new Intent(PaymentActivity.this, InvoiceActivity.class));
         });
 
 //        binding.txtPaymentMethod.setOnClickListener(v -> {
@@ -135,59 +117,34 @@ public class PaymentActivity extends AppCompatActivity {
 //        });
     }
 
-    private void createInvoiceDetail(invoiceApi invoiceApi, String invoiceID) {
-        ArrayList<InvoiceDetail> products = new ArrayList<>();
-        products.add(new InvoiceDetail(invoiceID, invoiceID, 3));
-        products.add(new InvoiceDetail(invoiceID, invoiceID, 5));
+    private void createInvoiceDetail(invoiceApi invoiceApi, String invoiceID, ArrayList<Product> productList) {
 
-        invoiceApi.createDetailInvoice(products, new StatusCallback() {
+        ArrayList<InvoiceDetail> invoiceDetails = new ArrayList<>();
+        for (Product product : productList) {
+            invoiceDetails.add(new InvoiceDetail(invoiceID, product.getBaseID(), product.getNumberInCart()));
+        }
+
+        invoiceApi.createDetailInvoiceApi(invoiceDetails, new StatusCallback() {
             @Override
             public void onSuccess(String successMessage) {
+                binding.progressBar.setVisibility(View.GONE);
+                binding.btnBooking.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.color.primary_color));
                 Toast.makeText(PaymentActivity.this, successMessage, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
             }
 
             @Override
             public void onFailure(String errorMessage) {
+                binding.progressBar.setVisibility(View.GONE);
+                binding.btnBooking.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.color.primary_color));
                 Toast.makeText(PaymentActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
-    }
 
-
-    private String generateTime() {
-        Calendar calendar = Calendar.getInstance();
-        Date currentDate = calendar.getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd, HH:mm");
-        String invoiceId = dateFormat.format(currentDate);
-        return invoiceId;
-    }
-
-    private double getTotalForCartItem(CartItem cartItem) {
-        double fee = 0;
-
-        for (Product product : cartItem.getListProducts()) {
-            if (product.getCheckedStatus()) {
-                fee += (product.getOldPrice() * product.getNumberInCart());
-            }
-
-        }
-
-        return fee;
-    }
-
-    private String generateInvoiceId(int index) {
-        Calendar calendar = Calendar.getInstance();
-        Date currentDate = calendar.getTime();
-        // Định dạng chuỗi ID cho hóa đơn
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        String invoiceId = dateFormat.format(currentDate) + index;
-        return invoiceId;
-    }
-
-    private String getDateToday() {
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dinhDangNgay = new SimpleDateFormat("dd/MM/yyyy", Locale.CHINESE);
-        return dinhDangNgay.format(calendar.getTime());
     }
 
 
@@ -234,6 +191,23 @@ public class PaymentActivity extends AppCompatActivity {
     private void setupUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
+
+        sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        userID = sharedPreferences.getString(USER_ID, null);
+
+        userApi userApi = new userApi();
+        userApi.getUserInfoApi(userID, new UserCallback() {
+            @Override
+            public void getUserInfoSuccess(User user) {
+                currentUser = user;
+                binding.txtCustomerInfo.setText(user.getFullname() + " | " + user.getPhoneNumber());
+            }
+
+            @Override
+            public void getUserInfoFailure(String errorMessage) {
+
+            }
+        });
     }
 
 

@@ -45,6 +45,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(getLayoutInflater());
         updateQuantityInCart(binding.txtQuantityInCart);
+
         initBanner();
         initCategory();
         initProducts();
@@ -58,8 +59,7 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateQuantityInCart(binding.txtQuantityInCart);
-        initBanner();
-        initCategory();
+
         initProducts();
     }
 
@@ -79,7 +79,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void initCategory() {
-
         Category category = new Category();
 
         binding.progressBarCategory.setVisibility(View.VISIBLE);
@@ -113,10 +112,10 @@ public class HomeFragment extends Fragment {
                     nextItem = 0;
                 }
                 binding.viewPager2Slider.setCurrentItem(nextItem);
-                sliderHandler.postDelayed(this, 3000);
+                sliderHandler.postDelayed(this, 8000);
             }
         };
-        sliderHandler.postDelayed(sliderRunnable, 1500);
+        sliderHandler.postDelayed(sliderRunnable, 3000);
     }
 
     private void stopSliderAutoCycle() {

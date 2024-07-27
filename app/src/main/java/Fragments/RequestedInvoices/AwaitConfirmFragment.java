@@ -1,6 +1,6 @@
-package Fragments.Invoice;
-
+package Fragments.RequestedInvoices;
 import static android.content.Context.MODE_PRIVATE;
+import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 
@@ -15,64 +15,70 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.stores.databinding.FragmentInvoiceAwaitConfirmationBinding;
-
+import com.example.stores.R;
+import com.example.stores.databinding.FragmentRequestInvoiceAwaitConfirmBinding;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-import Adapters.InvoiceAdapter;
+import java.util.Calendar;
+import java.util.Date;
+import Adapters.RequestInvoiceAdapter;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
+import models.CartItem;
 import models.Invoice;
+import models.Product;
 
-public class PendingConfirmationFragment extends Fragment {
-    FragmentInvoiceAwaitConfirmationBinding binding;
+public class AwaitConfirmFragment extends Fragment {
+    FragmentRequestInvoiceAwaitConfirmBinding binding;
 
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentInvoiceAwaitConfirmationBinding.inflate(getLayoutInflater());
+        binding = FragmentRequestInvoiceAwaitConfirmBinding.inflate(getLayoutInflater());
 
-        setupUI();
+        initInvoicesRequest();
 
         return binding.getRoot();
     }
 
-    private void setupUI() {
+    private void initInvoicesRequest() {
         invoiceApi invoiceApi = new invoiceApi();
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);
         String userID = sharedPreferences.getString(USER_ID, null);
+        String storeID = sharedPreferences.getString(STORE_ID, null);
 
-        if(userID == null) return;
+        if(userID == null || storeID == null) return;
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.progressBar.getIndeterminateDrawable()
-                .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
+                .setColorFilter(ContextCompat.getColor(getContext(), R.color.primary_color),
+                        PorterDuff.Mode.MULTIPLY);
 
-        invoiceApi.getInvoicesByStatusApi(userID, OrderStatus.PENDING_CONFIRMATION.getOrderStatusValue(),
+        invoiceApi.getInvoiceByStoreIDApi(storeID, OrderStatus.PENDING_CONFIRMATION.getOrderStatusValue(),
                 new GetCollectionCallback<Invoice>() {
             @Override
-            public void onGetListSuccess(ArrayList<Invoice> invoiceList) {
+            public void onGetListSuccess(ArrayList<Invoice> requestInvoiceList) {
                 binding.progressBar.setVisibility(View.GONE);
 
-                    InvoiceAdapter invoiceAdapter = new InvoiceAdapter(requireActivity(), invoiceList);
-                    binding.recyclerView.setAdapter(invoiceAdapter);
-                    binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
-
+                RequestInvoiceAdapter adapter = new RequestInvoiceAdapter(requireActivity(),
+                        requestInvoiceList);
+                binding.recyclerView.setAdapter(adapter);
+                binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(),
+                        LinearLayoutManager.VERTICAL, false));
             }
 
             @Override
             public void onGetListFailure(String errorMessage) {
-                binding.progressBar.setVisibility(View.GONE);
                 Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                binding.progressBar.setVisibility(View.GONE);
             }
         });
-
-
     }
 
 }

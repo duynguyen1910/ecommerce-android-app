@@ -3,18 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
+    android:layout_marginBottom="8dp"
     android:background="@color/white"
+    android:paddingHorizontal="2dp"
+    android:paddingVertical="8dp"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:gravity="center_vertical"
-        android:paddingHorizontal="10dp"
-        android:paddingVertical="8dp">
-
+        android:padding="10dp">
 
         <LinearLayout
             android:id="@+id/layoutCustomer"
@@ -37,12 +36,12 @@
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="(+84)"
-                android:textColor="@color/black" />
+                android:text="|"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtCustomerPhone"
@@ -51,30 +50,45 @@
                 android:layout_marginStart="6dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
-                android:fontFamily="sans-serif-light"
-                android:maxLines="1"
                 android:text="012345678"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:textSize="15sp" />
         </LinearLayout>
 
-
         <TextView
             android:id="@+id/txtInvoiceStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chờ lấy hàng"
-            android:textColor="@color/primary_color" />
-
+            android:text="---"
+            android:textStyle="bold"
+            android:textColor="@color/darkgray"
+            app:backgroundTint="@null" />
 
     </LinearLayout>
+    <TextView
+        android:id="@+id/txtCustomerAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:lineHeight="20dp"
+        android:paddingHorizontal="10dp"
+        android:text="..."
+        android:textColor="@color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewProducts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp" />
+
+    <ProgressBar
+        android:layout_gravity="center"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/progressBar"
+        android:indeterminateTintMode="src_atop"
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -97,75 +111,59 @@
             android:textSize="12sp" />
 
 
-        <TextView
-            android:id="@+id/txtSeeDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Xem chi tiết"
-            android:textColor="@color/secondary_color"
-            app:backgroundTint="@null" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp">
-
-        <TextView
-            android:id="@+id/txtCreatedDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerInParent="true"
-            android:text="2024/07/03, 08:54"
-            android:textColor="@color/darkgray"
-            app:backgroundTint="@null" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/txtTotal"
-            android:text="Thành tiền: "
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/txtTotal"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="đ128.000"
-            android:textColor="@color/primary_color"
-            android:textStyle="bold" />
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:paddingVertical="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/txtTotal"
+                android:text="Thành tiền: "
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/txtTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="đ128.000"
+                android:textColor="@color/primary_color"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:id="@+id/layoutControl"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="14dp">
 
-        <androidx.appcompat.widget.AppCompatButton
+        <Button
             android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginHorizontal="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="7dp"
             android:layout_weight="1"
-            android:background="@drawable/custom_edit_text_border"
+            android:background="@drawable/custom_button_close"
             android:text="Hủy đơn"
             android:textAllCaps="false"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnSubmit"
+        <Button
+            android:id="@+id/btnConfirmInvoice"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginHorizontal="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:layout_weight="1"
             android:background="@drawable/custom_button_secondary"
             android:text="Xác nhận"
@@ -173,6 +171,5 @@
             android:textColor="@color/white"
             android:textSize="14sp" />
     </LinearLayout>
-
 
 </LinearLayout>

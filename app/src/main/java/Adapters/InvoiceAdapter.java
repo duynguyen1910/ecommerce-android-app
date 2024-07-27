@@ -1,6 +1,7 @@
 package Adapters;
 
 import static constants.keyName.STORE_NAME;
+import static utils.FormatHelper.formatDateTime;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,12 +19,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.stores.databinding.ItemInvoiceBinding;
-import com.google.firebase.Timestamp;
 
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
@@ -31,10 +29,12 @@ import Activities.InvoiceDetailActivity;
 
 import api.invoiceApi;
 import api.storeApi;
+import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
 import models.Invoice;
 import models.InvoiceDetail;
+import utils.FormatHelper;
 
 public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHolder> {
     private final Context context;
@@ -73,11 +73,13 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
 
         holder.binding.txtInvoiceStatus.setText(invoice.getStatus().getOrderLabel());
 
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        holder.binding.txtTotal.setText("đ" + formatter.format(invoice.getTotal()));
+        holder.binding.txtTotal.setText(FormatHelper.formatVND(invoice.getTotal()));
+
+        holder.binding.btnCancelInvoice.setVisibility(
+                invoice.getStatus() == OrderStatus.PENDING_CONFIRMATION ? View.VISIBLE : View.GONE);
 
         invoiceApi invoiceApi = new invoiceApi();
-        invoiceApi.getInvoiceDetail(invoice.getBaseID(), new GetCollectionCallback<InvoiceDetail>() {
+        invoiceApi.getInvoiceDetailApi(invoice.getBaseID(), new GetCollectionCallback<InvoiceDetail>() {
             @Override
             public void onGetListSuccess(ArrayList<InvoiceDetail> productList) {
                 holder.binding.progressBar.setVisibility(View.GONE);
@@ -122,17 +124,6 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         });
 
     }
-
-    private String formatDateTime(Timestamp timestamp) {
-        if(timestamp == null) return "";
-
-        Date date = timestamp.toDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy | HH:mm", Locale.getDefault());
-        String formattedDate = sdf.format(date);
-
-        return formattedDate;
-    }
-
 
     private void getStoreNameByID(ArrayList<InvoiceDetail> productList, TextView txtStoreName) {
 

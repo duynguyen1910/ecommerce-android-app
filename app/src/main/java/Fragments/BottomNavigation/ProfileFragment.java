@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +24,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
+import com.example.stores.R;
 import com.example.stores.databinding.FragmentProfileBinding;
 import Activities.CartActivity;
 import Activities.DeliveryActivity;
@@ -68,49 +72,42 @@ public class ProfileFragment extends Fragment {
     private void getUserInfo() {
         sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);
 
-        String userId = sharedPreferences.getString(USER_ID, null);
+        String userID = sharedPreferences.getString(USER_ID, null);
         String phoneNumber = sharedPreferences.getString(PHONE_NUMBER, null);
         String fullname = sharedPreferences.getString(FULLNAME, null);
         storeId = sharedPreferences.getString(STORE_ID, null);
         int roleValue = sharedPreferences.getInt(USER_ROLE, -1);
 
-        if (userId != null) {
-            binding.loggedLayoutLn.setVisibility(View.VISIBLE);
-            binding.defaultLayoutRl.setVisibility(View.GONE);
-        } else {
-            binding.loggedLayoutLn.setVisibility(View.GONE);
-            binding.defaultLayoutRl.setVisibility(View.VISIBLE);
-        }
-
-        if (UserRole.fromInt(roleValue) == UserRole.CUSTOMER_ROLE) {
-            binding.txtRole.setText(UserRole.CUSTOMER_ROLE.getLabelRole());
-        }
-
-        if (storeId != null){
-            binding.txtStore.setText("Store của bạn");
-        }else {
-            binding.txtStore.setText("Tạo store");
-        }
-
         binding.txtFullname.setText(fullname);
         binding.txtPhoneNumber.setText(phoneNumber);
 
-        binding.avtProgressBar.setVisibility(View.VISIBLE);
-        binding.avtProgressBar.getIndeterminateDrawable()
-                .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
-        user.getUserImageUrl(userId, new ImageCallback() {
-            @Override
-            public void getImageSuccess(String downloadUri) {
-                binding.avtProgressBar.setVisibility(View.GONE);
-                Glide.with(getContext()).load(downloadUri).into(binding.imvAvatar);
-            }
+        if (userID != null) {
+            binding.txtStore.setText(storeId == null ? "Tạo Store" : "Store của bạn");
 
-            @Override
-            public void getImageFailure(String errorMessage) {
-                binding.avtProgressBar.setVisibility(View.GONE);
-                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+            if (UserRole.fromInt(roleValue) == UserRole.CUSTOMER_ROLE) {
+                binding.txtRole.setText(UserRole.CUSTOMER_ROLE.getLabelRole());
             }
-        });
+            binding.loggedLayoutLn.setVisibility(View.VISIBLE);
+            binding.defaultLayoutRl.setVisibility(View.GONE);
+
+            user.getUserImageUrl(userID, new ImageCallback() {
+                @Override
+                public void getImageSuccess(String downloadUri) {
+                    Glide.with(getContext()).load(downloadUri).into(binding.imvAvatar);
+                }
+
+                @Override
+                public void getImageFailure(String errorMessage) {
+
+                    Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            return;
+        }
+
+        binding.loggedLayoutLn.setVisibility(View.GONE);
+        binding.defaultLayoutRl.setVisibility(View.VISIBLE);
     }
 
     private void initUI() {
@@ -191,6 +188,8 @@ public class ProfileFragment extends Fragment {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.clear();
             editor.apply();
+
+            Glide.with(getContext()).load(R.drawable.ic_account_black).into(binding.imvAvatar);
 
 
             startActivity(new Intent(getActivity(), LoginActivity.class));

@@ -4,17 +4,27 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class CartItem implements Serializable {
+    private String storeID;
     private String storeName;
     private String note;
     ArrayList<Product> listProducts;
 
 
-    public CartItem(String storeName, ArrayList<Product> listProducts) {
+    public CartItem(String storeID ,String storeName, ArrayList<Product> listProducts) {
+        this. storeID = storeID;
         this.storeName = storeName;
         this.listProducts = listProducts;
     }
 
     public CartItem() {
+    }
+
+    public String getStoreID() {
+        return storeID;
+    }
+
+    public void setStoreID(String storeID) {
+        this.storeID = storeID;
     }
 
     public String getStoreName() {

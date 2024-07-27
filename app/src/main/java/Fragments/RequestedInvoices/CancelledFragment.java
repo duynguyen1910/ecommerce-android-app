@@ -17,7 +17,7 @@ import models.CartItem;
 import models.Invoice;
 import models.Product;
 
-public class RequestInvoiceCancelFragment extends Fragment {
+public class CancelledFragment extends Fragment {
     FragmentRequestInvoiceCancelBinding binding;
     ArrayList<Invoice> invoices = new ArrayList<>();
 

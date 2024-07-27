@@ -90,8 +90,8 @@
                             android:layout_height="wrap_content"
                             android:drawablePadding="6dp"
                             android:text="Địa chỉ nhận hàng"
-                            android:textStyle="bold"
                             android:textColor="@color/black"
+                            android:textStyle="bold"
                             app:drawableStartCompat="@drawable/ic_location_16"
                             app:drawableTint="@color/primary_color" />
 
@@ -165,13 +165,12 @@
                     android:layout_weight="1" />
 
                 <ProgressBar
-                    android:visibility="gone"
-                    android:layout_gravity="center"
+                    android:id="@+id/progressBar"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:id="@+id/progressBar"
+                    android:layout_gravity="center"
                     android:indeterminateTintMode="src_atop"
-                    />
+                    android:visibility="gone" />
 
 
             </LinearLayout>
@@ -184,7 +183,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_border_top_bottom"
+                    android:background="@drawable/custom_border_bottom"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="16dp">
@@ -214,7 +213,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_border_top_bottom"
+                    android:background="@drawable/custom_border_bottom"
                     android:orientation="vertical"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="16dp">
@@ -248,7 +247,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_border_top_bottom"
+                    android:background="@drawable/custom_border_bottom"
                     android:orientation="vertical"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="16dp">
@@ -311,10 +310,10 @@
 
                     <RelativeLayout
                         android:id="@+id/confirmedAtRL"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="8dp">
+                        android:paddingVertical="8dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -335,10 +334,10 @@
 
                     <RelativeLayout
                         android:id="@+id/shippedAtRL"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="8dp">
+                        android:paddingVertical="8dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -359,10 +358,10 @@
 
                     <RelativeLayout
                         android:id="@+id/deliveredAtRL"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="8dp">
+                        android:paddingVertical="8dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -381,9 +380,20 @@
                             app:backgroundTint="@null" />
                     </RelativeLayout>
                 </LinearLayout>
+
+                <Button
+                    android:visibility="gone"
+                    android:id="@+id/btnCancelInvoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/custom_button_close"
+                    android:text="Hủy đơn"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
             </LinearLayout>
-
-
         </LinearLayout>
     </ScrollView>
 

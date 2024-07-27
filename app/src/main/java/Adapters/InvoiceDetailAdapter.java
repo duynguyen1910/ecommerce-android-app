@@ -3,6 +3,7 @@ package Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import models.InvoiceDetail;
+import utils.FormatHelper;
 
 public class InvoiceDetailAdapter extends RecyclerView.Adapter<InvoiceDetailAdapter.ViewHolder> {
     private final Context context;
@@ -55,10 +57,9 @@ public class InvoiceDetailAdapter extends RecyclerView.Adapter<InvoiceDetailAdap
         InvoiceDetail detail = list.get(holder.getBindingAdapterPosition());
 
         holder.binding.txtProductTitle.setText(detail.getProductName());
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
 
-        holder.binding.txtNewPrice.setText("đ" + formatter.format(detail.getNewPrice()));
-        holder.binding.txtOldPrice.setText("đ" + formatter.format(detail.getOldPrice()));
+        holder.binding.txtNewPrice.setText(FormatHelper.formatVND(detail.getNewPrice()));
+        holder.binding.txtOldPrice.setText(FormatHelper.formatVND(detail.getOldPrice()));
         holder.binding.txtOldPrice.setPaintFlags(holder.binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         holder.binding.txtQuantity.setText("x" + detail.getQuantity());

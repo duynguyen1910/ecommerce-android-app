@@ -115,15 +115,15 @@ public class UpdateProductActivity extends AppCompatActivity {
                 Product product = new Product();
                 product.updateProduct(productData, productId, new UpdateDocumentCallback() {
                     @Override
-                    public void onUpdateSuccess() {
+                    public void onUpdateSuccess(String updateSuccess) {
 
-                        showToast(UpdateProductActivity.this, UPDATE_PRODUCT_SUCCESSFULLY);
+                        showToast(UpdateProductActivity.this, updateSuccess);
                         finish();
                     }
 
                     @Override
                     public void onUpdateFailure(String errorMessage) {
-                        showToast(UpdateProductActivity.this, UPDATE_PRODUCT_FAILED);
+                        showToast(UpdateProductActivity.this, errorMessage);
                     }
                 });
             }

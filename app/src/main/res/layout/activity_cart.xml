@@ -181,7 +181,7 @@
                 android:layout_width="match_parent"
 
                 android:layout_height="wrap_content"
-                android:background="@drawable/custom_border_top_bottom">
+                android:background="@drawable/custom_border_bottom">
 
 
                 <LinearLayout

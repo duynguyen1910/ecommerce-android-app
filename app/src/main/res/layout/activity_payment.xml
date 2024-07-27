@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightgray"
-    android:orientation="vertical">
+    android:background="@color/lightgray">
 
     <LinearLayout
         android:id="@+id/header"
@@ -43,6 +42,8 @@
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/bodySV"
+        android:layout_below="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
@@ -89,13 +90,21 @@
                         app:drawableStartCompat="@drawable/ic_location_16"
                         app:drawableTint="@color/primary_color" />
 
+                    <TextView
+                        android:id="@+id/txtCustomerInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nguyễn Tấn Duy | 0123455653"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/black"
+                        android:paddingHorizontal="26dp" />
 
                     <TextView
+                        android:id="@+id/txtCustomerAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="6dp"
                         android:gravity="center_vertical"
-                        android:lineHeight="20dp"
                         android:paddingHorizontal="26dp"
                         android:text="@string/address"
                         android:textColor="@color/black"
@@ -229,7 +238,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_border_top_bottom"
+                    android:background="@drawable/custom_border_bottom"
                     android:orientation="vertical"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="16dp">
@@ -366,9 +375,10 @@
     </ScrollView>
 
     <LinearLayout
+        android:layout_below="@+id/bodySV"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@drawable/custom_border_top_bottom">
+        android:background="@drawable/custom_border_bottom">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -395,15 +405,12 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-
         <Button
             android:id="@+id/btnBooking"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="6dp"
+            android:paddingHorizontal="36dp"
             android:background="@color/primary_color"
-            android:gravity="center"
-            android:paddingHorizontal="35dp"
             android:text="Đặt hàng"
             android:textAllCaps="false"
             android:textColor="@color/white"
@@ -411,5 +418,13 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-
-</LinearLayout>
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/progressBar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:indeterminateTintMode="src_atop"
+        tools:ignore="MissingConstraints" />
+</RelativeLayout>

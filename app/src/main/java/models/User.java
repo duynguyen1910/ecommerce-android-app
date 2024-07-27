@@ -24,7 +24,8 @@ public class User extends BaseObject implements Serializable {
     private String phoneNumber;
     private String password;
     private String fullname;
-    private String imageUrl;
+    private String userImageUrl;
+    private String userAddress;
     private String email;
     private UserRole role;
     private userApi userApi;
@@ -50,11 +51,11 @@ public class User extends BaseObject implements Serializable {
         this.fullname = fullname;
     }
 
-    public User(String phoneNumber, String password, String fullname, String imageUrl, String email, UserRole role, api.userApi userApi) {
+    public User(String phoneNumber, String password, String fullname, String userImageUrl, String email, UserRole role, api.userApi userApi) {
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.fullname = fullname;
-        this.imageUrl = imageUrl;
+        this.userImageUrl = userImageUrl;
         this.email = email;
         this.role = role;
         this.userApi = userApi;
@@ -103,12 +104,20 @@ public class User extends BaseObject implements Serializable {
         this.fullname = fullname;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getUserImageUrl() {
+        return userImageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setUserImageUrl(String userImageUrl) {
+        this.userImageUrl = userImageUrl;
+    }
+
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
     }
 
     public String getEmail() {
