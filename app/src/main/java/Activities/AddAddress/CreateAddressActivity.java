@@ -1,10 +1,15 @@
 package Activities.AddAddress;
 
+import static constants.keyName.CATEGORY_ID;
+import static constants.keyName.CATEGORY_NAME;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.stores.databinding.ActivityCreateAddressBinding;
@@ -29,7 +34,21 @@ public class CreateAddressActivity extends AppCompatActivity {
 
     }
 
-    private void setupEvent(){
+    ActivityResultLauncher<Intent> launcherSelectAddress = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == 2) {
+                    Intent intent = result.getData();
+                    if (intent != null) {
+                        String address = intent.getStringExtra("address");
+                        if (address != null) {
+                            binding.txtSetAddress.setText(address);
+                        }
+                    }
+                }
+            });
+
+    private void setupEvent() {
         binding.imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,20 +71,18 @@ public class CreateAddressActivity extends AppCompatActivity {
 //                binding.txtSetAddress.setText(newAddress);
 
                 Intent intent = new Intent(CreateAddressActivity.this, SelectAddressActivity.class);
-                startActivity(intent);
+                launcherSelectAddress.launch(intent);
             }
         });
         binding.txtDetailLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Open google Map để chọn địa điểm nếu có thể :)))
-                String detailLocation = "FPT Polytechnic TP.HCM - Tòa F,\nCông Viên Phần Mềm Quang Trung, Tòa nhà GenPacific \nLô 3 đường 16";
-                binding.txtDetailLocation.setText(detailLocation);
+
             }
         });
     }
 
-    private void initUI(){
+    private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
     }
