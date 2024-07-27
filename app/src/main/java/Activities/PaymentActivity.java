@@ -1,4 +1,5 @@
 package Activities;
+import static constants.keyName.PAYMENT;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static utils.CartUtils.getCartItemFee;
@@ -61,7 +62,7 @@ public class PaymentActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         if (intent != null) {
-            payment = (ArrayList<CartItem>) getIntent().getSerializableExtra("payment");
+            payment = (ArrayList<CartItem>) getIntent().getSerializableExtra(PAYMENT);
             if (payment != null){
                 PaymentAdapter paymentAdapter = new PaymentAdapter(PaymentActivity.this, payment);
                 binding.recyclerViewPayment.setAdapter(paymentAdapter);

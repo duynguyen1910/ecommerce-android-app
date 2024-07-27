@@ -47,7 +47,7 @@ public class PendingConfirmationFragment extends Fragment {
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);
         String userID = sharedPreferences.getString(USER_ID, null);
 
-        if(userID == null) return;
+        if (userID == null) return;
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.progressBar.getIndeterminateDrawable()
@@ -55,22 +55,20 @@ public class PendingConfirmationFragment extends Fragment {
 
         invoiceApi.getInvoicesByStatusApi(userID, OrderStatus.PENDING_CONFIRMATION.getOrderStatusValue(),
                 new GetCollectionCallback<Invoice>() {
-            @Override
-            public void onGetListSuccess(ArrayList<Invoice> invoiceList) {
-                binding.progressBar.setVisibility(View.GONE);
+                    @Override
+                    public void onGetListSuccess(ArrayList<Invoice> invoiceList) {
+                        binding.progressBar.setVisibility(View.GONE);
+                        InvoiceAdapter invoiceAdapter = new InvoiceAdapter(requireActivity(), invoiceList);
+                        binding.recyclerView.setAdapter(invoiceAdapter);
+                        binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
+                    }
 
-                    InvoiceAdapter invoiceAdapter = new InvoiceAdapter(requireActivity(), invoiceList);
-                    binding.recyclerView.setAdapter(invoiceAdapter);
-                    binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
-
-            }
-
-            @Override
-            public void onGetListFailure(String errorMessage) {
-                binding.progressBar.setVisibility(View.GONE);
-                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
-            }
-        });
+                    @Override
+                    public void onGetListFailure(String errorMessage) {
+                        binding.progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
     }

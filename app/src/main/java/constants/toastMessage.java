@@ -34,4 +34,5 @@ public class toastMessage {
 
     public static final String ORDER_SUCCESSFULLY = "Đặt hàng thành công";
     public static final String CONFIRMED_ORDER_SUCCESSFULLY = "Đã xác nhận đơn";
+    public static final String CANCEL_ORDER_SUCCESSFULLY = "Đã hủy đơn";
 }

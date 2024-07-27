@@ -1,4 +1,5 @@
 package Activities;
+import static constants.keyName.PAYMENT;
 import static utils.CartUtils.MY_CART;
 import static utils.CartUtils.getQuantityProductsInCart;
 
@@ -50,7 +51,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
                 Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
                 ArrayList<CartItem> payment = setupPayment();
 
-                intent.putExtra("payment", payment);
+                intent.putExtra(PAYMENT, payment);
                 startActivity(intent);
             }
         });
@@ -62,7 +63,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         });
     }
 
-    private ArrayList<CartItem> setupPayment() {
+    public static ArrayList<CartItem> setupPayment() {
         HashMap<String, HashMap<String, ArrayList<Product>>> hashMap = new HashMap<>();
 
         for (CartItem cartItem : MY_CART) {

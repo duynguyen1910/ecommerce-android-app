@@ -1,6 +1,15 @@
 package Adapters;
 
+import static constants.keyName.NOTE;
+import static constants.keyName.STATUS;
 import static constants.keyName.STORE_NAME;
+import static constants.keyName.TYPE_COLOR;
+import static constants.keyName.TYPE_GENDER;
+import static constants.keyName.TYPE_SIZE_GLOBAL;
+import static constants.keyName.TYPE_SIZE_VN;
+import static constants.toastMessage.CANCEL_ORDER_SUCCESSFULLY;
+import static enums.OrderStatus.CANCELLED;
+import static utils.CartUtils.showToast;
 import static utils.FormatHelper.formatDateTime;
 
 import android.annotation.SuppressLint;
@@ -9,29 +18,41 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.stores.R;
+import com.example.stores.databinding.DialogCancelInvoiceBinding;
 import com.example.stores.databinding.ItemInvoiceBinding;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 import Activities.InvoiceDetailActivity;
-
 import api.invoiceApi;
 import api.storeApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
+import interfaces.UpdateDocumentCallback;
 import models.Invoice;
 import models.InvoiceDetail;
 import utils.FormatHelper;
@@ -123,6 +144,13 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
             }
         });
 
+        holder.binding.btnCancelInvoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popUpCancelInvoiceDialog(invoice);
+            }
+        });
+
     }
 
     private void getStoreNameByID(ArrayList<InvoiceDetail> productList, TextView txtStoreName) {
@@ -139,6 +167,78 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
                 Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void popUpCancelInvoiceDialog(Invoice invoice) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        DialogCancelInvoiceBinding dialogBinding = DialogCancelInvoiceBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
+        builder.setView(dialogBinding.getRoot());
+        AlertDialog dialog = builder.create();
+
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.custom_edit_text_border);
+        dialog.show();
+
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            window.setGravity(Gravity.BOTTOM);
+
+            Animation slideUp = AnimationUtils.loadAnimation(context, R.anim.slide_up);
+            dialogBinding.getRoot().startAnimation(slideUp);
+        }
+
+
+
+        final String[] cancelReason = {""};
+
+        dialogBinding.layoutSelectReason.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rdoReason1) {
+                    cancelReason[0] += dialogBinding.rdoReason1.getText().toString();
+                } else if (checkedId == R.id.rdoReason2) {
+                    cancelReason[0] += dialogBinding.rdoReason2.getText().toString();
+                }
+            }
+        });
+
+        dialogBinding.btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (cancelReason[0].isEmpty()) {
+                    showToast(context, "Bạn cần chọn lý do hủy đơn hàng.");
+                    return;
+                }
+                dialogBinding.progressBar.setVisibility(View.VISIBLE);
+                dialogBinding.progressBar.getIndeterminateDrawable()
+                        .setColorFilter(Color.parseColor("#f04d7f"), PorterDuff.Mode.MULTIPLY);
+                Map<String, Object> invoiceUpdate = new HashMap<>();
+                invoiceUpdate.put(STATUS, OrderStatus.CANCELLED.getOrderStatusValue());
+                String otherReason = "\nOther reason: " + dialogBinding.edtOtherReason.getText().toString().trim();
+                cancelReason[0] += otherReason;
+                String note = "Cancelled By " + invoice.getCustomerID() + "\nCancel reason " + cancelReason[0];
+                invoiceUpdate.put(NOTE, note);
+                invoiceApi invoiceApi = new invoiceApi();
+                invoiceApi.updateStatusInvoiceApi(invoice.getBaseID(), invoiceUpdate, new UpdateDocumentCallback() {
+                    @Override
+                    public void onUpdateSuccess(String successMessage) {
+                        dialogBinding.progressBar.setVisibility(View.GONE);
+                        showToast(context, CANCEL_ORDER_SUCCESSFULLY);
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onUpdateFailure(String errorMessage) {
+                        dialogBinding.progressBar.setVisibility(View.GONE);
+                        showToast(context, errorMessage);
+                        dialog.dismiss();
+                    }
+                });
+
+            }
+        });
+
+
     }
 
     @Override

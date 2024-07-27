@@ -30,8 +30,11 @@ public class keyName {
     public static final String CATEGORY_ID = "categoryID";
     public static final String CATEGORY_NAME = "categoryName";
 
+    public static final String PAYMENT = "payment";
+
     public static final String INVOICE_ID = "invoiceID";
     public static final String STATUS = "status";
+    public static final String NOTE = "note";
     public static final String CREATE_AT = "createdAt";
     public static final String CONFIRMED_AT = "confirmedAt";
     public static final String SHIPPED_AT = "shippedAt";

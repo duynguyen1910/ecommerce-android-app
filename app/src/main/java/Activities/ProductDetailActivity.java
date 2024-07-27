@@ -1,5 +1,6 @@
 package Activities;
 
+import static constants.keyName.PAYMENT;
 import static constants.keyName.PRODUCT_DESC;
 import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.PRODUCT_INSTOCK;
@@ -13,6 +14,7 @@ import static constants.keyName.USER_INFO;
 import static constants.toastMessage.INTERNET_ERROR;
 import static utils.AnimationUtils.translateAnimation;
 import static utils.CartUtils.MY_CART;
+import static utils.CartUtils.getCartItemFee;
 import static utils.CartUtils.showToast;
 import static utils.CartUtils.updateQuantityInCart;
 
@@ -47,11 +49,13 @@ import java.util.Map;
 import java.util.Objects;
 
 import Activities.StoreSetup.ViewMyStoreActivity;
+import enums.OrderStatus;
 import interfaces.GetDocumentCallback;
 import models.CartItem;
 import models.InvoiceDetail;
 import models.Product;
 import models.Store;
+import utils.FormatHelper;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -281,7 +285,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
             String userID = sharedPreferences.getString(USER_ID, null);
 
-            if(userID == null) {
+            if (userID == null) {
                 startActivity(new Intent(ProductDetailActivity.this, LoginActivity.class));
                 return;
             }
@@ -294,8 +298,6 @@ public class ProductDetailActivity extends AppCompatActivity {
                 showToast(ProductDetailActivity.this, "Đã thêm sản phẩm vào giỏ hàng");
                 updateQuantityInCart(binding.txtQuantityInCart);
                 dialog.dismiss();
-
-
 
             }
 
@@ -357,19 +359,23 @@ public class ProductDetailActivity extends AppCompatActivity {
             if (thisProduct.getNumberInCart() > thisProduct.getInStock()) {
                 showToast(ProductDetailActivity.this, "Uiii, số lượng sản phẩm không đủ!");
             } else {
+
                 Intent intent = new Intent(ProductDetailActivity.this, PaymentActivity.class);
-                ArrayList<InvoiceDetail> payment = new ArrayList<>();
-//                InvoiceDetail cartItem = new InvoiceDetail();
+                ArrayList<CartItem> payment = new ArrayList<>();
+                CartItem cartItem = new CartItem();
                 ArrayList<Product> listProducts = new ArrayList<>();
                 int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
                 thisProduct.setNumberInCart(quantity);
 
                 listProducts.add(thisProduct);
-//                cartItem.setStoreName(storeName);
-//                cartItem.setListProducts(listProducts);
-//                payment.add(cartItem);
 
-                intent.putExtra("payment", payment);
+                cartItem.setStoreID(storeID);
+                cartItem.setNote("");
+                cartItem.setStoreName(storeName);
+                cartItem.setListProducts(listProducts);
+                payment.add(cartItem);
+
+                intent.putExtra(PAYMENT, payment);
                 startActivity(intent);
             }
 
