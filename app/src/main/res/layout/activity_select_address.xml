@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightgray"
@@ -26,7 +25,7 @@
             app:tint="@color/primary_color" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_weight="1"
@@ -49,27 +48,23 @@
         android:text="Địa chỉ"
         android:textColor="@color/black" />
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:id="@+id/layout"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"/>
+    </RadioGroup>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recyclerView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="@color/white" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnAccept"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:layout_margin="40dp"
-        android:background="@drawable/custom_edit_text_border"
-        android:drawableStart="@drawable/ic_add"
-        android:drawableTint="@color/primary_color"
-        android:gravity="center"
-        android:paddingHorizontal="16dp"
-        android:text="Thêm địa chỉ mới"
-        android:textAllCaps="false"
-        android:textColor="@color/primary_color" />
+
 
 
 </LinearLayout>

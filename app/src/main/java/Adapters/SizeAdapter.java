@@ -42,7 +42,7 @@ public class SizeAdapter extends RecyclerView.Adapter<SizeAdapter.ViewHolder> {
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String itemSize = list.get(holder.getAdapterPosition());
+        String itemSize = list.get(holder.getBindingAdapterPosition());
         holder.binding.txtSize.setText(itemSize);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

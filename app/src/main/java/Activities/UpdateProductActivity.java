@@ -17,6 +17,7 @@ import static utils.CartUtils.showToast;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -104,6 +105,11 @@ public class UpdateProductActivity extends AppCompatActivity {
 
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
+
+        binding.layoutVariant.setOnClickListener(v -> {
+            Intent intent = new Intent(UpdateProductActivity.this, AddVariantActivity.class);
+            startActivity(intent);
+        });
         binding.layoutDeliveryFee.setOnClickListener(v -> {
             Intent intent = new Intent(UpdateProductActivity.this, DeliveryFeeActivity.class);
             startActivity(intent);

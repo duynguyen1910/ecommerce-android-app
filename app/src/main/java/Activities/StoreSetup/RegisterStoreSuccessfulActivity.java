@@ -1,13 +1,17 @@
 package Activities.StoreSetup;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.stores.databinding.ActivityRegisterStoreOwnerSuccessfulBinding;
 
 import java.util.Objects;
 
 import Activities.MainActivity;
+import Activities.StoreSetup.StoreOwnerActivity;
 
 public class RegisterStoreSuccessfulActivity extends AppCompatActivity {
 
@@ -27,7 +31,7 @@ public class RegisterStoreSuccessfulActivity extends AppCompatActivity {
 
     }
 
-    private void setupEvent(){
+    private void setupEvent() {
         binding.imageBack.setOnClickListener(v -> {
             Intent intent = new Intent(RegisterStoreSuccessfulActivity.this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -36,12 +40,13 @@ public class RegisterStoreSuccessfulActivity extends AppCompatActivity {
 //        binding.imageBack.setOnClickListener(v -> finish());
         binding.btnViewStore.setOnClickListener(v -> {
             Intent intent = new Intent(RegisterStoreSuccessfulActivity.this, StoreOwnerActivity.class);
-;            startActivity(intent);
+            startActivity(intent);
+            finish();
         });
 
     }
 
-    private void initUI(){
+    private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
     }

@@ -146,8 +146,8 @@ public class AddProductsActivity extends AppCompatActivity {
             try {
                 double price = Double.parseDouble(priceStr.replace(",", ""));
                 int inStock = Integer.parseInt(inStockStr.replace(",", ""));
-                Map<String, Object> newProduct = new HashMap<>();
 
+                Map<String, Object> newProduct = new HashMap<>();
                 newProduct.put(PRODUCT_NAME, productName);
                 newProduct.put(PRODUCT_DESC, description);
                 newProduct.put(PRODUCT_NEW_PRICE, price);

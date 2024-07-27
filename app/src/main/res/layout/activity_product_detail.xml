@@ -227,11 +227,11 @@
                                 android:id="@+id/txtStoreAddress"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:drawableStart="@drawable/ic_location_16"
                                 android:drawablePadding="3dp"
                                 android:text="TP. Hồ Chí Minh"
                                 android:textColor="@color/text1"
-                                android:textSize="14dp" />
+                                android:textSize="14sp"
+                                app:drawableStartCompat="@drawable/ic_location_16" />
 
                         </LinearLayout>
 
@@ -239,8 +239,6 @@
                             android:id="@+id/btnViewStore"
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
                             android:layout_marginEnd="8dp"
                             android:background="@drawable/custom_border_primary_color"
                             android:text="Xem Store"
@@ -437,8 +435,8 @@
             android:paddingVertical="4dp">
 
             <ImageView
-                android:layout_width="wrap_content"
                 android:id="@+id/viewAnimation"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/ic_cart"

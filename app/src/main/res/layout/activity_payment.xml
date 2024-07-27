@@ -116,10 +116,10 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewPayment"
                     android:layout_width="match_parent"
-                    android:background="@color/lightgray"
+                    android:layout_height="0dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:background="@color/lightgray" />
             </LinearLayout>
 
             <LinearLayout
@@ -127,113 +127,113 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:background="@drawable/custom_border_top_bottom"-->
-<!--                    android:paddingHorizontal="10dp"-->
-<!--                    android:paddingVertical="16dp">-->
+                <!--                <LinearLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:background="@drawable/custom_border_top_bottom"-->
+                <!--                    android:paddingHorizontal="10dp"-->
+                <!--                    android:paddingVertical="16dp">-->
 
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:background="#00ffffff"-->
-<!--                        android:drawablePadding="8dp"-->
-<!--                        android:gravity="center_vertical"-->
-<!--                        android:text="Ecommerce Voucher"-->
-<!--                        android:textColor="@color/black"-->
-<!--                        android:textSize="14sp"-->
-<!--                        app:drawableStartCompat="@drawable/ic_voucher_24"-->
-<!--                        app:drawableTint="@color/primary_color" />-->
+                <!--                    <TextView-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:background="#00ffffff"-->
+                <!--                        android:drawablePadding="8dp"-->
+                <!--                        android:gravity="center_vertical"-->
+                <!--                        android:text="Ecommerce Voucher"-->
+                <!--                        android:textColor="@color/black"-->
+                <!--                        android:textSize="14sp"-->
+                <!--                        app:drawableStartCompat="@drawable/ic_voucher_24"-->
+                <!--                        app:drawableTint="@color/primary_color" />-->
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/txtVoucher"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:background="@drawable/custom_txt_voucher"-->
-<!--                        android:gravity="center_vertical"-->
-<!--                        android:paddingHorizontal="5dp"-->
-<!--                        android:paddingVertical="3dp"-->
-<!--                        android:text="Miễn Phí Vận Chuyển"-->
-<!--                        android:textColor="@color/green_persian"-->
-<!--                        android:textSize="12sp"-->
-<!--                        app:drawableEndCompat="@drawable/ic_arrow_right_16"-->
-<!--                        app:drawableTint="@color/green_persian" />-->
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/txtVoucher"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:background="@drawable/custom_txt_voucher"-->
+                <!--                        android:gravity="center_vertical"-->
+                <!--                        android:paddingHorizontal="5dp"-->
+                <!--                        android:paddingVertical="3dp"-->
+                <!--                        android:text="Miễn Phí Vận Chuyển"-->
+                <!--                        android:textColor="@color/green_persian"-->
+                <!--                        android:textSize="12sp"-->
+                <!--                        app:drawableEndCompat="@drawable/ic_arrow_right_16"-->
+                <!--                        app:drawableTint="@color/green_persian" />-->
 
-<!--                </LinearLayout>-->
+                <!--                </LinearLayout>-->
 
-<!--                <RelativeLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:background="@drawable/custom_border_top_bottom"-->
-<!--                    android:paddingHorizontal="10dp"-->
-<!--                    android:paddingVertical="16dp">-->
+                <!--                <RelativeLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:background="@drawable/custom_border_top_bottom"-->
+                <!--                    android:paddingHorizontal="10dp"-->
+                <!--                    android:paddingVertical="16dp">-->
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/ecomerce_coin_desc"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_alignParentStart="true"-->
-<!--                        android:layout_centerVertical="true"-->
-<!--                        android:drawablePadding="8dp"-->
-<!--                        android:gravity="center_vertical"-->
-<!--                        android:text="Sử dụng Ecommerce Coin"-->
-<!--                        android:textColor="@color/black"-->
-<!--                        android:textSize="14sp"-->
-<!--                        app:drawableStartCompat="@drawable/ic_coin"-->
-<!--                        app:drawableTint="@color/yellow" />-->
+                <!--                    <TextView-->
+                <!--                        android:id="@+id/ecomerce_coin_desc"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_alignParentStart="true"-->
+                <!--                        android:layout_centerVertical="true"-->
+                <!--                        android:drawablePadding="8dp"-->
+                <!--                        android:gravity="center_vertical"-->
+                <!--                        android:text="Sử dụng Ecommerce Coin"-->
+                <!--                        android:textColor="@color/black"-->
+                <!--                        android:textSize="14sp"-->
+                <!--                        app:drawableStartCompat="@drawable/ic_coin"-->
+                <!--                        app:drawableTint="@color/yellow" />-->
 
-<!--                    <ImageView-->
-<!--                        android:layout_width="20dp"-->
-<!--                        android:layout_height="20dp"-->
-<!--                        android:layout_centerVertical="true"-->
-<!--                        android:layout_marginStart="8dp"-->
-<!--                        android:layout_toRightOf="@+id/ecomerce_coin_desc"-->
-<!--                        android:src="@drawable/ic_question"-->
-<!--                        app:tint="@color/gray" />-->
+                <!--                    <ImageView-->
+                <!--                        android:layout_width="20dp"-->
+                <!--                        android:layout_height="20dp"-->
+                <!--                        android:layout_centerVertical="true"-->
+                <!--                        android:layout_marginStart="8dp"-->
+                <!--                        android:layout_toRightOf="@+id/ecomerce_coin_desc"-->
+                <!--                        android:src="@drawable/ic_question"-->
+                <!--                        app:tint="@color/gray" />-->
 
-<!--                    <androidx.appcompat.widget.SwitchCompat-->
-<!--                        android:id="@+id/switchEcommerceCoin"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_alignParentEnd="true"-->
-<!--                        android:textColor="@color/green"-->
-<!--                        android:textSize="14sp"-->
-<!--                        android:textStyle="bold"-->
-<!--                        app:buttonTint="@color/checkbox_color" />-->
-<!--                </RelativeLayout>-->
+                <!--                    <androidx.appcompat.widget.SwitchCompat-->
+                <!--                        android:id="@+id/switchEcommerceCoin"-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_alignParentEnd="true"-->
+                <!--                        android:textColor="@color/green"-->
+                <!--                        android:textSize="14sp"-->
+                <!--                        android:textStyle="bold"-->
+                <!--                        app:buttonTint="@color/checkbox_color" />-->
+                <!--                </RelativeLayout>-->
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:background="@drawable/custom_border_top_bottom"-->
-<!--                    android:paddingHorizontal="10dp"-->
-<!--                    android:paddingVertical="16dp">-->
+                <!--                <LinearLayout-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:background="@drawable/custom_border_top_bottom"-->
+                <!--                    android:paddingHorizontal="10dp"-->
+                <!--                    android:paddingVertical="16dp">-->
 
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_weight="1"-->
-<!--                        android:background="#00ffffff"-->
-<!--                        android:drawablePadding="8dp"-->
-<!--                        android:gravity="center_vertical"-->
-<!--                        android:text="Phương thức thanh toán"-->
-<!--                        android:textColor="@color/black"-->
-<!--                        app:drawableStartCompat="@drawable/ic_paid"-->
-<!--                        app:drawableTint="@color/primary_color" />-->
+                <!--                    <TextView-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:background="#00ffffff"-->
+                <!--                        android:drawablePadding="8dp"-->
+                <!--                        android:gravity="center_vertical"-->
+                <!--                        android:text="Phương thức thanh toán"-->
+                <!--                        android:textColor="@color/black"-->
+                <!--                        app:drawableStartCompat="@drawable/ic_paid"-->
+                <!--                        app:drawableTint="@color/primary_color" />-->
 
-<!--                    <TextView-->
+                <!--                    <TextView-->
 
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:gravity="center_vertical"-->
-<!--                        android:text="Thanh toán khi nhận hàng"-->
-<!--                        android:textColor="@color/darkgray"-->
-<!--                        android:id="@+id/txtPaymentMethod"-->
-<!--                        app:drawableEndCompat="@drawable/ic_arrow_right_24"-->
-<!--                        app:drawableTint="@color/darkgray" />-->
-<!--                </LinearLayout>-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:gravity="center_vertical"-->
+                <!--                        android:text="Thanh toán khi nhận hàng"-->
+                <!--                        android:textColor="@color/darkgray"-->
+                <!--                        android:id="@+id/txtPaymentMethod"-->
+                <!--                        app:drawableEndCompat="@drawable/ic_arrow_right_24"-->
+                <!--                        app:drawableTint="@color/darkgray" />-->
+                <!--                </LinearLayout>-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -266,10 +266,10 @@
                             android:textColor="@color/black" />
 
                         <TextView
+                            android:id="@+id/txtTotalProductsFee"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="đ150.000"
-                            android:id="@+id/txtTotalProductsFee"
                             android:textColor="@color/gray1" />
 
                     </LinearLayout>
@@ -287,55 +287,55 @@
                             android:textColor="@color/black" />
 
                         <TextView
+                            android:id="@+id/txtTotalDeliveryFee"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="đ50.000"
-                            android:id="@+id/txtTotalDeliveryFee"
                             android:textColor="@color/gray1" />
 
                     </LinearLayout>
 
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:paddingVertical="16dp">-->
+                    <!--                    <LinearLayout-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:paddingVertical="16dp">-->
 
-<!--                        <TextView-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_weight="1"-->
-<!--                            android:text="Ecommerce giảm giá phí vận chuyển"-->
-<!--                            android:textColor="@color/black" />-->
+                    <!--                        <TextView-->
+                    <!--                            android:layout_width="0dp"-->
+                    <!--                            android:layout_height="wrap_content"-->
+                    <!--                            android:layout_weight="1"-->
+                    <!--                            android:text="Ecommerce giảm giá phí vận chuyển"-->
+                    <!--                            android:textColor="@color/black" />-->
 
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="-đ50.000"-->
-<!--                            android:id="@+id/txtEcommerceDeliveryDiscount"-->
-<!--                            android:textColor="@color/gray1" />-->
+                    <!--                        <TextView-->
+                    <!--                            android:layout_width="wrap_content"-->
+                    <!--                            android:layout_height="wrap_content"-->
+                    <!--                            android:text="-đ50.000"-->
+                    <!--                            android:id="@+id/txtEcommerceDeliveryDiscount"-->
+                    <!--                            android:textColor="@color/gray1" />-->
 
-<!--                    </LinearLayout>-->
+                    <!--                    </LinearLayout>-->
 
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:paddingVertical="16dp">-->
+                    <!--                    <LinearLayout-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:paddingVertical="16dp">-->
 
-<!--                        <TextView-->
-<!--                            android:layout_width="0dp"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_weight="1"-->
-<!--                            android:text="Tổng cộng Voucher giảm giá"-->
-<!--                            android:textColor="@color/black" />-->
+                    <!--                        <TextView-->
+                    <!--                            android:layout_width="0dp"-->
+                    <!--                            android:layout_height="wrap_content"-->
+                    <!--                            android:layout_weight="1"-->
+                    <!--                            android:text="Tổng cộng Voucher giảm giá"-->
+                    <!--                            android:textColor="@color/black" />-->
 
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="-đ25.000"-->
-<!--                            android:id="@+id/txtTotalDiscount"-->
-<!--                            android:textColor="@color/gray1" />-->
+                    <!--                        <TextView-->
+                    <!--                            android:layout_width="wrap_content"-->
+                    <!--                            android:layout_height="wrap_content"-->
+                    <!--                            android:text="-đ25.000"-->
+                    <!--                            android:id="@+id/txtTotalDiscount"-->
+                    <!--                            android:textColor="@color/gray1" />-->
 
-<!--                    </LinearLayout>-->
+                    <!--                    </LinearLayout>-->
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -354,13 +354,13 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/txtTotalPayment"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center_vertical"
                             android:paddingHorizontal="5dp"
                             android:text="đ150.000"
-                            android:id="@+id/txtTotalPayment"
                             android:textColor="@color/primary_color"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -396,10 +396,10 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/txtTotalOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="đ126.000"
-                android:id="@+id/txtTotalOrder"
                 android:textColor="@color/primary_color"
                 android:textSize="16sp"
                 android:textStyle="bold" />

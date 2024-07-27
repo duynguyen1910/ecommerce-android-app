@@ -1,4 +1,4 @@
-package Activities;
+package Activities.AddAddress;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,7 +22,6 @@ public class SelectAddressActivity extends AppCompatActivity {
 
 
         binding.imageBack.setOnClickListener(v -> finish());
-        binding.btnAccept.setOnClickListener(v -> finish());
 
     }
 

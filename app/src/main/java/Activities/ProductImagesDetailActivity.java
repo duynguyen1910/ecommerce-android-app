@@ -12,13 +12,14 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import Adapters.SliderAdapter;
+import models.SliderItem;
 
 public class ProductImagesDetailActivity extends AppCompatActivity {
 
 
-    private int numberOrder = 1;
+    private final int numberOrder = 1;
 
-    private Handler slideHandler = new Handler();
+    private final Handler slideHandler = new Handler();
     ActivityProductImagesDetailBinding binding;
 
     @Override
@@ -34,7 +35,7 @@ public class ProductImagesDetailActivity extends AppCompatActivity {
 
 
     private void initSlider() {
-        ArrayList sliderItems = (ArrayList) getIntent().getSerializableExtra("sliderItems");
+        ArrayList<SliderItem> sliderItems = (ArrayList<SliderItem>) getIntent().getSerializableExtra("sliderItems");
         int currentPosition = getIntent().getIntExtra("currentPosition", 0);
         binding.imageBack.setOnClickListener(v -> finish());
         binding.viewPager2Slider.setAdapter(new SliderAdapter(this, sliderItems));

@@ -20,7 +20,7 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
-            android:name="Activities.SplashScreen"
+            android:name="Activities.AddAddress.CreateAddressActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,6 +28,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="Activities.SettingVariantDetailActivity"
+            android:exported="false" />
         <activity
             android:name="Activities.DeliveryActivity"
             android:exported="false" />
@@ -49,7 +52,7 @@
             android:exported="false" />
 
         <activity
-            android:name="Activities.SelectAddressActivity"
+            android:name="Activities.AddAddress.SelectAddressActivity"
             android:exported="false" />
         <activity
             android:name="Activities.CartActivity"
@@ -61,7 +64,7 @@
             android:name="Activities.AddCategoryActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.CategoryActivity"
+            android:name="Activities.AddVariantActivity"
             android:exported="false" />
         <activity
             android:name="Activities.DecorateMyStoreActivity"
@@ -94,7 +97,7 @@
             android:name="Activities.SelectDeliveryMethodActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.CreateAddressActivity"
+            android:name="Activities.SplashScreen"
             android:exported="false" />
         <activity
             android:name="Activities.StoreSetup.StoreOwnerActivity"

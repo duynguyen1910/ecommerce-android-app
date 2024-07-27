@@ -38,6 +38,7 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
+
         <ImageView
             android:id="@+id/updateProfileImv"
             android:layout_width="20dp"
@@ -107,60 +108,61 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp"
-                android:paddingTop="16dp"
-                android:background="@color/white">
+                android:paddingTop="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Họ và tên"
                     android:layout_marginBottom="4dp"
-                    android:textStyle="bold"
-                    android:textSize="12sp"
+                    android:text="Họ và tên"
                     android:textAllCaps="true"
-                    android:textColor="@color/gray3" />
+                    android:textColor="@color/gray3"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/txtFullname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/custom_edit_text_border"
                     android:gravity="center_vertical"
                     android:padding="16dp"
                     android:text="Ngọc Đại"
-                    android:background="@drawable/custom_edit_text_border"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp"
-                android:paddingTop="16dp"
-                android:background="@color/white">
+                android:paddingTop="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Số điện thoại"
-                    android:textStyle="bold"
                     android:layout_marginBottom="4dp"
-                    android:textSize="12sp"
+                    android:text="Số điện thoại"
                     android:textAllCaps="true"
-                    android:textColor="@color/gray3" />
+                    android:textColor="@color/gray3"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/txtPhoneNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/custom_edit_text_border"
+                    android:cursorVisible="false"
+                    android:focusable="false"
                     android:gravity="center_vertical"
                     android:padding="16dp"
                     android:text="012345678"
-                    android:focusable="false"
-                    android:cursorVisible="false"
-                    android:background="@drawable/custom_edit_text_border"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -169,51 +171,42 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp"
-                android:paddingTop="16dp"
-                android:background="@color/white">
+                android:paddingTop="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Email"
-                    android:textStyle="bold"
-                    android:textSize="12sp"
                     android:layout_marginBottom="4dp"
+                    android:text="Email"
                     android:textAllCaps="true"
-                    android:textColor="@color/gray3" />
+                    android:textColor="@color/gray3"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/txtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/custom_edit_text_border"
                     android:gravity="center_vertical"
                     android:padding="16dp"
                     android:text="ngocdai@gmail.com"
-                    android:background="@drawable/custom_edit_text_border"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
                 <TextView
-                    android:layout_marginTop="4dp"
-                    android:drawableEnd="@drawable/ic_arrow_right_24"
-                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center"
                     android:text="Xác minh ngay"
+                    android:textColor="@color/primary_color"
                     android:textStyle="bold"
-                    android:textColor="@color/primary_color" />
+                    app:drawableEndCompat="@drawable/ic_arrow_right_24" />
             </LinearLayout>
-
-
-
-
-
-
-
-
-
 
 
         </LinearLayout>

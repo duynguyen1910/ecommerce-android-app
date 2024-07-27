@@ -1,6 +1,4 @@
 package Activities;
-
-import static constants.keyName.CART;
 import static constants.keyName.FULLNAME;
 import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;

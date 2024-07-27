@@ -1,4 +1,4 @@
-package Activities;
+package Activities.AddAddress;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -48,8 +48,11 @@ public class CreateAddressActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Open một activity để chọn địa chỉ qua API, chọn tỉnh/thành phố --> Quận/Huyện --> Phường/Xã
                 // Sau khi chọn xong thì đổi text của textView này
-                String newAddress = "TP. Hồ Chí Minh\nQuận 12, Phường Trung Mỹ Tây";
-                binding.txtSetAddress.setText(newAddress);
+//                String newAddress = "TP. Hồ Chí Minh\nQuận 12, Phường Trung Mỹ Tây";
+//                binding.txtSetAddress.setText(newAddress);
+
+                Intent intent = new Intent(CreateAddressActivity.this, SelectAddressActivity.class);
+                startActivity(intent);
             }
         });
         binding.txtDetailLocation.setOnClickListener(new View.OnClickListener() {

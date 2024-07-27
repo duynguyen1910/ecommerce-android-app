@@ -35,7 +35,7 @@ public class DecorateMyStoreActivity extends AppCompatActivity {
         binding.btnCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DecorateMyStoreActivity.this, CategoryActivity.class);
+                Intent intent = new Intent(DecorateMyStoreActivity.this, AddVariantActivity.class);
                 startActivity(intent);
             }
         });

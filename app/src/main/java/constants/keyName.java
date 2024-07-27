@@ -2,7 +2,7 @@ package constants;
 
 public class keyName {
     public static final String USER_INFO = "userInfo";
-    public static final String USER_ID = "userId";
+    public static final String USER_ID = "userID";
     public static final String PHONE_NUMBER = "phoneNumber";
     public static final String EMAIL = "email";
     public static final String FULLNAME = "fullname";
@@ -17,8 +17,6 @@ public class keyName {
     public static final String STORE_ADDRESS = "storeAddress";
     public static final String STORE_OWNER_ID = "storeOwnerID";
     public static final String PRODUCTS = "products";
-
-    public static final String CART = "cart";
 
 
     public static final String PRODUCT_ID = "productID";
@@ -39,6 +37,14 @@ public class keyName {
     public static final String SHIPPED_AT = "shippedAt";
     public static final String DELIVERED_AT = "deliveredAt";
     public static final String CANCELED_AT = "cancelledAt";
+
+
+    public static final String TYPES = "TYPES";
+    public static final String TYPE_COLOR = "Màu sắc";
+    public static final String TYPE_GENDER = "Giới tính";
+    public static final String TYPE_SIZE_VN = "Size (VN)";
+    public static final String TYPE_SIZE_GLOBAL = "Size (Quốc tế)";
+
 
 
 }
