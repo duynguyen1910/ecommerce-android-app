@@ -13,8 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import Adapters.DeliveryAdapter;
-import Adapters.RequestInvoiceAdapter;
+import Adapters.Invoices.DeliveryAdapter;
 import models.CartItem;
 import models.Invoice;
 import models.Product;

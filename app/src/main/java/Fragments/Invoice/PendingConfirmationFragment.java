@@ -22,7 +22,7 @@ import com.example.stores.databinding.FragmentInvoiceAwaitConfirmationBinding;
 
 import java.util.ArrayList;
 
-import Adapters.InvoiceAdapter;
+import Adapters.Invoices.InvoiceAdapter;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;

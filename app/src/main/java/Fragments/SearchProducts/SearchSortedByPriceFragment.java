@@ -25,11 +25,10 @@ import com.example.stores.databinding.FragmentSearchSortedByPriceBinding;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import Adapters.CategoryGridForDialogAdapter;
+import Adapters.Category.CategoryGridForDialogAdapter;
 import Adapters.ProductAdapter;
 import interfaces.CategoryDialogListener;
 import interfaces.GetCollectionCallback;

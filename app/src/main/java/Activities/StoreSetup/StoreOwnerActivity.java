@@ -18,7 +18,7 @@ import com.example.stores.databinding.ActivityStoreOwnerBinding;
 import java.util.Map;
 import java.util.Objects;
 
-import Activities.RequestInvoiceActivity;
+import Activities.Invoices.RequestInvoiceActivity;
 import interfaces.GetDocumentCallback;
 import models.Store;
 

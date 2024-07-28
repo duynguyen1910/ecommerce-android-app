@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityMyProductsBinding;
@@ -23,8 +22,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Objects;
 
-import Activities.AddProductsActivity;
-import Activities.RequestInvoiceActivity;
+import Activities.ProductSetup.AddProductsActivity;
 import Adapters.ViewPager2Adapter;
 import Fragments.Store.ProductsInStockFragment;
 import Fragments.Store.ProductsOutOfStockFragment;

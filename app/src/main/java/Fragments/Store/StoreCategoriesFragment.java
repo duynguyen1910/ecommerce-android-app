@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import Adapters.CategoryAdapterForSearch;
+import Adapters.Category.CategoryAdapterForSearch;
 import interfaces.GetCollectionCallback;
 import models.Category;
 import models.Product;

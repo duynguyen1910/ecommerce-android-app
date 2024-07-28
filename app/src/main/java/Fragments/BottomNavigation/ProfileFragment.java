@@ -8,15 +8,11 @@ import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.keyName.USER_ROLE;
 
-import static constants.toastMessage.LOGIN_SUCCESSFULLY;
 import static utils.CartUtils.updateQuantityInCart;
-import android.app.Activity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,21 +20,20 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.stores.R;
 import com.example.stores.databinding.FragmentProfileBinding;
-import Activities.CartActivity;
-import Activities.DeliveryActivity;
-import Activities.InvoiceActivity;
+
+import Activities.BuyProduct.CartActivity;
+import Activities.Invoices.DeliveryActivity;
+import Activities.Invoices.InvoiceActivity;
 import Activities.StoreSetup.ActivateStoreActivity;
 import Activities.LoginActivity;
 import Activities.RegisterActivity;
-import Activities.SettingsActivity;
+import Activities.ProfileSetup.SettingsActivity;
 import Activities.StoreSetup.StoreOwnerActivity;
-import Activities.UpdateProfileActivity;
+import Activities.ProfileSetup.UpdateProfileActivity;
 import enums.UserRole;
 import interfaces.ImageCallback;
 import models.User;

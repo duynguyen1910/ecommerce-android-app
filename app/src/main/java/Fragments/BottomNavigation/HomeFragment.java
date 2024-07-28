@@ -22,10 +22,10 @@ import com.example.stores.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
 
-import Activities.CartActivity;
-import Activities.SearchActivity;
+import Activities.BuyProduct.CartActivity;
+import Activities.BuyProduct.SearchActivity;
 import Activities.StatisticsActivity;
-import Adapters.CategoryGridAdapter;
+import Adapters.Category.CategoryGridAdapter;
 import Adapters.ProductAdapter;
 import Adapters.SliderAdapter;
 import interfaces.GetCollectionCallback;
@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
     Handler sliderHandler;
     Runnable sliderRunnable;
     ArrayList<Category> categoriesList = new ArrayList<>();
-    int fetchCategories = 0;
+    boolean getCategoriesSuccess = false;
 
     @Nullable
     @Override
@@ -49,7 +49,8 @@ public class HomeFragment extends Fragment {
         updateQuantityInCart(binding.txtQuantityInCart);
 
         initBanner();
-        fetchCategories();
+        getCategories();
+        setupCategoryUI();
         initProducts();
         setupEvents();
 
@@ -61,15 +62,11 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updateQuantityInCart(binding.txtQuantityInCart);
-        initBanner();
-        setupCategoryUI();
     }
 
 
     private void initBanner() {
-//        binding.progressBarBanner.setVisibility(View.VISIBLE);
         sliderItems = new ArrayList<>();
-
         sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-ly0hr2zmqifv2e_xxhdpi"));
         sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-lxuu1mpyl1w9ec_xxhdpi"));
         sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-lxutdtxck0yj9c_xxhdpi"));
@@ -83,15 +80,14 @@ public class HomeFragment extends Fragment {
 
 
     private void setupCategoryUI(){
-        if (fetchCategories == 1){
+        if (getCategoriesSuccess){
             binding.progressBarCategory.setVisibility(View.GONE);
             binding.recyclerViewCategory.setLayoutManager(new GridLayoutManager(requireActivity(), 3, GridLayoutManager.HORIZONTAL, false));
             binding.recyclerViewCategory.setAdapter(new CategoryGridAdapter(requireActivity(), categoriesList));
         }
-
     }
 
-    private void fetchCategories() {
+    private void getCategories() {
         Category category = new Category();
 
         binding.progressBarCategory.setVisibility(View.VISIBLE);
@@ -100,7 +96,7 @@ public class HomeFragment extends Fragment {
 
             public void onGetListSuccess(ArrayList<Category> categories) {
                 categoriesList = new ArrayList<>(categories);
-                fetchCategories = 1;
+                getCategoriesSuccess = true;
                 setupCategoryUI();
             }
 

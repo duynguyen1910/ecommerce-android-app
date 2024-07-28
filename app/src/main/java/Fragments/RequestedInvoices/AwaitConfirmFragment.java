@@ -5,7 +5,6 @@ import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,17 +20,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.stores.R;
 import com.example.stores.databinding.FragmentRequestInvoiceAwaitConfirmBinding;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import Adapters.RequestInvoiceAdapter;
+
+import Adapters.Invoices.RequestInvoiceAdapter;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
-import models.CartItem;
 import models.Invoice;
-import models.Product;
 
 public class AwaitConfirmFragment extends Fragment {
     FragmentRequestInvoiceAwaitConfirmBinding binding;

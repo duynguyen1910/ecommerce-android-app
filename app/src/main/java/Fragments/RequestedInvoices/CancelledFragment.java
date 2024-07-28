@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import Adapters.RequestInvoiceAdapter;
+import Adapters.Invoices.RequestInvoiceAdapter;
 import models.CartItem;
 import models.Invoice;
 import models.Product;

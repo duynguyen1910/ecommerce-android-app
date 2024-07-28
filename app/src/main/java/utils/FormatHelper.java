@@ -10,7 +10,7 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class FormatHelper {
-    private static Pattern DATE_PATTERN = Pattern.compile("dd-MM-yyyy | HH:mm");
+    private static final Pattern DATE_PATTERN = Pattern.compile("dd-MM-yyyy | HH:mm");
 
     public static Timestamp getCurrentDateTime() {
         return new Timestamp(new java.util.Date());
