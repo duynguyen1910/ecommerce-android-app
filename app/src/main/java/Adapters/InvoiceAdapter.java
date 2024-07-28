@@ -220,7 +220,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
                 String otherReason = "\nOther reason: " + dialogBinding.edtOtherReason.getText().toString().trim();
                 cancelReason[0] += otherReason;
                 String cancelledReason = "Cancel reason " + cancelReason[0];
-                invoiceUpdate.put(CANCELED_BY, invoice.getBaseID());
+                invoiceUpdate.put(CANCELED_BY, invoice.getCustomerID());
                 invoiceUpdate.put(CANCELED_REASON, cancelledReason);
                 invoiceUpdate.put(CANCELED_AT, FormatHelper.getCurrentDateTime());
 

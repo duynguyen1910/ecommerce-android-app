@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:orientation="vertical"
+    app:cardCornerRadius="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/lightgray"
+            android:padding="16dp"
+            android:text="Bộ lọc tìm kiếm"
+            android:textAlignment="textStart"
+            android:textColor="@color/black" />
+
+        <LinearLayout
+            android:id="@+id/body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="@drawable/custom_border_bottom"
+                android:padding="16dp"
+                android:text="Đánh Giá"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:visibility="visible" />
+
+            <RadioGroup
+                android:id="@+id/layoutSelectSize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/rdoSizeVn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:background="@drawable/custom_border_bottom"
+                    android:button="@null"
+                    android:padding="16dp"
+                    android:text="Size (VN)"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/black"
+                    android:visibility="visible" />
+
+                <RadioButton
+                    android:id="@+id/rdoSizeGlobal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:background="@drawable/custom_border_bottom"
+                    android:button="@null"
+                    android:padding="16dp"
+                    android:text="Size (Quốc Tế)"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/black"
+                    android:visibility="visible" />
+            </RadioGroup>
+
+
+            <TextView
+                android:id="@+id/txtGender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="@drawable/custom_border_bottom"
+                android:padding="16dp"
+                android:text="Giới tính"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/txtCustomVariant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:background="@drawable/custom_border_bottom"
+                android:padding="16dp"
+                android:text="Thêm phân loại tùy chỉnh"
+                android:textAlignment="textStart"
+                android:textColor="@color/primary_color" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnReset"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_button_cancel"
+                    android:gravity="center"
+                    android:text="Đóng"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSave"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/custom_button_accept_black"
+                    android:gravity="center"
+                    android:text="Đồng ý"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

@@ -72,7 +72,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="10dp"
         android:ellipsize="end"
-        android:maxLines="2"
+        android:maxLines="1"
         android:text="Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057"
         android:textColor="@color/black"
         android:textSize="12sp" />
@@ -104,7 +104,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="8dp"
-            android:text="Đã bán 200"
+            android:text="Đã bán 0"
             android:textColor="@color/text1"
             android:textSize="12sp" />
 

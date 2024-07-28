@@ -1,4 +1,7 @@
 package Adapters;
+import static utils.DecorateUtils.decorateSelectedCompoundButton;
+import static utils.DecorateUtils.decorateUnselectedCompoundButton;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -12,6 +15,7 @@ import com.example.stores.databinding.ItemTypeValueForDialogBinding;
 
 import java.util.ArrayList;
 import models.TypeValue;
+import utils.DecorateUtils;
 
 public class TypeValueAdapterForDialog extends RecyclerView.Adapter<TypeValueAdapterForDialog.ViewHolder> {
     private final Context context;
@@ -55,13 +59,15 @@ public class TypeValueAdapterForDialog extends RecyclerView.Adapter<TypeValueAda
 
         holder.binding.chkValue.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked){
-                holder.itemView.setBackgroundResource(R.drawable.custom_border_primary_color);
-                holder.binding.chkValue.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
+                DecorateUtils.decorateSelectedCompoundButton(context, holder.binding.chkValue);
+//                holder.itemView.setBackgroundResource(R.drawable.custom_border_primary_color);
+//                holder.binding.chkValue.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
                 typeValue.setChecked(true);
 
             }else {
-                holder.itemView.setBackgroundColor(Color.parseColor("#EFEFEF"));
-                holder.binding.chkValue.setTextColor(ContextCompat.getColor(context, R.color.black));
+                DecorateUtils.decorateUnselectedCompoundButton(context, holder.binding.chkValue);
+//                holder.itemView.setBackgroundColor(Color.parseColor("#EFEFEF"));
+//                holder.binding.chkValue.setTextColor(ContextCompat.getColor(context, R.color.black));
                 typeValue.setChecked(false);
             }
 
