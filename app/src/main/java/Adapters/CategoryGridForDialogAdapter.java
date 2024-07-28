@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import interfaces.CategoryDialogListener;
 import models.Category;
+import utils.DecorateUtils;
 
 public class CategoryGridForDialogAdapter extends RecyclerView.Adapter<CategoryGridForDialogAdapter.ViewHolder> {
     private final Context context;
@@ -49,18 +50,17 @@ public class CategoryGridForDialogAdapter extends RecyclerView.Adapter<CategoryG
     @Override
     public void onBindViewHolder(@NonNull CategoryGridForDialogAdapter.ViewHolder holder, int position) {
         Category category = list.get(holder.getBindingAdapterPosition());
-        holder.binding.txtCategoryName.setText(category.getCategoryName());
+        holder.binding.chkCategoryName.setText(category.getCategoryName());
 
 
         if (selectedPosition == holder.getBindingAdapterPosition()) {
-            holder.itemView.setBackgroundResource(R.drawable.custom_border_primary_color);
+            DecorateUtils.decorateSelectedCompoundButton(context, holder.binding.chkCategoryName);
         } else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#EBFAF8"));  // hoặc background mặc định của bạn
+            DecorateUtils.decorateUnselectedCompoundButton(context, holder.binding.chkCategoryName);
         }
-        holder.itemView.setOnClickListener(v -> {
+        holder.binding.chkCategoryName.setOnClickListener(v -> {
             int previousSelectedPosition = selectedPosition;
             selectedPosition = holder.getBindingAdapterPosition();
-
             // Cập nhật background cho item trước đó và item hiện tại
             notifyItemChanged(previousSelectedPosition);
             notifyItemChanged(selectedPosition);

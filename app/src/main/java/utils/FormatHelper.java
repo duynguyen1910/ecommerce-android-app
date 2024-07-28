@@ -2,6 +2,7 @@ package utils;
 
 import com.google.firebase.Timestamp;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,4 +30,20 @@ public class FormatHelper {
         NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         return formatter.format(money);
     }
+
+    public static String formatVND(String money) {
+        try {
+            // Loại bỏ ký tự không cần thiết và chuyển đổi thành số
+            money = money.replace(",", "").replace("₫", "").trim();
+            double amount = Double.parseDouble(money);
+
+            // Sử dụng DecimalFormat để định dạng số
+            DecimalFormat formatter = new DecimalFormat("#,###");
+            return formatter.format(amount) + "₫";
+        } catch (NumberFormatException e) {
+            // Xử lý khi không thể chuyển đổi chuỗi thành số
+            return money;
+        }
+    }
+
 }

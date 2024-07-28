@@ -28,6 +28,7 @@ import Fragments.Store.StoreCategoriesFragment;
 import Fragments.Store.StoreProductsFragment;
 import interfaces.GetDocumentCallback;
 import models.Store;
+import utils.DecorateUtils;
 
 public class ViewMyStoreActivity extends AppCompatActivity {
 
@@ -108,7 +109,7 @@ public class ViewMyStoreActivity extends AppCompatActivity {
         TabLayout.Tab firstTab = binding.tabLayout.getTabAt(0);
         if (firstTab != null && firstTab.getCustomView() != null) {
             TextView tabLabel = firstTab.getCustomView().findViewById(R.id.tabLabel);
-            tabLabel.setTextColor(ContextCompat.getColor(ViewMyStoreActivity.this, R.color.primary_color));
+            DecorateUtils.decorateSelectedTextViews(ViewMyStoreActivity.this, tabLabel);
         }
 
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -118,7 +119,7 @@ public class ViewMyStoreActivity extends AppCompatActivity {
                 View customView = tab.getCustomView();
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
-                    tabLabel.setTextColor(ContextCompat.getColor(ViewMyStoreActivity.this, R.color.primary_color));
+                    DecorateUtils.decorateSelectedTextViews(ViewMyStoreActivity.this, tabLabel);
                 }
             }
 
@@ -127,7 +128,7 @@ public class ViewMyStoreActivity extends AppCompatActivity {
                 View customView = tab.getCustomView();
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
-                    tabLabel.setTextColor(ContextCompat.getColor(ViewMyStoreActivity.this, R.color.darkgray));
+                    DecorateUtils.decorateUnselectedTextViews(ViewMyStoreActivity.this, tabLabel);
                 }
             }
 

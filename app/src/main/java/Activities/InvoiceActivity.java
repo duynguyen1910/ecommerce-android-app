@@ -21,6 +21,7 @@ import Fragments.Invoice.InTransitFragment;
 import Fragments.Invoice.CancelledFragment;
 import Fragments.Invoice.DeliveredFragment;
 import enums.OrderStatus;
+import utils.DecorateUtils;
 
 public class InvoiceActivity extends AppCompatActivity {
 
@@ -69,7 +70,7 @@ public class InvoiceActivity extends AppCompatActivity {
                 View customView = tab.getCustomView();
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
-                    tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.primary_color));
+                    DecorateUtils.decorateSelectedTextViews(InvoiceActivity.this, tabLabel);
                 }
             }
 
@@ -78,7 +79,7 @@ public class InvoiceActivity extends AppCompatActivity {
                 View customView = tab.getCustomView();
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
-                    tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.darkgray));
+                    DecorateUtils.decorateUnselectedTextViews(InvoiceActivity.this, tabLabel);
                 }
             }
 
@@ -95,7 +96,7 @@ public class InvoiceActivity extends AppCompatActivity {
             TabLayout.Tab firstTab = binding.tabLayout.getTabAt(invoiceStatus);
             if (firstTab != null && firstTab.getCustomView() != null) {
                 TextView tabLabel = firstTab.getCustomView().findViewById(R.id.tabLabel);
-                tabLabel.setTextColor(ContextCompat.getColor(InvoiceActivity.this, R.color.primary_color));
+                DecorateUtils.decorateSelectedTextViews(InvoiceActivity.this, tabLabel);
             }
         }
     }
@@ -113,7 +114,5 @@ public class InvoiceActivity extends AppCompatActivity {
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
-
-
     }
 }

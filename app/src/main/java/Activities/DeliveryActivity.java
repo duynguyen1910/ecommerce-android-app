@@ -17,6 +17,7 @@ import Adapters.ViewPager2Adapter;
 import Fragments.Delivery.DeliveryAwaitPickUpFragment;
 import Fragments.Delivery.DeliveryBeingTransportedFragment;
 import Fragments.Delivery.DeliveryCompletedFragment;
+import utils.DecorateUtils;
 
 public class DeliveryActivity extends AppCompatActivity {
 
@@ -84,8 +85,7 @@ public class DeliveryActivity extends AppCompatActivity {
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
                     TextView tabQuantity = tab.getCustomView().findViewById(R.id.tabQuantity);
-                    tabLabel.setTextColor(ContextCompat.getColor(DeliveryActivity.this, R.color.primary_color));
-                    tabQuantity.setTextColor(ContextCompat.getColor(DeliveryActivity.this, R.color.primary_color));
+                    DecorateUtils.decorateSelectedTextViews(DeliveryActivity.this, tabLabel, tabQuantity);
                 }
             }
 
@@ -95,8 +95,7 @@ public class DeliveryActivity extends AppCompatActivity {
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
                     TextView tabQuantity = tab.getCustomView().findViewById(R.id.tabQuantity);
-                    tabLabel.setTextColor(ContextCompat.getColor(DeliveryActivity.this, R.color.darkgray));
-                    tabQuantity.setTextColor(ContextCompat.getColor(DeliveryActivity.this, R.color.darkgray));
+                    DecorateUtils.decorateUnselectedTextViews(DeliveryActivity.this, tabLabel, tabQuantity);
                 }
             }
 
@@ -111,9 +110,7 @@ public class DeliveryActivity extends AppCompatActivity {
         if (tab != null && tab.getCustomView() != null) {
             TextView tabLabel = tab.getCustomView().findViewById(R.id.tabLabel);
             TextView tabQuantity = tab.getCustomView().findViewById(R.id.tabQuantity);
-            tabLabel.setTextColor(ContextCompat.getColor(DeliveryActivity.this, R.color.primary_color));
-            tabQuantity.setTextColor(ContextCompat.getColor(DeliveryActivity.this, R.color.primary_color));
-
+            DecorateUtils.decorateSelectedTextViews(DeliveryActivity.this, tabLabel, tabQuantity);
         }
     }
 

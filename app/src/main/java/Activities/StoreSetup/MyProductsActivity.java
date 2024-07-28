@@ -24,11 +24,13 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.Objects;
 
 import Activities.AddProductsActivity;
+import Activities.RequestInvoiceActivity;
 import Adapters.ViewPager2Adapter;
 import Fragments.Store.ProductsInStockFragment;
 import Fragments.Store.ProductsOutOfStockFragment;
 import interfaces.GetCountCallback;
 import models.Product;
+import utils.DecorateUtils;
 
 public class MyProductsActivity extends AppCompatActivity {
 
@@ -118,8 +120,7 @@ public class MyProductsActivity extends AppCompatActivity {
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
                     TextView tabQuantity = tab.getCustomView().findViewById(R.id.tabQuantity);
-                    tabLabel.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
-                    tabQuantity.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
+                    DecorateUtils.decorateSelectedTextViews(MyProductsActivity.this, tabLabel, tabQuantity);
                 }
             }
 
@@ -129,8 +130,7 @@ public class MyProductsActivity extends AppCompatActivity {
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
                     TextView tabQuantity = tab.getCustomView().findViewById(R.id.tabQuantity);
-                    tabLabel.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.darkgray));
-                    tabQuantity.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.darkgray));
+                    DecorateUtils.decorateUnselectedTextViews(MyProductsActivity.this, tabLabel, tabQuantity);
                 }
             }
 

@@ -22,6 +22,7 @@ import Adapters.ViewPager2Adapter;
 import Fragments.RequestedInvoices.AwaitConfirmFragment;
 import Fragments.RequestedInvoices.CancelledFragment;
 import Fragments.RequestedInvoices.ConfirmedFragment;
+import utils.DecorateUtils;
 
 public class RequestInvoiceActivity extends AppCompatActivity {
 
@@ -89,8 +90,7 @@ public class RequestInvoiceActivity extends AppCompatActivity {
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
                     TextView tabQuantity = tab.getCustomView().findViewById(R.id.tabQuantity);
-                    tabLabel.setTextColor(ContextCompat.getColor(RequestInvoiceActivity.this, R.color.primary_color));
-                    tabQuantity.setTextColor(ContextCompat.getColor(RequestInvoiceActivity.this, R.color.primary_color));
+                    DecorateUtils.decorateSelectedTextViews(RequestInvoiceActivity.this, tabLabel, tabQuantity);
                 }
             }
 
@@ -100,8 +100,7 @@ public class RequestInvoiceActivity extends AppCompatActivity {
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
                     TextView tabQuantity = tab.getCustomView().findViewById(R.id.tabQuantity);
-                    tabLabel.setTextColor(ContextCompat.getColor(RequestInvoiceActivity.this, R.color.darkgray));
-                    tabQuantity.setTextColor(ContextCompat.getColor(RequestInvoiceActivity.this, R.color.darkgray));
+                    DecorateUtils.decorateUnselectedTextViews(RequestInvoiceActivity.this, tabLabel, tabQuantity);
                 }
             }
 
@@ -119,8 +118,7 @@ public class RequestInvoiceActivity extends AppCompatActivity {
             if (tab != null && tab.getCustomView() != null) {
                 TextView tabLabel = tab.getCustomView().findViewById(R.id.tabLabel);
                 TextView tabQuantity = tab.getCustomView().findViewById(R.id.tabQuantity);
-                tabLabel.setTextColor(ContextCompat.getColor(RequestInvoiceActivity.this, R.color.primary_color));
-                tabQuantity.setTextColor(ContextCompat.getColor(RequestInvoiceActivity.this, R.color.primary_color));
+                DecorateUtils.decorateSelectedTextViews(RequestInvoiceActivity.this, tabLabel, tabQuantity);
             }
         }
     }

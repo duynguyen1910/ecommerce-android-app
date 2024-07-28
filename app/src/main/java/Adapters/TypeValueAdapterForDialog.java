@@ -49,25 +49,18 @@ public class TypeValueAdapterForDialog extends RecyclerView.Adapter<TypeValueAda
         holder.binding.chkValue.setText(typeValue.getValue());
 
         if (typeValue.isChecked()){
-            holder.itemView.setBackgroundResource(R.drawable.custom_border_primary_color);
+            DecorateUtils.decorateSelectedCompoundButton(context, holder.binding.chkValue);
             holder.binding.chkValue.setChecked(true);
-            holder.binding.chkValue.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
         }else {
-            holder.itemView.setBackgroundColor(Color.parseColor("#EFEFEF"));
-            holder.binding.chkValue.setTextColor(ContextCompat.getColor(context, R.color.black));
+            DecorateUtils.decorateUnselectedCompoundButton(context, holder.binding.chkValue);
         }
 
         holder.binding.chkValue.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked){
                 DecorateUtils.decorateSelectedCompoundButton(context, holder.binding.chkValue);
-//                holder.itemView.setBackgroundResource(R.drawable.custom_border_primary_color);
-//                holder.binding.chkValue.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
                 typeValue.setChecked(true);
-
             }else {
                 DecorateUtils.decorateUnselectedCompoundButton(context, holder.binding.chkValue);
-//                holder.itemView.setBackgroundColor(Color.parseColor("#EFEFEF"));
-//                holder.binding.chkValue.setTextColor(ContextCompat.getColor(context, R.color.black));
                 typeValue.setChecked(false);
             }
 

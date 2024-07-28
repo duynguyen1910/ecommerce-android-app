@@ -20,7 +20,7 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
-            android:name="Activities.SplashScreen"
+            android:name="Activities.SearchActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,7 +39,7 @@
             android:exported="false" />
 
         <activity
-            android:name="Activities.SearchActivity"
+            android:name="Activities.SplashScreen"
             android:exported="false" />
         <activity
             android:name="Activities.PaymentMethodActivity"
