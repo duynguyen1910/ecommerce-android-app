@@ -8,8 +8,11 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.example.stores.R;
 import com.example.stores.databinding.ActivitySearchBinding;
@@ -29,12 +33,18 @@ import com.example.stores.databinding.ItemTabLayoutInvoiceBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
+import Adapters.TypeValueAdapterForDialog;
+import Adapters.TypeValueAdapterForFilter;
 import Adapters.ViewPager2Adapter;
 import Fragments.SearchProducts.SearchRelateFragment;
 import Fragments.SearchProducts.SearchSellingFragment;
 import Fragments.SearchProducts.SearchSortedByPriceFragment;
+import interfaces.FilterListener;
+import models.Type;
+import models.TypeValue;
 import utils.DecorateUtils;
 import utils.FormatHelper;
 
@@ -89,31 +99,27 @@ public class SearchActivity extends AppCompatActivity {
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_in_from_right);
         dialogBinding.getRoot().startAnimation(slideUp);
 
-        final double[] min = {0};
-        final double[] max = {0};
-        dialogBinding.rdoGroupPrice.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+        final double[] minPrice = {0};
+        final double[] maxPrice = {Double.POSITIVE_INFINITY};
+
+        ArrayList<TypeValue> priceValues = new ArrayList<>();
+        priceValues.add(new TypeValue("0-100k"));
+        priceValues.add(new TypeValue("100k-200k"));
+        priceValues.add(new TypeValue("200k-300k"));
+        final int[] checkedPossition = {-1};
+        TypeValueAdapterForFilter typeValueAdapter = new TypeValueAdapterForFilter(SearchActivity.this, priceValues, checkedPossition[0], new FilterListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rdoPrice0_100) {
-                    min[0] = 0;
-                    max[0] = 100000;
-                    dialogBinding.edtMinPrice.setText(FormatHelper.formatVND(min[0]));
-                    dialogBinding.edtMaxPrice.setText(FormatHelper.formatVND(max[0]));
-                } else if (checkedId == R.id.rdoPrice100_200) {
-                    min[0] = 100000;
-                    max[0] = 200000;
-                    dialogBinding.edtMinPrice.setText(FormatHelper.formatVND(min[0]));
-                    dialogBinding.edtMaxPrice.setText(FormatHelper.formatVND(max[0]));
-                } else if (checkedId == R.id.rdoPrice200_300) {
-                    min[0] = 200000;
-                    max[0] = 300000;
-                    dialogBinding.edtMinPrice.setText(FormatHelper.formatVND(min[0]));
-                    dialogBinding.edtMaxPrice.setText(FormatHelper.formatVND(max[0]));
-                }
+            public void transfer(int selectedPosition, String[] filterRange) {
+                checkedPossition[0] = selectedPosition;
+                minPrice[0] = Double.parseDouble(filterRange[0]) * 1000;
+                maxPrice[0] = Double.parseDouble(filterRange[1]) * 1000;
+                dialogBinding.edtMinPrice.setText(FormatHelper.formatDecimal(minPrice[0]));
+                dialogBinding.edtMaxPrice.setText(FormatHelper.formatDecimal(maxPrice[0]));
             }
         });
-
-
+        dialogBinding.recyclerView.setLayoutManager(new GridLayoutManager(SearchActivity.this, 3, GridLayoutManager.VERTICAL, false));
+        dialogBinding.recyclerView.setAdapter(typeValueAdapter);
         dialogBinding.btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,23 +127,62 @@ public class SearchActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+
+
+        dialogBinding.edtMinPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    typeValueAdapter.resetSelectedPos();
+                }
+            }
+        });
+        dialogBinding.edtMaxPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    typeValueAdapter.resetSelectedPos();
+                }
+            }
+        });
+
+
         dialogBinding.btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String minPriceStr = dialogBinding.edtMinPrice.getText().toString().trim();
                 String maxPriceStr = dialogBinding.edtMaxPrice.getText().toString().trim();
-                if (minPriceStr.isEmpty() && maxPriceStr.isEmpty()) {
-                    // call get All Products API
 
+                try {
 
-                } else if (maxPriceStr.isEmpty()) {
-                    // call getALLProduct with min Price
+                    if (minPriceStr.isEmpty() && maxPriceStr.isEmpty()) {
+                        // call get All Products API
+                        showToast(SearchActivity.this, "getAll");
 
-                } else if (minPriceStr.isEmpty()) {
-                    // call getALLProduct with max Price
+                    } else {
+                        if (maxPriceStr.isEmpty()) {
+                            double min = Double.parseDouble(minPriceStr);
+                            // call getALLProduct with min Price
+                            showToast(SearchActivity.this, min + "to infinite");
 
+                        } else if (minPriceStr.isEmpty()) {
+                            double max = Double.parseDouble(maxPriceStr);
+                            // call getALLProduct with max Price
+                            showToast(SearchActivity.this, "0 to " + max);
+
+                        } else {
+                            double min = Double.parseDouble(minPriceStr);
+                            double max = Double.parseDouble(maxPriceStr);
+                            showToast(SearchActivity.this, min + " to " + max);
+                            // call getAllProduct with minPrice and max Price
+                        }
+                    }
+
+                } catch (Exception e) {
+                    showToast(SearchActivity.this, "Loi " + e);
                 }
-//                dialog.dismiss();
+
+                dialog.dismiss();
             }
         });
     }

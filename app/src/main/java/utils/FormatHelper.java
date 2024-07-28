@@ -17,7 +17,7 @@ public class FormatHelper {
     }
 
     public static String formatDateTime(Timestamp timestamp) {
-        if(timestamp == null) return "";
+        if (timestamp == null) return "";
 
         Date date = timestamp.toDate();
         SimpleDateFormat sdf = new SimpleDateFormat(String.valueOf(DATE_PATTERN), Locale.getDefault());
@@ -31,19 +31,10 @@ public class FormatHelper {
         return formatter.format(money);
     }
 
-    public static String formatVND(String money) {
-        try {
-            // Loại bỏ ký tự không cần thiết và chuyển đổi thành số
-            money = money.replace(",", "").replace("₫", "").trim();
-            double amount = Double.parseDouble(money);
-
-            // Sử dụng DecimalFormat để định dạng số
-            DecimalFormat formatter = new DecimalFormat("#,###");
-            return formatter.format(amount) + "₫";
-        } catch (NumberFormatException e) {
-            // Xử lý khi không thể chuyển đổi chuỗi thành số
-            return money;
-        }
+    public static String formatDecimal(double money) {
+        // Sử dụng DecimalFormat để định dạng số
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(money);
     }
 
 }

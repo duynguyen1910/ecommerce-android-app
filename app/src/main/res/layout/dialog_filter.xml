@@ -82,55 +82,13 @@
 
                 </LinearLayout>
 
-                <RadioGroup
-                    android:id="@+id/rdoGroupPrice"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
+                    android:paddingHorizontal="4dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/rdoPrice0_100"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/lightgray"
-                        android:button="@null"
-                        android:padding="8dp"
-                        android:text="0-100k"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
-
-                    <RadioButton
-                        android:id="@+id/rdoPrice100_200"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/lightgray"
-                        android:button="@null"
-                        android:padding="8dp"
-                        android:text="100k-200k"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
-
-                    <RadioButton
-                        android:id="@+id/rdoPrice200_300"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/lightgray"
-                        android:button="@null"
-                        android:padding="8dp"
-                        android:text="200k-300k"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
-
-                </RadioGroup>
+                    android:scrollbarThumbHorizontal="@drawable/scrollbar_bg"
+                    android:scrollbars="horizontal" />
             </LinearLayout>
 
             <LinearLayout
@@ -139,6 +97,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_border_bottom"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:paddingVertical="8dp">
 
                 <TextView
@@ -192,6 +151,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_border_bottom"
                 android:orientation="vertical"
+                android:visibility="gone"
                 android:paddingVertical="8dp">
 
                 <TextView
