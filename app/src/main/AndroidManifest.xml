@@ -27,9 +27,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity> <activity
+        android:name="Activities.ProductSetup.SettingVariantDetailActivity"
+        android:exported="false" />
         <activity
-            android:name="Activities.ProductSetup.SettingVariantDetailActivity"
+            android:name="Activities.StoreSetup.UpdateStoreInfoActivity"
             android:exported="false" />
         <activity
             android:name="Activities.Invoices.DeliveryActivity"
@@ -42,7 +44,7 @@
             android:name="Activities.BuyProduct.SearchActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.PaymentMethodActivity"
+            android:name="Activities.BuyProduct.PaymentActivity"
             android:exported="false" />
         <activity
             android:name="Activities.ProductSetup.SelectCategoryActivity"
@@ -58,17 +60,9 @@
             android:name="Activities.BuyProduct.CartActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.SelectProductsToCategoryActivity"
-            android:exported="false" />
-        <activity
-            android:name="Activities.AddCategoryActivity"
-            android:exported="false" />
-        <activity
             android:name="Activities.ProductSetup.AddVariantActivity"
             android:exported="false" />
-        <activity
-            android:name="Activities.DecorateMyStoreActivity"
-            android:exported="false" />
+
         <activity
             android:name="Activities.ProductSetup.UpdateProductActivity"
             android:exported="false" />
@@ -91,12 +85,6 @@
             android:name="Activities.StoreSetup.RegisterStoreSuccessfulActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.RegisteredBusinessAddressActivity"
-            android:exported="false" />
-        <activity
-            android:name="Activities.SelectDeliveryMethodActivity"
-            android:exported="false" />
-        <activity
             android:name="Activities.AddAddress.CreateAddressActivity"
             android:exported="false" />
         <activity
@@ -113,9 +101,6 @@
             android:exported="false"
            />
         <activity
-            android:name="Activities.BuyProduct.PaymentActivity"
-            android:exported="false" />
-        <activity
             android:name="Activities.ProfileSetup.AccountAndSecurityActivity"
             android:exported="false" />
         <activity
@@ -126,9 +111,6 @@
             android:exported="false" />
         <activity
             android:name="Activities.StatisticsActivity"
-            android:exported="false" />
-        <activity
-            android:name="Activities.DeliveryMethodActivity"
             android:exported="false" />
         <activity
             android:name="Activities.BuyProduct.ProductImagesDetailActivity"

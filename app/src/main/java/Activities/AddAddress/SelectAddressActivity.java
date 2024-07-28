@@ -1,5 +1,6 @@
 package Activities.AddAddress;
 
+import static constants.keyName.ADDRESS;
 import static constants.keyName.CATEGORY_ID;
 import static constants.keyName.CATEGORY_NAME;
 
@@ -194,7 +195,7 @@ public class SelectAddressActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String address = selectedTinh.getFull_name() + "\n" + selectedQuan.getFull_name() + "\n" + selectedPhuong.getFull_name();
                 Intent intent = new Intent();
-                intent.putExtra("address", address);
+                intent.putExtra(ADDRESS, address);
                 setResult(2, intent);
 
                 finish();

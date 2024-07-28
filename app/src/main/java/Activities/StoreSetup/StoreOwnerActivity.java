@@ -80,6 +80,13 @@ public class StoreOwnerActivity extends AppCompatActivity {
             intent.putExtra("invoiceStatus", 2); //2 đã hủy
             startActivity(intent);
         });
+        binding.imvSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StoreOwnerActivity.this, UpdateStoreInfoActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

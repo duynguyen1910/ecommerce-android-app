@@ -29,21 +29,10 @@ public class StoreInfoFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentStoreInfoBinding.inflate(getLayoutInflater());
-//        initUI();
         setupEvent();
-
         return binding.getRoot();
     }
 
-//    private void initUI(){
-//        // lấy các thông tin của user bao gồm phoneNumber, Address, Email
-//
-//        sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);
-//        String phoneNumber = sharedPreferences.getString(PHONE_NUMBER, null);
-//        if (phoneNumber != null){
-//            binding.edtPhoneNumber.setText(phoneNumber);
-//        }
-//    }
     private void setupEvent() {
 
         binding.layoutCreateAddress.setOnClickListener(new View.OnClickListener() {

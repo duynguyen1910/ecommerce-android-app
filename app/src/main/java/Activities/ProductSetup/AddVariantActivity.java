@@ -38,7 +38,6 @@ public class AddVariantActivity extends AppCompatActivity {
     private TypeAdapter adapter;
     private  HashSet<String> selectableSet = new HashSet<>();
     private final HashSet<String> selectedTypes = new HashSet<>();
-
     private final HashSet<String> selectedTypeValuesSet = new HashSet<>();
     private boolean isSizeTypeSelected = false;
 

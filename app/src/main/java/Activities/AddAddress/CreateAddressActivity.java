@@ -1,5 +1,6 @@
 package Activities.AddAddress;
 
+import static constants.keyName.ADDRESS;
 import static constants.keyName.CATEGORY_ID;
 import static constants.keyName.CATEGORY_NAME;
 
@@ -40,7 +41,7 @@ public class CreateAddressActivity extends AppCompatActivity {
                 if (result.getResultCode() == 2) {
                     Intent intent = result.getData();
                     if (intent != null) {
-                        String address = intent.getStringExtra("address");
+                        String address = intent.getStringExtra(ADDRESS);
                         if (address != null) {
                             binding.txtSetAddress.setText(address);
                         }

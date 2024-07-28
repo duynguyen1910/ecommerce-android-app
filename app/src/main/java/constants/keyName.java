@@ -50,6 +50,8 @@ public class keyName {
     public static final String TYPE_SIZE_VN = "Size (VN)";
     public static final String TYPE_SIZE_GLOBAL = "Size (Quốc tế)";
 
+    public static final String ADDRESS = "address";
+
 
 
 }
