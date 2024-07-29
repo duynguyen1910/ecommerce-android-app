@@ -5,9 +5,9 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
     android:background="@color/white"
+    android:orientation="vertical"
     android:paddingHorizontal="2dp"
-    android:paddingVertical="8dp"
-    android:orientation="vertical">
+    android:paddingVertical="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:id="@+id/layoutCustomer"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="horizontal">
@@ -36,6 +36,7 @@
                 android:textColor="@color/black"
                 android:textSize="15sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -48,7 +49,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:layout_weight="1"
                 android:ellipsize="end"
                 android:text="012345678"
                 android:textAlignment="textStart"
@@ -61,17 +61,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="---"
-            android:textStyle="bold"
             android:textColor="@color/darkgray"
+            android:textStyle="bold"
             app:backgroundTint="@null" />
 
     </LinearLayout>
+
     <TextView
         android:id="@+id/txtCustomerAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:lineHeight="20dp"
         android:paddingHorizontal="10dp"
         android:text="..."
         android:textColor="@color/black" />
@@ -83,19 +83,17 @@
         android:layout_marginBottom="4dp" />
 
     <ProgressBar
-        android:layout_gravity="center"
+        android:id="@+id/progressBar"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:id="@+id/progressBar"
-        android:indeterminateTintMode="src_atop"
-        />
+        android:layout_gravity="center"
+        android:indeterminateTintMode="src_atop" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp">
+        android:paddingHorizontal="16dp">
 
         <TextView
             android:id="@+id/txtQuantityProducts"
@@ -142,18 +140,18 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
         android:id="@+id/layoutControl"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="14dp">
 
         <Button
             android:id="@+id/btnCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="7dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:background="@drawable/custom_button_close"
+            android:background="@drawable/custom_button_cancel"
             android:text="Hủy đơn"
             android:textAllCaps="false"
             android:textColor="@color/black"
@@ -161,11 +159,10 @@
 
         <Button
             android:id="@+id/btnConfirmInvoice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
-            android:background="@drawable/custom_button_secondary"
+            android:background="@drawable/custom_button_accept_secondary_color"
             android:text="Xác nhận"
             android:textAllCaps="false"
             android:textColor="@color/white"

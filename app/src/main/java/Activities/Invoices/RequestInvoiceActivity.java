@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityRequestInvoiceBinding;
+import com.example.stores.databinding.ItemTabLabelAndQuantityBinding;
 import com.example.stores.databinding.ItemTabLabelBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -77,7 +78,7 @@ public class RequestInvoiceActivity extends AppCompatActivity {
 
 
         new TabLayoutMediator(binding.tabLayout, binding.viewPager2, (tab, position) -> {
-            ItemTabLabelBinding tabLayoutBinding = ItemTabLabelBinding.inflate(getLayoutInflater());
+            ItemTabLabelAndQuantityBinding tabLayoutBinding = ItemTabLabelAndQuantityBinding.inflate(getLayoutInflater());
             TextView tabLabel = tabLayoutBinding.tabLabel;
             tabLabel.setText(viewPager2Adapter.getPageTitle(position));
             tab.setCustomView(tabLayoutBinding.getRoot());

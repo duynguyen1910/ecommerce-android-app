@@ -19,6 +19,7 @@ import Activities.MainActivity;
 import Adapters.ViewPager2Adapter;
 import Fragments.Delivery.DeliveryAwaitPickUpFragment;
 import Fragments.Delivery.DeliveryBeingTransportedFragment;
+import Fragments.Delivery.DeliveryCancelledFragment;
 import Fragments.Delivery.DeliveryCompletedFragment;
 import utils.DecorateUtils;
 
@@ -28,6 +29,7 @@ public class DeliveryActivity extends AppCompatActivity {
     int awaitPickUpQuantity = 0;
     int beingTransportedQuantity = 0;
     int completedQuantity = 0;
+    int cancelledQuantity = 0;
     int countCompleted = 0;
 
     @Override
@@ -67,9 +69,10 @@ public class DeliveryActivity extends AppCompatActivity {
 
     private void setupUI() {
         ViewPager2Adapter viewPager2Adapter = new ViewPager2Adapter(this);
-        viewPager2Adapter.addFragment(new DeliveryAwaitPickUpFragment(), "Chờ lấy hàng"); // 0
-        viewPager2Adapter.addFragment(new DeliveryBeingTransportedFragment(), "Đang vận chuyển"); // 1
-        viewPager2Adapter.addFragment(new DeliveryCompletedFragment(), "Hoàn thành"); // 2
+        viewPager2Adapter.addFragment(new DeliveryAwaitPickUpFragment(), "Chờ lấy hàng");
+        viewPager2Adapter.addFragment(new DeliveryBeingTransportedFragment(), "Đang vận chuyển");
+        viewPager2Adapter.addFragment(new DeliveryCompletedFragment(), "Hoàn thành");
+        viewPager2Adapter.addFragment(new DeliveryCancelledFragment(), "Đã hủy");
 
         binding.viewPager2.setAdapter(viewPager2Adapter);
 
@@ -124,8 +127,8 @@ public class DeliveryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DeliveryActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+                finish();
             }
         });
     }
