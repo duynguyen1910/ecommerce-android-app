@@ -1,18 +1,46 @@
 package Adapters.Invoices;
+import static constants.keyName.CANCELED_AT;
+import static constants.keyName.CONFIRMED_AT;
+import static constants.keyName.DELIVERED_AT;
+import static constants.keyName.SHIPPED_AT;
+import static constants.keyName.STATUS;
+import static enums.OrderStatus.PENDING_CONFIRMATION;
+import static enums.OrderStatus.PENDING_SHIPMENT;
+import static utils.CartUtils.showToast;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.stores.R;
 import com.example.stores.databinding.ItemDeliveryBinding;
+import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
+import api.invoiceApi;
+import enums.OrderStatus;
+import interfaces.GetCollectionCallback;
+import interfaces.UpdateDocumentCallback;
+import interfaces.UserCallback;
 import models.CartItem;
 import models.Invoice;
+import models.InvoiceDetail;
 import models.Product;
+import models.User;
+import utils.FormatHelper;
 
 public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHolder> {
     private final Context context;
@@ -45,75 +73,155 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        Invoice invoice = list.get(holder.getBindingAdapterPosition());
+        User user = new User();
 
-//        Invoice invoice = list.get(holder.getBindingAdapterPosition());
-//
-//        holder.binding.txtDeliveryAddress.setText(invoice.getDeliveryAddress());
-//        CartItem cartItem = invoice.getCartItem();
-//        holder.binding.txtCustomerName.setText(invoice.getCustomerName());
-//        ProductsAdapterForDelivery adapter = new ProductsAdapterForDelivery(context, cartItem.getListProducts(), true);
-//        // 0 Chờ người bán xác nhận
-//        // 1 người bán đã xác nhận, chờ lấy hàng
-//        // 2 Đã hủy
-//        // 3 Đang giao hàng
-//        // 4 đã hoàn thành
-//        if (invoice.getInvoiceStatus() == 1){
-//            holder.binding.txtInvoiceStatus.setText("Chờ lấy hàng");
-//            holder.binding.txtInvoiceStatus.setTextColor(ContextCompat.getColor(context, R.color.black));
-//            holder.binding.layoutControl.setVisibility(View.VISIBLE);
-//            holder.binding.btnDelivery.setVisibility(View.VISIBLE);
-//            holder.binding.btnCancel.setVisibility(View.VISIBLE);
-//            holder.binding.btnComplete.setVisibility(View.GONE);
-//        }else if(invoice.getInvoiceStatus() == 3) {
-//            holder.binding.txtInvoiceStatus.setText("Đang giao hàng");
-//            holder.binding.txtInvoiceStatus.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
-//            holder.binding.layoutControl.setVisibility(View.VISIBLE);
-//            holder.binding.btnCancel.setVisibility(View.GONE);
-//            holder.binding.btnDelivery.setVisibility(View.GONE);
-//            holder.binding.btnComplete.setVisibility(View.VISIBLE);
-//        }else if(invoice.getInvoiceStatus() == 4){
-//            holder.binding.txtInvoiceStatus.setText("Hoàn thành");
-//            holder.binding.txtInvoiceStatus.setTextColor(ContextCompat.getColor(context, R.color.secondary_color));
-//            holder.binding.layoutControl.setVisibility(View.GONE);
-//        }
-//        holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
-//        holder.binding.recyclerViewProducts.setAdapter(adapter);
-//
-//        holder.binding.txtQuantityProducts.setText(cartItem.getListProducts().size() + " sản phẩm");
-//        holder.binding.txtCreatedDate.setText(invoice.getCreatedDate());
-//
-//
-//        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-//        holder.binding.txtTotal.setText("đ" + formatter.format(getCartItemFee(cartItem)));
-//        invoice.setTotal(getCartItemFee(cartItem));
-//
-//        holder.itemView.setOnClickListener(v -> {
-//            Intent intent = new Intent(context, InvoiceDetailActivity.class);
-//            intent.putExtra("invoice", invoice);
-//            context.startActivity(intent);
-//        });
-//        holder.binding.btnCancel.setOnClickListener(v -> {
-//            invoice.setInvoiceStatus(2);
-//            holder.binding.txtInvoiceStatus.setText("Đã hủy");
-//        });
-//        holder.binding.btnDelivery.setOnClickListener(v -> {
-//            invoice.setInvoiceStatus(3);
-//            holder.binding.txtInvoiceStatus.setText("Đang giao hàng");
-//        });
-//
-//        holder.binding.btnComplete.setOnClickListener(v -> {
-//            invoice.setInvoiceStatus(4);
-//            holder.binding.txtInvoiceStatus.setText("Hoàn thành");
-//        });
+        user.getUserInfo(invoice.getCustomerID(), new UserCallback() {
+            @Override
+            public void getUserInfoSuccess(User user) {
+                holder.binding.txtCustomerName.setText(user.getFullname());
+                holder.binding.txtCustomerPhone.setText(user.getPhoneNumber());
+                holder.binding.txtCustomerAddress.setText(invoice.getDeliveryAddress());
+            }
+
+            @Override
+            public void getUserInfoFailure(String errorMessage) {
+
+            }
+        });
+        setupControlButtons(invoice, holder.binding.btnCancel, holder.binding.btnDelivery, holder.binding.btnComplete);
+
+        holder.binding.progressBar.setVisibility(View.VISIBLE);
+        holder.binding.progressBar.getIndeterminateDrawable()
+                .setColorFilter(ContextCompat.getColor(context, R.color.primary_color),
+                        PorterDuff.Mode.MULTIPLY);
+
+        invoiceApi invoiceApi = new invoiceApi();
+        invoiceApi.getInvoiceDetailApi(invoice.getBaseID(), new GetCollectionCallback<InvoiceDetail>() {
+            @Override
+            public void onGetListSuccess(ArrayList<InvoiceDetail> productList) {
+                holder.binding.progressBar.setVisibility(View.GONE);
+
+                InvoiceDetailAdapter adapter = new
+                        InvoiceDetailAdapter(context, productList);
+                holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
+                holder.binding.recyclerViewProducts.setAdapter(adapter);
+
+                holder.binding.txtQuantityProducts.setText(productList.size() + " sản phẩm");
+                holder.binding.txtTime.setText(
+                        FormatHelper.formatDateTime(setDateTimeByInvoice(invoice)));
+                holder.binding.txtTotal.setText(FormatHelper.formatVND(invoice.getTotal()));
+
+            }
+
+            @Override
+            public void onGetListFailure(String errorMessage) {
+                holder.binding.progressBar.setVisibility(View.GONE);
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        holder.binding.btnDelivery.setOnClickListener(v -> {
+            Map<String, Object> newMap = new HashMap<>();
+            newMap.put(STATUS, OrderStatus.IN_TRANSIT.getOrderStatusValue());
+            newMap.put(SHIPPED_AT, FormatHelper.getCurrentDateTime());
+
+            invoiceApi.updateStatusInvoiceApi(invoice.getBaseID(), newMap, new UpdateDocumentCallback() {
+                @Override
+                public void onUpdateSuccess(String successMessage) {
+                    showToast(context, "Xác nhận đơn, tiến hành giao hàng");
+                    removeItemAdapter(holder.getBindingAdapterPosition());
+                }
+
+                @Override
+                public void onUpdateFailure(String errorMessage) {
+                    showToast(context, errorMessage);
+                }
+            });
+        });
+        holder.binding.btnComplete.setOnClickListener(v -> {
+            Map<String, Object> newMap = new HashMap<>();
+            newMap.put(STATUS, OrderStatus.DELIVERED.getOrderStatusValue());
+            newMap.put(DELIVERED_AT, FormatHelper.getCurrentDateTime());
+
+            invoiceApi.updateStatusInvoiceApi(invoice.getBaseID(), newMap, new UpdateDocumentCallback() {
+                @Override
+                public void onUpdateSuccess(String successMessage) {
+                    showToast(context, "Đã xác nhận hoàn thành đơn hàng");
+                    removeItemAdapter(holder.getBindingAdapterPosition());
+                }
+
+                @Override
+                public void onUpdateFailure(String errorMessage) {
+                    showToast(context, errorMessage);
+                }
+            });
+        });
+
+
+        holder.binding.btnCancel.setOnClickListener(v -> {
+            Map<String, Object> newMap = new HashMap<>();
+            newMap.put(STATUS, OrderStatus.CANCELLED.getOrderStatusValue());
+            newMap.put(CANCELED_AT, FormatHelper.getCurrentDateTime());
+
+            invoiceApi.updateStatusInvoiceApi(invoice.getBaseID(), newMap, new UpdateDocumentCallback() {
+                @Override
+                public void onUpdateSuccess(String successMessage) {
+
+                    Toast.makeText(context, successMessage, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onUpdateFailure(String errorMessage) {
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
 
     }
 
-    private double getCartItemFee(CartItem cartItem) {
-        double fee = 0;
-        for (Product product : cartItem.getListProducts()) {
-            fee += (product.getNewPrice() * product.getNumberInCart());
+    private void removeItemAdapter(int position) {
+        list.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    private void setupControlButtons(Invoice invoice, Button btnCancel, Button btnDelivery, Button btnComplete){
+        switch (invoice.getStatus()) {
+            case PENDING_SHIPMENT:{
+                btnCancel.setVisibility(View.VISIBLE);
+                btnDelivery.setVisibility(View.VISIBLE);
+                btnComplete.setVisibility(View.GONE);
+                break;
+            }
+
+            case IN_TRANSIT:{
+                btnCancel.setVisibility(View.GONE);
+                btnDelivery.setVisibility(View.GONE);
+                btnComplete.setVisibility(View.VISIBLE);
+                break;
+            }
+            default:{
+                btnCancel.setVisibility(View.GONE);
+                btnDelivery.setVisibility(View.GONE);
+                btnComplete.setVisibility(View.GONE);
+                break;
+            }
+
         }
-        return fee;
+    }
+
+    private Timestamp setDateTimeByInvoice(Invoice invoice) {
+        switch (invoice.getStatus()) {
+            case PENDING_SHIPMENT:
+                return invoice.getCreatedAt();
+            case IN_TRANSIT:
+                return invoice.getShippedAt();
+            case DELIVERED:
+                return invoice.getDeliveredAt();
+            default:
+                return invoice.getCancelledAt();
+        }
     }
 
 
