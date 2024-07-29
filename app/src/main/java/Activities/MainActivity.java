@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupBottomNav() {
         HomeFragment homeFragment = new HomeFragment();
-        VoucherFragment voucherFragment = new VoucherFragment();
+//        VoucherFragment voucherFragment = new VoucherFragment();
         HistoryFragment historyFragment = new HistoryFragment();
         NotificationFragment notificationFragment = new NotificationFragment();
         ProfileFragment profileFragment = new ProfileFragment();
@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
         HashMap<Integer, Fragment> fragmentMap = new HashMap<>();
 
         fragmentMap.put(R.id.homeMenu, homeFragment);
-        fragmentMap.put(R.id.voucherMenu, voucherFragment);
-        fragmentMap.put(R.id.historyMenu, historyFragment);
+//        fragmentMap.put(R.id.voucherMenu, voucherFragment);
+//        fragmentMap.put(R.id.historyMenu, historyFragment);
         fragmentMap.put(R.id.notificationMenu, notificationFragment);
         fragmentMap.put(R.id.profileMenu, profileFragment);
 
