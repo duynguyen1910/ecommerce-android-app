@@ -1,7 +1,6 @@
 package Adapters;
 import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.STORE_ID;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,35 +9,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.stores.databinding.ItemProductBinding;
-
+import com.example.stores.databinding.ItemGridProductBinding;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
-
 import Activities.BuyProduct.ProductDetailActivity;
 import models.Product;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
+public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.ViewHolder> {
     private final Context context;
     ArrayList<Product> list;
 
-    public ProductAdapter(Context context, ArrayList<Product> list) {
+    public ProductGridAdapter(Context context, ArrayList<Product> list) {
         this.context = context;
         this.list = list;
     }
 
     @NonNull
     @Override
-    public ProductAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemProductBinding binding = ItemProductBinding.inflate(LayoutInflater.from(context), parent, false);
+    public ProductGridAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ItemGridProductBinding binding = ItemGridProductBinding.inflate(LayoutInflater.from(context), parent, false);
         return new ViewHolder(binding);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        ItemProductBinding binding;
-        public ViewHolder(ItemProductBinding binding) {
+        ItemGridProductBinding binding;
+        public ViewHolder(ItemGridProductBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -51,7 +47,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ProductGridAdapter.ViewHolder holder, int position) {
 
         Product product = list.get(holder.getBindingAdapterPosition());
         holder.binding.txtTitle.setText(product.getProductName());

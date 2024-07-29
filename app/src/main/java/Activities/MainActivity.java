@@ -1,7 +1,9 @@
 package Activities;
+
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +24,7 @@ import Fragments.BottomNavigation.HistoryFragment;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,13 +34,21 @@ public class MainActivity extends AppCompatActivity {
         setupBottomNav();
     }
 
-    private void setupBottomNav(){
+    private void setupBottomNav() {
+        HomeFragment homeFragment = new HomeFragment();
+        VoucherFragment voucherFragment = new VoucherFragment();
+        HistoryFragment historyFragment = new HistoryFragment();
+        NotificationFragment notificationFragment = new NotificationFragment();
+        ProfileFragment profileFragment = new ProfileFragment();
+
         HashMap<Integer, Fragment> fragmentMap = new HashMap<>();
-        fragmentMap.put(R.id.homeMenu, new HomeFragment());
-        fragmentMap.put(R.id.voucherMenu, new VoucherFragment());
-        fragmentMap.put(R.id.historyMenu, new HistoryFragment());
-        fragmentMap.put(R.id.notificationMenu, new NotificationFragment());
-        fragmentMap.put(R.id.profileMenu, new ProfileFragment());
+
+        fragmentMap.put(R.id.homeMenu, homeFragment);
+        fragmentMap.put(R.id.voucherMenu, voucherFragment);
+        fragmentMap.put(R.id.historyMenu, historyFragment);
+        fragmentMap.put(R.id.notificationMenu, notificationFragment);
+        fragmentMap.put(R.id.profileMenu, profileFragment);
+
 
         binding.bottomNavigation.setSelectedItemId(0);
         binding.bottomNavigation.setOnItemSelectedListener(item -> {
@@ -45,11 +56,12 @@ public class MainActivity extends AppCompatActivity {
             if (fragment != null) {
 
                 String tag = fragment.getClass().getSimpleName();
-
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(binding.frameLayout.getId(), fragment, tag)
+                        .addToBackStack(tag)
                         .commit();
+
 
                 return true;
             }
@@ -61,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setupBottomNav();
+
     }
 
     private void initUI() {
@@ -71,10 +83,13 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         binding.bottomNavigation.setSelectedItemId(R.id.homeMenu);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(binding.frameLayout.getId(), new HomeFragment(), "HomeFragment")
-                .commit();
+        Fragment homeFragment = getSupportFragmentManager().findFragmentByTag("HomeFragment");
+        if (homeFragment == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(binding.frameLayout.getId(), new HomeFragment(), "HomeFragment")
+                    .commit();
+        }
 
     }
 }

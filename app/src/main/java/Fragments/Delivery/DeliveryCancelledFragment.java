@@ -1,4 +1,5 @@
 package Fragments.Delivery;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,18 +9,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.stores.databinding.FragmentWithOnlyRecyclerviewBinding;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-import Adapters.Invoices.DeliveryAdapter;
+import Adapters.Invoices.RequestInvoiceAdapter;
 import models.CartItem;
 import models.Invoice;
 import models.Product;
 
-public class DeliveryAwaitPickUpFragment extends Fragment {
+public class DeliveryCancelledFragment extends Fragment {
     FragmentWithOnlyRecyclerviewBinding binding;
     ArrayList<Invoice> invoices = new ArrayList<>();
 
@@ -44,7 +43,7 @@ public class DeliveryAwaitPickUpFragment extends Fragment {
     private void initProducts() {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.progressBar.setVisibility(View.GONE);
-        DeliveryAdapter adapter = new DeliveryAdapter(requireActivity(), invoices);
+        RequestInvoiceAdapter adapter = new RequestInvoiceAdapter(requireActivity(), invoices);
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
     }
@@ -54,38 +53,38 @@ public class DeliveryAwaitPickUpFragment extends Fragment {
         CartItem cartItem = new CartItem();
         ArrayList<Product> listProducts = new ArrayList<>();
         Product product1 = new Product(
-                "Áo thun Unisex hàng nhập Quảng Châu 2024",
-                "Áo thun Unisex hàng nhập Quảng Châu 2024",
-                99000,
-                99000,
-                13,
-                "o4qWt9OUVo6UE3i6dizL",
-                2);
-        Product product2 = new Product(
-                "Quần Kaki màu đen Quảng Châu cho Nam",
-                "Quần Kaki màu đen Quảng Châu cho Nam",
-                99000,
-                99000,
-                112,
+                "Trang phục Custom Luffy GEAR 4 Arc Dressrosa cực cháy",
+                "Trang phục Custom Luffy GEAR 4 Arc Dressrosa cực cháy",
+                359000,
+                359000,
+                130,
                 "o4qWt9OUVo6UE3i6dizL",
                 1);
+        Product product2 = new Product(
+                "Trang phục Custom Zoro Arc Wanno phiên bản giới hạn",
+                "Trang phục Custom Zoro Arc Wanno phiên bản giới hạn",
+                399000,
+                399000,
+                110,
+                "o4qWt9OUVo6UE3i6dizL",
+                2);
         listProducts.add(product1);
         listProducts.add(product2);
         cartItem.setStoreName("One Piece Clothes");
         cartItem.setListProducts(listProducts);
 
 
-        String deliveryAddress = "Duy Nguyen Tan | 0968191001\nQuận 12, Hồ Chí Minh";
+        String deliveryAddress = "Ngoc Dai | 0968191001\nQuận 12, Hồ Chí Minh";
         String createdDate = generateTime();
         String paidDate = "";
         String giveToDeliveryDate = "";
         String completedDate = "";
         String note = "";
         int paymentMethod = 0; // 0: Thanh toán khi nhận hàng
-        int orderStatus = 1; // 0: Đã xác nhận, chờ lấy hàng
-        String customerID = "rN1sLvf2d6M0tgbtGd9X";
-        String customerName = "Duy Nguyen Tan";
-
+        int orderStatus = 2; // 2: Đã hủy
+        String customerID = "wGtZaW1XiQjnZDGz702F";
+        String customerName = "Ngoc Dai";
+//
 //        Invoice newInvoice = new Invoice(
 //                deliveryAddress,
 //                createdDate,
@@ -99,8 +98,8 @@ public class DeliveryAwaitPickUpFragment extends Fragment {
 //                cartItem,
 //                customerID,
 //                customerName);
-//        newInvoice.setInvoiceID(generateInvoiceId(29));
-
+//        newInvoice.setInvoiceID(generateInvoiceId(15));
+//
 //        invoices.add(newInvoice);
     }
 

@@ -1,5 +1,4 @@
 package Adapters.Invoices;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
@@ -7,11 +6,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.stores.databinding.ItemProductForInvoiceDetailBinding;
-
+import com.example.stores.databinding.ItemProductForInvoiceBinding;
 import java.util.ArrayList;
-
 import models.InvoiceDetail;
 import utils.FormatHelper;
 
@@ -34,15 +30,15 @@ public class InvoiceDetailAdapter extends RecyclerView.Adapter<InvoiceDetailAdap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemProductForInvoiceDetailBinding binding = ItemProductForInvoiceDetailBinding.inflate(LayoutInflater.from(context), parent, false);
+        ItemProductForInvoiceBinding binding = ItemProductForInvoiceBinding.inflate(LayoutInflater.from(context), parent, false);
         return new ViewHolder(binding);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        ItemProductForInvoiceDetailBinding binding;
+        ItemProductForInvoiceBinding binding;
 
-        public ViewHolder(ItemProductForInvoiceDetailBinding binding) {
+        public ViewHolder(ItemProductForInvoiceBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

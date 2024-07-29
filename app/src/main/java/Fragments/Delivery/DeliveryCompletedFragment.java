@@ -1,15 +1,13 @@
 package Fragments.Delivery;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.example.stores.databinding.FragmentDeliveryCompletedBinding;
+import com.example.stores.databinding.FragmentWithOnlyRecyclerviewBinding;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,14 +19,14 @@ import models.Invoice;
 import models.Product;
 
 public class DeliveryCompletedFragment extends Fragment {
-    FragmentDeliveryCompletedBinding binding;
+    FragmentWithOnlyRecyclerviewBinding binding;
     ArrayList<Invoice> invoices = new ArrayList<>();
 
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentDeliveryCompletedBinding.inflate(getLayoutInflater());
+        binding = FragmentWithOnlyRecyclerviewBinding.inflate(getLayoutInflater());
         fakeInvoices();
         initProducts();
         return binding.getRoot();

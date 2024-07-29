@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityMyProductsBinding;
-import com.example.stores.databinding.ItemTabLayoutProductsBinding;
+import com.example.stores.databinding.ItemTabLabelBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -104,7 +104,7 @@ public class MyProductsActivity extends AppCompatActivity {
         new TabLayoutMediator(binding.tabLayout, binding.viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                ItemTabLayoutProductsBinding tabLayoutBinding = ItemTabLayoutProductsBinding.inflate(getLayoutInflater());
+                ItemTabLabelBinding tabLayoutBinding = ItemTabLabelBinding.inflate(getLayoutInflater());
                 TextView tabLabel = tabLayoutBinding.tabLabel;
                 tabLabel.setText(viewPager2Adapter.getPageTitle(position));
                 tab.setCustomView(tabLayoutBinding.getRoot());

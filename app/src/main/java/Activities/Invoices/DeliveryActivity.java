@@ -9,7 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityDeliveryBinding;
-import com.example.stores.databinding.ItemTabLayoutProductsBinding;
+
+import com.example.stores.databinding.ItemTabLabelAndQuantityBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.Objects;
@@ -74,7 +75,7 @@ public class DeliveryActivity extends AppCompatActivity {
 
 
         new TabLayoutMediator(binding.tabLayout, binding.viewPager2, (tab, position) -> {
-            ItemTabLayoutProductsBinding tabLayoutBinding = ItemTabLayoutProductsBinding.inflate(getLayoutInflater());
+            ItemTabLabelAndQuantityBinding tabLayoutBinding = ItemTabLabelAndQuantityBinding.inflate(getLayoutInflater());
             TextView tabLabel = tabLayoutBinding.tabLabel;
             tabLabel.setText(viewPager2Adapter.getPageTitle(position));
             tab.setCustomView(tabLayoutBinding.getRoot());

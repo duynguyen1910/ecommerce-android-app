@@ -50,13 +50,21 @@ public class SettingVariantDetailActivity extends AppCompatActivity {
     }
 
     private void setupVariants() {
-        types.get(0).getListValues().forEach(item0 -> {
-            types.get(1).getListValues().forEach(item1 -> {
-                String variantName = item0.getValue() + " | " + item1.getValue();
+        if (types.size() == 2){
+            types.get(0).getListValues().forEach(item0 -> {
+                types.get(1).getListValues().forEach(item1 -> {
+                    String variantName = item0.getValue() + " | " + item1.getValue();
+                    Variant newVariant = new Variant(variantName, 0, 0, 0, "");
+                    variants.add(newVariant);
+                });
+            });
+        } else if (types.size() == 1) {
+            types.get(0).getListValues().forEach(item0 -> {
+                String variantName = item0.getValue();
                 Variant newVariant = new Variant(variantName, 0, 0, 0, "");
                 variants.add(newVariant);
             });
-        });
+        }
 
 
         variantAdapter = new VariantSettingAdapter(this, variants);

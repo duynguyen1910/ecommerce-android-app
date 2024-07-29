@@ -137,20 +137,20 @@ public class ProfileFragment extends Fragment {
             //1
             Intent intent = new Intent(requireActivity(), InvoiceActivity.class);
 
-            intent.putExtra("invoiceStatus", 0);
+            intent.putExtra("tabSelected", 0);
             startActivity(intent);
         });
 
         binding.layoutInvoiceAwaitDelivery.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), InvoiceActivity.class);
-            intent.putExtra("invoiceStatus", 1);
+            intent.putExtra("tabSelected", 2);
             startActivity(intent);
         });
 
         binding.layoutInvoiceAwaitPickup.setOnClickListener(v -> {
             //2
             Intent intent = new Intent(requireActivity(), InvoiceActivity.class);
-            intent.putExtra("invoiceStatus", 2);
+            intent.putExtra("tabSelected", 1);
             startActivity(intent);
         });
 

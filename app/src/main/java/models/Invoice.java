@@ -26,7 +26,9 @@ public class Invoice extends BaseObject implements Serializable {
     //    private CartItem cartItem;
     private invoiceApi invoiceApi;
 
-    public Invoice() {this.invoiceApi = new invoiceApi();}
+    public Invoice() {
+        this.invoiceApi = new invoiceApi();
+    }
 
     public Invoice(String customerID, String deliveryAddress, double total, OrderStatus status,
                    Timestamp createdAt, String note) {

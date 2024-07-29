@@ -21,7 +21,7 @@ public class CartUtils {
     }
     public static void updateQuantityInCart(TextView textView) {
         int quantity = getQuantityProductsInCart();
-        String quantityText = (quantity < 10) ? ("0" + quantity) : String.valueOf(quantity); ;
+        String quantityText = (quantity < 10) ? ((quantity > 0) ?  ("0" + quantity) : ("0")) : String.valueOf(quantity);
         textView.setText(quantityText);
     }
 

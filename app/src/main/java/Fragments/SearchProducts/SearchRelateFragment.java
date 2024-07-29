@@ -29,7 +29,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 import Adapters.Category.CategoryGridForDialogAdapter;
-import Adapters.ProductAdapter;
+import Adapters.ProductGridAdapter;
 import interfaces.CategoryDialogListener;
 import interfaces.GetCollectionCallback;
 import models.Category;
@@ -43,7 +43,7 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
     ArrayList<Product> listProducts;
     int transferedselectedPosition = -1;
     String categoryName;
-    ProductAdapter adapter;
+    ProductGridAdapter adapter;
 
     @Nullable
     @Override
@@ -101,7 +101,7 @@ public class SearchRelateFragment extends Fragment implements CategoryDialogList
 
     private void initUI() {
         listProducts = new ArrayList<>();
-        adapter = new ProductAdapter(requireActivity(), listProducts);
+        adapter = new ProductGridAdapter(requireActivity(), listProducts);
         binding.recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
         binding.recyclerView.setAdapter(adapter);
     }

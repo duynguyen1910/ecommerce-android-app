@@ -19,17 +19,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-
 import com.example.stores.R;
 import com.example.stores.databinding.ActivitySearchBinding;
 import com.example.stores.databinding.DialogFilterBinding;
-import com.example.stores.databinding.ItemTabLayoutInvoiceBinding;
+import com.example.stores.databinding.ItemTabLabelBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
 import java.util.ArrayList;
 import java.util.Objects;
-
 import Adapters.SettingVariant.TypeValueAdapterForFilter;
 import Adapters.ViewPager2Adapter;
 import Fragments.SearchProducts.SearchRelateFragment;
@@ -192,7 +189,7 @@ public class SearchActivity extends AppCompatActivity {
         new TabLayoutMediator(binding.tabLayout, binding.viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                ItemTabLayoutInvoiceBinding tabLayoutBinding = ItemTabLayoutInvoiceBinding.inflate(getLayoutInflater());
+                ItemTabLabelBinding tabLayoutBinding = ItemTabLabelBinding.inflate(getLayoutInflater());
                 TextView tabLabel = tabLayoutBinding.tabLabel;
                 tabLabel.setText(viewPager2Adapter.getPageTitle(position));
                 tab.setCustomView(tabLayoutBinding.getRoot());
@@ -271,14 +268,10 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View v) {
                 binding.layoutFilter.setVisibility(View.VISIBLE);
                 String query = binding.searchEdt.getText().toString().trim().replace(",", "");
-
-                if (query.isEmpty()) {
-                    showToast(SearchActivity.this, "Vui lòng nhập tìm kiếm");
-                } else {
+                if (!query.isEmpty()) {
                     SearchRelateFragment fragment = (SearchRelateFragment) viewPager2Adapter.getFragment(0);
                     fragment.fetchProductsByStringQuery(query);
                 }
-
             }
         });
     }

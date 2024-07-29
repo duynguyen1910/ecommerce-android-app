@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityInvoiceBinding;
-import com.example.stores.databinding.ItemTabLayoutInvoiceBinding;
+import com.example.stores.databinding.ItemTabLabelBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.Objects;
@@ -54,7 +54,7 @@ public class InvoiceActivity extends AppCompatActivity {
         new TabLayoutMediator(binding.tabLayout, binding.viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                ItemTabLayoutInvoiceBinding tabLayoutBinding = ItemTabLayoutInvoiceBinding.inflate(getLayoutInflater());
+                ItemTabLabelBinding tabLayoutBinding = ItemTabLabelBinding.inflate(getLayoutInflater());
                 TextView tabLabel = tabLayoutBinding.tabLabel;
                 tabLabel.setText(viewPager2Adapter.getPageTitle(position));
                 tab.setCustomView(tabLayoutBinding.getRoot());
@@ -90,10 +90,10 @@ public class InvoiceActivity extends AppCompatActivity {
         });
         Intent intent = getIntent();
         if (intent!= null){
-            int invoiceStatus = intent.getIntExtra("invoiceStatus", 0);
-            binding.viewPager2.setCurrentItem(invoiceStatus);
+            int tabSelected = intent.getIntExtra("tabSelected", 0);
+            binding.viewPager2.setCurrentItem(tabSelected);
 
-            TabLayout.Tab firstTab = binding.tabLayout.getTabAt(invoiceStatus);
+            TabLayout.Tab firstTab = binding.tabLayout.getTabAt(tabSelected);
             if (firstTab != null && firstTab.getCustomView() != null) {
                 TextView tabLabel = firstTab.getCustomView().findViewById(R.id.tabLabel);
                 DecorateUtils.decorateSelectedTextViews(InvoiceActivity.this, tabLabel);
