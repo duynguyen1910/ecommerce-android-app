@@ -60,7 +60,7 @@ public class MyProductsAdapter extends RecyclerView.Adapter<MyProductsAdapter.Vi
 //        Glide.with(context).load(product.getPicUrl().get(0)).into(holder.binding.imageView);
 
         holder.binding.txtInStock.setText(String.valueOf(product.getInStock()));
-//        holder.binding.txtSold.setText(String.valueOf(product.getSold()));
+        holder.binding.txtSold.setText(String.valueOf(product.getSold()));
 
         holder.binding.btnUpdate.setOnClickListener(v -> {
             Intent intent = new Intent(context, UpdateProductActivity.class);

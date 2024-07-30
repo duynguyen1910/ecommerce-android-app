@@ -156,7 +156,6 @@ public class AddProductsActivity extends AppCompatActivity {
                 newProduct.put(PRODUCT_OLD_PRICE, price);
                 newProduct.put(PRODUCT_INSTOCK, inStock);
                 newProduct.put(CATEGORY_ID, categoryId);
-                newProduct.put(CATEGORY_NAME, categoryName);
                 newProduct.put(STORE_ID, storeId);
 
                 return newProduct;
