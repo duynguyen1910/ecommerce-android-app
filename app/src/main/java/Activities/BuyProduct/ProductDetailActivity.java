@@ -15,12 +15,15 @@ import static constants.toastMessage.INTERNET_ERROR;
 import static utils.CartUtils.MY_CART;
 import static utils.CartUtils.showToast;
 import static utils.CartUtils.updateQuantityInCart;
+import static utils.DecorateUtils.decorateSelectedTextViews;
 
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -32,6 +35,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityProductDetailBinding;
@@ -59,6 +63,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private String productID;
     private String storeID;
     private String storeName;
+    boolean buyable;
     Product thisProduct;
 
     @Override
@@ -78,6 +83,18 @@ public class ProductDetailActivity extends AppCompatActivity {
         if (bundle != null) {
             productID = bundle.getString(PRODUCT_ID, null);
             storeID = bundle.getString(STORE_ID, null);
+            buyable = bundle.getBoolean("buyable");
+
+            if (!buyable){
+                showToast(ProductDetailActivity.this, "Bạn đang bán sản phẩm này!");
+                binding.btnAddToCart.setBackground(ContextCompat.getDrawable(this, R.color.gray));
+                binding.layoutBuyNow.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
+                binding.txtAddToCart.setTextColor(ContextCompat.getColor(this, R.color.black));
+                Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_cart);
+                drawable.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN);
+                binding.viewAnimation.setImageDrawable(drawable);
+            }
+
         }
     }
 
@@ -203,7 +220,12 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void setupEvents() {
         binding.btnAddToCart.setOnClickListener(v -> {
-            popUpAddToCartDialog();
+            if (buyable){
+                popUpAddToCartDialog();
+            }else {
+                showToast(ProductDetailActivity.this, "Bạn đang bán sản phẩm này\nKhông thể mua");
+            }
+
         });
         binding.imageBack.setOnClickListener(v -> finish());
 
@@ -220,7 +242,16 @@ public class ProductDetailActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        binding.layoutBuyNow.setOnClickListener(v -> popUpBuyNowDialog());
+        binding.layoutBuyNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (buyable){
+                    popUpBuyNowDialog();
+                }else {
+                    showToast(ProductDetailActivity.this, "Bạn đang bán sản phẩm này\nKhông thể mua");
+                }
+            }
+        });
     }
 
     private void popUpAddToCartDialog() {

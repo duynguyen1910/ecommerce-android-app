@@ -31,6 +31,9 @@
         android:name="Activities.ProductSetup.SettingVariantDetailActivity"
         android:exported="false" />
         <activity
+            android:name="Activities.StoreSetup.RevenueActivity"
+            android:exported="false" />
+        <activity
             android:name="Activities.StoreSetup.UpdateStoreInfoActivity"
             android:exported="false" />
         <activity

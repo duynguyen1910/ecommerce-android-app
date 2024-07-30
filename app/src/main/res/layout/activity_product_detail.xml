@@ -445,9 +445,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:gravity="center_horizontal"
                 android:text="Thêm vào Giỏ hàng"
+                android:id="@+id/txtAddToCart"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
         </LinearLayout>

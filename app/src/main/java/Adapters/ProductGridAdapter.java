@@ -1,8 +1,11 @@
 package Adapters;
+import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.STORE_ID;
+import static constants.keyName.USER_INFO;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +16,10 @@ import com.example.stores.databinding.ItemGridProductBinding;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 import Activities.BuyProduct.ProductDetailActivity;
 import models.Product;
+
 
 public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.ViewHolder> {
     private final Context context;
@@ -66,17 +71,24 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences sharedPreferences = context.getSharedPreferences(USER_INFO, MODE_PRIVATE);
+                String storeId = sharedPreferences.getString(STORE_ID, null);
                 Intent intent = new Intent(context, ProductDetailActivity.class);
                 Bundle bundle = new Bundle();
-
                 bundle.putString(PRODUCT_ID, product.getBaseID());
                 bundle.putString(STORE_ID, product.getStoreID());
-
+                if (Objects.equals(storeId, product.getStoreID())){
+                    bundle.putBoolean("buyable", false);
+                }else {
+                    bundle.putBoolean("buyable", true);
+                }
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }
         });
     }
+
+
 
     @Override
     public int getItemCount() {

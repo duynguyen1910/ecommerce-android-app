@@ -88,6 +88,14 @@ public class StoreOwnerActivity extends AppCompatActivity {
             }
         });
 
+        binding.layoutRevenue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StoreOwnerActivity.this, RevenueActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void initUI() {
