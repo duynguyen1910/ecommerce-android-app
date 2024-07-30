@@ -25,6 +25,7 @@ public class keyName {
     public static final String PRODUCT_NEW_PRICE = "newPrice";
     public static final String PRODUCT_OLD_PRICE = "oldPrice";
     public static final String PRODUCT_INSTOCK = "inStock";
+    public static final String PRODUCT_SOLD = "sold";
 
 
     public static final String CATEGORY_ID = "categoryID";

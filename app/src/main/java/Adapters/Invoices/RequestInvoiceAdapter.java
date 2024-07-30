@@ -3,6 +3,7 @@ package Adapters.Invoices;
 import static constants.keyName.CANCELED_AT;
 import static constants.keyName.CONFIRMED_AT;
 import static constants.keyName.STATUS;
+import static utils.CartUtils.showToast;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -26,8 +27,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import api.invoiceApi;
+import api.productApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
+import interfaces.StatusCallback;
 import interfaces.UpdateDocumentCallback;
 import interfaces.UserCallback;
 import models.Invoice;
@@ -114,6 +117,8 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
         });
 
         holder.binding.btnConfirmInvoice.setOnClickListener(v -> {
+
+            //1.  Cập nhật trạng thái đơn hàng
             Map<String, Object> newMap = new HashMap<>();
             newMap.put(STATUS, OrderStatus.PENDING_SHIPMENT.getOrderStatusValue());
             newMap.put(CONFIRMED_AT, FormatHelper.getCurrentDateTime());
@@ -128,6 +133,21 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
                 @Override
                 public void onUpdateFailure(String errorMessage) {
                     Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            //2. Trừ tồn kho của tất cả sản phẩm trong đơn hàng
+
+            productApi productApi = new productApi();
+            productApi.updateProductWhenConfirmInvoice(invoice.getBaseID(), new StatusCallback() {
+                @Override
+                public void onSuccess(String successMessage) {
+                    showToast(context, successMessage);
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    showToast(context, errorMessage);
                 }
             });
         });

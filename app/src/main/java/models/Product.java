@@ -24,6 +24,7 @@ public class Product extends BaseObject implements Serializable {
     private boolean checkedStatus;
     private api.productApi productApi;
     private ArrayList<String> productImages;
+    private int sold;
 
     public Product(String productName, String description, double newPrice, double oldPrice,
                    int inStock, String storeID, int numberInCart) {
@@ -59,6 +60,14 @@ public class Product extends BaseObject implements Serializable {
         this.numberInCart = numberInCart;
         this.checkedStatus = checkedStatus;
         this.productImages = productImages;
+    }
+
+    public int getSold() {
+        return sold;
+    }
+
+    public void setSold(int sold) {
+        this.sold = sold;
     }
 
     public Product() {

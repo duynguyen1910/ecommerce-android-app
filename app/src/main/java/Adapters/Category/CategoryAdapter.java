@@ -12,6 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.stores.databinding.ItemCategoryBinding;
 import java.util.ArrayList;
+import java.util.Map;
+
+import api.categoryApi;
+import interfaces.GetDocumentCallback;
 import models.Category;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
@@ -54,6 +58,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             ((Activity) context).finish();
         });
     }
+
+
 
     @Override
     public int getItemCount() {

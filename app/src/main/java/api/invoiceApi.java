@@ -9,6 +9,7 @@ import static constants.keyName.INVOICE_ID;
 import static constants.keyName.STATUS;
 import static constants.keyName.STORE_ID;
 import static constants.toastMessage.CONFIRMED_ORDER_SUCCESSFULLY;
+import static constants.toastMessage.INTERNET_ERROR;
 import static constants.toastMessage.ORDER_SUCCESSFULLY;
 import static constants.toastMessage.UPDATE_SUCCESSFULLY;
 
@@ -139,6 +140,8 @@ public class invoiceApi {
                 });
     }
 
+
+
     private void getProductsByListIDsApi(final ArrayList<InvoiceDetail> invoiceDetails, ArrayList<String> productIDs, final GetCollectionCallback<InvoiceDetail> callback) {
         final Map<String, Product> productMap = new HashMap<>();
         final AtomicInteger pendingRequests = new AtomicInteger(productIDs.size());
@@ -163,6 +166,7 @@ public class invoiceApi {
                                     if (product != null) {
                                         detail.setProductName(product.getProductName());
                                         detail.setNewPrice(product.getNewPrice());
+                                        detail.setOldPrice(product.getOldPrice());
                                         detail.setStoreID(product.getStoreID());
                                     }
                                 }
@@ -173,6 +177,9 @@ public class invoiceApi {
         }
 
     }
+
+
+
 
     public void getInvoiceByStoreIDApi(String storeID, int invoiceStatus, final GetCollectionCallback<Invoice> callback) {
         db.collection(INVOICE_COLLECTION)

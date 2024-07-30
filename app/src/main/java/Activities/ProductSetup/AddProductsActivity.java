@@ -7,41 +7,32 @@ import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
 import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
-import static constants.keyName.STORE_ADDRESS;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.CREATE_PRODUCT_SUCCESSFULLY;
 import static constants.toastMessage.DEFAULT_REQUIRE;
 import static utils.CartUtils.showToast;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.stores.databinding.ActivityAddProductsBinding;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
 import api.productApi;
-import api.storeApi;
 import interfaces.CreateDocumentCallback;
-import interfaces.GetDocumentCallback;
-import models.Product;
+
 
 public class AddProductsActivity extends AppCompatActivity {
 
     ActivityAddProductsBinding binding;
     String storeId;
     String categoryId;
-    final String[] storeAddress = {""};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +41,6 @@ public class AddProductsActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         initUI();
-        getStoreInfo();
         setupEvents();
 
 
@@ -118,21 +108,7 @@ public class AddProductsActivity extends AppCompatActivity {
             });
 
 
-    private void getStoreInfo(){
 
-        storeApi storeApi = new storeApi();
-        storeApi.getStoreDetailApi(storeId, new GetDocumentCallback() {
-            @Override
-            public void onGetDataSuccess(Map<String, Object> data) {
-                storeAddress[0] = (String) data.get(STORE_ADDRESS);
-            }
-
-            @Override
-            public void onGetDataFailure(String errorMessage) {
-
-            }
-        });
-    }
     private Map<String, Object> validateForm() {
         String productName = Objects.requireNonNull(binding.edtTitle.getText()).toString().trim();
         String description = Objects.requireNonNull(binding.edtDescription.getText()).toString().trim();
@@ -182,7 +158,6 @@ public class AddProductsActivity extends AppCompatActivity {
                 newProduct.put(CATEGORY_ID, categoryId);
                 newProduct.put(CATEGORY_NAME, categoryName);
                 newProduct.put(STORE_ID, storeId);
-                newProduct.put(STORE_ADDRESS, storeAddress[0]);
 
                 return newProduct;
             } catch (NumberFormatException ignored) {
