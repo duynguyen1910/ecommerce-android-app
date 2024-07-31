@@ -65,9 +65,8 @@ public class invoiceApi {
     }
 
 
-
     public void createDetailInvoiceApi(ArrayList<InvoiceDetail> invoiceItems,
-                                    final StatusCallback callback) {
+                                       final StatusCallback callback) {
         WriteBatch batch = db.batch();
         for (InvoiceDetail detail : invoiceItems) {
             DocumentReference detailRef = db.collection(INVOICE_DETAIL_COLLECTION).document();
@@ -91,18 +90,18 @@ public class invoiceApi {
         });
     }
 
-    public void getRevenueByStoreID(String storeID, GetAggregateCallback callback){
+    public void getRevenueByStoreID(String storeID, GetAggregateCallback callback) {
         List<Integer> orderStatuses = new ArrayList<>();
         orderStatuses.add(2);
         orderStatuses.add(3);
         orderStatuses.add(4);
         db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(STORE_ID, storeID)
-                .whereIn(STATUS,orderStatuses)
+                .whereIn(STATUS, orderStatuses)
                 .get()
                 .addOnSuccessListener(task -> {
                     double sumTotal = 0;
-                    for (DocumentSnapshot document : task.getDocuments()){
+                    for (DocumentSnapshot document : task.getDocuments()) {
                         Invoice invoice = document.toObject(Invoice.class);
                         double total = invoice.getTotal();
                         sumTotal += total;
@@ -113,18 +112,19 @@ public class invoiceApi {
                 });
 
     }
-    public void getSpendingsByCustomerID(String customerID, GetAggregateCallback callback){
+
+    public void getSpendingsByCustomerID(String customerID, GetAggregateCallback callback) {
         List<Integer> orderStatuses = new ArrayList<>();
         orderStatuses.add(2);
         orderStatuses.add(3);
         orderStatuses.add(4);
         db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(CUSTOMER_ID, customerID)
-                .whereIn(STATUS,orderStatuses)
+                .whereIn(STATUS, orderStatuses)
                 .get()
                 .addOnSuccessListener(task -> {
                     double spendings = 0;
-                    for (DocumentSnapshot document : task.getDocuments()){
+                    for (DocumentSnapshot document : task.getDocuments()) {
                         Invoice invoice = document.toObject(Invoice.class);
                         double total = invoice.getTotal();
                         spendings += total;
@@ -139,6 +139,31 @@ public class invoiceApi {
     public void getInvoicesByStatusApi(String customerID, int invoiceStatus, final GetCollectionCallback<Invoice> callback) {
         db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(CUSTOMER_ID, customerID)
+                .whereEqualTo(STATUS, invoiceStatus)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<Invoice> invoices = new ArrayList<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Invoice invoice = document.toObject(Invoice.class);
+                                invoice.setBaseID(document.getId());
+                                invoice.setStatus(document.getLong(STATUS).intValue());
+
+                                invoices.add(invoice);
+                            }
+
+                            callback.onGetListSuccess(invoices);
+                        } else {
+                            callback.onGetListFailure("Failed to get invoices: " + task.getException().getMessage());
+                        }
+                    }
+                });
+    }
+
+    public void getDeliveryInvoicesByStatusApi(int invoiceStatus, final GetCollectionCallback<Invoice> callback) {
+        db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(STATUS, invoiceStatus)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -188,7 +213,6 @@ public class invoiceApi {
     }
 
 
-
     private void getProductsByListIDsApi(final ArrayList<InvoiceDetail> invoiceDetails, ArrayList<String> productIDs, final GetCollectionCallback<InvoiceDetail> callback) {
         final Map<String, Product> productMap = new HashMap<>();
         final AtomicInteger pendingRequests = new AtomicInteger(productIDs.size());
@@ -224,8 +248,6 @@ public class invoiceApi {
         }
 
     }
-
-
 
 
     public void getInvoiceByStoreIDApi(String storeID, int invoiceStatus, final GetCollectionCallback<Invoice> callback) {

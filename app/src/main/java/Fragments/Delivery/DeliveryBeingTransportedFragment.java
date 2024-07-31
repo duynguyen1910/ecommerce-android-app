@@ -47,7 +47,7 @@ public class DeliveryBeingTransportedFragment extends Fragment {
         binding.progressBar.getIndeterminateDrawable()
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
-        invoiceApi.getInvoicesByStatusApi(userID, OrderStatus.IN_TRANSIT.getOrderStatusValue(),
+        invoiceApi.getDeliveryInvoicesByStatusApi(OrderStatus.IN_TRANSIT.getOrderStatusValue(),
                 new GetCollectionCallback<Invoice>() {
                     @Override
                     public void onGetListSuccess(ArrayList<Invoice> invoiceList) {

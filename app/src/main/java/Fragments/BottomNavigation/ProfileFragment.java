@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
 import com.example.stores.R;
 import com.example.stores.databinding.FragmentProfileBinding;
@@ -78,10 +79,8 @@ public class ProfileFragment extends Fragment {
 
         if (userID != null) {
             binding.txtStore.setText(storeId == null ? "Tạo Store" : "Store của bạn");
+            setupUIByRole(roleValue);
 
-            if (UserRole.fromInt(roleValue) == UserRole.CUSTOMER_ROLE) {
-                binding.txtRole.setText(UserRole.CUSTOMER_ROLE.getLabelRole());
-            }
             binding.loggedLayoutLn.setVisibility(View.VISIBLE);
             binding.defaultLayoutRl.setVisibility(View.GONE);
 
@@ -104,6 +103,37 @@ public class ProfileFragment extends Fragment {
         binding.loggedLayoutLn.setVisibility(View.GONE);
         binding.defaultLayoutRl.setVisibility(View.VISIBLE);
     }
+
+    private void setupUIByRole(int roleValue) {
+        UserRole userRole = UserRole.fromInt(roleValue);
+
+        switch (userRole) {
+            case CUSTOMER_ROLE:
+                binding.txtRole.setText(UserRole.CUSTOMER_ROLE.getLabelRole());
+                binding.layoutLogistics.setVisibility(View.GONE);
+                break;
+            case SHIPPER_ROLE:
+                binding.txtRole.setText(UserRole.SHIPPER_ROLE.getLabelRole());
+                binding.layoutInvoices.setVisibility(View.GONE);
+                binding.layoutActivateStore.setVisibility(View.GONE);
+                binding.iconCart.setVisibility(View.GONE);
+                break;
+            case STORE_OWNER_ROLE:
+                binding.txtRole.setText(UserRole.STORE_OWNER_ROLE.getLabelRole());
+                binding.layoutLogistics.setVisibility(View.GONE);
+                break;
+            case ADMIN_ROLE:
+                binding.txtRole.setText(UserRole.ADMIN_ROLE.getLabelRole());
+                binding.layoutLogistics.setVisibility(View.GONE);
+                binding.layoutInvoices.setVisibility(View.GONE);
+                binding.layoutActivateStore.setVisibility(View.GONE);
+                break;
+            default:
+                binding.txtRole.setText("Unknown Role");
+                break;
+        }
+    }
+
 
     private void initUI() {
         user = new User();
@@ -188,6 +218,7 @@ public class ProfileFragment extends Fragment {
 
 
             startActivity(new Intent(getActivity(), LoginActivity.class));
+//            requireActivity().finish();
         });
     }
 }

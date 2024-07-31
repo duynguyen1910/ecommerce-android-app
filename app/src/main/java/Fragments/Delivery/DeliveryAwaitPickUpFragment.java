@@ -31,8 +31,15 @@ public class DeliveryAwaitPickUpFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentWithOnlyRecyclerviewBinding.inflate(getLayoutInflater());
-        setupUI();
         return binding.getRoot();
+    }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupUI();
     }
 
     private void setupUI() {
@@ -46,7 +53,7 @@ public class DeliveryAwaitPickUpFragment extends Fragment {
         binding.progressBar.getIndeterminateDrawable()
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
-        invoiceApi.getInvoicesByStatusApi(userID, OrderStatus.PENDING_SHIPMENT.getOrderStatusValue(),
+        invoiceApi.getDeliveryInvoicesByStatusApi(OrderStatus.PENDING_SHIPMENT.getOrderStatusValue(),
                 new GetCollectionCallback<Invoice>() {
                     @Override
                     public void onGetListSuccess(ArrayList<Invoice> invoiceList) {
