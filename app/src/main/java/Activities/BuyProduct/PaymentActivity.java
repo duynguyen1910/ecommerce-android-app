@@ -2,7 +2,7 @@ package Activities.BuyProduct;
 import static constants.keyName.PAYMENT;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
-import static utils.CartUtils.getCartItemFee;
+import static utils.Cart.CartUtils.getCartItemFee;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

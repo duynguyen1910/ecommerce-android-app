@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityMyProductsBinding;
 import com.example.stores.databinding.ItemTabLabelAndQuantityBinding;
-import com.example.stores.databinding.ItemTabLabelBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -27,7 +26,7 @@ import Activities.ProductSetup.AddProductsActivity;
 import Adapters.ViewPager2Adapter;
 import Fragments.Store.ProductsInStockFragment;
 import Fragments.Store.ProductsOutOfStockFragment;
-import interfaces.GetCountCallback;
+import interfaces.GetAggregateCallback;
 import models.Product;
 import utils.DecorateUtils;
 
@@ -63,31 +62,31 @@ public class MyProductsActivity extends AppCompatActivity {
         String storeId = sharedPreferences.getString(STORE_ID, null);
         Product product = new Product();
 
-        product.countProductsOutOfStockByStoreId(storeId, new GetCountCallback<Product>() {
+        product.countProductsOutOfStockByStoreId(storeId, new GetAggregateCallback() {
             @Override
-            public void onGetCountSuccess(int count) {
-                outOfStock = count;
+            public void onSuccess(double aggregateResult) {
+                outOfStock = (int) aggregateResult;
                 countCompleted++;
                 updateTabQuantity();
             }
 
             @Override
-            public void onGetCountFailure(String errorMessage) {
+            public void onFailure(String errorMessage) {
                 countCompleted++;
                 updateTabQuantity();
             }
         });
 
-        product.countProductsInStockByStoreId(storeId, new GetCountCallback<Product>() {
+        product.countProductsInStockByStoreId(storeId, new GetAggregateCallback() {
             @Override
-            public void onGetCountSuccess(int count) {
-                inStock = count;
+            public void onSuccess(double aggregateResult) {
+                inStock = (int) aggregateResult;
                 countCompleted++;
                 updateTabQuantity();
             }
 
             @Override
-            public void onGetCountFailure(String errorMessage) {
+            public void onFailure(String errorMessage) {
                 countCompleted++;
                 updateTabQuantity();
             }

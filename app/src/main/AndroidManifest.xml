@@ -20,7 +20,7 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
-            android:name="Activities.StoreSetup.RevenueActivity"
+            android:name="Activities.SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +31,7 @@
         android:name="Activities.ProductSetup.SettingVariantDetailActivity"
         android:exported="false" />
         <activity
-            android:name="Activities.SplashScreen"
+            android:name="Activities.StoreSetup.RevenueActivity"
             android:exported="false" />
         <activity
             android:name="Activities.StoreSetup.UpdateStoreInfoActivity"

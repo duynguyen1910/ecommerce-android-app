@@ -1,7 +1,7 @@
 package Activities.ProductSetup;
 
 import static constants.keyName.TYPES;
-import static utils.CartUtils.showToast;
+import static utils.Cart.CartUtils.showToast;
 
 import android.content.Intent;
 import android.graphics.Color;

@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 
 import Adapters.Category.CategoryGridForDialogAdapter;
 import Adapters.ProductGridAdapter;
-import interfaces.CategoryDialogListener;
+import interfaces.InAdapter.CategoryDialogListener;
 import interfaces.GetCollectionCallback;
 import models.Category;
 import models.Product;

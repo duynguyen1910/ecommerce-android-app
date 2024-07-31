@@ -12,10 +12,9 @@ import static constants.keyName.STORE_NAME;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.INTERNET_ERROR;
-import static utils.CartUtils.MY_CART;
-import static utils.CartUtils.showToast;
-import static utils.CartUtils.updateQuantityInCart;
-import static utils.DecorateUtils.decorateSelectedTextViews;
+import static utils.Cart.CartUtils.MY_CART;
+import static utils.Cart.CartUtils.showToast;
+import static utils.Cart.CartUtils.updateQuantityInCart;
 
 import android.app.Dialog;
 import android.content.Intent;

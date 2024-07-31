@@ -1,6 +1,6 @@
 package Activities.BuyProduct;
 
-import static utils.CartUtils.showToast;
+import static utils.Cart.CartUtils.showToast;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -32,7 +32,7 @@ import Adapters.ViewPager2Adapter;
 import Fragments.SearchProducts.SearchRelateFragment;
 import Fragments.SearchProducts.SearchSellingFragment;
 import Fragments.SearchProducts.SearchSortedByPriceFragment;
-import interfaces.FilterListener;
+import interfaces.InAdapter.FilterListener;
 import models.TypeValue;
 import utils.DecorateUtils;
 import utils.FormatHelper;

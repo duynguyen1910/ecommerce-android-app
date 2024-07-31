@@ -17,8 +17,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import interfaces.CartItemListener;
-import interfaces.ToTalFeeCallback;
+import interfaces.InAdapter.CartItemListener;
+import interfaces.InAdapter.ToTalFeeCallback;
 import models.Product;
 
 public class ProductsAdapterForCartItem extends RecyclerView.Adapter<ProductsAdapterForCartItem.ViewHolder> {

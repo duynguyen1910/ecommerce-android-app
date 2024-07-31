@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.stores.databinding.ItemTypeValueForDialogBinding;
 import java.util.ArrayList;
-import interfaces.FilterListener;
+import interfaces.InAdapter.FilterListener;
 import models.TypeValue;
 import utils.DecorateUtils;
 

@@ -8,7 +8,7 @@ import static constants.keyName.USER_INFO;
 import static constants.keyName.USER_ROLE;
 import static constants.toastMessage.STOREA_ADDRESS_REQUIRE;
 import static constants.toastMessage.STORENAME_REQUIRE;
-import static utils.CartUtils.showToast;
+import static utils.Cart.CartUtils.showToast;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

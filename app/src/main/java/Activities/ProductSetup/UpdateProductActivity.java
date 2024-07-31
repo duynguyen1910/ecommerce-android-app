@@ -10,7 +10,7 @@ import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
 import static constants.toastMessage.DEFAULT_REQUIRE;
 import static constants.toastMessage.INTERNET_ERROR;
-import static utils.CartUtils.showToast;
+import static utils.Cart.CartUtils.showToast;
 
 import android.content.Intent;
 import android.graphics.Color;

@@ -1,7 +1,7 @@
 package Activities.BuyProduct;
 import static constants.keyName.PAYMENT;
-import static utils.CartUtils.MY_CART;
-import static utils.CartUtils.getQuantityProductsInCart;
+import static utils.Cart.CartUtils.MY_CART;
+import static utils.Cart.CartUtils.getQuantityProductsInCart;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,7 +23,7 @@ import java.util.Objects;
 
 import Activities.MainActivity;
 import Adapters.BuyProduct.CartAdapter;
-import interfaces.ToTalFeeCallback;
+import interfaces.InAdapter.ToTalFeeCallback;
 import models.CartItem;
 import models.Product;
 

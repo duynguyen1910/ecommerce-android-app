@@ -3,7 +3,7 @@ package Adapters.Invoices;
 import static constants.keyName.CANCELED_AT;
 import static constants.keyName.CONFIRMED_AT;
 import static constants.keyName.STATUS;
-import static utils.CartUtils.showToast;
+import static utils.Cart.CartUtils.showToast;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -83,7 +84,7 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
 
             }
         });
-
+        setupControlButtons(invoice, holder.binding.btnCancel, holder.binding.btnConfirm);
 //        holder.binding.txtInvoiceStatus.setText(invoice.getStatus().getOrderLabel());
 
         holder.binding.progressBar.setVisibility(View.VISIBLE);
@@ -116,7 +117,7 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
             }
         });
 
-        holder.binding.btnConfirmInvoice.setOnClickListener(v -> {
+        holder.binding.btnConfirm.setOnClickListener(v -> {
 
             //1.  Cập nhật trạng thái đơn hàng
             Map<String, Object> newMap = new HashMap<>();
@@ -182,6 +183,27 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
     private void removeItemAdapter(int position) {
         list.remove(position);
         notifyItemRemoved(position);
+    }
+    private void setupControlButtons(Invoice invoice, Button btnCancel, Button btnConfirm){
+        switch (invoice.getStatus()) {
+            case PENDING_CONFIRMATION:{
+                btnCancel.setVisibility(View.VISIBLE);
+                btnConfirm.setVisibility(View.VISIBLE);
+                break;
+            }
+
+            case IN_TRANSIT:{
+                btnCancel.setVisibility(View.GONE);
+                btnConfirm.setVisibility(View.GONE);
+                break;
+            }
+            default:{
+                btnCancel.setVisibility(View.GONE);
+                btnConfirm.setVisibility(View.GONE);
+                break;
+            }
+
+        }
     }
 
     private Timestamp setDateTimeByInvoice(Invoice invoice) {

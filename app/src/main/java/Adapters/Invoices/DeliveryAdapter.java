@@ -1,12 +1,9 @@
 package Adapters.Invoices;
 import static constants.keyName.CANCELED_AT;
-import static constants.keyName.CONFIRMED_AT;
 import static constants.keyName.DELIVERED_AT;
 import static constants.keyName.SHIPPED_AT;
 import static constants.keyName.STATUS;
-import static enums.OrderStatus.PENDING_CONFIRMATION;
-import static enums.OrderStatus.PENDING_SHIPMENT;
-import static utils.CartUtils.showToast;
+import static utils.Cart.CartUtils.showToast;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -35,10 +32,8 @@ import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
 import interfaces.UpdateDocumentCallback;
 import interfaces.UserCallback;
-import models.CartItem;
 import models.Invoice;
 import models.InvoiceDetail;
-import models.Product;
 import models.User;
 import utils.FormatHelper;
 

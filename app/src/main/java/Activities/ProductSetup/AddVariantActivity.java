@@ -4,7 +4,7 @@ import static constants.keyName.TYPE_COLOR;
 import static constants.keyName.TYPE_GENDER;
 import static constants.keyName.TYPE_SIZE_GLOBAL;
 import static constants.keyName.TYPE_SIZE_VN;
-import static utils.CartUtils.showToast;
+import static utils.Cart.CartUtils.showToast;
 
 import android.content.Intent;
 import android.graphics.Color;

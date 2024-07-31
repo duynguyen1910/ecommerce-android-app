@@ -6,7 +6,7 @@ import static constants.keyName.CANCELED_REASON;
 import static constants.keyName.STATUS;
 import static constants.keyName.STORE_NAME;
 import static constants.toastMessage.CANCEL_ORDER_SUCCESSFULLY;
-import static utils.CartUtils.showToast;
+import static utils.Cart.CartUtils.showToast;
 import static utils.FormatHelper.formatDateTime;
 
 import android.annotation.SuppressLint;

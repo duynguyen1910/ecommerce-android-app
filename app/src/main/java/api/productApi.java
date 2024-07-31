@@ -12,21 +12,18 @@ import static constants.toastMessage.UPDATE_SUCCESSFULLY;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +31,7 @@ import java.util.Map;
 import constants.toastMessage;
 import interfaces.CreateDocumentCallback;
 import interfaces.GetCollectionCallback;
-import interfaces.GetCountCallback;
+import interfaces.GetAggregateCallback;
 import interfaces.GetDocumentCallback;
 import interfaces.StatusCallback;
 import interfaces.UpdateDocumentCallback;
@@ -190,6 +187,43 @@ public class productApi implements Serializable {
                 .orderBy(PRODUCT_INSTOCK, Query.Direction.DESCENDING);
         getProducts(query, 100, callback);
     }
+    public void getTopBestSellerByStoreID(String storeID, int limit, final GetCollectionCallback<Product> callback) {
+        Query query = db.collection(PRODUCT_COLLECTION)
+                .whereEqualTo(STORE_ID, storeID)
+                .whereGreaterThan(PRODUCT_SOLD, 0)
+                .orderBy(PRODUCT_SOLD, Query.Direction.DESCENDING);
+        getProducts(query, limit, callback);
+    }
+    public void getHighestRevenueByStoreID(String storeID, int limit, final GetCollectionCallback<Product> callback) {
+       db.collection(PRODUCT_COLLECTION)
+                .whereEqualTo(STORE_ID, storeID)
+                .get()
+                .addOnSuccessListener(task -> {
+                    ArrayList<Product> products = new ArrayList<>();
+                    for (DocumentSnapshot document : task.getDocuments()) {
+                        Product product = document.toObject(Product.class);
+                        product.setBaseID(document.getId());
+                        products.add(product);
+                    }
+
+                    // Sắp xếp sản phẩm dựa trên doanh thu (tính theo số lượng bán ra * giá mới)
+                    products.sort((product1, product2) -> {
+                        double revenue1 = product1.getNewPrice() * product1.getSold();
+                        double revenue2 = product2.getNewPrice() * product2.getSold();
+                        return Double.compare(revenue2, revenue1); // Sắp xếp giảm dần
+                    });
+
+                    // Cắt bớt danh sách sản phẩm nếu cần
+                    if (products.size() > limit) {
+                        products = new ArrayList<>(products.subList(0, limit));
+                    }
+
+                    callback.onGetListSuccess(products);
+                })
+                .addOnFailureListener(e -> callback.onGetListFailure(INTERNET_ERROR));
+    }
+
+
 
     public void getAllProductByCategoryIdApi(String categoryId, final GetCollectionCallback<Product> callback) {
         Query query = db.collection(PRODUCT_COLLECTION)
@@ -204,23 +238,23 @@ public class productApi implements Serializable {
         getProducts(query, 100, callback);
     }
 
-    private void countProducts(Query query, final GetCountCallback<Product> callback) {
+    private void countProducts(Query query, final GetAggregateCallback callback) {
         query.get()
                 .addOnSuccessListener(task -> {
                     int count = task.size();
-                    callback.onGetCountSuccess(count);
+                    callback.onSuccess(count);
                 })
-                .addOnFailureListener(e -> callback.onGetCountFailure(INTERNET_ERROR));
+                .addOnFailureListener(e -> callback.onFailure(INTERNET_ERROR));
     }
 
-    public void countProductsOutOfStockByStoreIdApi(String storeId, GetCountCallback<Product> callback) {
+    public void countProductsOutOfStockByStoreIdApi(String storeId, GetAggregateCallback callback) {
         Query query = db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(STORE_ID, storeId)
                 .whereEqualTo(PRODUCT_INSTOCK, 0.0);
         countProducts(query, callback);
     }
 
-    public void countProductsInStockByStoreIdApi(String storeId, GetCountCallback<Product> callback) {
+    public void countProductsInStockByStoreIdApi(String storeId, GetAggregateCallback callback) {
         Query query = db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(STORE_ID, storeId)
                 .whereGreaterThan(PRODUCT_INSTOCK, 0.0);

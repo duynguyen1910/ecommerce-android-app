@@ -8,7 +8,7 @@ import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.keyName.USER_ROLE;
 
-import static utils.CartUtils.updateQuantityInCart;
+import static utils.Cart.CartUtils.updateQuantityInCart;
 
 import android.content.Intent;
 import android.content.SharedPreferences;

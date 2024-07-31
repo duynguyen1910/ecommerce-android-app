@@ -19,8 +19,8 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 
 import java.util.ArrayList;
 
-import interfaces.CartItemListener;
-import interfaces.ToTalFeeCallback;
+import interfaces.InAdapter.CartItemListener;
+import interfaces.InAdapter.ToTalFeeCallback;
 import models.CartItem;
 import models.Product;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;

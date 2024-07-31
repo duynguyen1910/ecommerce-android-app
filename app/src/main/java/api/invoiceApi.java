@@ -3,7 +3,6 @@ package api;
 import static constants.collectionName.INVOICE_COLLECTION;
 import static constants.collectionName.INVOICE_DETAIL_COLLECTION;
 import static constants.collectionName.PRODUCT_COLLECTION;
-import static constants.collectionName.USER_COLLECTION;
 import static constants.keyName.CUSTOMER_ID;
 import static constants.keyName.INVOICE_ID;
 import static constants.keyName.STATUS;
@@ -11,7 +10,6 @@ import static constants.keyName.STORE_ID;
 import static constants.toastMessage.CONFIRMED_ORDER_SUCCESSFULLY;
 import static constants.toastMessage.INTERNET_ERROR;
 import static constants.toastMessage.ORDER_SUCCESSFULLY;
-import static constants.toastMessage.UPDATE_SUCCESSFULLY;
 
 import androidx.annotation.NonNull;
 
@@ -28,17 +26,19 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import interfaces.CreateDocumentCallback;
+import interfaces.GetAggregateCallback;
 import interfaces.GetCollectionCallback;
 import interfaces.StatusCallback;
 import interfaces.UpdateDocumentCallback;
 import models.Invoice;
 import models.InvoiceDetail;
 import models.Product;
-import utils.CartUtils;
+import utils.Cart.CartUtils;
 
 public class invoiceApi {
     private FirebaseFirestore db;
@@ -64,6 +64,8 @@ public class invoiceApi {
                 });
     }
 
+
+
     public void createDetailInvoiceApi(ArrayList<InvoiceDetail> invoiceItems,
                                     final StatusCallback callback) {
         WriteBatch batch = db.batch();
@@ -87,6 +89,30 @@ public class invoiceApi {
                 }
             }
         });
+    }
+
+    public void getRevenueByStoreID(String storeID, GetAggregateCallback callback){
+        List<Integer> orderStatuses = new ArrayList<>();
+        orderStatuses.add(1);
+        orderStatuses.add(2);
+        orderStatuses.add(3);
+        orderStatuses.add(4);
+        db.collection(INVOICE_COLLECTION)
+                .whereEqualTo(STORE_ID, storeID)
+                .whereIn(STATUS,orderStatuses)
+                .get()
+                .addOnSuccessListener(task -> {
+                    double sumTotal = 0;
+                    for (DocumentSnapshot document : task.getDocuments()){
+                        Invoice invoice = document.toObject(Invoice.class);
+                        double total = invoice.getTotal();
+                        sumTotal += total;
+                    }
+                    callback.onSuccess(sumTotal);
+                }).addOnFailureListener(e -> {
+                    callback.onFailure(INTERNET_ERROR);
+                });
+
     }
 
     public void getInvoicesByStatusApi(String customerID, int invoiceStatus, final GetCollectionCallback<Invoice> callback) {

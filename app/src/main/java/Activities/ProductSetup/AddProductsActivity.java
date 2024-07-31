@@ -11,7 +11,7 @@ import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.CREATE_PRODUCT_SUCCESSFULLY;
 import static constants.toastMessage.DEFAULT_REQUIRE;
-import static utils.CartUtils.showToast;
+import static utils.Cart.CartUtils.showToast;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;

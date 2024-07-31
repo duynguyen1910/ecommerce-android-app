@@ -1,4 +1,4 @@
-package interfaces;
+package interfaces.InAdapter;
 
 public interface CartItemListener {
     public void updateCartItem();

@@ -1,7 +1,7 @@
 package Fragments.BottomNavigation;
 
 import static constants.toastMessage.INTERNET_ERROR;
-import static utils.CartUtils.updateQuantityInCart;
+import static utils.Cart.CartUtils.updateQuantityInCart;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/lightgray"
     android:orientation="vertical"
-    android:padding="20dp"
     tools:context="Activities.StatisticsActivity">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="10dp"
+        android:background="@color/white"
+        android:padding="16dp">
 
 
         <ImageButton
@@ -46,13 +47,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginBottom="16dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="20dp"
                     android:text="Tổng doanh thu:"
                     android:textColor="@color/black"
                     android:textSize="14sp"
@@ -62,49 +65,50 @@
                     android:id="@+id/txtRevenue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
                     android:text="0đ"
                     android:textColor="@color/primary_color"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="10dp"
-                android:background="@color/gray"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:orientation="vertical">
+                android:background="@color/white"
+                android:layout_marginBottom="16dp"
+                android:padding="16dp"
+                android:visibility="visible"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+      >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="20dp"
-                    android:text="Top 5 sản phẩm bán chạy:"
+                    android:text="Top 5 sản phẩm bán chạy nhất:"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChart1"
+                    android:id="@+id/bestSellerChart"
                     android:layout_width="match_parent"
                     android:layout_height="500dp"
+
                     android:layout_marginBottom="30dp" />
             </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="10dp"
-                android:background="@color/gray"/>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -117,7 +121,7 @@
                     android:textStyle="bold" />
 
                 <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChart2"
+                    android:id="@+id/highestRevenueChart"
                     android:layout_width="match_parent"
                     android:layout_height="500dp"
                     android:layout_marginBottom="30dp" />

@@ -1,6 +1,6 @@
 package Adapters.BuyProduct;
 
-import static utils.CartUtils.getCartItemFee;
+import static utils.Cart.CartUtils.getCartItemFee;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

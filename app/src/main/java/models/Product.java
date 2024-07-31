@@ -7,7 +7,7 @@ import java.util.Map;
 import api.productApi;
 import interfaces.CreateDocumentCallback;
 import interfaces.GetCollectionCallback;
-import interfaces.GetCountCallback;
+import interfaces.GetAggregateCallback;
 import interfaces.GetDocumentCallback;
 import interfaces.UpdateDocumentCallback;
 
@@ -214,11 +214,11 @@ public class Product extends BaseObject implements Serializable {
         productApi.getAllProductByStoreIdAndCategoryIdApi(storeId, categoryId, callback);
     }
 
-    public void countProductsOutOfStockByStoreId(String storeId, GetCountCallback<Product> callback){
+    public void countProductsOutOfStockByStoreId(String storeId, GetAggregateCallback callback){
         productApi.countProductsOutOfStockByStoreIdApi(storeId, callback);
     }
 
-    public void countProductsInStockByStoreId(String storeId, GetCountCallback<Product> callback){
+    public void countProductsInStockByStoreId(String storeId, GetAggregateCallback callback){
         productApi.countProductsInStockByStoreIdApi(storeId, callback);
     }
     public void getAllProductDescendingByCategoryId(String categoryId,final GetCollectionCallback<Product> callback) {

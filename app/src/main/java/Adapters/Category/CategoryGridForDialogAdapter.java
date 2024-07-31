@@ -11,7 +11,7 @@ import com.example.stores.databinding.ItemCategoryGridForDialogBinding;
 
 import java.util.ArrayList;
 
-import interfaces.CategoryDialogListener;
+import interfaces.InAdapter.CategoryDialogListener;
 import models.Category;
 import utils.DecorateUtils;
 
