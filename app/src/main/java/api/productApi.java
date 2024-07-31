@@ -194,9 +194,12 @@ public class productApi implements Serializable {
                 .orderBy(PRODUCT_SOLD, Query.Direction.DESCENDING);
         getProducts(query, limit, callback);
     }
+
+
     public void getHighestRevenueByStoreID(String storeID, int limit, final GetCollectionCallback<Product> callback) {
        db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(STORE_ID, storeID)
+               .whereGreaterThan(PRODUCT_SOLD, 0)
                 .get()
                 .addOnSuccessListener(task -> {
                     ArrayList<Product> products = new ArrayList<>();

@@ -1,87 +1,175 @@
 package Activities;
-
+import static constants.keyName.CUSTOMER_ID;
+import static constants.keyName.USER_ID;
+import static constants.keyName.USER_INFO;
+import static utils.Cart.CartUtils.showToast;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.stores.databinding.ActivityStatisticsBinding;
-import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.components.LegendEntry;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
-
 import java.util.ArrayList;
 import java.util.Objects;
+import api.invoiceApi;
+import interfaces.GetAggregateCallback;
+import utils.Chart.CustomValueMoneyFormatter;
+import utils.Chart.CustomValueSoldFormatter;
+import utils.FormatHelper;
 
 public class StatisticsActivity extends AppCompatActivity {
 
 
-
-
+    private String customerID;
     ActivityStatisticsBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityStatisticsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
-        Objects.requireNonNull(getSupportActionBar()).hide();
-
         initUI();
+        getCustomerID();
+        setupEvents();
 
-        binding.btnBack.setOnClickListener(v -> finish());
 
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupSpendings();
+        getSpendings();
     }
 
     private void initUI() {
-        ArrayList<PieEntry> entries = new ArrayList<>();
-        ArrayList<String> listname = new ArrayList<>();
-        listname.add("Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057");
-        listname.add("Lovito Đầm trễ vai ngọc trai trơn đơn giản dành cho nữ L76AD154");
-        listname.add("Đồng Hồ Điện Tử Chống Nước Phong Cách Quân Đội SANDA 2023 Cho Nam");
-        listname.add("Huizumei Váy preppy nữ mùa hè cổ polo nhỏ chắp vá eo nâng cao và giảm béo váy ngắn");
-        entries.add(new PieEntry(1, listname.get(0).substring(0,45)));
-        entries.add(new PieEntry(2, listname.get(1).substring(0,45)));
-        entries.add(new PieEntry(3, listname.get(2).substring(0,45)));
-        entries.add(new PieEntry(2, listname.get(3).substring(0,45)));
+        getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
-        PieDataSet dataSet = new PieDataSet(entries, "Top sản phẩm được mua nhiều nhất");
-        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+    }
 
-        dataSet.setValueTextSize(14f); // Adjust the size of the value labels
-        PieData data = new PieData(dataSet);
-        data.setDrawValues(true);
-        dataSet.setValueTextColor(Color.parseColor("#ffffff"));
+    private void getSpendings() {
+        invoiceApi invoiceApi = new invoiceApi();
+        invoiceApi.getSpendingsByCustomerID(customerID, new GetAggregateCallback() {
+            @Override
+            public void onSuccess(double spendings) {
+                setupSpendingChart(spendings);
+            }
 
-        PieChart pieChart = binding.pieChart;
-        pieChart.getDescription().setEnabled(false);
-        pieChart.setData(data);
-        pieChart.getLegend().setTextSize(14f);
-        pieChart.setEntryLabelTypeface(Typeface.DEFAULT_BOLD);
-        pieChart.setEntryLabelTextSize(15f);
-        pieChart.setEntryLabelColor(Color.BLACK);
+            @Override
+            public void onFailure(String errorMessage) {
+                showToast(StatisticsActivity.this, errorMessage);
+            }
+        });
 
-        Legend legend = pieChart.getLegend();
+    }
+
+    private void setupSpendingChart(double spendings) {
+        BarChart barChart1 = binding.bestSellerChart;
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        entries.add(new BarEntry(1, (float) spendings));
+
+        BarDataSet dataSet = new BarDataSet(entries, "Products");
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueTextSize(14f);
+        dataSet.setDrawValues(true);
+
+        BarData barData = new BarData(dataSet);
+        barChart1.setData(barData);
+        barData.setBarWidth(0.4f);
+
+        barChart1.setFitBars(true);
+        barChart1.getDescription().setEnabled(false);
+        barChart1.animateY(2000);
+
+        setupBarChart(barChart1);
+
+        ArrayList<LegendEntry> legendEntries = new ArrayList<>();
+
+        LegendEntry entry = new LegendEntry();
+        entry.label = "Chi tiêu";
+        entry.formColor = ColorTemplate.JOYFUL_COLORS[1 % ColorTemplate.JOYFUL_COLORS.length];
+        legendEntries.add(entry);
+        barChart1.getLegend().setCustom(legendEntries);
+        barChart1.setExtraOffsets(10f, 80f, 10f, 40f);
+
+        YAxis yAxis = barChart1.getAxisLeft();
+        yAxis.setTextSize(12f);
+        yAxis.setValueFormatter(new CustomValueMoneyFormatter());
+
+
+        barChart1.invalidate();
+    }
+
+    private void setupBarChart(BarChart barChart) {
+        Legend legend = barChart.getLegend();
+        legend.setEnabled(true);
+        legend.setWordWrapEnabled(true);
+        legend.setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        legend.setYOffset(0f);
         legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-        legend.setXEntrySpace(0f);
-        legend.setForm(Legend.LegendForm.SQUARE);
-        legend.setYEntrySpace(6f);
-        legend.setXEntrySpace(8f);
+        legend.setTextSize(14f);
+        legend.setFormSize(14f);
+        legend.setDrawInside(false);
+
+        barChart.setFitBars(true);
+        barChart.getDescription().setEnabled(false);
+        barChart.animateY(2000);
+
+        YAxis yAxisLeft = barChart.getAxisLeft();
+        yAxisLeft.setAxisMinimum(0f);
+        yAxisLeft.setDrawZeroLine(true);
+        yAxisLeft.setDrawAxisLine(true);
+
+        // Thiết lập trục X
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // Đặt trục X ở phía dưới
+        xAxis.setGranularity(1f); // Đảm bảo các nhãn được phân bố đều
+        xAxis.setLabelRotationAngle(20f); // Xoay nhãn để tránh chồng chéo
+        xAxis.setLabelCount(5, true); // Thiết lập số lượng nhãn
+        xAxis.setTextSize(12f);
 
 
-        pieChart.setDrawEntryLabels(false);
-        pieChart.setEntryLabelColor(Color.parseColor("#333333"));
-        pieChart.animateXY(2000, 2000);
-        pieChart.invalidate();
+        barChart.getAxisRight().setEnabled(false);
     }
 
 
+    private void setupSpendings() {
+        invoiceApi invoiceApi = new invoiceApi();
+        invoiceApi.getSpendingsByCustomerID(customerID, new GetAggregateCallback() {
+            @Override
+            public void onSuccess(double sumTotal) {
+                binding.txtSpendings.setText(FormatHelper.formatVND(sumTotal));
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+            }
+        });
+    }
+
+    private void setupEvents() {
+        binding.btnBack.setOnClickListener(v -> finish());
+    }
+
+    private void getCustomerID() {
+        SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        customerID = sharedPreferences.getString(USER_ID, null);
+        Log.d("customerID", customerID);
+    }
 
 }

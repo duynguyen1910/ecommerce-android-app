@@ -12,6 +12,7 @@ import com.example.stores.databinding.ActivityRevenueBinding;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -236,6 +237,13 @@ public class RevenueActivity extends AppCompatActivity {
         CustomMarkerView markerView = new CustomMarkerView(this, R.layout.layout_marker_view, productNames);
         barChart.setMarker(markerView);
         markerView.setTextAlignment(CustomMarkerView.TEXT_ALIGNMENT_TEXT_START);
+
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // Đặt trục X ở phía dưới
+        xAxis.setGranularity(1f); // Đảm bảo các nhãn được phân bố đều
+        xAxis.setLabelRotationAngle(20f); // Xoay nhãn để tránh chồng chéo
+        xAxis.setLabelCount(5, true); // Thiết lập số lượng nhãn
+        xAxis.setTextSize(12f);
 
         barChart.getAxisRight().setEnabled(false);
     }

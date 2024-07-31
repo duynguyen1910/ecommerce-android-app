@@ -6,6 +6,6 @@ public class CustomValueMoneyFormatter extends ValueFormatter {
 
     @Override
     public String getFormattedValue(float value) {
-        return String.format("%.1f triệu", value / 1000000); // Hiển thị giá trị theo triệu
+        return String.format("%.2f triệu", value / 1000000); // Hiển thị giá trị theo triệu
     }
 }
