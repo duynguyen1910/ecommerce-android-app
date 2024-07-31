@@ -1,5 +1,6 @@
 package Activities;
 
+import static constants.keyName.DEFAULT_ADDRESS_ID;
 import static constants.keyName.FULLNAME;
 import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;

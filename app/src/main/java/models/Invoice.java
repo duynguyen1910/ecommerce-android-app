@@ -12,6 +12,7 @@ import interfaces.UpdateDocumentCallback;
 
 public class Invoice extends BaseObject implements Serializable {
     private String customerID;
+    private String detailedAddress;
     private String deliveryAddress;
     private double total;
     private OrderStatus status;
@@ -56,6 +57,14 @@ public class Invoice extends BaseObject implements Serializable {
 
     public void setCustomerID(String customerID) {
         this.customerID = customerID;
+    }
+
+    public String getDetailedAddress() {
+        return detailedAddress;
+    }
+
+    public void setDetailedAddress(String detailedAddress) {
+        this.detailedAddress = detailedAddress;
     }
 
     public String getDeliveryAddress() {

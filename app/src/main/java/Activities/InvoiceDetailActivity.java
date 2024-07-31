@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,9 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.stores.databinding.ActivityInvoiceDetailBinding;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import Adapters.InvoiceDetailAdapter;
@@ -27,6 +24,7 @@ import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
 import models.InvoiceDetail;
+import models.UserAddress;
 import utils.FormatHelper;
 
 public class InvoiceDetailActivity extends AppCompatActivity {
@@ -49,6 +47,7 @@ public class InvoiceDetailActivity extends AppCompatActivity {
         if (intent != null) {
             Bundle bundle = intent.getExtras();
             String invoiceID = bundle.getString("invoiceID");
+            String detailedAddress = bundle.getString("detailedAddress");
             String deliveryAddress = bundle.getString("deliveryAddress");
             String invoiceStatusLabel = bundle.getString("invoiceStatusLabel");
 
@@ -63,7 +62,9 @@ public class InvoiceDetailActivity extends AppCompatActivity {
             binding.progressBar.getIndeterminateDrawable()
                     .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
-            binding.txtAddress.setText(deliveryAddress);
+            binding.txtDetailedCustomer.setText(detailedAddress);
+            binding.txtCustomerAddress.setText(deliveryAddress);
+
             binding.txtInvoiceStatus.setText("Đơn hàng của bạn " + invoiceStatusLabel);
 
             binding.txtTotal.setText(FormatHelper.formatVND(invoiceTotal));

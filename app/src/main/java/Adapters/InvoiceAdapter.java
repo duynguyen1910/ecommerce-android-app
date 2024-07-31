@@ -20,9 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.stores.databinding.ItemInvoiceBinding;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Map;
 
 import Activities.InvoiceDetailActivity;
@@ -34,6 +32,7 @@ import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
 import models.Invoice;
 import models.InvoiceDetail;
+import models.UserAddress;
 import utils.FormatHelper;
 
 public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHolder> {
@@ -108,6 +107,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
                 Bundle bundle = new Bundle();
 
                 bundle.putString("invoiceID", invoice.getBaseID());
+                bundle.putString("detailedAddress", invoice.getDetailedAddress());
                 bundle.putString("deliveryAddress", invoice.getDeliveryAddress());
                 bundle.putString("invoiceStatusLabel", invoice.getStatus().getOrderLabel());
 

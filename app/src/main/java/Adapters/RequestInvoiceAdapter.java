@@ -75,7 +75,8 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
             public void getUserInfoSuccess(User user) {
                 holder.binding.txtCustomerName.setText(user.getFullname());
                 holder.binding.txtCustomerPhone.setText(user.getPhoneNumber());
-                holder.binding.txtCustomerAddress.setText(user.getUserAddress());
+                holder.binding.txtDetailedCustomer.setText(invoice.getDetailedAddress());
+                holder.binding.txtCustomerAddress.setText(invoice.getDeliveryAddress());
             }
 
             @Override
@@ -83,8 +84,6 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
 
             }
         });
-
-//        holder.binding.txtInvoiceStatus.setText(invoice.getStatus().getOrderLabel());
 
         holder.binding.progressBar.setVisibility(View.VISIBLE);
         holder.binding.progressBar.getIndeterminateDrawable()

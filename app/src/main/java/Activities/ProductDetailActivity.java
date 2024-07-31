@@ -11,7 +11,6 @@ import static constants.keyName.STORE_NAME;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.INTERNET_ERROR;
-import static utils.AnimationUtils.translateAnimation;
 import static utils.CartUtils.MY_CART;
 import static utils.CartUtils.showToast;
 import static utils.CartUtils.updateQuantityInCart;
@@ -52,6 +51,7 @@ import models.CartItem;
 import models.InvoiceDetail;
 import models.Product;
 import models.Store;
+import models.UserAddress;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -127,6 +127,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 //                    binding.viewPager2Slider.setAdapter(new SliderAdapterForProductDetail(ProductDetailActivity.this, sliderItems));
 //                    binding.viewPager2Slider.setOffscreenPageLimit(2);
 //                    binding.indicator.attachTo(binding.viewPager2Slider);
+
                 }
 
                 @Override
@@ -153,6 +154,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     binding.txtStoreName.setText(storeName);
 
                     // set up UI avatar, invoice
+
 
                 }
 

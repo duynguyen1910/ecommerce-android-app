@@ -10,6 +10,7 @@ public class keyName {
     public static final String USER_ROLE = "role";
     public static final String CUSTOMER_ID = "customerID";
     public static final String USER_IMAGE_URL = "userImageUrl";
+    public static final String DEFAULT_ADDRESS_ID = "defaultAddressID";
 
 
     public static final String STORE_ID = "storeID";
@@ -45,6 +46,13 @@ public class keyName {
     public static final String TYPE_SIZE_VN = "Size (VN)";
     public static final String TYPE_SIZE_GLOBAL = "Size (Quốc tế)";
 
-
+    public static final String ADDRESS_ID = "addressID";
+    public static final String DETAILED_ADDRESS = "detailedAddress";
+    public static final String PROVINCE_ID = "provinceID";
+    public static final String DISTRICT_ID = "districtID";
+    public static final String WARD_ID = "wardID";
+    public static final String PROVINCE_NAME = "provinceName";
+    public static final String DISTRICT_NAME = "districtName";
+    public static final String WARD_NAME = "wardName";
 
 }

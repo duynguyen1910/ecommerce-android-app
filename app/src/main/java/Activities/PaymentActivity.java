@@ -1,21 +1,37 @@
 package Activities;
+import static constants.keyName.DEFAULT_ADDRESS_ID;
+import static constants.keyName.DETAILED_ADDRESS;
+import static constants.keyName.DISTRICT_ID;
+import static constants.keyName.DISTRICT_NAME;
+import static constants.keyName.PROVINCE_NAME;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
+import static constants.keyName.WARD_ID;
+import static constants.keyName.WARD_NAME;
+import static constants.toastMessage.ADDRESS_REQUIRE;
 import static utils.CartUtils.getCartItemFee;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.stores.R;
+import com.example.stores.databinding.ActivityCreateAddressBinding;
+import com.example.stores.databinding.ActivityDeliveryAddressBinding;
 import com.example.stores.databinding.ActivityPaymentBinding;
 import com.example.stores.databinding.LayoutOrderBinding;
 
@@ -26,11 +42,15 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
+import Activities.AddAddress.DeliveryAddressActivity;
 import Adapters.PaymentAdapter;
+import api.addressApi;
 import api.invoiceApi;
 import api.userApi;
 import enums.OrderStatus;
 import interfaces.CreateDocumentCallback;
+import interfaces.GetDocumentCallback;
 import interfaces.StatusCallback;
 import interfaces.UserCallback;
 import models.CartItem;
@@ -44,7 +64,7 @@ public class PaymentActivity extends AppCompatActivity {
     ArrayList<CartItem> payment = null;
     SharedPreferences sharedPreferences;
     String userID = null;
-    User currentUser = null;
+    String defaultAddressID = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +96,18 @@ public class PaymentActivity extends AppCompatActivity {
         binding.imageBack.setOnClickListener(v -> finish());
 
         binding.btnBooking.setOnClickListener(v -> {
-            String deliveryAddress = "quận 7, tp.Hồ Chí Minh"; // hard code
+            if(defaultAddressID == null) {
+                Toast.makeText(this, ADDRESS_REQUIRE, Toast.LENGTH_SHORT).show();
+            }
 
             for(CartItem item : payment) {
                 Map<String, Object> newInvoice = new HashMap<>();
 
+                String  detailedAddress = binding.txtDetailedCustomer.getText().toString();
+                String deliveryAddress = binding.txtCustomerAddress.getText().toString();
+
                 newInvoice.put("customerID", userID);
+                newInvoice.put("detailedAddress", detailedAddress);
                 newInvoice.put("deliveryAddress", deliveryAddress);
                 newInvoice.put("total", getCartItemFee(item));
                 newInvoice.put("status", OrderStatus.PENDING_CONFIRMATION.getOrderStatusValue());
@@ -111,6 +137,10 @@ public class PaymentActivity extends AppCompatActivity {
 
         });
 
+        binding.txtCustomerAddress.setOnClickListener(v -> {
+            myLauncher.launch(new Intent(PaymentActivity.this, DeliveryAddressActivity.class));
+        });
+
 //        binding.txtPaymentMethod.setOnClickListener(v -> {
 //            Intent intent = new Intent(PaymentActivity.this, PaymentMethodActivity.class);
 //            startActivity(intent);
@@ -118,7 +148,6 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void createInvoiceDetail(invoiceApi invoiceApi, String invoiceID, ArrayList<Product> productList) {
-
         ArrayList<InvoiceDetail> invoiceDetails = new ArrayList<>();
         for (Product product : productList) {
             invoiceDetails.add(new InvoiceDetail(invoiceID, product.getBaseID(), product.getNumberInCart()));
@@ -194,21 +223,50 @@ public class PaymentActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
         userID = sharedPreferences.getString(USER_ID, null);
+        defaultAddressID = sharedPreferences.getString(DEFAULT_ADDRESS_ID, null);
 
         userApi userApi = new userApi();
         userApi.getUserInfoApi(userID, new UserCallback() {
             @Override
             public void getUserInfoSuccess(User user) {
-                currentUser = user;
+                addressApi addressApi = new addressApi();
+                addressApi.getAddressDetailApi(user.getDefaultAddressID(), new GetDocumentCallback() {
+                    @Override
+                    public void onGetDataSuccess(Map<String, Object> data) {
+                        String detailedAddress = (String) data.get(DETAILED_ADDRESS);
+                        String wardName = (String) data.get(WARD_NAME);
+                        String districtName = (String) data.get(DISTRICT_NAME);
+                        String provinceName = (String) data.get(PROVINCE_NAME);
+
+                        String address = wardName + ", " + districtName + ", " + provinceName;
+                        binding.txtDetailedCustomer.setText(detailedAddress);
+                        binding.txtCustomerAddress.setText(address);
+                    }
+
+                    @Override
+                    public void onGetDataFailure(String errorMessage) {
+                        Toast.makeText(PaymentActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 binding.txtCustomerInfo.setText(user.getFullname() + " | " + user.getPhoneNumber());
             }
 
             @Override
             public void getUserInfoFailure(String errorMessage) {
-
+                Toast.makeText(PaymentActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-
+    ActivityResultLauncher<Intent> myLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        setupUI();
+                    }
+                }
+            });
 }

@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:padding="10dp">
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
 
         <LinearLayout
             android:id="@+id/layoutCustomer"
@@ -26,7 +27,6 @@
                 android:id="@+id/txtCustomerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
                 android:layout_marginEnd="8dp"
                 android:ellipsize="end"
                 android:fontFamily="sans-serif-light"
@@ -61,26 +61,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="---"
-            android:textStyle="bold"
             android:textColor="@color/darkgray"
             app:backgroundTint="@null" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtDetailedCustomer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="2dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:text="..."
+        android:textColor="@color/black"
+        app:drawableTint="@color/darkgray" />
+
     <TextView
         android:id="@+id/txtCustomerAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawablePadding="6dp"
         android:gravity="center_vertical"
-        android:lineHeight="20dp"
-        android:paddingHorizontal="10dp"
+        android:paddingHorizontal="16dp"
         android:text="..."
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        app:drawableTint="@color/darkgray" />
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewProducts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp" />
+        android:layout_marginVertical="4dp" />
 
     <ProgressBar
         android:layout_gravity="center"

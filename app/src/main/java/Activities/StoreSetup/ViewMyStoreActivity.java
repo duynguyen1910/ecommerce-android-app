@@ -28,6 +28,7 @@ import Fragments.Store.StoreCategoriesFragment;
 import Fragments.Store.StoreProductsFragment;
 import interfaces.GetDocumentCallback;
 import models.Store;
+import models.UserAddress;
 
 public class ViewMyStoreActivity extends AppCompatActivity {
 

@@ -21,6 +21,7 @@ import java.util.Objects;
 import Activities.RequestInvoiceActivity;
 import interfaces.GetDocumentCallback;
 import models.Store;
+import models.UserAddress;
 
 public class StoreOwnerActivity extends AppCompatActivity {
 
@@ -105,7 +106,6 @@ public class StoreOwnerActivity extends AppCompatActivity {
                     binding.txtStoreName.setText((CharSequence) data.get(STORE_NAME));
 
                     // set up UI avatar, invoice
-
                 }
 
                 @Override

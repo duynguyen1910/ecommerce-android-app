@@ -10,14 +10,11 @@ import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
 import static constants.toastMessage.DEFAULT_REQUIRE;
 import static constants.toastMessage.INTERNET_ERROR;
-import static constants.toastMessage.UPDATE_PRODUCT_FAILED;
-import static constants.toastMessage.UPDATE_PRODUCT_SUCCESSFULLY;
 import static utils.CartUtils.showToast;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -34,6 +31,7 @@ import java.util.Objects;
 import interfaces.GetDocumentCallback;
 import interfaces.UpdateDocumentCallback;
 import models.Product;
+import models.UserAddress;
 
 public class UpdateProductActivity extends AppCompatActivity {
 
