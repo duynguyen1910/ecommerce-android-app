@@ -50,11 +50,8 @@ public class ProfileFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(getLayoutInflater());
-
         initUI();
         setupEvents();
-        getUserInfo();
-
         return binding.getRoot();
     }
 
@@ -80,7 +77,6 @@ public class ProfileFragment extends Fragment {
         if (userID != null) {
             binding.txtStore.setText(storeId == null ? "Tạo Store" : "Store của bạn");
             setupUIByRole(roleValue);
-
             binding.loggedLayoutLn.setVisibility(View.VISIBLE);
             binding.defaultLayoutRl.setVisibility(View.GONE);
 
@@ -218,7 +214,6 @@ public class ProfileFragment extends Fragment {
 
 
             startActivity(new Intent(getActivity(), LoginActivity.class));
-//            requireActivity().finish();
         });
     }
 }

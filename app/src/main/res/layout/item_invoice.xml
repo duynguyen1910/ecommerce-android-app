@@ -41,7 +41,7 @@
             android:id="@+id/txtInvoiceStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chờ xác nhận"
+            android:text="..."
             android:textColor="@color/primary_color" />
 
     </LinearLayout>
@@ -74,7 +74,7 @@
             android:background="@color/secondary_color"
             android:paddingHorizontal="5dp"
             android:paddingVertical="2dp"
-            android:text="1 sản phẩm"
+            android:text="..."
             android:textColor="@color/white"
             android:textSize="12sp" />
 
@@ -95,7 +95,7 @@
                 android:id="@+id/txtTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="đ128.000"
+                android:text="..."
                 android:textColor="@color/primary_color"
                 android:textSize="15sp"
                 android:textStyle="bold" />

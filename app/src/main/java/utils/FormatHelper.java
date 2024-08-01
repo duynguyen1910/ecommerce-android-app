@@ -1,5 +1,7 @@
 package utils;
 
+import android.widget.TextView;
+
 import com.google.firebase.Timestamp;
 
 import java.text.DecimalFormat;
@@ -35,6 +37,14 @@ public class FormatHelper {
         // Sử dụng DecimalFormat để định dạng số
         DecimalFormat formatter = new DecimalFormat("#,###");
         return formatter.format(money);
+    }
+
+    public static void formatQuantityTextView(TextView textView, int quantity) {
+        if (textView != null){
+            String quantityText = (quantity < 10) ? ((quantity > 0) ?  ("0" + quantity) : ("0")) : String.valueOf(quantity);
+            textView.setText(quantityText);
+        }
+
     }
 
 }

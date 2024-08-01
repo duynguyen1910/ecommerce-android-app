@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 import Activities.BuyProduct.CartActivity;
 import Activities.BuyProduct.SearchActivity;
-import Activities.StatisticsActivity;
+import Activities.SpendingsActivity;
 import Adapters.Category.CategoryGridAdapter;
 import Adapters.ProductGridAdapter;
 import Adapters.SliderAdapter;
@@ -199,7 +199,7 @@ public class HomeFragment extends Fragment {
         binding.layoutStatistics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(requireActivity(), StatisticsActivity.class);
+                Intent intent = new Intent(requireActivity(), SpendingsActivity.class);
                 startActivity(intent);
             }
         });

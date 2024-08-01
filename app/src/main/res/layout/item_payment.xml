@@ -30,7 +30,7 @@
             android:fontFamily="sans-serif-light"
             android:maxLines="1"
             android:textSize="15sp"
-            android:text="Zozo_Unisex"
+            android:text="..."
             android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textStyle="bold" />
@@ -210,7 +210,7 @@
             android:id="@+id/txtQuantityProducts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tổng số tiền (2 sản phẩm)"
+            android:text="..."
             android:textColor="@color/black"
             android:textSize="14sp" />
 
@@ -221,7 +221,7 @@
             android:layout_marginEnd="6dp"
             android:layout_weight="1"
             android:gravity="end"
-            android:text="đ18.000"
+            android:text="..."
             android:textColor="@color/primary_color"
             android:textSize="16sp"
             android:textStyle="bold" />

@@ -44,7 +44,6 @@ public class MyProductsActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         initUI();
         setupUI();
-        getCountOfProduct();
         setupEvents();
 
     }

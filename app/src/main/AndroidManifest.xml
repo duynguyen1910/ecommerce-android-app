@@ -113,7 +113,7 @@
             android:name="Activities.ProfileSetup.SettingsActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.StatisticsActivity"
+            android:name="Activities.SpendingsActivity"
             android:exported="false" />
         <activity
             android:name="Activities.BuyProduct.ProductImagesDetailActivity"

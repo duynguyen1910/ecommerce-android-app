@@ -1,5 +1,4 @@
 package Activities;
-import static constants.keyName.CUSTOMER_ID;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static utils.Cart.CartUtils.showToast;
@@ -7,9 +6,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.stores.databinding.ActivityStatisticsBinding;
+import com.example.stores.databinding.ActivitySpendingsBinding;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
@@ -24,19 +22,18 @@ import java.util.Objects;
 import api.invoiceApi;
 import interfaces.GetAggregateCallback;
 import utils.Chart.CustomValueMoneyFormatter;
-import utils.Chart.CustomValueSoldFormatter;
 import utils.FormatHelper;
 
-public class StatisticsActivity extends AppCompatActivity {
+public class SpendingsActivity extends AppCompatActivity {
 
 
     private String customerID;
-    ActivityStatisticsBinding binding;
+    ActivitySpendingsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityStatisticsBinding.inflate(getLayoutInflater());
+        binding = ActivitySpendingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initUI();
         getCustomerID();
@@ -68,7 +65,7 @@ public class StatisticsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(String errorMessage) {
-                showToast(StatisticsActivity.this, errorMessage);
+                showToast(SpendingsActivity.this, errorMessage);
             }
         });
 

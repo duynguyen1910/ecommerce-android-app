@@ -5,6 +5,7 @@ import static constants.collectionName.INVOICE_DETAIL_COLLECTION;
 import static constants.collectionName.PRODUCT_COLLECTION;
 import static constants.keyName.CUSTOMER_ID;
 import static constants.keyName.INVOICE_ID;
+import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.STATUS;
 import static constants.keyName.STORE_ID;
 import static constants.toastMessage.CONFIRMED_ORDER_SUCCESSFULLY;
@@ -20,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
@@ -291,4 +293,28 @@ public class invoiceApi {
                     }
                 });
     }
+
+
+    public void countInvoices(Query query, final GetAggregateCallback callback) {
+        query.get()
+                .addOnSuccessListener(task -> {
+                    int count = task.size();
+                    callback.onSuccess(count);
+                })
+                .addOnFailureListener(e -> callback.onFailure(INTERNET_ERROR));
+    }
+
+    public void countRequestInvoicesByStoreIDAndStatus(String storeId, int status, final GetAggregateCallback callback) {
+        Query query = db.collection(INVOICE_COLLECTION)
+                .whereEqualTo(STORE_ID, storeId)
+                .whereEqualTo(STATUS, status);
+        countInvoices(query, callback);
+    }
+
+    public void countDeliveryInvoicesByStatus(int status, final GetAggregateCallback callback) {
+        Query query = db.collection(INVOICE_COLLECTION)
+                .whereEqualTo(STATUS, status);
+        countInvoices(query, callback);
+    }
+
 }

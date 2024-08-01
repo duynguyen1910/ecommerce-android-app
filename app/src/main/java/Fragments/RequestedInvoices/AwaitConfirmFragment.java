@@ -32,12 +32,14 @@ public class AwaitConfirmFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentWithOnlyRecyclerviewBinding.inflate(getLayoutInflater());
-
-        initInvoicesRequest();
-
         return binding.getRoot();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initInvoicesRequest();
+    }
     private void initInvoicesRequest() {
         invoiceApi invoiceApi = new invoiceApi();
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);

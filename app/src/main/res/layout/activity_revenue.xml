@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/lightgray"
     android:orientation="vertical"
-    tools:context="Activities.StatisticsActivity">
+    tools:context="Activities.SpendingsActivity">
 
 
     <LinearLayout

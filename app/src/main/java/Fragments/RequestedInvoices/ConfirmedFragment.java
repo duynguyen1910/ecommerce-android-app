@@ -31,9 +31,6 @@ public class ConfirmedFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentWithOnlyRecyclerviewBinding.inflate(getLayoutInflater());
-
-        initInvoicesRequest();
-
         return binding.getRoot();
     }
 
