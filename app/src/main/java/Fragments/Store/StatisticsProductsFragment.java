@@ -124,7 +124,7 @@ public class StatisticsProductsFragment extends Fragment {
         ArrayList<LegendEntry> legendEntries = new ArrayList<>();
         for (int i = 0; i < productNames.size(); i++) {
             LegendEntry entry = new LegendEntry();
-            entry.label = productNames.get(i);
+            entry.label = productNames.get(i).substring(0, 30);
             entry.formColor = ColorTemplate.MATERIAL_COLORS[i % ColorTemplate.MATERIAL_COLORS.length];
             legendEntries.add(entry);
         }

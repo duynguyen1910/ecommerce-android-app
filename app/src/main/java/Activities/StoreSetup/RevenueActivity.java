@@ -98,11 +98,16 @@ public class RevenueActivity extends AppCompatActivity {
                 ItemTabLabelBinding tabLayoutBinding = ItemTabLabelBinding.inflate(getLayoutInflater());
                 TextView tabLabel = tabLayoutBinding.tabLabel;
                 tabLabel.setText(viewPager2Adapter.getPageTitle(position));
-                DecorateUtils.decorateSelectedTextViews(RevenueActivity.this, tabLabel);
                 tab.setCustomView(tabLayoutBinding.getRoot());
             }
         }).attach();
         // Đặt màu hồng cho tab đầu tiên sau khi attach()
+        TabLayout.Tab firstTab = binding.tabLayout.getTabAt(0);
+        if (firstTab != null){
+            View customView = firstTab.getCustomView();
+            TextView tabLabel = customView.findViewById(R.id.tabLabel);
+            DecorateUtils.decorateSelectedTextViews(RevenueActivity.this, tabLabel);
+        }
 
 
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
