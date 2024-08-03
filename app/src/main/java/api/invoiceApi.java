@@ -180,6 +180,30 @@ public class invoiceApi {
                 });
 
     }
+    public void getRevenueInAMonthByStoreID(String storeID, int month, GetAggregateCallback callback) {
+        List<Integer> orderStatuses = new ArrayList<>();
+        orderStatuses.add(2);
+        orderStatuses.add(3);
+        orderStatuses.add(4);
+        db.collection(INVOICE_COLLECTION)
+                .whereEqualTo(STORE_ID, storeID)
+                .whereIn(STATUS, orderStatuses)
+                .whereGreaterThanOrEqualTo(CREATE_AT, getDayRange(month)[0])
+                .whereLessThanOrEqualTo(CREATE_AT, getDayRange(month)[1])
+                .get()
+                .addOnSuccessListener(task -> {
+                    double spendings = 0;
+                    for (DocumentSnapshot document : task.getDocuments()) {
+                        Invoice invoice = document.toObject(Invoice.class);
+                        double total = invoice.getTotal();
+                        spendings += total;
+                    }
+                    callback.onSuccess(spendings);
+                }).addOnFailureListener(e -> {
+                    callback.onFailure(INTERNET_ERROR);
+                });
+
+    }
 
     public void getInvoicesByStatusApi(String customerID, int invoiceStatus, final GetCollectionCallback<Invoice> callback) {
         db.collection(INVOICE_COLLECTION)

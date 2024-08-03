@@ -1,20 +1,24 @@
-package Activities;
+package Fragments.Store;
 
-import static constants.keyName.USER_ID;
+import static android.content.Context.MODE_PRIVATE;
+import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 import static utils.Cart.CartUtils.showToast;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-import com.example.stores.databinding.ActivitySpendingsBinding;
+import com.example.stores.databinding.FragmentRevenueBinding;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
@@ -26,58 +30,68 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
+import Activities.SpendingsActivity;
 import api.invoiceApi;
 import interfaces.GetAggregateCallback;
 import utils.Chart.CustomValueMoneyFormatter;
 import utils.FormatHelper;
 
-public class SpendingsActivity extends AppCompatActivity {
+public class RevenueFragment extends Fragment {
+    FragmentRevenueBinding binding;
+    String g_sStoreID;
 
-
-    private String customerID;
-    ActivitySpendingsBinding binding;
-
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivitySpendingsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        initUI();
-        getCustomerID();
+
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        binding = FragmentRevenueBinding.inflate(getLayoutInflater());
+        getStoreID();
         setupEvents();
-
-
+        return binding.getRoot();
     }
+
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
-        getSpendings(7);
+        getRevenueInYear();
+        getRevenueInMonth(7);
+    }
+    private void getRevenueInYear() {
+        invoiceApi invoiceApi = new invoiceApi();
+        invoiceApi.getRevenueByStoreID(g_sStoreID, new GetAggregateCallback() {
+            @Override
+            public void onSuccess(double spendings) {
+                binding.txtRevenueInYear.setText(FormatHelper.formatVND(spendings));
+                setupSpendingChart(spendings);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                showToast(requireActivity(), errorMessage);
+            }
+        });
+
     }
 
-    private void initUI() {
-        getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
-        Objects.requireNonNull(getSupportActionBar()).hide();
 
-    }
 
-    private void getSpendings(int month) {
+    private void getRevenueInMonth(int month) {
         binding.progressBar.setVisibility(View.VISIBLE);
         invoiceApi invoiceApi = new invoiceApi();
-        invoiceApi.getSpendingsInAMonthByCustomerID(customerID, month, new GetAggregateCallback() {
+        invoiceApi.getRevenueInAMonthByStoreID(g_sStoreID, month, new GetAggregateCallback() {
             @Override
             public void onSuccess(double spendings) {
                 binding.progressBar.setVisibility(View.GONE);
-                binding.txtSpendings.setText(FormatHelper.formatVND(spendings));
+                binding.txtRevenueInMonth.setText(FormatHelper.formatVND(spendings));
                 setupSpendingChart(spendings);
             }
 
             @Override
             public void onFailure(String errorMessage) {
                 binding.progressBar.setVisibility(View.GONE);
-                showToast(SpendingsActivity.this, errorMessage);
+                showToast(requireActivity(), errorMessage);
             }
         });
 
@@ -107,7 +121,7 @@ public class SpendingsActivity extends AppCompatActivity {
         ArrayList<LegendEntry> legendEntries = new ArrayList<>();
 
         LegendEntry entry = new LegendEntry();
-        entry.label = "Chi tiêu";
+        entry.label = "Doanh thu";
         entry.formColor = ColorTemplate.JOYFUL_COLORS[0 % ColorTemplate.JOYFUL_COLORS.length];
         legendEntries.add(entry);
         barChart1.getLegend().setCustom(legendEntries);
@@ -155,13 +169,17 @@ public class SpendingsActivity extends AppCompatActivity {
         barChart.getAxisRight().setEnabled(false);
     }
 
+    private void getStoreID() {
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        g_sStoreID = sharedPreferences.getString(STORE_ID, null);
+    }
     private void setupEvents() {
         String[] calendarMonths = {
                 "Tháng 1", "Tháng 2", "Tháng 3",
                 "Tháng 4", "Tháng 5", "Tháng 6",
                 "Tháng 7", "Tháng 8", "Tháng 9",
                 "Tháng 10", "Tháng 11", "Tháng 12"};
-        ArrayAdapter<String> monthsAdapter = new ArrayAdapter<>(SpendingsActivity.this,
+        ArrayAdapter<String> monthsAdapter = new ArrayAdapter<>(requireActivity(),
                 android.R.layout.simple_spinner_item, calendarMonths);
         monthsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spnSelectMonth.setAdapter(monthsAdapter);
@@ -171,7 +189,7 @@ public class SpendingsActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 binding.txtSelectedMonth.setText(calendarMonths[position] + " / 2024");
-                getSpendings(position + 1);
+                getRevenueInMonth(position + 1);
             }
 
             @Override
@@ -180,14 +198,6 @@ public class SpendingsActivity extends AppCompatActivity {
             }
         });
 
-
-        binding.btnBack.setOnClickListener(v -> finish());
-    }
-
-    private void getCustomerID() {
-        SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
-        customerID = sharedPreferences.getString(USER_ID, null);
-        Log.d("customerID", customerID);
     }
 
 
