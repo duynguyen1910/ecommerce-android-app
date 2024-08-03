@@ -1,12 +1,19 @@
 package Activities;
+
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static utils.Cart.CartUtils.showToast;
+
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.stores.databinding.ActivitySpendingsBinding;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -17,8 +24,10 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+
 import java.util.ArrayList;
 import java.util.Objects;
+
 import api.invoiceApi;
 import interfaces.GetAggregateCallback;
 import utils.Chart.CustomValueMoneyFormatter;
@@ -29,6 +38,7 @@ public class SpendingsActivity extends AppCompatActivity {
 
     private String customerID;
     ActivitySpendingsBinding binding;
+    private int g_nSelectedMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +55,7 @@ public class SpendingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setupSpendings();
-        getSpendings();
+        getSpendings(7);
     }
 
     private void initUI() {
@@ -55,11 +64,12 @@ public class SpendingsActivity extends AppCompatActivity {
 
     }
 
-    private void getSpendings() {
+    private void getSpendings(int month) {
         invoiceApi invoiceApi = new invoiceApi();
-        invoiceApi.getSpendingsInAMonthByCustomerID(customerID, 7, new GetAggregateCallback() {
+        invoiceApi.getSpendingsInAMonthByCustomerID(customerID, month, new GetAggregateCallback() {
             @Override
             public void onSuccess(double spendings) {
+                binding.txtSpendings.setText(FormatHelper.formatVND(spendings));
                 setupSpendingChart(spendings);
             }
 
@@ -96,7 +106,7 @@ public class SpendingsActivity extends AppCompatActivity {
 
         LegendEntry entry = new LegendEntry();
         entry.label = "Chi tiêu";
-        entry.formColor = ColorTemplate.JOYFUL_COLORS[1 % ColorTemplate.JOYFUL_COLORS.length];
+        entry.formColor = ColorTemplate.JOYFUL_COLORS[0 % ColorTemplate.JOYFUL_COLORS.length];
         legendEntries.add(entry);
         barChart1.getLegend().setCustom(legendEntries);
         barChart1.setExtraOffsets(10f, 80f, 10f, 40f);
@@ -143,23 +153,32 @@ public class SpendingsActivity extends AppCompatActivity {
         barChart.getAxisRight().setEnabled(false);
     }
 
-
-    private void setupSpendings() {
-        invoiceApi invoiceApi = new invoiceApi();
-        invoiceApi.getSpendingsByCustomerID(customerID, new GetAggregateCallback() {
+    private void setupEvents() {
+        String[] calendarMonths = {
+                "Tháng 1", "Tháng 2", "Tháng 3",
+                "Tháng 4", "Tháng 5", "Tháng 6",
+                "Tháng 7", "Tháng 8", "Tháng 9",
+                "Tháng 10", "Tháng 11", "Tháng 12"};
+        ArrayAdapter<String> monthsAdapter = new ArrayAdapter<>(SpendingsActivity.this,
+                android.R.layout.simple_spinner_item, calendarMonths);
+        monthsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spnSelectMonth.setAdapter(monthsAdapter);
+        binding.spnSelectMonth.setSelection(6); // July
+        binding.spnSelectMonth.setDropDownVerticalOffset(100);
+        binding.spnSelectMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onSuccess(double sumTotal) {
-                binding.txtSpendings.setText(FormatHelper.formatVND(sumTotal));
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                binding.txtSelectedMonth.setText(calendarMonths[position] + " / 2024");
+                getSpendings(position + 1);
             }
 
             @Override
-            public void onFailure(String errorMessage) {
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-    }
 
-    private void setupEvents() {
+
         binding.btnBack.setOnClickListener(v -> finish());
     }
 
@@ -168,5 +187,6 @@ public class SpendingsActivity extends AppCompatActivity {
         customerID = sharedPreferences.getString(USER_ID, null);
         Log.d("customerID", customerID);
     }
+
 
 }

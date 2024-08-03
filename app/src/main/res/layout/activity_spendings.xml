@@ -46,8 +46,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="Tổng chi tiêu:"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="16dp"
+            android:id="@+id/txtSelectedMonth"
             android:textColor="@color/black"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -56,10 +57,27 @@
             android:id="@+id/txtSpendings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
             android:text="0đ"
+            android:layout_marginEnd="16dp"
             android:textColor="@color/primary_color"
             android:textSize="18sp"
             android:textStyle="bold" />
+
+        <Spinner
+            android:id="@+id/spnSelectMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical|end"
+            android:drawableEnd="@drawable/baseline_calendar_month_24"
+            android:drawablePadding="4dp"
+            android:drawableTint="@color/white"
+            android:gravity="center"
+            android:paddingHorizontal="8dp"
+            android:text="Chọn tháng"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
     </LinearLayout>
 
 
