@@ -1,44 +1,24 @@
 package Adapters.Invoices;
-
-import static constants.keyName.CANCELED_AT;
-import static constants.keyName.CANCELED_BY;
-import static constants.keyName.CANCELED_REASON;
-import static constants.keyName.STATUS;
 import static constants.keyName.STORE_NAME;
-import static constants.toastMessage.CANCEL_ORDER_SUCCESSFULLY;
-import static utils.Cart.CartUtils.showToast;
 import static utils.FormatHelper.formatDateTime;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.stores.R;
-import com.example.stores.databinding.DialogCancelInvoiceBinding;
 import com.example.stores.databinding.ItemInvoiceBinding;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import Activities.Invoices.InvoiceDetailActivity;
 import api.invoiceApi;
@@ -46,9 +26,9 @@ import api.storeApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
-import interfaces.UpdateDocumentCallback;
 import models.Invoice;
 import models.InvoiceDetail;
+import utils.DialogCancelInvoiceUtils;
 import utils.FormatHelper;
 
 public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHolder> {
@@ -89,6 +69,13 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         holder.binding.txtInvoiceStatus.setText(invoice.getStatus().getOrderLabel());
 
         holder.binding.txtTotal.setText(FormatHelper.formatVND(invoice.getTotal()));
+
+        if (invoice.getStatus() == OrderStatus.CANCELLED){
+            holder.binding.layoutCancelReason.setVisibility(View.VISIBLE);
+            holder.binding.txtCanceledReason.setText(invoice.getCancelledReason());
+        }else {
+            holder.binding.layoutCancelReason.setVisibility(View.GONE);
+        }
 
         holder.binding.btnCancelInvoice.setVisibility(
                 invoice.getStatus() == OrderStatus.PENDING_CONFIRMATION ? View.VISIBLE : View.GONE);
@@ -141,7 +128,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         holder.binding.btnCancelInvoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popUpCancelInvoiceDialog(invoice);
+                DialogCancelInvoiceUtils.popUpCancelInvoiceByCustomerDialog(context, invoice);
             }
         });
 
@@ -163,80 +150,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         });
     }
 
-    private void popUpCancelInvoiceDialog(Invoice invoice) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        DialogCancelInvoiceBinding dialogBinding = DialogCancelInvoiceBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
-        builder.setView(dialogBinding.getRoot());
-        AlertDialog dialog = builder.create();
 
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.custom_edit_text_border);
-        dialog.show();
-
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            window.setGravity(Gravity.BOTTOM);
-
-            Animation slideUp = AnimationUtils.loadAnimation(context, R.anim.slide_up);
-            dialogBinding.getRoot().startAnimation(slideUp);
-        }
-
-
-
-        final String[] cancelReason = {""};
-
-        dialogBinding.layoutSelectReason.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (checkedId == R.id.rdoReason1) {
-                    cancelReason[0] += dialogBinding.rdoReason1.getText().toString();
-                } else if (checkedId == R.id.rdoReason2) {
-                    cancelReason[0] += dialogBinding.rdoReason2.getText().toString();
-                }
-            }
-        });
-
-        dialogBinding.btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (cancelReason[0].isEmpty()) {
-                    showToast(context, "Bạn cần chọn lý do hủy đơn hàng.");
-                    return;
-                }
-                dialogBinding.progressBar.setVisibility(View.VISIBLE);
-                dialogBinding.progressBar.getIndeterminateDrawable()
-                        .setColorFilter(Color.parseColor("#f04d7f"), PorterDuff.Mode.MULTIPLY);
-                Map<String, Object> invoiceUpdate = new HashMap<>();
-                invoiceUpdate.put(STATUS, OrderStatus.CANCELLED.getOrderStatusValue());
-                String otherReason = "\nOther reason: " + dialogBinding.edtOtherReason.getText().toString().trim();
-                cancelReason[0] += otherReason;
-                String cancelledReason = "Cancel reason " + cancelReason[0];
-                invoiceUpdate.put(CANCELED_BY, invoice.getCustomerID());
-                invoiceUpdate.put(CANCELED_REASON, cancelledReason);
-                invoiceUpdate.put(CANCELED_AT, FormatHelper.getCurrentDateTime());
-
-                invoiceApi invoiceApi = new invoiceApi();
-                invoiceApi.updateStatusInvoiceApi(invoice.getBaseID(), invoiceUpdate, new UpdateDocumentCallback() {
-                    @Override
-                    public void onUpdateSuccess(String successMessage) {
-                        dialogBinding.progressBar.setVisibility(View.GONE);
-                        showToast(context, CANCEL_ORDER_SUCCESSFULLY);
-                        dialog.dismiss();
-                    }
-
-                    @Override
-                    public void onUpdateFailure(String errorMessage) {
-                        dialogBinding.progressBar.setVisibility(View.GONE);
-                        showToast(context, errorMessage);
-                        dialog.dismiss();
-                    }
-                });
-
-            }
-        });
-
-
-    }
 
     @Override
     public int getItemCount() {

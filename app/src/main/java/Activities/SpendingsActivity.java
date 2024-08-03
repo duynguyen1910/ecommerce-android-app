@@ -72,7 +72,7 @@ public class SpendingsActivity extends AppCompatActivity {
     }
 
     private void setupSpendingChart(double spendings) {
-        BarChart barChart1 = binding.bestSellerChart;
+        BarChart barChart1 = binding.spendingsChart;
         ArrayList<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(1, (float) spendings));
 

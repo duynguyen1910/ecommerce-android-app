@@ -134,7 +134,7 @@ public class RevenueActivity extends AppCompatActivity {
         }
 
         BarDataSet dataSet = new BarDataSet(entries, "Products");
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         dataSet.setValueTextColor(Color.BLACK);
         dataSet.setValueTextSize(14f);
         dataSet.setDrawValues(true);
@@ -154,7 +154,7 @@ public class RevenueActivity extends AppCompatActivity {
         for (int i = 0; i < productNames.size(); i++) {
             LegendEntry entry = new LegendEntry();
             entry.label = productNames.get(i);
-            entry.formColor = ColorTemplate.JOYFUL_COLORS[i % ColorTemplate.JOYFUL_COLORS.length];
+            entry.formColor = ColorTemplate.MATERIAL_COLORS[i % ColorTemplate.MATERIAL_COLORS.length];
             legendEntries.add(entry);
         }
         barChart1.getLegend().setCustom(legendEntries);
@@ -177,7 +177,7 @@ public class RevenueActivity extends AppCompatActivity {
         }
 
         BarDataSet dataSet = new BarDataSet(entries, "Products");
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         dataSet.setValueTextColor(Color.BLACK);
         dataSet.setValueTextSize(14f);
         dataSet.setDrawValues(true);
@@ -195,8 +195,8 @@ public class RevenueActivity extends AppCompatActivity {
         ArrayList<LegendEntry> legendEntries = new ArrayList<>();
         for (int i = 0; i < productNames.size(); i++) {
             LegendEntry entry = new LegendEntry();
-            entry.label = productNames.get(i);
-            entry.formColor = ColorTemplate.JOYFUL_COLORS[i % ColorTemplate.JOYFUL_COLORS.length];
+            entry.label = productNames.get(i).substring(0, 30);
+            entry.formColor = ColorTemplate.MATERIAL_COLORS[i % ColorTemplate.MATERIAL_COLORS.length];
             legendEntries.add(entry);
         }
         barChart1.getLegend().setCustom(legendEntries);
@@ -215,7 +215,6 @@ public class RevenueActivity extends AppCompatActivity {
         Legend legend = barChart.getLegend();
         legend.setEnabled(true);
         legend.setWordWrapEnabled(true);
-
         legend.setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
@@ -244,6 +243,7 @@ public class RevenueActivity extends AppCompatActivity {
         xAxis.setLabelRotationAngle(20f); // Xoay nhãn để tránh chồng chéo
         xAxis.setLabelCount(5, true); // Thiết lập số lượng nhãn
         xAxis.setTextSize(12f);
+
 
         barChart.getAxisRight().setEnabled(false);
     }

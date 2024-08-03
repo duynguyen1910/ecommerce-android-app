@@ -5,7 +5,6 @@
     android:background="@drawable/custom_edit_text_border"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="5dp"
     android:padding="10dp">
 
     <RelativeLayout
