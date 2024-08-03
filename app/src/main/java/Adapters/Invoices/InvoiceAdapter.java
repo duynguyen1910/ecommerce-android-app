@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.stores.databinding.ItemInvoiceBinding;
+import com.google.firebase.Timestamp;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -70,12 +72,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
 
         holder.binding.txtTotal.setText(FormatHelper.formatVND(invoice.getTotal()));
 
-        if (invoice.getStatus() == OrderStatus.CANCELLED){
-            holder.binding.layoutCancelReason.setVisibility(View.VISIBLE);
-            holder.binding.txtCanceledReason.setText(invoice.getCancelledReason());
-        }else {
-            holder.binding.layoutCancelReason.setVisibility(View.GONE);
-        }
+
 
         holder.binding.btnCancelInvoice.setVisibility(
                 invoice.getStatus() == OrderStatus.PENDING_CONFIRMATION ? View.VISIBLE : View.GONE);
@@ -93,6 +90,8 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
                         productList, InvoiceDetail.ITEM_TO_DISPLAY);
                 holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
                 holder.binding.recyclerViewProducts.setAdapter(adapter);
+                holder.binding.txtInvoiceStatus.setText(
+                        FormatHelper.formatDateTime(setDateTimeByInvoice(invoice)));
 
             }
 
@@ -130,12 +129,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         });
 
 
-        holder.binding.btnViewCancelledInvoiceDetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogCancelInvoiceUtils.popUpCancelledInvoiceDetailDialog(context, invoice);
-            }
-        });
+
 
     }
 
@@ -157,6 +151,17 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
     public void removeItemAdapter(int position) {
         invoiceList.remove(position);
         notifyItemRemoved(position);
+    }
+
+    private Timestamp setDateTimeByInvoice(Invoice invoice) {
+        switch (invoice.getStatus()) {
+            case PENDING_CONFIRMATION:
+                return invoice.getCreatedAt();
+            case PENDING_SHIPMENT:
+                return invoice.getShippedAt();
+            default:
+                return invoice.getCancelledAt();
+        }
     }
 
 

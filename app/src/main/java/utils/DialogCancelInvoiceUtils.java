@@ -84,9 +84,9 @@ public class DialogCancelInvoiceUtils {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rdoReason1) {
-                    cancelReason[0] += dialogBinding.rdoReason1.getText().toString();
+                    cancelReason[0] = dialogBinding.rdoReason1.getText().toString();
                 } else if (checkedId == R.id.rdoReason2) {
-                    cancelReason[0] += dialogBinding.rdoReason2.getText().toString();
+                    cancelReason[0] = dialogBinding.rdoReason2.getText().toString();
                 }
             }
         });
@@ -163,9 +163,9 @@ public class DialogCancelInvoiceUtils {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rdoReason1) {
-                    cancelReason[0] += dialogBinding.rdoReason1.getText().toString();
+                    cancelReason[0] = dialogBinding.rdoReason1.getText().toString();
                 } else if (checkedId == R.id.rdoReason2) {
-                    cancelReason[0] += dialogBinding.rdoReason2.getText().toString();
+                    cancelReason[0] = dialogBinding.rdoReason2.getText().toString();
                 }
             }
         });
@@ -245,9 +245,9 @@ public class DialogCancelInvoiceUtils {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == R.id.rdoReason1) {
-                    cancelReason[0] += dialogBinding.rdoReason1.getText().toString();
+                    cancelReason[0] = dialogBinding.rdoReason1.getText().toString();
                 } else if (checkedId == R.id.rdoReason2) {
-                    cancelReason[0] += dialogBinding.rdoReason2.getText().toString();
+                    cancelReason[0] = dialogBinding.rdoReason2.getText().toString();
                 }
             }
         });
@@ -305,75 +305,4 @@ public class DialogCancelInvoiceUtils {
 
     }
 
-
-    public static void popUpCancelledInvoiceDetailDialog(Context context, Invoice invoice) {
-
-        // setup UI cho dialog
-        Dialog dialog = new Dialog(context, android.R.style.Theme_Material_Light_Dialog);
-        DialogCancelledInvoiceDetailBinding dialogBinding = DialogCancelledInvoiceDetailBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
-        dialog.setContentView(dialogBinding.getRoot());
-
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-        Window window = dialog.getWindow();
-        if (window != null) {
-            layoutParams.copyFrom(window.getAttributes());
-            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-            window.setAttributes(layoutParams);
-
-        }
-
-
-
-        dialogBinding.progressBar.getIndeterminateDrawable()
-                .setColorFilter(ContextCompat.getColor(context, R.color.primary_color),
-                        PorterDuff.Mode.MULTIPLY);
-        dialogBinding.progressBar.setVisibility(View.VISIBLE);
-        //lấy role của người hủy đơn
-        userApi myUserApi = new userApi();
-        myUserApi.getUserInfoApi(invoice.getCancelledBy(), new UserCallback() {
-            @Override
-            public void getUserInfoSuccess(User user) {
-                dialog.show();
-                dialogBinding.progressBar.setVisibility(View.GONE);
-
-                Animation slideUp = AnimationUtils.loadAnimation(context, R.anim.slide_in_from_right);
-                dialogBinding.getRoot().startAnimation(slideUp);
-                UserRole role = user.getRole();
-                switch (role) {
-                    case STORE_OWNER_ROLE:
-                        dialogBinding.txtRole.setText("Người bán");
-                        break;
-                    case CUSTOMER_ROLE:
-                        dialogBinding.txtRole.setText("Người mua");
-                        break;
-                    case SHIPPER_ROLE:
-                        dialogBinding.txtRole.setText("Đơn vị vận chuyển");
-                        break;
-                    default:
-                        dialogBinding.txtRole.setText("Ecommerce");
-                        break;
-                }
-                dialogBinding.txtCanceledAt.setText(
-                        FormatHelper.formatDateTime(invoice.getCancelledAt()));
-                dialogBinding.txtCanceledReason.setText((invoice.getCancelledReason()));
-
-
-            }
-
-            @Override
-            public void getUserInfoFailure(String errorMessage) {
-                dialogBinding.progressBar.setVisibility(View.GONE);
-                showToast(context, errorMessage);
-            }
-        });
-        dialogBinding.btnAccept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-
-    }
 }

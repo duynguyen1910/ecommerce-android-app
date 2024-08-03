@@ -102,12 +102,7 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
             }
         });
 
-        if (invoice.getStatus() == OrderStatus.CANCELLED){
-            holder.binding.layoutCancelReason.setVisibility(View.VISIBLE);
-            holder.binding.txtCanceledReason.setText(invoice.getCancelledReason());
-        }else {
-            holder.binding.layoutCancelReason.setVisibility(View.GONE);
-        }
+
         setupControlButtons(invoice, holder.binding.btnCancel, holder.binding.btnDelivery, holder.binding.btnComplete);
 
         holder.binding.progressBar.setVisibility(View.VISIBLE);
@@ -181,13 +176,6 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
         holder.binding.btnCancel.setOnClickListener(v -> {
             DialogCancelInvoiceUtils.popUpCancelInvoiceByDeliveryDialog(this, context, invoice, holder.getBindingAdapterPosition());
         });
-        holder.binding.btnViewCancelledInvoiceDetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogCancelInvoiceUtils.popUpCancelledInvoiceDetailDialog(context, invoice);
-            }
-        });
-
 
     }
 

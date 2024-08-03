@@ -33,10 +33,16 @@ public class PendingShipmentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentWithOnlyRecyclerviewBinding.inflate(getLayoutInflater());
 
-        setupUI();
+
 
         return binding.getRoot();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupUI();
     }
 
     private void setupUI() {

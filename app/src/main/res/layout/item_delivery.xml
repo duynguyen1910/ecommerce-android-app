@@ -148,38 +148,7 @@
         </RelativeLayout>
 
     </RelativeLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:id="@+id/layoutCancelReason"
-        android:paddingHorizontal="16dp">
 
-        <TextView
-
-            android:id="@+id/txtCanceledReason"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="10dp"
-            android:textColor="@color/black" />
-
-        <TextView
-            android:id="@+id/btnViewCancelledInvoiceDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="4dp"
-            android:layout_gravity="center_vertical"
-            android:text="Xem chi tiết đơn hủy"
-            android:paddingVertical="10dp"
-            android:textAllCaps="false"
-            android:textColor="@color/primary_color"
-            android:textSize="14sp" />
-
-
-    </LinearLayout>
 
 
     <LinearLayout

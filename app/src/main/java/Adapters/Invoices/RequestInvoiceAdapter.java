@@ -100,12 +100,7 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
             }
         });
 
-        if (invoice.getStatus() == OrderStatus.CANCELLED){
-            holder.binding.layoutCancelReason.setVisibility(View.VISIBLE);
-            holder.binding.txtCanceledReason.setText(invoice.getCancelledReason());
-        }else {
-            holder.binding.layoutCancelReason.setVisibility(View.GONE);
-        }
+
         setupControlButtons(invoice, holder.binding.btnCancel, holder.binding.btnConfirm);
 //        holder.binding.txtInvoiceStatus.setText(invoice.getStatus().getOrderLabel());
 
@@ -179,12 +174,7 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
         holder.binding.btnCancel.setOnClickListener(v -> {
           DialogCancelInvoiceUtils.popUpCancelInvoiceByStoreDialog(this, context, invoice, holder.getBindingAdapterPosition());
         });
-        holder.binding.btnViewCancelledInvoiceDetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogCancelInvoiceUtils.popUpCancelledInvoiceDetailDialog(context, invoice);
-            }
-        });
+
 
     }
 

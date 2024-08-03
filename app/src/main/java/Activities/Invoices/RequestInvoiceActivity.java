@@ -37,7 +37,6 @@ public class RequestInvoiceActivity extends AppCompatActivity {
     int pendingConfirmQuantity = 0;
     int pendingShipmentQuantity = 0;
     int canceledQuantity = 0;
-
     int countCompleted = 0;
 
     @Override
