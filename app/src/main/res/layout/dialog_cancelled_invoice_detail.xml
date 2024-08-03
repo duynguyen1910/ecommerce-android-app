@@ -2,230 +2,132 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginStart="50dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     app:cardCornerRadius="10dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/lightgray"
-            android:padding="16dp"
-            android:text="Chi tiết đơn hủy"
-            android:textAlignment="textStart"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-        <LinearLayout
-            android:id="@+id/body"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/layoutPrice"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/custom_border_bottom"
-                android:orientation="vertical"
-                android:paddingVertical="8dp">
+                android:background="@color/light_bg_primary"
+                android:padding="16dp"
+                android:text="Chi tiết đơn hủy"
+                android:textAlignment="textStart"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
-                <TextView
+            <LinearLayout
+                android:id="@+id/body"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/custom_border_bottom"
+                    android:orientation="horizontal"
                     android:paddingHorizontal="16dp"
-                    android:text="Khoảng giá (đ)"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/black"
-                    android:visibility="visible" />
+                    android:paddingVertical="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hủy bởi"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/black"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/txtRole"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text="Người mua"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/primary_color"
+                        android:visibility="visible" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_border_bottom"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hủy vào lúc"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/black"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/txtCanceledAt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:text="31 July 2024 at 20:22:02"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/darkgray"
+                        android:visibility="visible" />
+
+                </RelativeLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:background="@drawable/custom_border_bottom"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="16dp">
 
-                    <EditText
-                        android:id="@+id/edtMinPrice"
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/lightgray"
-                        android:hint="Tối thiểu"
-                        android:inputType="number"
-                        android:padding="12dp"
-                        android:textAlignment="center"
+                        android:layout_marginBottom="8dp"
+                        android:text="Lý do hủy"
+                        android:textAlignment="textStart"
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:visibility="visible" />
 
-                    <EditText
-                        android:id="@+id/edtMaxPrice"
-                        android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/txtCanceledReason"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/lightgray"
-                        android:hint="Tối đa"
-                        android:inputType="number"
-                        android:padding="12dp"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:text="Đổi ý, không muốn mua nữa"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/darkgray"
+                        android:visibility="visible" />
 
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="4dp"
-                    android:scrollbarThumbHorizontal="@drawable/scrollbar_bg"
-                    android:scrollbars="horizontal" />
+
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/layoutRatings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_border_bottom"
-                android:orientation="vertical"
-                android:paddingVertical="8dp"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"
-                    android:paddingHorizontal="16dp"
-                    android:text="Đánh Giá (Tính năng đang phát triển)"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/black"
-                    android:visibility="visible" />
-
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/lightgray"
-                        android:button="@null"
-                        android:padding="12dp"
-                        android:text="5 sao"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:visibility="visible" />
-
-                    <RadioButton
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/lightgray"
-                        android:button="@null"
-                        android:padding="12dp"
-                        android:text="Từ 4 sao"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:visibility="visible" />
-
-                </RadioGroup>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/layoutAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_border_bottom"
-                android:orientation="vertical"
-                android:paddingVertical="8dp"
-                android:visibility="visible">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"
-                    android:paddingHorizontal="16dp"
-                    android:text="Nơi bán (Tính năng đang phát triển)"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/black"
-                    android:visibility="visible" />
-
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/lightgray"
-                        android:button="@null"
-                        android:padding="12dp"
-                        android:text="TP. Hồ Chí Minh"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:visibility="visible" />
-
-                    <RadioButton
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:layout_weight="1"
-                        android:background="@color/lightgray"
-                        android:button="@null"
-                        android:padding="12dp"
-                        android:text="Hà Nội"
-                        android:textAlignment="center"
-                        android:textColor="@color/black"
-                        android:visibility="visible" />
-
-                </RadioGroup>
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnClose"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/custom_button_cancel"
-                android:gravity="center"
-                android:text="Đóng"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnAccept"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1"
+                android:layout_margin="16dp"
                 android:background="@drawable/custom_button_accept_black"
                 android:gravity="center"
                 android:text="Đồng ý"
@@ -233,7 +135,16 @@
                 android:textColor="@color/white"
                 android:textSize="14sp" />
         </LinearLayout>
-    </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone" />
+    </RelativeLayout>
 
 
 </androidx.cardview.widget.CardView>

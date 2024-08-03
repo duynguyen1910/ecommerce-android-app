@@ -11,6 +11,7 @@ import static constants.keyName.USER_INFO;
 import static constants.toastMessage.CANCEL_ORDER_SUCCESSFULLY;
 import static utils.Cart.CartUtils.showToast;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -20,25 +21,39 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.example.stores.R;
 import com.example.stores.databinding.DialogCancelInvoiceByCustomerBinding;
 import com.example.stores.databinding.DialogCancelInvoiceByDeliveryBinding;
 import com.example.stores.databinding.DialogCancelInvoiceByStoreBinding;
+import com.example.stores.databinding.DialogCancelledInvoiceDetailBinding;
+import com.example.stores.databinding.DialogFilterBinding;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import Activities.BuyProduct.SearchActivity;
+import Adapters.SettingVariant.TypeValueAdapterForFilter;
 import api.invoiceApi;
+import api.userApi;
 import enums.OrderStatus;
+import enums.UserRole;
+import interfaces.InAdapter.FilterListener;
 import interfaces.UpdateDocumentCallback;
+import interfaces.UserCallback;
 import models.Invoice;
+import models.TypeValue;
+import models.User;
 
 public class DialogCancelInvoiceUtils {
     public static void popUpCancelInvoiceByCustomerDialog(Context context, Invoice invoice) {
@@ -58,7 +73,6 @@ public class DialogCancelInvoiceUtils {
             Animation slideUp = AnimationUtils.loadAnimation(context, R.anim.slide_up);
             dialogBinding.getRoot().startAnimation(slideUp);
         }
-
 
 
         final String[] cancelReason = {""};
@@ -88,10 +102,10 @@ public class DialogCancelInvoiceUtils {
                 invoiceUpdate.put(STATUS, OrderStatus.CANCELLED.getOrderStatusValue());
                 String cancelledReason = "";
                 String otherReason = dialogBinding.edtOtherReason.getText().toString().trim();
-                if (otherReason.isEmpty()){
-                    cancelledReason = "Đã hủy bởi người mua. Lý do hủy: "  + cancelReason[0];
-                }else {
-                    cancelledReason = "Đã hủy bởi người mua. Lý do hủy: "  + cancelReason[0] +  "Lý do khác: " + otherReason;
+                if (otherReason.isEmpty()) {
+                    cancelledReason = "Đã hủy bởi người mua. Lý do hủy: " + cancelReason[0];
+                } else {
+                    cancelledReason = "Đã hủy bởi người mua. Lý do hủy: " + cancelReason[0] + "Lý do khác: " + otherReason;
                 }
                 invoiceUpdate.put(CANCELED_BY, invoice.getCustomerID());
                 invoiceUpdate.put(CANCELED_REASON, cancelledReason);
@@ -139,7 +153,6 @@ public class DialogCancelInvoiceUtils {
         }
 
 
-
         final String[] cancelReason = {""};
 
         dialogBinding.layoutSelectReason.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -167,10 +180,10 @@ public class DialogCancelInvoiceUtils {
                 invoiceUpdate.put(STATUS, OrderStatus.CANCELLED.getOrderStatusValue());
                 String cancelledReason = "";
                 String otherReason = dialogBinding.edtOtherReason.getText().toString().trim();
-                if (otherReason.isEmpty()){
-                    cancelledReason = "Đã hủy bởi đơn vị vận chuyển. Lý do hủy: "  + cancelReason[0];
-                }else {
-                    cancelledReason = "Đã hủy bởi đơn vị vận chuyển. Lý do hủy: "  + cancelReason[0] +  "Lý do khác: " + otherReason;
+                if (otherReason.isEmpty()) {
+                    cancelledReason = "Đã hủy bởi đơn vị vận chuyển. Lý do hủy: " + cancelReason[0];
+                } else {
+                    cancelledReason = "Đã hủy bởi đơn vị vận chuyển. Lý do hủy: " + cancelReason[0] + "Lý do khác: " + otherReason;
                 }
 
                 SharedPreferences sharedPreferences = context.getSharedPreferences(USER_INFO, MODE_PRIVATE);
@@ -221,7 +234,6 @@ public class DialogCancelInvoiceUtils {
         }
 
 
-
         final String[] cancelReason = {""};
 
         dialogBinding.layoutSelectReason.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -250,10 +262,10 @@ public class DialogCancelInvoiceUtils {
                 String otherReason = dialogBinding.edtOtherReason.getText().toString().trim();
                 cancelReason[0] += otherReason;
                 String cancelledReason = "";
-                if (otherReason.isEmpty()){
-                    cancelledReason = "Đã hủy bởi người bán. Lý do hủy: "  + cancelReason[0];
-                }else {
-                    cancelledReason = "Đã hủy bởi người bán. Lý do hủy: "  + cancelReason[0] +  "Lý do khác: " + otherReason;
+                if (otherReason.isEmpty()) {
+                    cancelledReason = "Đã hủy bởi người bán. Lý do hủy: " + cancelReason[0];
+                } else {
+                    cancelledReason = "Đã hủy bởi người bán. Lý do hủy: " + cancelReason[0] + "Lý do khác: " + otherReason;
                 }
 
 
@@ -287,4 +299,75 @@ public class DialogCancelInvoiceUtils {
 
     }
 
+
+    public static void popUpCancelledInvoiceDetailDialog(Context context, Invoice invoice) {
+
+        // setup UI cho dialog
+        Dialog dialog = new Dialog(context, android.R.style.Theme_Material_Light_Dialog);
+        DialogCancelledInvoiceDetailBinding dialogBinding = DialogCancelledInvoiceDetailBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
+        dialog.setContentView(dialogBinding.getRoot());
+
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        Window window = dialog.getWindow();
+        if (window != null) {
+            layoutParams.copyFrom(window.getAttributes());
+            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            window.setAttributes(layoutParams);
+
+        }
+
+
+
+        dialogBinding.progressBar.getIndeterminateDrawable()
+                .setColorFilter(ContextCompat.getColor(context, R.color.primary_color),
+                        PorterDuff.Mode.MULTIPLY);
+        dialogBinding.progressBar.setVisibility(View.VISIBLE);
+        //lấy role của người hủy đơn
+        userApi myUserApi = new userApi();
+        myUserApi.getUserInfoApi(invoice.getCancelledBy(), new UserCallback() {
+            @Override
+            public void getUserInfoSuccess(User user) {
+                dialog.show();
+                dialogBinding.progressBar.setVisibility(View.GONE);
+
+                Animation slideUp = AnimationUtils.loadAnimation(context, R.anim.slide_in_from_right);
+                dialogBinding.getRoot().startAnimation(slideUp);
+                UserRole role = user.getRole();
+                switch (role) {
+                    case STORE_OWNER_ROLE:
+                        dialogBinding.txtRole.setText("Người bán");
+                        break;
+                    case CUSTOMER_ROLE:
+                        dialogBinding.txtRole.setText("Người mua");
+                        break;
+                    case SHIPPER_ROLE:
+                        dialogBinding.txtRole.setText("Đơn vị vận chuyển");
+                        break;
+                    default:
+                        dialogBinding.txtRole.setText("Ecommerce");
+                        break;
+                }
+                dialogBinding.txtCanceledAt.setText(
+                        FormatHelper.formatDateTime(invoice.getCancelledAt()));
+                dialogBinding.txtCanceledReason.setText((invoice.getCancelledReason()));
+
+
+            }
+
+            @Override
+            public void getUserInfoFailure(String errorMessage) {
+                dialogBinding.progressBar.setVisibility(View.GONE);
+                showToast(context, errorMessage);
+            }
+        });
+        dialogBinding.btnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+
+    }
 }

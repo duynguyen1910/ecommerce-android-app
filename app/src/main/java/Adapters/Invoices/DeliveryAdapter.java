@@ -181,6 +181,12 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
         holder.binding.btnCancel.setOnClickListener(v -> {
             DialogCancelInvoiceUtils.popUpCancelInvoiceByDeliveryDialog(context, invoice);
         });
+        holder.binding.btnViewCancelledInvoiceDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogCancelInvoiceUtils.popUpCancelledInvoiceDetailDialog(context, invoice);
+            }
+        });
 
 
     }

@@ -167,7 +167,7 @@
             android:textColor="@color/black" />
 
         <TextView
-            android:id="@+id/btnViewDetail"
+            android:id="@+id/btnViewCancelledInvoiceDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="4dp"

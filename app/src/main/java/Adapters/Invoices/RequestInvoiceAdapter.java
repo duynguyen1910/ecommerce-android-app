@@ -179,6 +179,12 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
         holder.binding.btnCancel.setOnClickListener(v -> {
           DialogCancelInvoiceUtils.popUpCancelInvoiceByStoreDialog(context, invoice);
         });
+        holder.binding.btnViewCancelledInvoiceDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogCancelInvoiceUtils.popUpCancelledInvoiceDetailDialog(context, invoice);
+            }
+        });
 
     }
 

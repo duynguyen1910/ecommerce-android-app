@@ -132,6 +132,13 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
             }
         });
 
+        holder.binding.btnViewCancelledInvoiceDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogCancelInvoiceUtils.popUpCancelledInvoiceDetailDialog(context, invoice);
+            }
+        });
+
     }
 
     private void getStoreNameByID(ArrayList<InvoiceDetail> productList, TextView txtStoreName) {
