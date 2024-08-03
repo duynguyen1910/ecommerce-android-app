@@ -66,7 +66,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         holder.binding.progressBar.getIndeterminateDrawable()
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
-        holder.binding.txtInvoiceStatus.setText(invoice.getStatus().getOrderLabel());
+
 
         holder.binding.txtTotal.setText(FormatHelper.formatVND(invoice.getTotal()));
 
@@ -125,12 +125,10 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
             }
         });
 
-        holder.binding.btnCancelInvoice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogCancelInvoiceUtils.popUpCancelInvoiceByCustomerDialog(context, invoice);
-            }
+        holder.binding.btnCancelInvoice.setOnClickListener(v -> {
+            DialogCancelInvoiceUtils.popUpCancelInvoiceByCustomerDialog(this, context, invoice, holder.getBindingAdapterPosition());
         });
+
 
         holder.binding.btnViewCancelledInvoiceDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +154,10 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
             }
         });
     }
-
+    public void removeItemAdapter(int position) {
+        invoiceList.remove(position);
+        notifyItemRemoved(position);
+    }
 
 
     @Override

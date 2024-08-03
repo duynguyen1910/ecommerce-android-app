@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_border_bottom"
                 android:padding="16dp"
-                android:text="Hãng vận chuyển nhầm lẫn dẫn đến hủy nhầm đơn"
+                android:text="Shop đóng gói sản phẩm không đúng quy định của nhà vận chuyển"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:visibility="visible" />

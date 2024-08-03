@@ -179,7 +179,7 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
 
 
         holder.binding.btnCancel.setOnClickListener(v -> {
-            DialogCancelInvoiceUtils.popUpCancelInvoiceByDeliveryDialog(context, invoice);
+            DialogCancelInvoiceUtils.popUpCancelInvoiceByDeliveryDialog(this, context, invoice, holder.getBindingAdapterPosition());
         });
         holder.binding.btnViewCancelledInvoiceDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,7 +193,7 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
 
 
 
-    private void removeItemAdapter(int position) {
+    public void removeItemAdapter(int position) {
         list.remove(position);
         notifyItemRemoved(position);
     }

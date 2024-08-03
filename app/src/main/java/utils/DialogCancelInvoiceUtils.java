@@ -43,6 +43,9 @@ import java.util.Map;
 import java.util.Objects;
 
 import Activities.BuyProduct.SearchActivity;
+import Adapters.Invoices.DeliveryAdapter;
+import Adapters.Invoices.InvoiceAdapter;
+import Adapters.Invoices.RequestInvoiceAdapter;
 import Adapters.SettingVariant.TypeValueAdapterForFilter;
 import api.invoiceApi;
 import api.userApi;
@@ -56,7 +59,7 @@ import models.TypeValue;
 import models.User;
 
 public class DialogCancelInvoiceUtils {
-    public static void popUpCancelInvoiceByCustomerDialog(Context context, Invoice invoice) {
+    public static void popUpCancelInvoiceByCustomerDialog(InvoiceAdapter adapter, Context context, Invoice invoice, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         DialogCancelInvoiceByCustomerBinding dialogBinding = DialogCancelInvoiceByCustomerBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         builder.setView(dialogBinding.getRoot());
@@ -118,6 +121,7 @@ public class DialogCancelInvoiceUtils {
                         dialogBinding.progressBar.setVisibility(View.GONE);
                         showToast(context, CANCEL_ORDER_SUCCESSFULLY);
                         dialog.dismiss();
+                        adapter.removeItemAdapter(position);
                     }
 
                     @Override
@@ -134,7 +138,7 @@ public class DialogCancelInvoiceUtils {
 
     }
 
-    public static void popUpCancelInvoiceByDeliveryDialog(Context context, Invoice invoice) {
+    public static void popUpCancelInvoiceByDeliveryDialog(DeliveryAdapter adapter, Context context, Invoice invoice, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         DialogCancelInvoiceByDeliveryBinding dialogBinding = DialogCancelInvoiceByDeliveryBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         builder.setView(dialogBinding.getRoot());
@@ -199,6 +203,7 @@ public class DialogCancelInvoiceUtils {
                         dialogBinding.progressBar.setVisibility(View.GONE);
                         showToast(context, CANCEL_ORDER_SUCCESSFULLY);
                         dialog.dismiss();
+                        adapter.removeItemAdapter(position);
                     }
 
                     @Override
@@ -215,7 +220,7 @@ public class DialogCancelInvoiceUtils {
 
     }
 
-    public static void popUpCancelInvoiceByStoreDialog(Context context, Invoice invoice) {
+    public static void popUpCancelInvoiceByStoreDialog(RequestInvoiceAdapter adapter, Context context, Invoice invoice, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         DialogCancelInvoiceByStoreBinding dialogBinding = DialogCancelInvoiceByStoreBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         builder.setView(dialogBinding.getRoot());
@@ -283,6 +288,7 @@ public class DialogCancelInvoiceUtils {
                         dialogBinding.progressBar.setVisibility(View.GONE);
                         showToast(context, CANCEL_ORDER_SUCCESSFULLY);
                         dialog.dismiss();
+                        adapter.removeItemAdapter(position);
                     }
 
                     @Override
