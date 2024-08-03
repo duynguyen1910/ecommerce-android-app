@@ -1,23 +1,21 @@
 package api;
-
 import static constants.collectionName.INVOICE_COLLECTION;
 import static constants.collectionName.INVOICE_DETAIL_COLLECTION;
 import static constants.collectionName.PRODUCT_COLLECTION;
+import static constants.keyName.CREATE_AT;
 import static constants.keyName.CUSTOMER_ID;
 import static constants.keyName.INVOICE_ID;
-import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.STATUS;
 import static constants.keyName.STORE_ID;
 import static constants.toastMessage.CONFIRMED_ORDER_SUCCESSFULLY;
 import static constants.toastMessage.INTERNET_ERROR;
 import static constants.toastMessage.ORDER_SUCCESSFULLY;
-
 import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,13 +23,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
-
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import interfaces.CreateDocumentCallback;
 import interfaces.GetAggregateCallback;
 import interfaces.GetCollectionCallback;
@@ -123,6 +120,52 @@ public class invoiceApi {
         db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(CUSTOMER_ID, customerID)
                 .whereIn(STATUS, orderStatuses)
+                .get()
+                .addOnSuccessListener(task -> {
+                    double spendings = 0;
+                    for (DocumentSnapshot document : task.getDocuments()) {
+                        Invoice invoice = document.toObject(Invoice.class);
+                        double total = invoice.getTotal();
+                        spendings += total;
+                    }
+                    callback.onSuccess(spendings);
+                }).addOnFailureListener(e -> {
+                    callback.onFailure(INTERNET_ERROR);
+                });
+
+    }
+
+    public int getMonthInCalendar(int month){
+        int[] calendarMonths = {
+                Calendar.JANUARY, Calendar.FEBRUARY, Calendar.MARCH,
+                Calendar.APRIL, Calendar.MAY, Calendar.JUNE,
+                Calendar.JULY, Calendar.AUGUST, Calendar.SEPTEMBER,
+                Calendar.OCTOBER, Calendar.NOVEMBER, Calendar.DECEMBER};
+        return calendarMonths[month - 1];
+    }
+
+    public Timestamp[] getDayRange(int month) {
+        Calendar startCalendar = Calendar.getInstance();
+        startCalendar.set(2024, getMonthInCalendar(month), 1, 0, 0, 0); // Set to 00:00:00 of the 1st day
+        Timestamp startDate = new Timestamp(startCalendar.getTime());
+
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.set(2024, getMonthInCalendar(month), endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59); // Set to 23:59:59 of the last day
+        Timestamp endDate = new Timestamp(endCalendar.getTime());
+
+        return new Timestamp[]{startDate, endDate};
+    }
+
+    public void getSpendingsInAMonthByCustomerID(String customerID, int month, GetAggregateCallback callback) {
+        List<Integer> orderStatuses = new ArrayList<>();
+        orderStatuses.add(2);
+        orderStatuses.add(3);
+        orderStatuses.add(4);
+        db.collection(INVOICE_COLLECTION)
+                .whereEqualTo(CUSTOMER_ID, customerID)
+                .whereIn(STATUS, orderStatuses)
+                .whereGreaterThanOrEqualTo(CREATE_AT, getDayRange(month)[0])
+                .whereLessThanOrEqualTo(CREATE_AT, getDayRange(month)[1])
                 .get()
                 .addOnSuccessListener(task -> {
                     double spendings = 0;

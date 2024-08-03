@@ -57,7 +57,7 @@ public class SpendingsActivity extends AppCompatActivity {
 
     private void getSpendings() {
         invoiceApi invoiceApi = new invoiceApi();
-        invoiceApi.getSpendingsByCustomerID(customerID, new GetAggregateCallback() {
+        invoiceApi.getSpendingsInAMonthByCustomerID(customerID, 7, new GetAggregateCallback() {
             @Override
             public void onSuccess(double spendings) {
                 setupSpendingChart(spendings);

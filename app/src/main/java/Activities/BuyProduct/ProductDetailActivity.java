@@ -55,6 +55,7 @@ import interfaces.GetDocumentCallback;
 import models.CartItem;
 import models.Product;
 import models.Store;
+import utils.Cart.CartUtils;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -75,6 +76,12 @@ public class ProductDetailActivity extends AppCompatActivity {
         setupProductInfo();
         setupStoreInfo();
         setupEvents();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CartUtils.updateQuantityInCart(binding.txtQuantityInCart);
     }
 
     private void getBundle() {
