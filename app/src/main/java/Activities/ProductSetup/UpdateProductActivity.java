@@ -28,6 +28,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import api.categoryApi;
 import interfaces.GetDocumentCallback;
 import interfaces.UpdateDocumentCallback;
 import models.Product;
@@ -72,6 +73,19 @@ public class UpdateProductActivity extends AppCompatActivity {
                         binding.edtInStock.setText(String.valueOf(inStock));
 
                         categoryId = (String) productDetail.get(CATEGORY_ID);
+
+                        categoryApi mCategoryApi = new categoryApi();
+                        mCategoryApi.getCategoryDetailApi(categoryId, new GetDocumentCallback() {
+                            @Override
+                            public void onGetDataSuccess(Map<String, Object> categoryDetail) {
+                                binding.edtCategory.setText((CharSequence) categoryDetail.get(CATEGORY_NAME));
+                            }
+
+                            @Override
+                            public void onGetDataFailure(String errorMessage) {
+
+                            }
+                        });
                     }
 
                     @Override
