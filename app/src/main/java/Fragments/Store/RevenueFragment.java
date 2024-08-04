@@ -1,10 +1,8 @@
 package Fragments.Store;
-
 import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 import static utils.Cart.CartUtils.showToast;
-
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,13 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.stores.R;
 import com.example.stores.databinding.FragmentRevenueBinding;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
@@ -27,13 +27,15 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
-
 import java.util.ArrayList;
-
-import Activities.SpendingsActivity;
 import api.invoiceApi;
 import interfaces.GetAggregateCallback;
+import interfaces.GetCollectionCallback;
 import utils.Chart.CustomValueMoneyFormatter;
 import utils.FormatHelper;
 
@@ -55,16 +57,17 @@ public class RevenueFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getRevenueInYear();
+        getRevenueForAllMonths();
+        getTotalRevenueInYear();
         getRevenueInMonth(7);
     }
-    private void getRevenueInYear() {
+    private void getTotalRevenueInYear() {
         invoiceApi invoiceApi = new invoiceApi();
         invoiceApi.getRevenueByStoreID(g_sStoreID, new GetAggregateCallback() {
             @Override
-            public void onSuccess(double spendings) {
-                binding.txtRevenueInYear.setText(FormatHelper.formatVND(spendings));
-                setupSpendingChart(spendings);
+            public void onSuccess(double revenue) {
+                binding.txtRevenueInYear.setText(FormatHelper.formatVND(revenue));
+                setupRevenueInMonthChart(revenue);
             }
 
             @Override
@@ -73,6 +76,92 @@ public class RevenueFragment extends Fragment {
             }
         });
 
+    }
+
+    private void getRevenueForAllMonths(){
+        binding.progressBarLineChart.setVisibility(View.VISIBLE);
+        invoiceApi mInvoiceApi = new invoiceApi();
+        mInvoiceApi.getRevenueForAllMonthsByStoreID(g_sStoreID, new GetCollectionCallback<Double>() {
+            @Override
+            public void onGetListSuccess(ArrayList<Double> listRevenues) {
+                binding.progressBarLineChart.setVisibility(View.GONE);
+                drawRevenuesInYear(listRevenues);
+            }
+
+            @Override
+            public void onGetListFailure(String errorMessage) {
+                binding.progressBarLineChart.setVisibility(View.GONE);
+                showToast(requireActivity(), errorMessage);
+
+            }
+        });
+    }
+
+    private void drawRevenuesInYear(ArrayList<Double> listRevenues){
+        LineChart lineChart = binding.lineChart;
+
+
+        // Dữ liệu mẫu cho doanh thu của 12 tháng
+        ArrayList<Entry> revenueEntries = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            float revenue = listRevenues.get(i).floatValue();
+            revenueEntries.add(new Entry(i + 1, revenue));
+        }
+
+
+        lineChart.getDescription().setEnabled(false);
+        LineDataSet dataSet = new LineDataSet(revenueEntries, "Doanh thu");
+        dataSet.setColor(ContextCompat.getColor(requireActivity(), R.color.secondary_color));
+        dataSet.setValueTextColor(ContextCompat.getColor(requireActivity(), R.color.black));
+        dataSet.setValueTextSize(12f);
+        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+
+        dataSet.setDrawFilled(true);
+        dataSet.setFillColor(ContextCompat.getColor(requireActivity(), R.color.secondary_color));
+        dataSet.setFillAlpha(100);
+
+        Legend legend = lineChart.getLegend();
+        legend.setTextSize(14f);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        LineData lineData = new LineData(dataSet);
+        lineChart.setData(lineData);
+        lineChart.invalidate(); // Refresh the chart
+
+        // Cấu hình XAxis
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularity(1f);
+        xAxis.setTextSize(12f);
+        xAxis.setLabelCount(12);
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                int month = Math.round(value); // Convert the float to int
+                switch (month) {
+                    case 1: return "T1";
+                    case 2: return "T2";
+                    case 3: return "T3";
+                    case 4: return "T4";
+                    case 5: return "T5";
+                    case 6: return "T6";
+                    case 7: return "T7";
+                    case 8: return "T8";
+                    case 9: return "T9";
+                    case 10: return "T10";
+                    case 11: return "T11";
+                    case 12: return "T12";
+                    default: return "";
+                }
+            }
+        });
+
+
+        // Cấu hình YAxis
+        YAxis leftAxis = lineChart.getAxisLeft();
+        leftAxis.setTextSize(12f);
+        leftAxis.setAxisMinimum(0f); // Minimum value for YAxis
+        lineChart.getAxisRight().setEnabled(false); // Disable right YAxis
     }
 
 
@@ -82,10 +171,10 @@ public class RevenueFragment extends Fragment {
         invoiceApi invoiceApi = new invoiceApi();
         invoiceApi.getRevenueInAMonthByStoreID(g_sStoreID, month, new GetAggregateCallback() {
             @Override
-            public void onSuccess(double spendings) {
+            public void onSuccess(double revenue) {
                 binding.progressBar.setVisibility(View.GONE);
-                binding.txtRevenueInMonth.setText(FormatHelper.formatVND(spendings));
-                setupSpendingChart(spendings);
+                binding.txtRevenueInMonth.setText(FormatHelper.formatVND(revenue));
+                setupRevenueInMonthChart(revenue);
             }
 
             @Override
@@ -97,10 +186,10 @@ public class RevenueFragment extends Fragment {
 
     }
 
-    private void setupSpendingChart(double spendings) {
+    private void setupRevenueInMonthChart(double revenue) {
         BarChart barChart1 = binding.spendingsChart;
         ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(1, (float) spendings));
+        entries.add(new BarEntry(1, (float) revenue));
 
         BarDataSet dataSet = new BarDataSet(entries, "Products");
         dataSet.setColors(ColorTemplate.JOYFUL_COLORS);

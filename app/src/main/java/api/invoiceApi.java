@@ -10,11 +10,15 @@ import static constants.keyName.STORE_ID;
 import static constants.toastMessage.CONFIRMED_ORDER_SUCCESSFULLY;
 import static constants.toastMessage.INTERNET_ERROR;
 import static constants.toastMessage.ORDER_SUCCESSFULLY;
+
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -24,6 +28,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -156,6 +161,8 @@ public class invoiceApi {
         return new Timestamp[]{startDate, endDate};
     }
 
+
+
     public void getSpendingsInAMonthByCustomerID(String customerID, int month, GetAggregateCallback callback) {
         List<Integer> orderStatuses = new ArrayList<>();
         orderStatuses.add(2);
@@ -179,6 +186,48 @@ public class invoiceApi {
                     callback.onFailure(INTERNET_ERROR);
                 });
 
+    }
+
+    public void getRevenueForAllMonthsByStoreID(String storeID, GetCollectionCallback<Double> callback) {
+        List<Task<QuerySnapshot>> tasks = new ArrayList<>();
+        for (int month = 1; month <= 12; month++) {
+            // Tạo các task cho từng tháng
+            tasks.add(getRevenueInAMonthTask(storeID, month));
+        }
+
+        // Sử dụng Tasks.whenAll để thực hiện tất cả các task và nhận kết quả
+        Tasks.whenAll(tasks).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ArrayList<Double> monthlyRevenues = new ArrayList<>();
+                for (int i = 0; i < tasks.size(); i++) {
+                    Task<QuerySnapshot> t = tasks.get(i);
+                    double revenue = 0;
+                    try {
+                        for (DocumentSnapshot document : t.getResult().getDocuments()) {
+                            Invoice invoice = document.toObject(Invoice.class);
+                            double total = invoice.getTotal();
+                            revenue += total;
+                        }
+                    } catch (Exception e) {
+                        Log.d("getRevenueForAllMonthsByStoreID", "Error processing month " + (i + 1) + ": " + e.getMessage());
+                    }
+                    monthlyRevenues.add(revenue);
+                }
+                callback.onGetListSuccess(monthlyRevenues);
+            } else {
+                callback.onGetListFailure(INTERNET_ERROR);
+            }
+        });
+    }
+
+    private Task<QuerySnapshot> getRevenueInAMonthTask(String storeID, int month) {
+        List<Integer> orderStatuses = Arrays.asList(2, 3, 4);
+        return db.collection(INVOICE_COLLECTION)
+                .whereEqualTo(STORE_ID, storeID)
+                .whereIn(STATUS, orderStatuses)
+                .whereGreaterThanOrEqualTo(CREATE_AT, getDayRange(month)[0])
+                .whereLessThanOrEqualTo(CREATE_AT, getDayRange(month)[1])
+                .get();
     }
     public void getRevenueInAMonthByStoreID(String storeID, int month, GetAggregateCallback callback) {
         List<Integer> orderStatuses = new ArrayList<>();
