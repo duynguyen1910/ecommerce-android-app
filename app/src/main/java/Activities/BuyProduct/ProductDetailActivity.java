@@ -92,7 +92,6 @@ public class ProductDetailActivity extends AppCompatActivity {
             buyable = bundle.getBoolean("buyable");
 
             if (!buyable){
-                showToast(ProductDetailActivity.this, "Bạn đang bán sản phẩm này!");
                 binding.btnAddToCart.setBackground(ContextCompat.getDrawable(this, R.color.gray));
                 binding.layoutBuyNow.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
                 binding.txtAddToCart.setTextColor(ContextCompat.getColor(this, R.color.black));

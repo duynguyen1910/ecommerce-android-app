@@ -23,7 +23,7 @@ import models.Category;
 public class CategoryAdapterForSearch extends RecyclerView.Adapter<CategoryAdapterForSearch.ViewHolder> {
     private final Context context;
     private final ArrayList<Category> list;
-    private String storeId;
+    private final String storeId;
 
     public CategoryAdapterForSearch(Context context, ArrayList<Category> list, String storeId) {
         this.context = context;
