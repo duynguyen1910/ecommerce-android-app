@@ -124,7 +124,11 @@ public class StatisticsProductsFragment extends Fragment {
         ArrayList<LegendEntry> legendEntries = new ArrayList<>();
         for (int i = 0; i < productNames.size(); i++) {
             LegendEntry entry = new LegendEntry();
-            entry.label = productNames.get(i).substring(0, 30);
+            if (productNames.get(i).length() > 30){
+                entry.label = productNames.get(i).substring(0, 30) + "...";
+            }else {
+                entry.label = productNames.get(i);
+            }
             entry.formColor = ColorTemplate.MATERIAL_COLORS[i % ColorTemplate.MATERIAL_COLORS.length];
             legendEntries.add(entry);
         }
@@ -166,7 +170,12 @@ public class StatisticsProductsFragment extends Fragment {
         ArrayList<LegendEntry> legendEntries = new ArrayList<>();
         for (int i = 0; i < productNames.size(); i++) {
             LegendEntry entry = new LegendEntry();
-            entry.label = productNames.get(i).substring(0, 30);
+            if (productNames.get(i).length() > 30){
+                entry.label = productNames.get(i).substring(0, 30) + "...";
+            }else {
+                entry.label = productNames.get(i);
+            }
+
             entry.formColor = ColorTemplate.MATERIAL_COLORS[i % ColorTemplate.MATERIAL_COLORS.length];
             legendEntries.add(entry);
         }

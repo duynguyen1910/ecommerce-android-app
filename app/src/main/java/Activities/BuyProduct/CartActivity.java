@@ -70,11 +70,12 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
 //     MY_CART.add(new CartItem(storeID, storeName, products));
 
     public static ArrayList<CartItem> setupPayment() {
+
         ArrayList<CartItem> result = new ArrayList<>();
 
+        // Tìm xem trong MY_CART có cartItem chứa product được check không?
+        // bỏ qua cartItem không thỏa mãn
         MY_CART.forEach(cartItem -> {
-            String storeID = cartItem.getStoreID();
-
             ArrayList<Product> checkedListProducts = new ArrayList<>();
 
             cartItem.getListProducts().forEach(product -> {
@@ -82,8 +83,9 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
                     checkedListProducts.add(product);
                 }
             });
+
             if (!checkedListProducts.isEmpty()) {
-                result.add(new CartItem(storeID, cartItem.getStoreName(), checkedListProducts));
+                result.add(new CartItem(cartItem.getStoreID(), cartItem.getStoreName(), checkedListProducts));
             }
         });
 

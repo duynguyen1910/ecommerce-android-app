@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import api.invoiceApi;
 import interfaces.GetAggregateCallback;
 import interfaces.GetCollectionCallback;
+import utils.Chart.CustomValueMoney2Formatter;
 import utils.Chart.CustomValueMoneyFormatter;
 import utils.FormatHelper;
 
@@ -116,6 +117,7 @@ public class RevenueFragment extends Fragment {
         dataSet.setValueTextSize(12f);
         dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
 
+
         dataSet.setDrawFilled(true);
         dataSet.setFillColor(ContextCompat.getColor(requireActivity(), R.color.secondary_color));
         dataSet.setFillAlpha(100);
@@ -162,6 +164,7 @@ public class RevenueFragment extends Fragment {
         leftAxis.setTextSize(12f);
         leftAxis.setAxisMinimum(0f); // Minimum value for YAxis
         lineChart.getAxisRight().setEnabled(false); // Disable right YAxis
+        leftAxis.setValueFormatter(new CustomValueMoneyFormatter());
     }
 
 
