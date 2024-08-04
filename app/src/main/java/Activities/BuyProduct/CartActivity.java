@@ -1,4 +1,5 @@
 package Activities.BuyProduct;
+
 import static constants.keyName.PAYMENT;
 import static utils.Cart.CartUtils.MY_CART;
 import static utils.Cart.CartUtils.getQuantityProductsInCart;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.core.content.ContextCompat;
@@ -45,11 +47,11 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         setupEvents();
     }
 
-    private void setupEvents(){
+    private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
 
         binding.btnBuyNow.setOnClickListener(v -> {
-            if (getQuantityCheckedProducts() > 0){
+            if (getQuantityCheckedProducts() > 0) {
                 Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
                 ArrayList<CartItem> payment = setupPayment();
 
@@ -65,43 +67,29 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         });
     }
 
-    public static ArrayList<CartItem> setupPayment() {
-        HashMap<String, HashMap<String, ArrayList<Product>>> hashMap = new HashMap<>();
+//     MY_CART.add(new CartItem(storeID, storeName, products));
 
-        for (CartItem cartItem : MY_CART) {
-            String storeName = cartItem.getStoreName();
+    public static ArrayList<CartItem> setupPayment() {
+        ArrayList<CartItem> result = new ArrayList<>();
+
+        MY_CART.forEach(cartItem -> {
             String storeID = cartItem.getStoreID();
 
-            if (!hashMap.containsKey(storeName)) {
-                hashMap.put(storeName, new HashMap<>());
-            }
+            ArrayList<Product> checkedListProducts = new ArrayList<>();
 
-            if (!hashMap.get(storeName).containsKey(storeID)) {
-                Objects.requireNonNull(hashMap.get(storeName)).put(storeID, new ArrayList<>());
-            }
-
-            for (Product product : cartItem.getListProducts()) {
+            cartItem.getListProducts().forEach(product -> {
                 if (product.getCheckedStatus()) {
-                    Objects.requireNonNull(hashMap.get(storeName)).get(storeID).add(product);
+                    checkedListProducts.add(product);
                 }
+            });
+            if (!checkedListProducts.isEmpty()) {
+                result.add(new CartItem(storeID, cartItem.getStoreName(), checkedListProducts));
             }
-        }
+        });
 
-        // filter HashMap để tạo CartItem
-        ArrayList<CartItem> cartItems = new ArrayList<>();
-        for (Map.Entry<String, HashMap<String, ArrayList<Product>>> storeEntry : hashMap.entrySet()) {
-            for (Map.Entry<String, ArrayList<Product>> entry : storeEntry.getValue().entrySet()) {
-                String storeName = storeEntry.getKey();
-                String storeID = entry.getKey();
-                ArrayList<Product> products = entry.getValue();
-                // Tạo CartItem mới từ tên cửa hàng, storeID và danh sách sản phẩm
-                cartItems.add(new CartItem(storeID, storeName, products));
-            }
-        }
 
-        return cartItems;
+        return result;
     }
-
 
 
     private void setupCart() {
@@ -132,7 +120,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         }
         double delivery = 0;
         double total = 0;
-        if (getTotalFee() != 0){
+        if (getTotalFee() != 0) {
             total = Math.round(getTotalFee() + delivery);
         }
 
@@ -142,18 +130,17 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
     }
 
 
-
     private double getTotalFee() {
         double fee = 0;
         for (CartItem item : MY_CART) {
             for (Product product : item.getListProducts()) {
-                if (product.getCheckedStatus()){
+                if (product.getCheckedStatus()) {
                     fee += (product.getNewPrice() * product.getNumberInCart());
                 }
 
             }
         }
-        binding.btnBuyNow.setText("Mua Hàng (" + getQuantityCheckedProducts() + ")" );
+        binding.btnBuyNow.setText("Mua Hàng (" + getQuantityCheckedProducts() + ")");
         return fee;
     }
 
@@ -161,7 +148,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         int count = 0;
         for (CartItem item : MY_CART) {
             for (Product product : item.getListProducts()) {
-                if (product.getCheckedStatus()){
+                if (product.getCheckedStatus()) {
                     count += 1;
                 }
 
@@ -174,7 +161,7 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
             binding.btnBuyNow.setFocusable(false);
             binding.btnBuyNow.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
         }
-        binding.btnBuyNow.setText("Mua Hàng (" + count + ")" );
+        binding.btnBuyNow.setText("Mua Hàng (" + count + ")");
         return count;
     }
 
