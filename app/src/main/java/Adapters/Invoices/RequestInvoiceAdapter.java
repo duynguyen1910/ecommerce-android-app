@@ -45,6 +45,7 @@ import api.invoiceApi;
 import api.productApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
+import interfaces.InAdapter.UpdateCountListener;
 import interfaces.StatusCallback;
 import interfaces.UpdateDocumentCallback;
 import interfaces.UserCallback;
@@ -57,11 +58,13 @@ import utils.FormatHelper;
 public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<Invoice> list;
+    private final UpdateCountListener listener;
 
 
-    public RequestInvoiceAdapter(Context context, ArrayList<Invoice> list) {
+    public RequestInvoiceAdapter(Context context, ArrayList<Invoice> list, UpdateCountListener listener) {
         this.context = context;
         this.list = list;
+        this.listener = listener;
     }
 
     @NonNull
@@ -146,6 +149,7 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
                 public void onUpdateSuccess(String successMessage) {
                     Toast.makeText(context, successMessage, Toast.LENGTH_SHORT).show();
                     removeItemAdapter(holder.getBindingAdapterPosition());
+                    listener.updateCount();
                 }
 
                 @Override
@@ -177,7 +181,9 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
 
 
     }
-
+    public void updateInvoicesCount(){
+        listener.updateCount();
+    }
 
 
     @Override

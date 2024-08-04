@@ -31,9 +31,10 @@ import Fragments.Delivery.DeliveryCompletedFragment;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetAggregateCallback;
+import interfaces.InAdapter.UpdateCountListener;
 import utils.DecorateUtils;
 
-public class DeliveryActivity extends AppCompatActivity {
+public class DeliveryActivity extends AppCompatActivity implements UpdateCountListener {
 
     ActivityDeliveryBinding binding;
     int pendingShipmentQuantity = 0;
@@ -221,5 +222,11 @@ public class DeliveryActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
 
+    }
+
+    @Override
+    public void updateCount() {
+        countCompleted = 0;
+        getCountOfInvoices();
     }
 }

@@ -46,6 +46,7 @@ import java.util.Objects;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
+import interfaces.InAdapter.UpdateCountListener;
 import interfaces.UpdateDocumentCallback;
 import interfaces.UserCallback;
 import models.Invoice;
@@ -57,11 +58,13 @@ import utils.FormatHelper;
 public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<Invoice> list;
+    private final UpdateCountListener listener;
 
 
-    public DeliveryAdapter(Context context, ArrayList<Invoice> list) {
+    public DeliveryAdapter(Context context, ArrayList<Invoice> list, UpdateCountListener listener) {
         this.context = context;
         this.list = list;
+        this.listener = listener;
     }
 
     @NonNull
@@ -145,6 +148,7 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
                 public void onUpdateSuccess(String successMessage) {
                     showToast(context, "Xác nhận đơn, tiến hành giao hàng");
                     removeItemAdapter(holder.getBindingAdapterPosition());
+                    listener.updateCount();
                 }
 
                 @Override
@@ -163,6 +167,7 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
                 public void onUpdateSuccess(String successMessage) {
                     showToast(context, "Đã xác nhận hoàn thành đơn hàng");
                     removeItemAdapter(holder.getBindingAdapterPosition());
+                    listener.updateCount();
                 }
 
                 @Override
@@ -177,6 +182,10 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
             DialogCancelInvoiceUtils.popUpCancelInvoiceByDeliveryDialog(this, context, invoice, holder.getBindingAdapterPosition());
         });
 
+    }
+
+    public void updateInvoicesCount(){
+        listener.updateCount();
     }
 
 

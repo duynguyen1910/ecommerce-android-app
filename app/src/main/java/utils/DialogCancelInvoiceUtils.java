@@ -204,6 +204,7 @@ public class DialogCancelInvoiceUtils {
                         showToast(context, CANCEL_ORDER_SUCCESSFULLY);
                         dialog.dismiss();
                         adapter.removeItemAdapter(position);
+                        adapter.updateInvoicesCount();
                     }
 
                     @Override
@@ -289,6 +290,7 @@ public class DialogCancelInvoiceUtils {
                         showToast(context, CANCEL_ORDER_SUCCESSFULLY);
                         dialog.dismiss();
                         adapter.removeItemAdapter(position);
+                        adapter.updateInvoicesCount();
                     }
 
                     @Override

@@ -30,9 +30,10 @@ import Fragments.RequestedInvoices.DeliveredRequestFragment;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetAggregateCallback;
+import interfaces.InAdapter.UpdateCountListener;
 import utils.DecorateUtils;
 
-public class RequestInvoiceActivity extends AppCompatActivity {
+public class RequestInvoiceActivity extends AppCompatActivity implements UpdateCountListener {
 
     ActivityRequestInvoiceBinding binding;
     int pendingConfirmQuantity = 0;
@@ -227,5 +228,11 @@ public class RequestInvoiceActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
 
+    }
+
+    @Override
+    public void updateCount() {
+        countCompleted = 0;
+        getCountOfRequestInvoices();
     }
 }

@@ -28,6 +28,7 @@ import Adapters.Invoices.RequestInvoiceAdapter;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
+import interfaces.InAdapter.UpdateCountListener;
 import models.CartItem;
 import models.Invoice;
 import models.Product;
@@ -72,7 +73,7 @@ public class CancelledFragment extends Fragment {
                         binding.progressBar.setVisibility(View.GONE);
 
                         RequestInvoiceAdapter adapter = new RequestInvoiceAdapter(requireActivity(),
-                                requestInvoiceList);
+                                requestInvoiceList, (UpdateCountListener) requireActivity());
                         binding.recyclerView.setAdapter(adapter);
                         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(),
                                 LinearLayoutManager.VERTICAL, false));

@@ -3,6 +3,8 @@ import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
+
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import Adapters.Invoices.RequestInvoiceAdapter;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
+import interfaces.InAdapter.UpdateCountListener;
 import models.Invoice;
 
 public class AwaitConfirmFragment extends Fragment {
@@ -60,7 +63,7 @@ public class AwaitConfirmFragment extends Fragment {
                 binding.progressBar.setVisibility(View.GONE);
 
                 RequestInvoiceAdapter adapter = new RequestInvoiceAdapter(requireActivity(),
-                        requestInvoiceList);
+                        requestInvoiceList, (UpdateCountListener) requireActivity());
                 binding.recyclerView.setAdapter(adapter);
                 binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(),
                         LinearLayoutManager.VERTICAL, false));
