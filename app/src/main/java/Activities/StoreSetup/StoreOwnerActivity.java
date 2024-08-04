@@ -33,6 +33,8 @@ public class StoreOwnerActivity extends AppCompatActivity {
     int pendingConfirmQuantity = 0;
     int pendingShipmentQuantity = 0;
     int canceledQuantity = 0;
+    int deliveredQuantity = 0;
+
     int countCompleted = 0;
 
     @Override
@@ -103,15 +105,33 @@ public class StoreOwnerActivity extends AppCompatActivity {
                         updateQuantityTextViews();
                     }
                 });
+        myInvoiceApi.countRequestInvoicesByStoreIDAndStatus(
+                storeId,
+                OrderStatus.DELIVERED.getOrderStatusValue(),
+                new GetAggregateCallback() {
+                    @Override
+                    public void onSuccess(double aggregateResult) {
+                        deliveredQuantity = (int) aggregateResult;
+                        countCompleted++;
+                        updateQuantityTextViews();
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        countCompleted++;
+                        updateQuantityTextViews();
+                    }
+                });
 
 
     }
 
     private void updateQuantityTextViews() {
-        if (countCompleted >= 3) {
+        if (countCompleted >= 4) {
             FormatHelper.formatQuantityTextView(binding.txtPendingConfirmInvoice, pendingConfirmQuantity);
             FormatHelper.formatQuantityTextView(binding.txtPendingShipmentInvoice, pendingShipmentQuantity);
             FormatHelper.formatQuantityTextView(binding.txtCanceledInvoice, canceledQuantity);
+            FormatHelper.formatQuantityTextView(binding.txtDeliveredInvoice, deliveredQuantity);
         }
     }
 
@@ -145,17 +165,22 @@ public class StoreOwnerActivity extends AppCompatActivity {
 
         binding.layoutAwaitConfirmedInvoice.setOnClickListener(v -> {
             Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
-            intent.putExtra("invoiceStatus", 0); //0 chờ xác nhận
+            intent.putExtra("tabSelected", 0); //0 chờ xác nhận
             startActivity(intent);
         });
         binding.layoutConfirmedInvoice.setOnClickListener(v -> {
             Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
-            intent.putExtra("invoiceStatus", 1); //1 đã xác nhận
+            intent.putExtra("tabSelected", 1); //1 đã xác nhận
             startActivity(intent);
         });
         binding.layoutCanceledInvoice.setOnClickListener(v -> {
             Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
-            intent.putExtra("invoiceStatus", 2); //2 đã hủy
+            intent.putExtra("tabSelected", 2); //2 đã hủy
+            startActivity(intent);
+        });
+        binding.layoutDeliveredInvoice.setOnClickListener(v -> {
+            Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
+            intent.putExtra("tabSelected", 3); //3 hoàn thành
             startActivity(intent);
         });
         binding.imvSettings.setOnClickListener(new View.OnClickListener() {

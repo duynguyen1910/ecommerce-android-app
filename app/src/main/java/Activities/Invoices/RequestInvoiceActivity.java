@@ -26,6 +26,7 @@ import Adapters.ViewPager2Adapter;
 import Fragments.RequestedInvoices.AwaitConfirmFragment;
 import Fragments.RequestedInvoices.CancelledFragment;
 import Fragments.RequestedInvoices.ConfirmedFragment;
+import Fragments.RequestedInvoices.DeliveredRequestFragment;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetAggregateCallback;
@@ -37,6 +38,7 @@ public class RequestInvoiceActivity extends AppCompatActivity {
     int pendingConfirmQuantity = 0;
     int pendingShipmentQuantity = 0;
     int canceledQuantity = 0;
+    int deliveredQuantity = 0;
     int countCompleted = 0;
 
     @Override
@@ -113,14 +115,32 @@ public class RequestInvoiceActivity extends AppCompatActivity {
                         updateTabQuantity();
                     }
                 });
+        myInvoiceApi.countRequestInvoicesByStoreIDAndStatus(
+                storeId,
+                OrderStatus.DELIVERED.getOrderStatusValue(),
+                new GetAggregateCallback() {
+                    @Override
+                    public void onSuccess(double aggregateResult) {
+                        deliveredQuantity = (int) aggregateResult;
+                        countCompleted++;
+                        updateTabQuantity();
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        countCompleted++;
+                        updateTabQuantity();
+                    }
+                });
 
 
     }
     private void updateTabQuantity() {
-        if (countCompleted >= 3) {
+        if (countCompleted >= 4) {
             updateTabLayout(0, pendingConfirmQuantity);
             updateTabLayout(1, pendingShipmentQuantity);
             updateTabLayout(2, canceledQuantity);
+            updateTabLayout(3, deliveredQuantity);
         }
     }
 
@@ -137,6 +157,7 @@ public class RequestInvoiceActivity extends AppCompatActivity {
         viewPager2Adapter.addFragment(new AwaitConfirmFragment(), "Chờ xác nhận"); // 0
         viewPager2Adapter.addFragment(new ConfirmedFragment(), "Chờ lấy hàng"); // 1
         viewPager2Adapter.addFragment(new CancelledFragment(), "Đơn hủy"); // 2
+        viewPager2Adapter.addFragment(new DeliveredRequestFragment(), "Hoàn thành"); // 3
 
         binding.viewPager2.setAdapter(viewPager2Adapter);
 
@@ -176,10 +197,10 @@ public class RequestInvoiceActivity extends AppCompatActivity {
         });
         Intent intent = getIntent();
         if (intent != null) {
-            int invoiceStatus = intent.getIntExtra("invoiceStatus", 0);
-            binding.viewPager2.setCurrentItem(invoiceStatus);
+            int tabSelected = intent.getIntExtra("tabSelected", 0);
+            binding.viewPager2.setCurrentItem(tabSelected);
 
-            TabLayout.Tab tab = binding.tabLayout.getTabAt(invoiceStatus);
+            TabLayout.Tab tab = binding.tabLayout.getTabAt(tabSelected);
             if (tab != null && tab.getCustomView() != null) {
                 TextView tabLabel = tab.getCustomView().findViewById(R.id.tabLabel);
                 TextView tabQuantity = tab.getCustomView().findViewById(R.id.tabQuantity);

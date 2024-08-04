@@ -59,7 +59,6 @@ public class InvoiceActivity extends AppCompatActivity {
                 ItemTabLabelBinding tabLayoutBinding = ItemTabLabelBinding.inflate(getLayoutInflater());
                 TextView tabLabel = tabLayoutBinding.tabLabel;
                 tabLabel.setText(viewPager2Adapter.getPageTitle(position));
-                DecorateUtils.decorateSelectedTextViews(InvoiceActivity.this, tabLabel);
                 tab.setCustomView(tabLayoutBinding.getRoot());
             }
         }).attach();

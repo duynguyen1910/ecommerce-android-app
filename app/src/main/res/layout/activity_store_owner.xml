@@ -232,6 +232,29 @@
                     android:text="Đơn hủy"
                     android:textColor="@color/black" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutDeliveredInvoice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtDeliveredInvoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Hoàn thành"
+                    android:textColor="@color/black" />
+            </LinearLayout>
 
         </LinearLayout>
 
