@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                onSaveUserInfo(user);
 
                Intent resultIntent = new Intent();
+               resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                resultIntent.putExtra(LOGIN_SUCCESSFULLY, true);
                setResult(Activity.RESULT_OK, resultIntent);
                finish();

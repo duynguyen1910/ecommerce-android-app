@@ -13,6 +13,7 @@ import static utils.Cart.CartUtils.updateQuantityInCart;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,6 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private User user;
     String storeId;
-
     @Nullable
     @Override
 
@@ -73,7 +73,6 @@ public class ProfileFragment extends Fragment {
 
         binding.txtFullname.setText(fullname);
         binding.txtPhoneNumber.setText(phoneNumber);
-
         if (userID != null) {
             binding.txtStore.setText(storeId == null ? "Tạo Store" : "Store của bạn");
             setupUIByRole(roleValue);
@@ -102,7 +101,13 @@ public class ProfileFragment extends Fragment {
 
     private void setupUIByRole(int roleValue) {
         UserRole userRole = UserRole.fromInt(roleValue);
+        // reset trạng thái ban đầu
+        binding.layoutLogistics.setVisibility(View.VISIBLE);
+        binding.layoutInvoices.setVisibility(View.VISIBLE);
+        binding.layoutActivateStore.setVisibility(View.VISIBLE);
+        binding.iconCart.setVisibility(View.VISIBLE);
 
+        // set layout by role
         switch (userRole) {
             case CUSTOMER_ROLE:
                 binding.txtRole.setText(UserRole.CUSTOMER_ROLE.getLabelRole());
@@ -113,6 +118,7 @@ public class ProfileFragment extends Fragment {
                 binding.layoutInvoices.setVisibility(View.GONE);
                 binding.layoutActivateStore.setVisibility(View.GONE);
                 binding.iconCart.setVisibility(View.GONE);
+
                 break;
             case STORE_OWNER_ROLE:
                 binding.txtRole.setText(UserRole.STORE_OWNER_ROLE.getLabelRole());

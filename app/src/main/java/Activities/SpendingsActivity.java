@@ -54,7 +54,7 @@ public class SpendingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        getSpendings(7);
+        getSpendings(8);
     }
 
     private void initUI() {
@@ -165,7 +165,7 @@ public class SpendingsActivity extends AppCompatActivity {
                 android.R.layout.simple_spinner_item, calendarMonths);
         monthsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spnSelectMonth.setAdapter(monthsAdapter);
-        binding.spnSelectMonth.setSelection(6); // July
+        binding.spnSelectMonth.setSelection(7); // August
         binding.spnSelectMonth.setDropDownVerticalOffset(100);
         binding.spnSelectMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
