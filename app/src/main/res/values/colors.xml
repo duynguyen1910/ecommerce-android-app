@@ -13,6 +13,7 @@
     <color name="primary_color">#f04d7f</color>
     <color name="black_trans">#33000000</color>
 
+    <color name="light_bg_primary">#FBF7F8</color>
 
     <color name="gray1" >#686868</color>
     <color name="gray2" >#5f6368</color>
@@ -54,6 +55,7 @@
     <color name="green">#169955</color>
     <color name="darkgreen">#5C8A72</color>
     <color name="secondary_color">#009688</color>
+
     <color name="secondary_color_alpha70">#B0009688</color>
     <color name="light_secondary_color">#679E99</color>
     <color name="light_light_secondary_color">#EBFAF8</color>

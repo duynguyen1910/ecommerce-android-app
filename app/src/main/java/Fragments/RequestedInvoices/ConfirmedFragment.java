@@ -22,6 +22,7 @@ import Adapters.Invoices.RequestInvoiceAdapter;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
+import interfaces.InAdapter.UpdateCountListener;
 import models.Invoice;
 
 public class ConfirmedFragment extends Fragment {
@@ -31,9 +32,6 @@ public class ConfirmedFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentWithOnlyRecyclerviewBinding.inflate(getLayoutInflater());
-
-        initInvoicesRequest();
-
         return binding.getRoot();
     }
 
@@ -64,7 +62,7 @@ public class ConfirmedFragment extends Fragment {
                         binding.progressBar.setVisibility(View.GONE);
 
                         RequestInvoiceAdapter adapter = new RequestInvoiceAdapter(requireActivity(),
-                                requestInvoiceList);
+                                requestInvoiceList, (UpdateCountListener) requireActivity());
                         binding.recyclerView.setAdapter(adapter);
                         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(),
                                 LinearLayoutManager.VERTICAL, false));

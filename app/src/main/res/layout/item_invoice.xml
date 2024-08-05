@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="6dp"
     android:paddingBottom="15dp"
-    android:background="@drawable/custom_border_bottom"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -41,8 +41,8 @@
             android:id="@+id/txtInvoiceStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chờ xác nhận"
-            android:textColor="@color/primary_color" />
+            android:text="..."
+            android:textColor="@color/black" />
 
     </LinearLayout>
 
@@ -74,7 +74,7 @@
             android:background="@color/secondary_color"
             android:paddingHorizontal="5dp"
             android:paddingVertical="2dp"
-            android:text="1 sản phẩm"
+            android:text="..."
             android:textColor="@color/white"
             android:textSize="12sp" />
 
@@ -95,12 +95,13 @@
                 android:id="@+id/txtTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="đ128.000"
+                android:text="..."
                 android:textColor="@color/primary_color"
                 android:textSize="15sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </RelativeLayout>
+
 
     <Button
         android:id="@+id/btnCancelInvoice"

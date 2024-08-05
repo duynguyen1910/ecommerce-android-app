@@ -1,70 +1,82 @@
-package Fragments.Delivery;
+package Fragments.RequestedInvoices;
+
 import static android.content.Context.MODE_PRIVATE;
+import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
+
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.example.stores.R;
 import com.example.stores.databinding.FragmentWithOnlyRecyclerviewBinding;
+
 import java.util.ArrayList;
 
-import Adapters.Invoices.DeliveryAdapter;
-import Adapters.Invoices.InvoiceAdapter;
+import Adapters.Invoices.RequestInvoiceAdapter;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
 import interfaces.InAdapter.UpdateCountListener;
 import models.Invoice;
 
-public class DeliveryBeingTransportedFragment extends Fragment {
+public class DeliveredRequestFragment extends Fragment {
     FragmentWithOnlyRecyclerviewBinding binding;
-
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentWithOnlyRecyclerviewBinding.inflate(getLayoutInflater());
-        setupUI();
         return binding.getRoot();
     }
 
-    private void setupUI() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        initInvoicesRequest();
+    }
+
+    private void initInvoicesRequest() {
+
         invoiceApi invoiceApi = new invoiceApi();
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);
         String userID = sharedPreferences.getString(USER_ID, null);
+        String storeID = sharedPreferences.getString(STORE_ID, null);
 
-        if (userID == null) return;
+        if(userID == null || storeID == null) return;
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.progressBar.getIndeterminateDrawable()
-                .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
+                .setColorFilter(ContextCompat.getColor(getContext(), R.color.primary_color),
+                        PorterDuff.Mode.MULTIPLY);
 
-        invoiceApi.getDeliveryInvoicesByStatusApi(OrderStatus.IN_TRANSIT.getOrderStatusValue(),
+        invoiceApi.getInvoiceByStoreIDApi(storeID, OrderStatus.DELIVERED.getOrderStatusValue(),
                 new GetCollectionCallback<Invoice>() {
                     @Override
-                    public void onGetListSuccess(ArrayList<Invoice> invoiceList) {
+                    public void onGetListSuccess(ArrayList<Invoice> requestInvoiceList) {
                         binding.progressBar.setVisibility(View.GONE);
-                        DeliveryAdapter invoiceAdapter = new DeliveryAdapter(requireActivity(), invoiceList, (UpdateCountListener) requireActivity());
-                        binding.recyclerView.setAdapter(invoiceAdapter);
-                        binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
+
+                        RequestInvoiceAdapter adapter = new RequestInvoiceAdapter(requireActivity(),
+                                requestInvoiceList, (UpdateCountListener) requireActivity());
+                        binding.recyclerView.setAdapter(adapter);
+                        binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(),
+                                LinearLayoutManager.VERTICAL, false));
                     }
 
                     @Override
                     public void onGetListFailure(String errorMessage) {
-                        binding.progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+
                     }
                 });
-
-
     }
 }

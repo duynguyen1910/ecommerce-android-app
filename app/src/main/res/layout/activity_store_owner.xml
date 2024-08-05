@@ -168,11 +168,11 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txtAwaitConfirmedInvoice"
+                    android:id="@+id/txtPendingConfirmInvoice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="0"
+
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
@@ -192,11 +192,11 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txtConfirmedInvoice"
+                    android:id="@+id/txtPendingShipmentInvoice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="0"
+
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
@@ -222,7 +222,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="0"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
 
@@ -231,6 +230,29 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Đơn hủy"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layoutDeliveredInvoice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtDeliveredInvoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Hoàn thành"
                     android:textColor="@color/black" />
             </LinearLayout>
 

@@ -14,6 +14,8 @@ import com.example.stores.databinding.ItemTabLabelBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.Objects;
+
+import Activities.StoreSetup.RevenueActivity;
 import Adapters.ViewPager2Adapter;
 import Fragments.Invoice.PendingConfirmationFragment;
 import Fragments.Invoice.PendingShipmentFragment;

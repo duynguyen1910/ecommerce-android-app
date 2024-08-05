@@ -1,52 +1,70 @@
 package Adapters.Invoices;
 
+import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.CANCELED_AT;
+import static constants.keyName.CANCELED_BY;
+import static constants.keyName.CANCELED_REASON;
 import static constants.keyName.CONFIRMED_AT;
 import static constants.keyName.STATUS;
+import static constants.keyName.STORE_ID;
+import static constants.keyName.USER_ID;
+import static constants.keyName.USER_INFO;
+import static constants.toastMessage.CANCEL_ORDER_SUCCESSFULLY;
 import static utils.Cart.CartUtils.showToast;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.stores.R;
+import com.example.stores.databinding.DialogCancelInvoiceByStoreBinding;
 import com.example.stores.databinding.ItemRequestInvoiceBinding;
 import com.google.firebase.Timestamp;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.Objects;
 import api.invoiceApi;
 import api.productApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
+import interfaces.InAdapter.UpdateCountListener;
 import interfaces.StatusCallback;
 import interfaces.UpdateDocumentCallback;
 import interfaces.UserCallback;
 import models.Invoice;
 import models.InvoiceDetail;
 import models.User;
+import utils.DialogCancelInvoiceUtils;
 import utils.FormatHelper;
 
 public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<Invoice> list;
+    private final UpdateCountListener listener;
 
 
-    public RequestInvoiceAdapter(Context context, ArrayList<Invoice> list) {
+    public RequestInvoiceAdapter(Context context, ArrayList<Invoice> list, UpdateCountListener listener) {
         this.context = context;
         this.list = list;
+        this.listener = listener;
     }
 
     @NonNull
@@ -130,6 +148,7 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
                 public void onUpdateSuccess(String successMessage) {
                     Toast.makeText(context, successMessage, Toast.LENGTH_SHORT).show();
                     removeItemAdapter(holder.getBindingAdapterPosition());
+                    listener.updateCount();
                 }
 
                 @Override
@@ -156,32 +175,22 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
 
 
         holder.binding.btnCancel.setOnClickListener(v -> {
-            Map<String, Object> newMap = new HashMap<>();
-            newMap.put(STATUS, OrderStatus.CANCELLED.getOrderStatusValue());
-            newMap.put(CANCELED_AT, FormatHelper.getCurrentDateTime());
-
-            invoiceApi.updateStatusInvoiceApi(invoice.getBaseID(), newMap, new UpdateDocumentCallback() {
-                @Override
-                public void onUpdateSuccess(String successMessage) {
-
-                    Toast.makeText(context, successMessage, Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onUpdateFailure(String errorMessage) {
-                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
-                }
-            });
+          DialogCancelInvoiceUtils.popUpCancelInvoiceByStoreDialog(this, context, invoice, holder.getBindingAdapterPosition());
         });
 
+
     }
+    public void updateInvoicesCount(){
+        listener.updateCount();
+    }
+
 
     @Override
     public int getItemCount() {
         return list.size();
     }
 
-    private void removeItemAdapter(int position) {
+    public void removeItemAdapter(int position) {
         list.remove(position);
         notifyItemRemoved(position);
     }

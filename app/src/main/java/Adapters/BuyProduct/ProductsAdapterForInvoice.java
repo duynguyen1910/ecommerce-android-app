@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.example.stores.databinding.ItemProductForInvoiceBinding;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -43,13 +45,16 @@ public class ProductsAdapterForInvoice extends RecyclerView.Adapter<ProductsAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = list.get(holder.getBindingAdapterPosition());
 
+        if(product.getProductImages() != null) {
+            Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
+        }
+
+
         holder.binding.txtProductTitle.setText(product.getProductName());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         String formattedPrice = formatter.format(product.getNewPrice());
         holder.binding.txtNewPrice.setText("đ" + formattedPrice);
         holder.binding.txtQuantity.setText("x" + product.getNumberInCart());
-
-//        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
 
     }
     @Override

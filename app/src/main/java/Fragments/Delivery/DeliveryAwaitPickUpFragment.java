@@ -2,6 +2,8 @@ package Fragments.Delivery;
 import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
+
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -22,6 +24,7 @@ import Adapters.Invoices.InvoiceAdapter;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
+import interfaces.InAdapter.UpdateCountListener;
 import models.Invoice;
 
 public class DeliveryAwaitPickUpFragment extends Fragment {
@@ -31,8 +34,15 @@ public class DeliveryAwaitPickUpFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentWithOnlyRecyclerviewBinding.inflate(getLayoutInflater());
-        setupUI();
         return binding.getRoot();
+    }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupUI();
     }
 
     private void setupUI() {
@@ -46,12 +56,12 @@ public class DeliveryAwaitPickUpFragment extends Fragment {
         binding.progressBar.getIndeterminateDrawable()
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
-        invoiceApi.getInvoicesByStatusApi(userID, OrderStatus.PENDING_SHIPMENT.getOrderStatusValue(),
+        invoiceApi.getDeliveryInvoicesByStatusApi(OrderStatus.PENDING_SHIPMENT.getOrderStatusValue(),
                 new GetCollectionCallback<Invoice>() {
                     @Override
                     public void onGetListSuccess(ArrayList<Invoice> invoiceList) {
                         binding.progressBar.setVisibility(View.GONE);
-                        DeliveryAdapter invoiceAdapter = new DeliveryAdapter(requireActivity(), invoiceList);
+                        DeliveryAdapter invoiceAdapter = new DeliveryAdapter(requireActivity(), invoiceList, (UpdateCountListener) requireActivity());
                         binding.recyclerView.setAdapter(invoiceAdapter);
                         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
                     }

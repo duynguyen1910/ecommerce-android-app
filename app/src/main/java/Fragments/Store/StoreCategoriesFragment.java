@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.stores.databinding.FragmentStoreCategoriesBinding;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 
 import Adapters.Category.CategoryAdapterForSearch;
+import api.categoryApi;
 import interfaces.GetCollectionCallback;
 import models.Category;
 import models.Product;
@@ -53,21 +53,28 @@ public class StoreCategoriesFragment extends Fragment {
                 @Override
                 public void onGetListSuccess(ArrayList<Product> products) {
                     binding.progressBar.setVisibility(View.GONE);
-                    Map<String, Category> categoryMap = new HashMap<>();
-                    for (Product item : products){
-                        String key = item.getCategoryID();
-                        Category category = new Category(item.getCategoryID(), item.getCategoryName());
-                        if (!categoryMap.containsKey(key)){
-                            categoryMap.put(key, category);
+                    HashSet<String> categoryIDSet = new HashSet<>();
+                    products.forEach(item -> {
+                        categoryIDSet.add(item.getCategoryID());
+                    });
+
+                    categoryApi mCategoryApi = new categoryApi();
+                    mCategoryApi.getCategoriesByIDSetApi(categoryIDSet, new GetCollectionCallback<Category>() {
+                        @Override
+                        public void onGetListSuccess(ArrayList<Category> categories) {
+                            CategoryAdapterForSearch adapter = new CategoryAdapterForSearch(requireActivity(), categories, storeId);
+                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+                            binding.recyclerView.setAdapter(adapter);
                         }
-                    }
 
-                    ArrayList<Category> categories = new ArrayList<>(categoryMap.values());
+                        @Override
+                        public void onGetListFailure(String errorMessage) {
+
+                        }
+                    });
 
 
-                    CategoryAdapterForSearch adapter = new CategoryAdapterForSearch(requireActivity(), categories, storeId);
-                    binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-                    binding.recyclerView.setAdapter(adapter);
+
                 }
 
                 @Override

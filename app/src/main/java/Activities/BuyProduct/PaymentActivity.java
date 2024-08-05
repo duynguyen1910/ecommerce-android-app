@@ -75,8 +75,14 @@ public class PaymentActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setupUI();
-        getBundles();
+
         setupEvents();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getBundles();
     }
 
     private void getBundles() {

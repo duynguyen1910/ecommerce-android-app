@@ -55,6 +55,7 @@
         android:layout_gravity="bottom"
         android:background="@color/white"
         app:tabGravity="fill"
+        app:tabMode="scrollable"
         app:tabIndicatorColor="@color/primary_color"
         app:tabSelectedTextColor="@color/primary_color"
         app:tabTextColor="@color/custom_scroll_tab_layout" />

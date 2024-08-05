@@ -29,6 +29,7 @@ import Adapters.Invoices.RequestInvoiceAdapter;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
+import interfaces.InAdapter.UpdateCountListener;
 import models.CartItem;
 import models.Invoice;
 import models.Product;
@@ -42,10 +43,13 @@ public class DeliveryCancelledFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentWithOnlyRecyclerviewBinding.inflate(getLayoutInflater());
-        setupUI();
         return binding.getRoot();
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupUI();
+    }
     private void setupUI() {
         invoiceApi invoiceApi = new invoiceApi();
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);
@@ -57,12 +61,12 @@ public class DeliveryCancelledFragment extends Fragment {
         binding.progressBar.getIndeterminateDrawable()
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
-        invoiceApi.getInvoicesByStatusApi(userID, OrderStatus.CANCELLED.getOrderStatusValue(),
+        invoiceApi.getDeliveryInvoicesByStatusApi(OrderStatus.CANCELLED.getOrderStatusValue(),
                 new GetCollectionCallback<Invoice>() {
                     @Override
                     public void onGetListSuccess(ArrayList<Invoice> invoiceList) {
                         binding.progressBar.setVisibility(View.GONE);
-                        DeliveryAdapter invoiceAdapter = new DeliveryAdapter(requireActivity(), invoiceList);
+                        DeliveryAdapter invoiceAdapter = new DeliveryAdapter(requireActivity(), invoiceList, (UpdateCountListener) requireActivity());
                         binding.recyclerView.setAdapter(invoiceAdapter);
                         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
                     }

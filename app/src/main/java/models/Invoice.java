@@ -21,8 +21,10 @@ public class Invoice extends BaseObject implements Serializable {
     private Timestamp shippedAt;
     private Timestamp deliveredAt;
     private Timestamp cancelledAt;
+    private String cancelledBy;
+
     private String note;
-    private String cancellationReason;
+    private String cancelledReason;
     private ArrayList<InvoiceDetail> invoiceItems;
     //    private CartItem cartItem;
     private invoiceApi invoiceApi;
@@ -39,6 +41,22 @@ public class Invoice extends BaseObject implements Serializable {
         this.status = status;
         this.createdAt = createdAt;
         this.note = note;
+    }
+
+    public String getCancelledReason() {
+        return cancelledReason;
+    }
+
+    public void setCancelledReason(String cancelledReason) {
+        this.cancelledReason = cancelledReason;
+    }
+
+    public String getCancelledBy() {
+        return cancelledBy;
+    }
+
+    public void setCancelledBy(String cancelledBy) {
+        this.cancelledBy = cancelledBy;
     }
 
     @Override

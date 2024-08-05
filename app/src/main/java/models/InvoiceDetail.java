@@ -14,6 +14,8 @@ public class InvoiceDetail {
     private double oldPrice;
     private int quantity;
     private String storeID;
+
+    private ArrayList<String> productImages;
     public static int ITEM_TO_DISPLAY = 1;
 
     public InvoiceDetail() {
@@ -71,6 +73,14 @@ public class InvoiceDetail {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public ArrayList<String> getProductImages() {
+        return productImages;
+    }
+
+    public void setProductImages(ArrayList<String> productImages) {
+        this.productImages = productImages;
     }
 
     public String getStoreID() {

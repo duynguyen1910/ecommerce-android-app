@@ -36,7 +36,7 @@
                     android:ellipsize="end"
                     android:fontFamily="sans-serif-light"
                     android:maxLines="1"
-                    android:text="Ngọc Đại"
+                    android:text="..."
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="15sp"
@@ -50,14 +50,14 @@
 
                 <TextView
                     android:id="@+id/txtCustomerPhone"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:fontFamily="sans-serif-light"
                     android:maxLines="1"
-                    android:text="012345678"
+                    android:text="..."
                     android:textAlignment="textStart"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
@@ -114,7 +114,7 @@
             android:background="@color/secondary_color"
             android:paddingHorizontal="5dp"
             android:paddingVertical="2dp"
-            android:text="1 sản phẩm"
+            android:text="..."
             android:textColor="@color/white"
             android:textSize="12sp" />
 
@@ -140,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:text="đ128.000"
+                android:text="..."
                 android:textColor="@color/primary_color"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -148,6 +148,7 @@
         </RelativeLayout>
 
     </RelativeLayout>
+
 
 
     <LinearLayout

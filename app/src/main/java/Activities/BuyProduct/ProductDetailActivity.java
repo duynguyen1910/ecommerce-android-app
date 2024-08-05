@@ -59,7 +59,7 @@ import models.CartItem;
 import models.Product;
 import models.SliderItem;
 import models.Store;
-import models.UserAddress;
+import utils.Cart.CartUtils;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -82,6 +82,12 @@ public class ProductDetailActivity extends AppCompatActivity {
         setupEvents();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CartUtils.updateQuantityInCart(binding.txtQuantityInCart);
+    }
+
     private void getBundle() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -90,7 +96,6 @@ public class ProductDetailActivity extends AppCompatActivity {
             buyable = bundle.getBoolean("buyable");
 
             if (!buyable){
-                showToast(ProductDetailActivity.this, "Bạn đang bán sản phẩm này!");
                 binding.btnAddToCart.setBackground(ContextCompat.getDrawable(this, R.color.gray));
                 binding.layoutBuyNow.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
                 binding.txtAddToCart.setTextColor(ContextCompat.getColor(this, R.color.black));

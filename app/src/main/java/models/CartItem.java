@@ -10,8 +10,8 @@ public class CartItem implements Serializable {
     ArrayList<Product> listProducts;
 
 
-    public CartItem(String storeID ,String storeName, ArrayList<Product> listProducts) {
-        this. storeID = storeID;
+    public CartItem(String storeID, String storeName, ArrayList<Product> listProducts) {
+        this.storeID = storeID;
         this.storeName = storeName;
         this.listProducts = listProducts;
     }
