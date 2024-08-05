@@ -88,15 +88,16 @@ public class SpendingsActivity extends AppCompatActivity {
         ArrayList<BarEntry> entries = new ArrayList<>();
         entries.add(new BarEntry(1, (float) spendings));
 
-        BarDataSet dataSet = new BarDataSet(entries, "Products");
+        BarDataSet dataSet = new BarDataSet(entries, "Chi tiêu");
         dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
         dataSet.setValueTextColor(Color.BLACK);
         dataSet.setValueTextSize(14f);
-        dataSet.setDrawValues(true);
+        dataSet.setValueFormatter(new CustomValueMoneyFormatter());
+        dataSet.setDrawValues(true); // Hiển thị giá trị trên cột dữ liệu
 
         BarData barData = new BarData(dataSet);
         barChart1.setData(barData);
-        barData.setBarWidth(0.4f);
+        barData.setBarWidth(0.2f);
 
         barChart1.setFitBars(true);
         barChart1.getDescription().setEnabled(false);
@@ -104,35 +105,18 @@ public class SpendingsActivity extends AppCompatActivity {
 
         setupBarChart(barChart1);
 
-        ArrayList<LegendEntry> legendEntries = new ArrayList<>();
 
-        LegendEntry entry = new LegendEntry();
-        entry.label = "Chi tiêu";
-        entry.formColor = ColorTemplate.JOYFUL_COLORS[0 % ColorTemplate.JOYFUL_COLORS.length];
-        legendEntries.add(entry);
-        barChart1.getLegend().setCustom(legendEntries);
-        barChart1.setExtraOffsets(10f, 80f, 10f, 40f);
-
-        YAxis yAxis = barChart1.getAxisLeft();
-        yAxis.setTextSize(12f);
-        yAxis.setValueFormatter(new CustomValueMoneyFormatter());
-
+        barChart1.getAxisLeft().setDrawLabels(false); // Ẩn nhãn trục Y
+        barChart1.getAxisLeft().setDrawGridLines(false); // Ẩn đường lưới trục Y
+        barChart1.getXAxis().setEnabled(false); // Ẩn trục X
+        barChart1.getAxisRight().setEnabled(false); // Ẩn trục Y phải
+        barChart1.setBackgroundColor(Color.WHITE); // Đặt màu nền của biểu đồ thành trắng
 
         barChart1.invalidate();
     }
 
     private void setupBarChart(BarChart barChart) {
-        Legend legend = barChart.getLegend();
-        legend.setEnabled(true);
-        legend.setWordWrapEnabled(true);
-        legend.setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        legend.setYOffset(0f);
-        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-        legend.setTextSize(14f);
-        legend.setFormSize(14f);
-        legend.setDrawInside(false);
+        barChart.getLegend().setEnabled(false);
 
         barChart.setFitBars(true);
         barChart.getDescription().setEnabled(false);
@@ -142,6 +126,7 @@ public class SpendingsActivity extends AppCompatActivity {
         yAxisLeft.setAxisMinimum(0f);
         yAxisLeft.setDrawZeroLine(true);
         yAxisLeft.setDrawAxisLine(true);
+        yAxisLeft.setDrawLabels(false); // Ẩn nhãn trục Y
 
         // Thiết lập trục X
         XAxis xAxis = barChart.getXAxis();
@@ -150,7 +135,7 @@ public class SpendingsActivity extends AppCompatActivity {
         xAxis.setLabelRotationAngle(20f); // Xoay nhãn để tránh chồng chéo
         xAxis.setLabelCount(5, true); // Thiết lập số lượng nhãn
         xAxis.setTextSize(12f);
-
+        xAxis.setDrawLabels(false); // Ẩn nhãn trục X
 
         barChart.getAxisRight().setEnabled(false);
     }
@@ -187,7 +172,6 @@ public class SpendingsActivity extends AppCompatActivity {
     private void getCustomerID() {
         SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
         customerID = sharedPreferences.getString(USER_ID, null);
-        Log.d("customerID", customerID);
     }
 
 

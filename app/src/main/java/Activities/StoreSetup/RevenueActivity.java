@@ -90,8 +90,6 @@ public class RevenueActivity extends AppCompatActivity {
         binding.viewPager2.setAdapter(viewPager2Adapter);
 
 
-
-
         new TabLayoutMediator(binding.tabLayout, binding.viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {

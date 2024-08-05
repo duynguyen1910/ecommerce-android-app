@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/custom_edit_text_border"
     android:orientation="vertical"
+    android:layout_marginBottom="4dp"
     android:paddingHorizontal="8dp">
 
     <LinearLayout

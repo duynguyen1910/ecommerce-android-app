@@ -14,6 +14,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
@@ -47,7 +48,7 @@ public class categoryApi {
         });
 
     }
-    public void getCategoriesByIDSetApi(HashSet<String> categoryIDSet, final GetCollectionCallback<Category> callback) {
+    public void getCategoriesByIDSetApi(Set<String> categoryIDSet, final GetCollectionCallback<Category> callback) {
         List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
         for (String categoryID : categoryIDSet){
             tasks.add(getCategoryDetailTask(categoryID));

@@ -98,9 +98,8 @@ public class RevenueFragment extends Fragment {
         });
     }
 
-    private void drawRevenuesInYear(ArrayList<Double> listRevenues){
+    private void drawRevenuesInYear(ArrayList<Double> listRevenues) {
         LineChart lineChart = binding.lineChart;
-
 
         // Dữ liệu mẫu cho doanh thu của 12 tháng
         ArrayList<Entry> revenueEntries = new ArrayList<>();
@@ -109,7 +108,6 @@ public class RevenueFragment extends Fragment {
             revenueEntries.add(new Entry(i + 1, revenue));
         }
 
-
         lineChart.getDescription().setEnabled(false);
         LineDataSet dataSet = new LineDataSet(revenueEntries, "Doanh thu");
         dataSet.setColor(ContextCompat.getColor(requireActivity(), R.color.secondary_color));
@@ -117,15 +115,11 @@ public class RevenueFragment extends Fragment {
         dataSet.setValueTextSize(12f);
         dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
 
-
         dataSet.setDrawFilled(true);
         dataSet.setFillColor(ContextCompat.getColor(requireActivity(), R.color.secondary_color));
         dataSet.setFillAlpha(100);
 
-        Legend legend = lineChart.getLegend();
-        legend.setTextSize(14f);
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        lineChart.getLegend().setEnabled(false);
         LineData lineData = new LineData(dataSet);
         lineChart.setData(lineData);
         lineChart.invalidate(); // Refresh the chart
@@ -141,31 +135,37 @@ public class RevenueFragment extends Fragment {
             public String getFormattedValue(float value) {
                 int month = Math.round(value); // Convert the float to int
                 switch (month) {
-                    case 1: return "T1";
-                    case 2: return "T2";
-                    case 3: return "T3";
-                    case 4: return "T4";
-                    case 5: return "T5";
-                    case 6: return "T6";
-                    case 7: return "T7";
-                    case 8: return "T8";
-                    case 9: return "T9";
-                    case 10: return "T10";
-                    case 11: return "T11";
-                    case 12: return "T12";
+                    case 1: return "1";
+                    case 2: return "2";
+                    case 3: return "3";
+                    case 4: return "4";
+                    case 5: return "5";
+                    case 6: return "6";
+                    case 7: return "7";
+                    case 8: return "8";
+                    case 9: return "9";
+                    case 10: return "10";
+                    case 11: return "11";
+                    case 12: return "12";
                     default: return "";
                 }
             }
         });
 
+        // Cấu hình trục Y
+        YAxis yAxisLeft = lineChart.getAxisLeft();
+        yAxisLeft.setDrawLabels(false); // Hiển thị nhãn trục Y
+        yAxisLeft.setDrawGridLines(false); // Ẩn đường lưới trục Y
+        yAxisLeft.setDrawAxisLine(true); // Hiển thị đường trục Y
+        yAxisLeft.setAxisMinimum(0f); // Đặt điểm thấp nhất của trục Y là 0
+        yAxisLeft.setTextSize(12f);
+        yAxisLeft.setLabelCount(6, true); // Số lượng nhãn trục Y
 
-        // Cấu hình YAxis
-        YAxis leftAxis = lineChart.getAxisLeft();
-        leftAxis.setTextSize(12f);
-        leftAxis.setAxisMinimum(0f); // Minimum value for YAxis
-        lineChart.getAxisRight().setEnabled(false); // Disable right YAxis
-        leftAxis.setValueFormatter(new CustomValueMoneyFormatter());
+        lineChart.getAxisRight().setEnabled(false); // Ẩn trục Y phải
+        lineChart.setBackgroundColor(Color.WHITE); // Đặt màu nền của biểu đồ thành trắng
     }
+
+
 
 
 
