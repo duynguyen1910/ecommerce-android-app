@@ -3,6 +3,7 @@ package Activities.BuyProduct;
 import static constants.keyName.PAYMENT;
 import static constants.keyName.PRODUCT_DESC;
 import static constants.keyName.PRODUCT_ID;
+import static constants.keyName.PRODUCT_IMAGES;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
 import static constants.keyName.PRODUCT_NEW_PRICE;
@@ -12,6 +13,7 @@ import static constants.keyName.STORE_NAME;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.INTERNET_ERROR;
+
 import static utils.Cart.CartUtils.MY_CART;
 import static utils.Cart.CartUtils.showToast;
 import static utils.Cart.CartUtils.updateQuantityInCart;
@@ -51,20 +53,22 @@ import java.util.Objects;
 
 import Activities.LoginActivity;
 import Activities.StoreSetup.ViewMyStoreActivity;
+import Adapters.BuyProduct.SliderAdapterForProductDetail;
 import interfaces.GetDocumentCallback;
 import models.CartItem;
 import models.Product;
+import models.SliderItem;
 import models.Store;
 import utils.Cart.CartUtils;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
-    ActivityProductDetailBinding binding;
+    private ActivityProductDetailBinding binding;
     private String productID;
     private String storeID;
     private String storeName;
-    boolean buyable;
-    Product thisProduct;
+    private boolean buyable;
+    private Product currentProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,42 +117,47 @@ public class ProductDetailActivity extends AppCompatActivity {
             product.getProductDetail(productID, new GetDocumentCallback() {
                 @Override
                 public void onGetDataSuccess(Map<String, Object> productDetail) {
-                    thisProduct = new Product(
+                    currentProduct = new Product(
                             (String) productDetail.get(PRODUCT_NAME),
+                            (ArrayList<String>) productDetail.get(PRODUCT_IMAGES),
                             (String) productDetail.get(PRODUCT_DESC),
                             (double) productDetail.get(PRODUCT_NEW_PRICE),
                             (double) productDetail.get(PRODUCT_OLD_PRICE),
                             ((Long) productDetail.get(PRODUCT_INSTOCK)).intValue(),
                             storeID,
                             1);
-                    thisProduct.setBaseID(productID);
+
+                    currentProduct.setBaseID(productID);
                     binding.progressBarProduct.setVisibility(View.GONE);
                     binding.layoutProductsInfo.setVisibility(View.VISIBLE);
                     // setup product information
-                    binding.txtTitle.setText(thisProduct.getProductName());
+                    binding.txtTitle.setText(currentProduct.getProductName());
                     NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-                    String formattedOldPrice = formatter.format(thisProduct.getOldPrice());
+                    String formattedOldPrice = formatter.format(currentProduct.getOldPrice());
                     binding.txtOldPrice.setText("đ" + formattedOldPrice);
                     binding.txtOldPrice.setPaintFlags(binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-                    String formattedNewPrice = formatter.format(thisProduct.getNewPrice());
+                    String formattedNewPrice = formatter.format(currentProduct.getNewPrice());
                     binding.txtNewPrice.setText(formattedNewPrice);
                     binding.ratingBar.setRating(4.5F);
                     binding.txtRating.setText(4.5 + " / 5");
                     binding.txtSold.setText("Đã bán " + 200);
-                    binding.txtProdctDescription.setText(thisProduct.getDescription());
+                    binding.txtProdctDescription.setText(currentProduct.getDescription());
                     binding.txtNewPriceInBuyNow.setText(formattedNewPrice);
 
 
                     // setup productImages
-//                    ArrayList<SliderItem> sliderItems = new ArrayList<>();
-//                    for (int i = 0; i < data.getProductImages().size(); i++) {
-//                        sliderItems.add(new SliderItem(object.getProductImages().get(i)));
-//                    }
-//
-//                    binding.viewPager2Slider.setAdapter(new SliderAdapterForProductDetail(ProductDetailActivity.this, sliderItems));
-//                    binding.viewPager2Slider.setOffscreenPageLimit(2);
-//                    binding.indicator.attachTo(binding.viewPager2Slider);
+                    ArrayList<SliderItem> sliderItems = new ArrayList<>();
+                    for (int i = 0; i < currentProduct.getProductImages().size(); i++) {
+                        sliderItems.add(new SliderItem(currentProduct.getProductImages().get(i)));
+                    }
+
+                    binding.viewPager2Slider.setAdapter(
+                            new SliderAdapterForProductDetail(ProductDetailActivity.this,
+                                    sliderItems));
+                    binding.viewPager2Slider.setOffscreenPageLimit(2);
+                    binding.indicator.attachTo(binding.viewPager2Slider);
+
                 }
 
                 @Override
@@ -175,6 +184,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     binding.txtStoreName.setText(storeName);
 
                     // set up UI avatar, invoice
+
 
                 }
 
@@ -278,14 +288,14 @@ public class ProductDetailActivity extends AppCompatActivity {
             dialogBinding.getRoot().startAnimation(slideUp);
         }
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedOldPrice = formatter.format(thisProduct.getOldPrice());
+        String formattedOldPrice = formatter.format(currentProduct.getOldPrice());
         dialogBinding.txtOldPrice.setText("đ" + formattedOldPrice);
         dialogBinding.txtOldPrice.setPaintFlags(binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-        String formattedNewPrice = formatter.format(thisProduct.getNewPrice());
+        String formattedNewPrice = formatter.format(currentProduct.getNewPrice());
 
         dialogBinding.txtNewPrice.setText(formattedNewPrice);
-        dialogBinding.txtInStock.setText("Kho: " + thisProduct.getInStock());
+        dialogBinding.txtInStock.setText("Kho: " + currentProduct.getInStock());
 
         //reset số lượng trên dialog sau mỗi lần popup dialog
 
@@ -322,11 +332,11 @@ public class ProductDetailActivity extends AppCompatActivity {
                 return;
             }
 
-            if (thisProduct.getNumberInCart() > thisProduct.getInStock()) {
+            if (currentProduct.getNumberInCart() > currentProduct.getInStock()) {
                 showToast(ProductDetailActivity.this, "Uiii, số lượng sản phẩm không đủ!");
             } else {
                 int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
-                addToCart(storeName, thisProduct, quantity);
+                addToCart(storeName, currentProduct, quantity);
                 showToast(ProductDetailActivity.this, "Đã thêm sản phẩm vào giỏ hàng");
                 updateQuantityInCart(binding.txtQuantityInCart);
                 dialog.dismiss();
@@ -355,14 +365,14 @@ public class ProductDetailActivity extends AppCompatActivity {
             dialogBinding.getRoot().startAnimation(slideUp);
         }
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedOldPrice = formatter.format(thisProduct.getOldPrice());
+        String formattedOldPrice = formatter.format(currentProduct.getOldPrice());
         dialogBinding.txtOldPrice.setText("đ" + formattedOldPrice);
         dialogBinding.txtOldPrice.setPaintFlags(binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-        String formattedNewPrice = formatter.format(thisProduct.getNewPrice());
+        String formattedNewPrice = formatter.format(currentProduct.getNewPrice());
 
         dialogBinding.txtNewPrice.setText(formattedNewPrice);
-        dialogBinding.txtInStock.setText("Kho: " + thisProduct.getInStock());
+        dialogBinding.txtInStock.setText("Kho: " + currentProduct.getInStock());
 
         //reset số lượng trên dialog sau mỗi lần popup dialog
 
@@ -388,7 +398,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         dialogBinding.imageClose.setOnClickListener(v -> dialog.dismiss());
 
         dialogBinding.btnBuyNow.setOnClickListener(v -> {
-            if (thisProduct.getNumberInCart() > thisProduct.getInStock()) {
+            if (currentProduct.getNumberInCart() > currentProduct.getInStock()) {
                 showToast(ProductDetailActivity.this, "Uiii, số lượng sản phẩm không đủ!");
             } else {
 
@@ -397,9 +407,9 @@ public class ProductDetailActivity extends AppCompatActivity {
                 CartItem cartItem = new CartItem();
                 ArrayList<Product> listProducts = new ArrayList<>();
                 int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
-                thisProduct.setNumberInCart(quantity);
+                currentProduct.setNumberInCart(quantity);
 
-                listProducts.add(thisProduct);
+                listProducts.add(currentProduct);
 
                 cartItem.setStoreID(storeID);
                 cartItem.setNote("");

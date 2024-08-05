@@ -25,6 +25,7 @@ import interfaces.GetDocumentCallback;
 import models.Store;
 import utils.DecorateUtils;
 
+
 public class ViewMyStoreActivity extends AppCompatActivity {
 
     ActivityViewMyStoreBinding binding;

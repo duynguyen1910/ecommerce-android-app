@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.stores.databinding.ItemMyProductBinding;
 
 import java.text.NumberFormat;
@@ -52,12 +53,14 @@ public class MyProductsAdapter extends RecyclerView.Adapter<MyProductsAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = list.get(holder.getBindingAdapterPosition());
 
+        if(product.getProductImages() != null) {
+            Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
+        }
+
         holder.binding.txtTitle.setText(product.getProductName());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         String formattedNewPrice = formatter.format(product.getNewPrice());
         holder.binding.txtNewPrice.setText("đ" + formattedNewPrice);
-
-//        Glide.with(context).load(product.getPicUrl().get(0)).into(holder.binding.imageView);
 
         holder.binding.txtInStock.setText(String.valueOf(product.getInStock()));
         holder.binding.txtSold.setText(String.valueOf(product.getSold()));

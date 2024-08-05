@@ -354,6 +354,7 @@ public class invoiceApi {
                                     Product product = productMap.get(detail.getVariantID());
                                     if (product != null) {
                                         detail.setProductName(product.getProductName());
+                                        detail.setProductImages(product.getProductImages());
                                         detail.setNewPrice(product.getNewPrice());
                                         detail.setOldPrice(product.getOldPrice());
                                         detail.setStoreID(product.getStoreID());
@@ -366,7 +367,6 @@ public class invoiceApi {
         }
 
     }
-
 
     public void getInvoiceByStoreIDApi(String storeID, int invoiceStatus, final GetCollectionCallback<Invoice> callback) {
         db.collection(INVOICE_COLLECTION)

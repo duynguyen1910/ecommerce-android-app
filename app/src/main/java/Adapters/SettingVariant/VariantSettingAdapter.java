@@ -3,6 +3,7 @@ package Adapters.SettingVariant;
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -18,7 +19,7 @@ import models.Variant;
 
 public class VariantSettingAdapter extends RecyclerView.Adapter<VariantSettingAdapter.ViewHolder> {
     private final Context context;
-    ArrayList<Variant> list;
+    private ArrayList<Variant> list;
 
     public VariantSettingAdapter(Context context, ArrayList<Variant> list) {
         this.context = context;

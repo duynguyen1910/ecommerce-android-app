@@ -9,11 +9,14 @@ import interfaces.StatusCallback;
 public class InvoiceDetail {
     private String invoiceID;
     private String variantID;
+    private String variantName;
     private String productName;
     private double newPrice;
     private double oldPrice;
     private int quantity;
     private String storeID;
+
+    private ArrayList<String> productImages;
     public static int ITEM_TO_DISPLAY = 1;
 
     public InvoiceDetail() {
@@ -23,6 +26,14 @@ public class InvoiceDetail {
         this.invoiceID = invoiceID;
         this.variantID = variantID;
         this.quantity = quantity;
+    }
+
+    public String getVariantName() {
+        return variantName;
+    }
+
+    public void setVariantName(String variantName) {
+        this.variantName = variantName;
     }
 
     public String getInvoiceID() {
@@ -71,6 +82,14 @@ public class InvoiceDetail {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public ArrayList<String> getProductImages() {
+        return productImages;
+    }
+
+    public void setProductImages(ArrayList<String> productImages) {
+        this.productImages = productImages;
     }
 
     public String getStoreID() {

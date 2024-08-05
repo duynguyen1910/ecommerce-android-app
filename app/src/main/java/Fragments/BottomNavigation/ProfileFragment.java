@@ -44,7 +44,9 @@ public class ProfileFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private FragmentProfileBinding binding;
     private User user;
-    String storeId;
+    private String storeID;
+
+
     @Nullable
     @Override
 
@@ -68,14 +70,18 @@ public class ProfileFragment extends Fragment {
         String userID = sharedPreferences.getString(USER_ID, null);
         String phoneNumber = sharedPreferences.getString(PHONE_NUMBER, null);
         String fullname = sharedPreferences.getString(FULLNAME, null);
-        storeId = sharedPreferences.getString(STORE_ID, null);
+        storeID = sharedPreferences.getString(STORE_ID, null);
         int roleValue = sharedPreferences.getInt(USER_ROLE, -1);
 
         binding.txtFullname.setText(fullname);
         binding.txtPhoneNumber.setText(phoneNumber);
         if (userID != null) {
-            binding.txtStore.setText(storeId == null ? "Tạo Store" : "Store của bạn");
+
+            binding.txtStore.setText(storeID == null ? "Tạo Store" : "Store của bạn");
+            binding.txtRole.setText(UserRole.fromInt(roleValue).getLabelRole());
+
             setupUIByRole(roleValue);
+
             binding.loggedLayoutLn.setVisibility(View.VISIBLE);
             binding.defaultLayoutRl.setVisibility(View.GONE);
 
@@ -87,7 +93,6 @@ public class ProfileFragment extends Fragment {
 
                 @Override
                 public void getImageFailure(String errorMessage) {
-
                     Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
                 }
             });
@@ -110,28 +115,20 @@ public class ProfileFragment extends Fragment {
         // set layout by role
         switch (userRole) {
             case CUSTOMER_ROLE:
-                binding.txtRole.setText(UserRole.CUSTOMER_ROLE.getLabelRole());
+            case STORE_OWNER_ROLE:
                 binding.layoutLogistics.setVisibility(View.GONE);
                 break;
+
             case SHIPPER_ROLE:
-                binding.txtRole.setText(UserRole.SHIPPER_ROLE.getLabelRole());
                 binding.layoutInvoices.setVisibility(View.GONE);
                 binding.layoutActivateStore.setVisibility(View.GONE);
                 binding.iconCart.setVisibility(View.GONE);
 
                 break;
-            case STORE_OWNER_ROLE:
-                binding.txtRole.setText(UserRole.STORE_OWNER_ROLE.getLabelRole());
-                binding.layoutLogistics.setVisibility(View.GONE);
-                break;
             case ADMIN_ROLE:
-                binding.txtRole.setText(UserRole.ADMIN_ROLE.getLabelRole());
                 binding.layoutLogistics.setVisibility(View.GONE);
                 binding.layoutInvoices.setVisibility(View.GONE);
                 binding.layoutActivateStore.setVisibility(View.GONE);
-                break;
-            default:
-                binding.txtRole.setText("Unknown Role");
                 break;
         }
     }
@@ -189,9 +186,9 @@ public class ProfileFragment extends Fragment {
 
         binding.layoutActivateStore.setOnClickListener(v -> {
             // Nếu đã tạo store thì vào thẳng Store Owner Activity
-            if (storeId != null) {
+            if (storeID != null) {
                 Intent intent = new Intent(requireActivity(), StoreOwnerActivity.class);
-                intent.putExtra(STORE_ID, storeId);
+                intent.putExtra(STORE_ID, storeID);
                 startActivity(intent);
             } else {
                 Intent intent = new Intent(requireActivity(), ActivateStoreActivity.class);

@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.stores.databinding.ItemProductForCartItemBinding;
 
 
@@ -75,6 +76,9 @@ public class ProductsAdapterForCartItem extends RecyclerView.Adapter<ProductsAda
             }
         });
 
+        if(product.getProductImages() != null) {
+            Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
+        }
 
         holder.binding.txtTitle.setText(product.getProductName());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
@@ -86,7 +90,6 @@ public class ProductsAdapterForCartItem extends RecyclerView.Adapter<ProductsAda
         holder.binding.txtPrice.setText(formattedPrice);
 
         holder.binding.txtQuantity.setText(String.valueOf(product.getNumberInCart()));
-//        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
 
         holder.binding.btnPlus.setOnClickListener(v -> {
 

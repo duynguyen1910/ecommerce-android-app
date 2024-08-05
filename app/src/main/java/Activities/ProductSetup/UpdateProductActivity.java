@@ -32,12 +32,13 @@ import api.categoryApi;
 import interfaces.GetDocumentCallback;
 import interfaces.UpdateDocumentCallback;
 import models.Product;
+import models.UserAddress;
 
 public class UpdateProductActivity extends AppCompatActivity {
 
-    ActivityUpdateProductBinding binding;
-    String categoryId;
-    String productId;
+    private ActivityUpdateProductBinding binding;
+    private String categoryId;
+    private String productID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +56,10 @@ public class UpdateProductActivity extends AppCompatActivity {
     private void getBundle() {
         Intent intent = getIntent();
         if (intent != null) {
-            productId = intent.getStringExtra(PRODUCT_ID);
-            if (productId != null) {
+            productID = intent.getStringExtra(PRODUCT_ID);
+            if (productID != null) {
                 Product product = new Product();
-                product.getProductDetail(productId, new GetDocumentCallback() {
+                product.getProductDetail(productID, new GetDocumentCallback() {
                     @Override
                     public void onGetDataSuccess(Map<String, Object> productDetail) {
                         binding.edtCategory.setText((CharSequence) productDetail.get(CATEGORY_NAME));
@@ -119,8 +120,10 @@ public class UpdateProductActivity extends AppCompatActivity {
 
         binding.layoutVariant.setOnClickListener(v -> {
             Intent intent = new Intent(UpdateProductActivity.this, AddVariantActivity.class);
+            intent.putExtra(PRODUCT_ID, productID);
             startActivity(intent);
         });
+
         binding.layoutDeliveryFee.setOnClickListener(v -> {
             Intent intent = new Intent(UpdateProductActivity.this, DeliveryFeeActivity.class);
             startActivity(intent);
@@ -130,7 +133,7 @@ public class UpdateProductActivity extends AppCompatActivity {
             Map<String, Object> productData = validateForm();
             if (productData != null) {
                 Product product = new Product();
-                product.updateProduct(productData, productId, new UpdateDocumentCallback() {
+                product.updateProduct(productData, productID, new UpdateDocumentCallback() {
                     @Override
                     public void onUpdateSuccess(String updateSuccess) {
 

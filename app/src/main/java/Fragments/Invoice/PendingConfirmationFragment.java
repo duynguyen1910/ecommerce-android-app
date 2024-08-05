@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,7 @@ public class PendingConfirmationFragment extends Fragment {
                     @Override
                     public void onGetListFailure(String errorMessage) {
                         binding.progressBar.setVisibility(View.GONE);
+                        Log.d("TAG", "erorr: " + errorMessage);
                         Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });

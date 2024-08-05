@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.example.stores.databinding.ItemProductForInvoiceBinding;
 import java.util.ArrayList;
 import models.InvoiceDetail;
@@ -50,6 +52,10 @@ public class InvoiceDetailAdapter extends RecyclerView.Adapter<InvoiceDetailAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         InvoiceDetail detail = list.get(holder.getBindingAdapterPosition());
 
+        if(detail.getProductImages() != null) {
+            Glide.with(context).load(detail.getProductImages().get(0)).into(holder.binding.imageView);
+        }
+
         holder.binding.txtProductTitle.setText(detail.getProductName());
 
         holder.binding.txtNewPrice.setText(FormatHelper.formatVND(detail.getNewPrice()));
@@ -57,7 +63,6 @@ public class InvoiceDetailAdapter extends RecyclerView.Adapter<InvoiceDetailAdap
         holder.binding.txtOldPrice.setPaintFlags(holder.binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         holder.binding.txtQuantity.setText("x" + detail.getQuantity());
-//        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
 
     }
 

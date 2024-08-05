@@ -1,5 +1,7 @@
 package models;
 
+import org.checkerframework.common.returnsreceiver.qual.This;
+
 import java.io.Serializable;
 
 public class Variant extends BaseObject implements Serializable {
@@ -7,15 +9,29 @@ public class Variant extends BaseObject implements Serializable {
     private double oldPrice;
     private double newPrice;
     private int inStock;
-    private String variantImage;
+    private String variantImageUrl;
+    private String productID;
 
-    public Variant(String variantName, double oldPrice, double newPrice, int inStock, String variantImage) {
+    public Variant(String variantName, double oldPrice, double newPrice, int inStock,
+                   String variantImageUrl, String productID) {
         this.variantName = variantName;
         this.oldPrice = oldPrice;
         this.newPrice = newPrice;
         this.inStock = inStock;
-        this.variantImage = variantImage;
+        this.variantImageUrl = variantImageUrl;
+        this.productID = productID;
     }
+
+    @Override
+    protected String getBaseID() {
+        return super.baseID;
+    }
+
+    @Override
+    protected void setBaseID(String variantID) {
+        super.baseID = variantID;
+    }
+
 
     public String getVariantName() {
         return variantName;
@@ -49,21 +65,19 @@ public class Variant extends BaseObject implements Serializable {
         this.inStock = inStock;
     }
 
-    public String getVariantImage() {
-        return variantImage;
+    public String getVariantImageUrl() {
+        return variantImageUrl;
     }
 
-    public void setVariantImage(String variantImage) {
-        this.variantImage = variantImage;
+    public void setVariantImageUrl(String variantImageUrl) {
+        this.variantImageUrl = variantImageUrl;
     }
 
-    @Override
-    protected String getBaseID() {
-        return super.baseID;
+    public String getProductID() {
+        return productID;
     }
 
-    @Override
-    protected void setBaseID(String variantID) {
-        super.baseID = variantID;
+    public void setProductID(String productID) {
+        this.productID = productID;
     }
 }

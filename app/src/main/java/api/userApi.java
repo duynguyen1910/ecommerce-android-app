@@ -132,7 +132,8 @@ public class userApi {
                 });
     }
 
-    public void updateUserInfoApi(String userId, Map<String, Object> userUpdates, final StatusCallback callback) {
+    public void updateUserInfoApi(String userId, Map<String, Object> userUpdates,
+                                  final StatusCallback callback) {
         db.collection(USER_COLLECTION).document(userId)
                 .update(userUpdates)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

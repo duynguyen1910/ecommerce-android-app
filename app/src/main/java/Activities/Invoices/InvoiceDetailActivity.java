@@ -24,6 +24,7 @@ import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
 import models.InvoiceDetail;
+import models.UserAddress;
 import utils.FormatHelper;
 
 public class InvoiceDetailActivity extends AppCompatActivity {
@@ -46,6 +47,7 @@ public class InvoiceDetailActivity extends AppCompatActivity {
         if (intent != null) {
             Bundle bundle = intent.getExtras();
             String invoiceID = bundle.getString("invoiceID");
+            String detailedAddress = bundle.getString("detailedAddress");
             String deliveryAddress = bundle.getString("deliveryAddress");
             String invoiceStatusLabel = bundle.getString("invoiceStatusLabel");
 
@@ -60,7 +62,9 @@ public class InvoiceDetailActivity extends AppCompatActivity {
             binding.progressBar.getIndeterminateDrawable()
                     .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
-            binding.txtAddress.setText(deliveryAddress);
+            binding.txtDetailedCustomer.setText(detailedAddress);
+            binding.txtCustomerAddress.setText(deliveryAddress);
+
             binding.txtInvoiceStatus.setText("Đơn hàng của bạn " + invoiceStatusLabel);
 
             binding.txtTotal.setText(FormatHelper.formatVND(invoiceTotal));

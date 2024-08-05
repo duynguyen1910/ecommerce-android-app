@@ -1,21 +1,31 @@
 package Activities.ProductSetup;
+import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.TYPES;
 import static constants.keyName.TYPE_COLOR;
 import static constants.keyName.TYPE_GENDER;
 import static constants.keyName.TYPE_SIZE_GLOBAL;
 import static constants.keyName.TYPE_SIZE_VN;
+import static constants.toastMessage.IMAGE_REQUIRE;
 import static utils.Cart.CartUtils.showToast;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,7 +42,6 @@ import models.Type;
 import models.TypeValue;
 
 public class AddVariantActivity extends AppCompatActivity {
-
     private ActivityAddVariantBinding binding;
     private final ArrayList<Type> types = new ArrayList<>();
     private TypeAdapter adapter;
@@ -40,6 +49,7 @@ public class AddVariantActivity extends AppCompatActivity {
     private final HashSet<String> selectedTypes = new HashSet<>();
     private final HashSet<String> selectedTypeValuesSet = new HashSet<>();
     private boolean isSizeTypeSelected = false;
+    private int currentPosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,21 +59,26 @@ public class AddVariantActivity extends AppCompatActivity {
         initUI();
         setupUI();
         setupEvents();
-
-
     }
 
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
+
         binding.layoutAddVariant.setOnClickListener(v -> {
            popUpSelectVariantDialog();
         });
+
         binding.btnSettingVariant.setOnClickListener(v -> {
+            Intent intentPrev = getIntent();
+            String productID = intentPrev.getStringExtra(PRODUCT_ID);
+
             if (countSelectedTypeValues() > 0){
-                Intent intent = new Intent(AddVariantActivity.this, SettingVariantDetailActivity.class);
+                Intent intent = new Intent(AddVariantActivity.this,
+                        SettingVariantDetailActivity.class);
+                intent.putExtra(PRODUCT_ID, productID);
                 intent.putExtra(TYPES, types);
                 startActivity(intent);
-            }else {
+            } else {
                showToast(AddVariantActivity.this, "Vui lòng chọn phân loại sản phẩm!");
             }
         });
@@ -85,9 +100,8 @@ public class AddVariantActivity extends AppCompatActivity {
         }
     }
 
-
     private void setupUI(){
-        adapter = new TypeAdapter(AddVariantActivity.this, types, new TypeCallback() {
+        adapter = new TypeAdapter(AddVariantActivity.this, types, myLauncher, new TypeCallback() {
             @Override
             public void updateSelectedTypeValues(TypeValue typeValue) {
                 if (typeValue.isChecked()){
@@ -119,9 +133,19 @@ public class AddVariantActivity extends AppCompatActivity {
                 isSizeTypeSelected = false;
             }
 
+            @Override
+            public void onImageClick(int position) {
+                currentPosition = position;
+                Intent photoPicker = new Intent(Intent.ACTION_GET_CONTENT);
+                photoPicker.setType("image/*");
+                myLauncher.launch(photoPicker);
+            }
+
+
         });
         binding.recyclerView.setAdapter(adapter);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(AddVariantActivity.this, LinearLayoutManager.VERTICAL, false));
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(AddVariantActivity.this,
+                LinearLayoutManager.VERTICAL, false));
     }
 
 
@@ -223,7 +247,22 @@ public class AddVariantActivity extends AppCompatActivity {
         selectableSet.add(TYPE_SIZE_GLOBAL);
     }
 
-
-
+    ActivityResultLauncher<Intent> myLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Uri imageUri = result.getData().getData();
+                        if (imageUri != null && currentPosition != -1) {
+                            for (int i = 0; i < types.size(); i++) {
+                                if (types.get(i).getTypeName().equals(TYPE_COLOR)) {
+                                    TypeValue typeValue = types.get(i).getListValues().get(currentPosition);
+                                        typeValue.setImage(imageUri.toString());
+                                        adapter.notifyItemChanged(i);
+                                }
+                            }
+                        } else {
+                            Toast.makeText(AddVariantActivity.this, IMAGE_REQUIRE, Toast.LENGTH_SHORT).show();
+                        }
+                    }});
 
 }

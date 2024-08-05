@@ -109,6 +109,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
                 Bundle bundle = new Bundle();
 
                 bundle.putString("invoiceID", invoice.getBaseID());
+                bundle.putString("detailedAddress", invoice.getDetailedAddress());
                 bundle.putString("deliveryAddress", invoice.getDeliveryAddress());
                 bundle.putString("invoiceStatusLabel", invoice.getStatus().getOrderLabel());
 

@@ -3,14 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
-    android:background="@color/lightgray">
+    android:background="@color/lightgray"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
@@ -48,7 +49,6 @@
 
         <ScrollView
             android:id="@+id/bodySV"
-            android:layout_below="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
@@ -68,10 +68,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="15dp"
-                        android:layout_marginTop="10dp"
                         android:background="@color/white"
                         android:orientation="vertical"
                         android:paddingVertical="6dp">
+
 
                         <TextView
                             android:layout_width="match_parent"
@@ -89,10 +89,22 @@
                             android:id="@+id/txtCustomerInfo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Nguyễn Tấn Duy | 0123455653"
+                            android:layout_marginBottom="6dp"
                             android:gravity="center_vertical"
+                            android:paddingHorizontal="26dp"
+                            android:text="Nguyễn Tấn Duy | 0123455653"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/txtDetailedCustomer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="2dp"
+                            android:gravity="center_vertical"
+                            android:paddingHorizontal="26dp"
+                            android:text="..."
                             android:textColor="@color/black"
-                            android:paddingHorizontal="26dp" />
+                            app:drawableTint="@color/darkgray" />
 
                         <TextView
                             android:id="@+id/txtCustomerAddress"
@@ -101,7 +113,7 @@
                             android:drawablePadding="6dp"
                             android:gravity="center_vertical"
                             android:paddingHorizontal="26dp"
-                            android:text="@string/address"
+                            android:text="..."
                             android:textColor="@color/black"
                             app:drawableEndCompat="@drawable/ic_arrow_right_24"
                             app:drawableTint="@color/darkgray" />
@@ -370,9 +382,9 @@
         </ScrollView>
 
         <LinearLayout
-            android:layout_below="@+id/bodySV"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_below="@+id/bodySV"
             android:background="@drawable/custom_border_bottom">
 
             <LinearLayout
@@ -404,8 +416,8 @@
                 android:id="@+id/btnBooking"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:paddingHorizontal="36dp"
                 android:background="@color/primary_color"
+                android:paddingHorizontal="36dp"
                 android:text="Đặt hàng"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
@@ -416,11 +428,12 @@
 
 
     <ProgressBar
-        android:visibility="gone"
         android:id="@+id/progressBar"
         android:layout_width="50dp"
-        android:layout_centerInParent="true"
         android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:indeterminateTintMode="src_atop"
+        android:visibility="gone"
         tools:ignore="MissingConstraints" />
 </RelativeLayout>

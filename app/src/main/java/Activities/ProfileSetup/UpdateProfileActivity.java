@@ -40,7 +40,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
     private Uri imageUri;
     private User user;
     private String userId;
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

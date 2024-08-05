@@ -222,7 +222,6 @@ public class StoreOwnerActivity extends AppCompatActivity {
                     binding.txtStoreName.setText((CharSequence) data.get(STORE_NAME));
 
                     // set up UI avatar, invoice
-
                 }
 
                 @Override

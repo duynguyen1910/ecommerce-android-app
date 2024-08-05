@@ -11,6 +11,7 @@ import static utils.TypeUtils.setupSizeVn;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -34,6 +36,8 @@ import com.example.stores.databinding.ItemTypeBinding;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import Adapters.SettingVariant.TypeValueAdapterForDialog;
+import Adapters.SettingVariant.TypeValueAdapterForSettingVariant;
 import interfaces.TypeCallback;
 import models.Type;
 import models.TypeValue;
@@ -41,17 +45,20 @@ import models.TypeValue;
 
 public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
     private final Context context;
-    private final ArrayList<Type> list;
+    private final ArrayList<Type> typeList;
     public static TypeCallback callback = null;
+    private ActivityResultLauncher<Intent> myLauncher;
     private static final ArrayList<TypeValue> colorValues = setupColor();
     private static final ArrayList<TypeValue> genderValues = setupGender();
     private static final ArrayList<TypeValue> sizeVnValues = setupSizeVn();
     private static final ArrayList<TypeValue> sizeGlobalValues = setupSizeGlobal();
 
 
-    public TypeAdapter(Context context, ArrayList<Type> list, TypeCallback callback) {
+    public TypeAdapter(Context context, ArrayList<Type> typeList,
+                       ActivityResultLauncher<Intent> myLauncher, TypeCallback callback) {
         this.context = context;
-        this.list = list;
+        this.typeList = typeList;
+        this.myLauncher = myLauncher;
         TypeAdapter.callback = callback;
     }
 
@@ -75,7 +82,7 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Type type = list.get(holder.getBindingAdapterPosition());
+        Type type = typeList.get(holder.getBindingAdapterPosition());
         String selectedType = type.getTypeName();
         holder.binding.txtTypeName.setText(type.getTypeName());
         holder.binding.txtRemove.setOnClickListener(v -> {
@@ -83,14 +90,16 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
             if (type.getTypeName().equals(TYPE_SIZE_VN) || type.getTypeName().equals(TYPE_SIZE_GLOBAL)) {
                 callback.setVisibleForSelectSizeLayout();
             }
-            list.remove(removePos);
+            typeList.remove(removePos);
             callback.updateSelectableTypeSet(type.getTypeName());
             setVisibleForSelectVariantDialog();
             notifyItemRemoved(removePos);
         });
 
 
-        TypeValueAdapterForSettingVariant typeValueAdapter = new TypeValueAdapterForSettingVariant(context, type.getListValues(), selectedType, callback);
+        TypeValueAdapterForSettingVariant typeValueAdapter = new
+                TypeValueAdapterForSettingVariant(context, type.getListValues(), selectedType,
+                myLauncher, callback);
         holder.binding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
         holder.binding.recyclerView.setAdapter(typeValueAdapter);
 
@@ -114,13 +123,13 @@ public class TypeAdapter extends RecyclerView.Adapter<TypeAdapter.ViewHolder> {
     }
 
     public void addType(Type type) {
-        list.add(type);
-        notifyItemInserted(list.size());
+        typeList.add(type);
+        notifyItemInserted(typeList.size());
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return typeList.size();
     }
 
     public void setVisibleForSelectVariantDialog() {

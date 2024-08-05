@@ -1,34 +1,37 @@
 package Activities.AddAddress;
 
-import static constants.keyName.ADDRESS;
-import static constants.keyName.CATEGORY_ID;
-import static constants.keyName.CATEGORY_NAME;
-
-import android.app.Activity;
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
 
-import com.example.stores.R;
 import com.example.stores.databinding.ActivitySelectAddressBinding;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
-import models.Address.ApiAddressService;
-import models.Address.Phuong;
-import models.Address.PhuongXaResponse;
-import models.Address.Quan;
-import models.Address.QuanHuyenResponse;
-import models.Address.Tinh;
-import models.Address.TinhThanhResponse;
+import interfaces.ApiAddressService;
+
+import models.AddressesResponse;
+import models.Addresses;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,18 +39,20 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SelectAddressActivity extends AppCompatActivity {
-
     ActivitySelectAddressBinding binding;
+    private FusedLocationProviderClient fusedLocationClient;
+    private final static int REQUEST_CODE = 100;
     ApiAddressService apiAddressService;
     Retrofit retrofit;
-    Tinh selectedTinh;
-    Quan selectedQuan;
-    Phuong selectedPhuong;
+    Addresses provinceSelected;
+    Addresses districtSelected;
+    Addresses wardSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySelectAddressBinding.inflate(getLayoutInflater());
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         setContentView(binding.getRoot());
 
         initUI();
@@ -59,80 +64,113 @@ public class SelectAddressActivity extends AppCompatActivity {
                 .build();
 
         apiAddressService = retrofit.create(ApiAddressService.class);
-        loadTinhThanh();
 
-
+        onLoadProvinceList();
     }
 
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            askPermission();
+        } else {
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if(location != null) {
+                                Geocoder geocoder = new Geocoder(SelectAddressActivity.this, Locale.getDefault());
+                                List<Address>  addresses = null;
+                                try {
+                                    addresses = geocoder.getFromLocation(
+                                            location.getLatitude(), location.getLongitude(), 1);
 
-    private void loadTinhThanh() {
-        apiAddressService.getTinhThanh().enqueue(new Callback<TinhThanhResponse>() {
+                                    Log.d("TAG", "getLatitude: " + addresses.get(0).getLatitude());
+                                    Log.d("TAG", "getLongitude: " + addresses.get(0).getLongitude());
+                                    Log.d("TAG", "Address: " + addresses.get(0).getAddressLine(0));
+                                    Log.d("TAG", "getLocality: " + addresses.get(0).getLocality());
+                                    Log.d("TAG", "getCountryName: " + addresses.get(0).getCountryName());
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        }
+                    });
+        }
+    }
+
+    private void askPermission() {
+        ActivityCompat.requestPermissions(SelectAddressActivity.this,
+                new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLocation();
+            } else {
+                Toast.makeText(this, "Required Permission", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    private void onLoadProvinceList() {
+        apiAddressService.getTinhThanh().enqueue(new Callback<AddressesResponse>() {
             @Override
-            public void onResponse(Call<TinhThanhResponse> call, Response<TinhThanhResponse> response) {
+            public void onResponse(Call<AddressesResponse> call, Response<AddressesResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Tinh> tinhs = response.body().data;
-                    // Chuyển đổi danh sách tỉnh thành thành danh sách tên tỉnh thành
-                    List<String> tinhNames = new ArrayList<>();
-                    for (Tinh tinh : tinhs) {
-                        tinhNames.add(tinh.full_name);
-                    }
+                    List<Addresses> provinceList = response.body().data;
 
-                    // Cập nhật dữ liệu cho Spinner
-                    ArrayAdapter<String> tinhAdapter = new ArrayAdapter<>(SelectAddressActivity.this,
-                            android.R.layout.simple_spinner_item, tinhNames);
+                    ArrayAdapter<Addresses> tinhAdapter = new ArrayAdapter<>(SelectAddressActivity.this,
+                            android.R.layout.simple_spinner_item, provinceList);
                     tinhAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    binding.spinnerTinh.setAdapter(tinhAdapter);
-                    binding.spinnerTinh.setDropDownVerticalOffset(280);
+                    binding.provinceSpinner.setAdapter(tinhAdapter);
+                    binding.provinceSpinner.setDropDownVerticalOffset(280);
 
-
-                    // Đặt sự kiện cho Spinner tỉnh thành
-                    binding.spinnerTinh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    binding.provinceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            selectedTinh = tinhs.get(position);
-                            loadQuanHuyen(selectedTinh.id);
+                            provinceSelected = provinceList.get(position);
+                            onLoadDistrictList(provinceSelected.getID());
                         }
 
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
-
                         }
                     });
                 }
             }
 
             @Override
-            public void onFailure(Call<TinhThanhResponse> call, Throwable t) {
-                // Xử lý lỗi
+            public void onFailure(Call<AddressesResponse> call, Throwable t) {
+                Toast.makeText(SelectAddressActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void loadQuanHuyen(String idTinh) {
-        apiAddressService.getQuanHuyen(idTinh).enqueue(new Callback<QuanHuyenResponse>() {
+    private void onLoadDistrictList(String provinceID) {
+        apiAddressService.getQuanHuyen(provinceID).enqueue(new Callback<AddressesResponse>() {
             @Override
-            public void onResponse(Call<QuanHuyenResponse> call, Response<QuanHuyenResponse> response) {
+            public void onResponse(Call<AddressesResponse> call, Response<AddressesResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Quan> quans = response.body().data;
-                    // Chuyển đổi danh sách quận huyện thành danh sách tên quận huyện
-                    List<String> quanNames = new ArrayList<>();
-                    for (Quan quan : quans) {
-                        quanNames.add(quan.full_name);
-                    }
+                    List<Addresses> districtList = response.body().data;
 
-                    // Cập nhật dữ liệu cho Spinner quận huyện
-                    ArrayAdapter<String> quanAdapter = new ArrayAdapter<>(SelectAddressActivity.this,
-                            android.R.layout.simple_spinner_item, quanNames);
+                    ArrayAdapter<Addresses> quanAdapter = new ArrayAdapter<>(SelectAddressActivity.this,
+                            android.R.layout.simple_spinner_item, districtList);
                     quanAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    binding.spinnerQuan.setAdapter(quanAdapter);
-                    binding.spinnerQuan.setDropDownVerticalOffset(150);
-                    // Đặt sự kiện cho Spinner quận huyện
-                    binding.spinnerQuan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    binding.districtSpinner.setAdapter(quanAdapter);
+                    binding.districtSpinner.setDropDownVerticalOffset(150);
+
+                    binding.districtSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            // Xử lý khi chọn quận huyện
-                            selectedQuan = quans.get(position);
-                            loadPhuongXa(selectedQuan.id);
+                            districtSelected = districtList.get(position);
+                            onLoadWardList(districtSelected.getID());
                         }
 
                         @Override
@@ -143,65 +181,64 @@ public class SelectAddressActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<QuanHuyenResponse> call, Throwable t) {
-                // Xử lý lỗi
+            public void onFailure(Call<AddressesResponse> call, Throwable t) {
+                Toast.makeText(SelectAddressActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void loadPhuongXa(String idQuan) {
-        apiAddressService.getPhuongXa(idQuan).enqueue(new Callback<PhuongXaResponse>() {
+    private void onLoadWardList(String districtID) {
+        apiAddressService.getPhuongXa(districtID).enqueue(new Callback<AddressesResponse>() {
             @Override
-            public void onResponse(Call<PhuongXaResponse> call, Response<PhuongXaResponse> response) {
+            public void onResponse(Call<AddressesResponse> call, Response<AddressesResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<Phuong> phuongs = response.body().data;
-                    // Chuyển đổi danh sách phường xã thành danh sách tên phường xã
-                    List<String> phuongNames = new ArrayList<>();
-                    for (Phuong phuong : phuongs) {
-                        phuongNames.add(phuong.full_name);
-                    }
+                    List<Addresses> wardList = response.body().data;
 
-                    // Cập nhật dữ liệu cho Spinner phường xã
-                    ArrayAdapter<String> phuongAdapter = new ArrayAdapter<>(SelectAddressActivity.this,
-                            android.R.layout.simple_spinner_item, phuongNames);
+                    ArrayAdapter<Addresses> phuongAdapter = new ArrayAdapter<>(SelectAddressActivity.this,
+                            android.R.layout.simple_spinner_item, wardList);
                     phuongAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    binding.spinnerPhuong.setAdapter(phuongAdapter);
-                    binding.spinnerPhuong.setDropDownVerticalOffset(280);
+                    binding.wardSpinner.setAdapter(phuongAdapter);
+                    binding.wardSpinner.setDropDownVerticalOffset(280);
 
-                    binding.spinnerPhuong.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    binding.wardSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            selectedPhuong = phuongs.get(position);
+                            wardSelected = wardList.get(position);
                         }
 
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
-
                         }
                     });
                 }
             }
 
             @Override
-            public void onFailure(Call<PhuongXaResponse> call, Throwable t) {
-                // Xử lý lỗi
+            public void onFailure(Call<AddressesResponse> call, Throwable t) {
+                Toast.makeText(SelectAddressActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     private void setupEvents() {
         binding.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String address = selectedTinh.getFull_name() + "\n" + selectedQuan.getFull_name() + "\n" + selectedPhuong.getFull_name();
                 Intent intent = new Intent();
-                intent.putExtra(ADDRESS, address);
-                setResult(2, intent);
+                intent.putExtra("provinceSelected", provinceSelected);
+                intent.putExtra("districtSelected", districtSelected);
+                intent.putExtra("wardSelected", wardSelected);
 
+                setResult(2, intent);
                 finish();
             }
         });
         binding.imageBack.setOnClickListener(v -> finish());
+
+        binding.getLocationBtn.setOnClickListener(v -> {
+            getLocation();
+        });
     }
 
     private void initUI() {

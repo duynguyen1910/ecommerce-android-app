@@ -26,9 +26,10 @@ public class Product extends BaseObject implements Serializable {
     private ArrayList<String> productImages;
     private int sold;
 
-    public Product(String productName, String description, double newPrice, double oldPrice,
+    public Product(String productName, ArrayList<String> productImages, String description, double newPrice, double oldPrice,
                    int inStock, String storeID, int numberInCart) {
         this.productName = productName;
+        this.productImages = productImages;
         this.description = description;
         this.newPrice = newPrice;
         this.oldPrice = oldPrice;

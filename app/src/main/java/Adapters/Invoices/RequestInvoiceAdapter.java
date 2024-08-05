@@ -94,7 +94,8 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
             public void getUserInfoSuccess(User user) {
                 holder.binding.txtCustomerName.setText(user.getFullname());
                 holder.binding.txtCustomerPhone.setText(user.getPhoneNumber());
-                holder.binding.txtCustomerAddress.setText(user.getUserAddress());
+                holder.binding.txtDetailedCustomer.setText(invoice.getDetailedAddress());
+                holder.binding.txtCustomerAddress.setText(invoice.getDeliveryAddress());
             }
 
             @Override
@@ -103,9 +104,7 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
             }
         });
 
-
         setupControlButtons(invoice, holder.binding.btnCancel, holder.binding.btnConfirm);
-//        holder.binding.txtInvoiceStatus.setText(invoice.getStatus().getOrderLabel());
 
         holder.binding.progressBar.setVisibility(View.VISIBLE);
         holder.binding.progressBar.getIndeterminateDrawable()
@@ -203,11 +202,6 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
                 break;
             }
 
-            case IN_TRANSIT:{
-                btnCancel.setVisibility(View.GONE);
-                btnConfirm.setVisibility(View.GONE);
-                break;
-            }
             default:{
                 btnCancel.setVisibility(View.GONE);
                 btnConfirm.setVisibility(View.GONE);

@@ -16,10 +16,6 @@ import models.SliderItem;
 
 public class ProductImagesDetailActivity extends AppCompatActivity {
 
-
-    private final int numberOrder = 1;
-
-    private final Handler slideHandler = new Handler();
     ActivityProductImagesDetailBinding binding;
 
     @Override

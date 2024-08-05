@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
 import com.example.stores.databinding.ItemGridProductBinding;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -55,6 +57,11 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
     public void onBindViewHolder(@NonNull ProductGridAdapter.ViewHolder holder, int position) {
 
         Product product = list.get(holder.getBindingAdapterPosition());
+
+        if(product.getProductImages() != null) {
+            Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
+        }
+
         holder.binding.txtTitle.setText(product.getProductName());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         String formattedPrice = formatter.format(product.getNewPrice());
@@ -67,7 +74,8 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
         holder.binding.txtSaleoff.setText("-" + 40 + "%");
         holder.binding.txtRating.setText("(" + 4.5 + ")");
         holder.binding.ratingBar.setRating(4.5F);
-//        Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
+
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -8,14 +8,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="155dp">
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="155dp"
+            android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@mipmap/lovito_dress" />
+            android:src="@mipmap/default_img" />
 
         <TextView
             android:id="@+id/txtSaleoff"

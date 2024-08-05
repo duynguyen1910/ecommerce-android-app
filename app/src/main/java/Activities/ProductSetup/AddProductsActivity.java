@@ -3,6 +3,7 @@ package Activities.ProductSetup;
 import static constants.keyName.CATEGORY_ID;
 import static constants.keyName.CATEGORY_NAME;
 import static constants.keyName.PRODUCT_DESC;
+import static constants.keyName.PRODUCT_IMAGES;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
 import static constants.keyName.PRODUCT_NEW_PRICE;
@@ -11,28 +12,48 @@ import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.CREATE_PRODUCT_SUCCESSFULLY;
 import static constants.toastMessage.DEFAULT_REQUIRE;
+import static constants.toastMessage.IMAGE_REQUIRE;
 import static utils.Cart.CartUtils.showToast;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.bumptech.glide.Glide;
 import com.example.stores.databinding.ActivityAddProductsBinding;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import Activities.ProfileSetup.UpdateProfileActivity;
+import Adapters.PreviewImageAdapter;
 import api.productApi;
+import api.uploadApi;
 import interfaces.CreateDocumentCallback;
+import interfaces.GetCollectionCallback;
 
 
 public class AddProductsActivity extends AppCompatActivity {
-
-    ActivityAddProductsBinding binding;
-    String storeId;
-    String categoryId;
+    private ActivityAddProductsBinding binding;
+    private String storeID;
+    private String categoryID;
+    private ArrayList<Uri> imagesUriList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +64,6 @@ public class AddProductsActivity extends AppCompatActivity {
         initUI();
         setupEvents();
 
-
     }
 
     private void setupEvents() {
@@ -53,37 +73,22 @@ public class AddProductsActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        binding.btnSave.setOnClickListener(v -> {
-            Map<String, Object> newProduct = validateForm();
-
-            if (newProduct != null) {
-
-
-                productApi productApi = new productApi();
-                productApi.createProductApi(newProduct, new CreateDocumentCallback() {
-                    @Override
-                    public void onCreateSuccess(String documentId) {
-                        showToast(AddProductsActivity.this, CREATE_PRODUCT_SUCCESSFULLY);
-                        finish();
-                    }
-
-                    @Override
-                    public void onCreateFailure(String errorMessage) {
-                        Toast.makeText(AddProductsActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            } else {
-                showToast(AddProductsActivity.this, "Vui lòng điền đầy đủ thông tin");
-            }
-
-
+        binding.btnAdd.setOnClickListener(v -> {
+            submitProductWithValidation();
         });
 
 
         binding.layoutCategory.setOnClickListener(v -> {
             Intent intent = new Intent(AddProductsActivity.this, SelectCategoryActivity.class);
             launcherSelectCategory.launch(intent);
+        });
+
+        binding.imageUploadLN.setOnClickListener(v -> {
+            Intent photoPicker = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            photoPicker.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            photoPicker.setType("image/*");
+            productImagesLauncher.launch(photoPicker);
         });
 
     }
@@ -99,7 +104,7 @@ public class AddProductsActivity extends AppCompatActivity {
                         Bundle bundle = intent.getExtras();
                         if (bundle != null) {
                             String categoryName = bundle.getString(CATEGORY_NAME);
-                            categoryId = bundle.getString(CATEGORY_ID);
+                            categoryID = bundle.getString(CATEGORY_ID);
                             binding.txtChooseCategory.setText("Ngành hàng: ");
                             binding.edtCategory.setText(categoryName);
                         }
@@ -108,8 +113,7 @@ public class AddProductsActivity extends AppCompatActivity {
             });
 
 
-
-    private Map<String, Object> validateForm() {
+    private void submitProductWithValidation() {
         String productName = Objects.requireNonNull(binding.edtTitle.getText()).toString().trim();
         String description = Objects.requireNonNull(binding.edtDescription.getText()).toString().trim();
         String priceStr = Objects.requireNonNull(binding.edtPrice.getText()).toString().trim();
@@ -143,37 +147,106 @@ public class AddProductsActivity extends AppCompatActivity {
             isValid = false;
         }
 
-        if (isValid) {
-            try {
+        if(isValid) {
+            binding.progressBar.setVisibility(View.VISIBLE);
+            binding.progressBar.getIndeterminateDrawable()
+                    .setColorFilter(Color.parseColor("#f04d7f"), PorterDuff.Mode.MULTIPLY);
 
-                double price = Double.parseDouble(priceStr.replace(",", ""));
-                int inStock = Integer.parseInt(inStockStr.replace(",", ""));
 
-                Map<String, Object> newProduct = new HashMap<>();
-                newProduct.put(PRODUCT_NAME, productName);
-                newProduct.put(PRODUCT_DESC, description);
-                newProduct.put(PRODUCT_NEW_PRICE, price);
-                newProduct.put(PRODUCT_OLD_PRICE, price);
-                newProduct.put(PRODUCT_INSTOCK, inStock);
-                newProduct.put(CATEGORY_ID, categoryId);
-                newProduct.put(STORE_ID, storeId);
+            uploadApi uploadApi = new uploadApi();
+            uploadApi.uploadMultiImageToStorageApi(imagesUriList, new GetCollectionCallback() {
+                @Override
+                public void onGetListSuccess(ArrayList imagesUrlList) {
+                    Map<String, Object> newProduct = new HashMap<>();
+                    double price = Double.parseDouble(priceStr.replace(",", ""));
+                    int inStock = Integer.parseInt(inStockStr.replace(",", ""));
 
-                return newProduct;
-            } catch (NumberFormatException ignored) {
 
-            }
-        }
+                    newProduct.put(PRODUCT_NAME, productName);
+                    newProduct.put(PRODUCT_IMAGES, imagesUrlList);
+                    newProduct.put(PRODUCT_DESC, description);
+                    newProduct.put(PRODUCT_NEW_PRICE, price);
+                    newProduct.put(PRODUCT_OLD_PRICE, price);
+                    newProduct.put(PRODUCT_INSTOCK, inStock);
+                    newProduct.put(CATEGORY_ID, categoryID);
+                    newProduct.put(STORE_ID, storeID);
 
-        return null;
+                    onAddProduct(newProduct);
+                }
+
+                @Override
+                public void onGetListFailure(String errorMessage) {
+                    Toast.makeText(AddProductsActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    binding.progressBar.setVisibility(View.GONE);
+                }
+            });
+        };
     }
 
+
+    private void onAddProduct(Map<String, Object> newProduct) {
+        if (newProduct != null) {
+            productApi productApi = new productApi();
+            productApi.createProductApi(newProduct, new CreateDocumentCallback() {
+                @Override
+                public void onCreateSuccess(String documentId) {
+                    binding.progressBar.setVisibility(View.GONE);
+                    showToast(AddProductsActivity.this, CREATE_PRODUCT_SUCCESSFULLY);
+                    finish();
+                }
+
+                @Override
+                public void onCreateFailure(String errorMessage) {
+                    binding.progressBar.setVisibility(View.GONE);
+                    Toast.makeText(AddProductsActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        } else {
+            binding.progressBar.setVisibility(View.GONE);
+            showToast(AddProductsActivity.this, "Vui lòng điền đầy đủ thông tin");
+        }
+    }
 
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
+
         SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
-        storeId = sharedPreferences.getString(STORE_ID, null);
+        storeID = sharedPreferences.getString(STORE_ID, null);
+
+        imagesUriList = new ArrayList<>();
+    }
+
+    private void loadPreviewImages() {
+        PreviewImageAdapter adapter = new PreviewImageAdapter(this, imagesUriList);
+        binding.previewImagesRecyclerView.setAdapter(adapter);
+        binding.previewImagesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
 
 
+    ActivityResultLauncher<Intent> productImagesLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        imagesUriList.clear();
+
+                        if (result.getData() != null && result.getData().getClipData() != null) {
+                            int count = result.getData().getClipData().getItemCount();
+
+                            for(int i = 0; i < count; i++) {
+                                Uri imageUri = result.getData().getClipData().getItemAt(i).getUri();
+                                imagesUriList.add(imageUri);
+                            }
+                        }
+
+                        loadPreviewImages();
+
+                    } else {
+                        Toast.makeText(AddProductsActivity.this, IMAGE_REQUIRE, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 }

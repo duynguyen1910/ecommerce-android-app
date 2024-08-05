@@ -106,9 +106,20 @@
                             app:drawableTint="@color/secondary_color" />
                     </RelativeLayout>
 
+                    <TextView
+                        android:id="@+id/txtDetailedCustomer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="2dp"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="26dp"
+                        android:text="..."
+                        android:textColor="@color/black"
+                        app:drawableTint="@color/darkgray" />
+
 
                     <TextView
-                        android:id="@+id/txtAddress"
+                        android:id="@+id/txtCustomerAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="6dp"

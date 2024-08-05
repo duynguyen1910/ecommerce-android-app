@@ -28,11 +28,14 @@ public class toastMessage {
 
     public static final String CREATE_PRODUCT_FAILED = "Thêm sản phẩm thất bại";
     public static final String CREATE_PRODUCT_SUCCESSFULLY = "Thêm sản phẩm thành công";
-    public static final String UPDATE_PRODUCT_SUCCESSFULLY = "Chỉnh sửa sản phẩm thành công";
-    public static final String UPDATE_PRODUCT_FAILED = "Chỉnh sửa sản phẩm thất bại";
+    public static final String CREATE_VARIANT_SUCCESSFULLY = "Thêm phân loại hàng thành công";
 
 
     public static final String ORDER_SUCCESSFULLY = "Đặt hàng thành công";
     public static final String CONFIRMED_ORDER_SUCCESSFULLY = "Đã xác nhận đơn";
+
+    public static final String ADD_ADDRESS_SUCCESSFULLY = "Thêm mới địa chỉ thành công";
+    public static final String ADDRESS_REQUIRE = "Vui lòng chọn địa chỉ giao hàng";
+
     public static final String CANCEL_ORDER_SUCCESSFULLY = "Đã hủy đơn";
 }

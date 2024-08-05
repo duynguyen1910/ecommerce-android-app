@@ -21,7 +21,7 @@ import models.Category;
 
 public class SelectCategoryActivity extends AppCompatActivity {
 
-    ActivitySelectCategoryBinding binding;
+    private ActivitySelectCategoryBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class SelectCategoryActivity extends AppCompatActivity {
 
             @Override
             public void onGetListFailure(String errorMessage) {
-                Toast.makeText(SelectCategoryActivity.this, INTERNET_ERROR, Toast.LENGTH_SHORT).show();
+                Toast.makeText(SelectCategoryActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
 
