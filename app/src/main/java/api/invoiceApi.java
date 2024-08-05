@@ -3,14 +3,14 @@ package api;
 import static constants.collectionName.INVOICE_COLLECTION;
 import static constants.collectionName.INVOICE_DETAIL_COLLECTION;
 import static constants.collectionName.PRODUCT_COLLECTION;
-import static constants.collectionName.USER_COLLECTION;
+import static constants.keyName.CREATE_AT;
 import static constants.keyName.CUSTOMER_ID;
 import static constants.keyName.INVOICE_ID;
 import static constants.keyName.STATUS;
 import static constants.keyName.STORE_ID;
 import static constants.toastMessage.CONFIRMED_ORDER_SUCCESSFULLY;
+import static constants.toastMessage.INTERNET_ERROR;
 import static constants.toastMessage.ORDER_SUCCESSFULLY;
-import static constants.toastMessage.UPDATE_SUCCESSFULLY;
 
 import androidx.annotation.NonNull;
 
@@ -21,23 +21,26 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import interfaces.CreateDocumentCallback;
+import interfaces.GetAggregateCallback;
 import interfaces.GetCollectionCallback;
 import interfaces.StatusCallback;
 import interfaces.UpdateDocumentCallback;
 import models.Invoice;
 import models.InvoiceDetail;
 import models.Product;
-import utils.CartUtils;
+import utils.Cart.CartUtils;
 
 public class invoiceApi {
     private FirebaseFirestore db;
@@ -63,6 +66,8 @@ public class invoiceApi {
                 });
     }
 
+
+
     public void createDetailInvoiceApi(ArrayList<InvoiceDetail> invoiceItems,
                                     final StatusCallback callback) {
         WriteBatch batch = db.batch();
@@ -86,6 +91,51 @@ public class invoiceApi {
                 }
             }
         });
+    }
+
+    public void getRevenueByStoreID(String storeID, GetAggregateCallback callback){
+        List<Integer> orderStatuses = new ArrayList<>();
+        orderStatuses.add(2);
+        orderStatuses.add(3);
+        orderStatuses.add(4);
+        db.collection(INVOICE_COLLECTION)
+                .whereEqualTo(STORE_ID, storeID)
+                .whereIn(STATUS,orderStatuses)
+                .get()
+                .addOnSuccessListener(task -> {
+                    double sumTotal = 0;
+                    for (DocumentSnapshot document : task.getDocuments()){
+                        Invoice invoice = document.toObject(Invoice.class);
+                        double total = invoice.getTotal();
+                        sumTotal += total;
+                    }
+                    callback.onSuccess(sumTotal);
+                }).addOnFailureListener(e -> {
+                    callback.onFailure(INTERNET_ERROR);
+                });
+
+    }
+    public void getSpendingsByCustomerID(String customerID, GetAggregateCallback callback){
+        List<Integer> orderStatuses = new ArrayList<>();
+        orderStatuses.add(2);
+        orderStatuses.add(3);
+        orderStatuses.add(4);
+        db.collection(INVOICE_COLLECTION)
+                .whereEqualTo(CUSTOMER_ID, customerID)
+                .whereIn(STATUS,orderStatuses)
+                .get()
+                .addOnSuccessListener(task -> {
+                    double spendings = 0;
+                    for (DocumentSnapshot document : task.getDocuments()){
+                        Invoice invoice = document.toObject(Invoice.class);
+                        double total = invoice.getTotal();
+                        spendings += total;
+                    }
+                    callback.onSuccess(spendings);
+                }).addOnFailureListener(e -> {
+                    callback.onFailure(INTERNET_ERROR);
+                });
+
     }
 
     public void getInvoicesByStatusApi(String customerID, int invoiceStatus, final GetCollectionCallback<Invoice> callback) {
@@ -139,6 +189,7 @@ public class invoiceApi {
                 });
     }
 
+
     private void getProductsByListIDsApi(final ArrayList<InvoiceDetail> invoiceDetails, ArrayList<String> productIDs, final GetCollectionCallback<InvoiceDetail> callback) {
         final Map<String, Product> productMap = new HashMap<>();
         final AtomicInteger pendingRequests = new AtomicInteger(productIDs.size());
@@ -163,6 +214,7 @@ public class invoiceApi {
                                     if (product != null) {
                                         detail.setProductName(product.getProductName());
                                         detail.setNewPrice(product.getNewPrice());
+                                        detail.setOldPrice(product.getOldPrice());
                                         detail.setStoreID(product.getStoreID());
                                     }
                                 }

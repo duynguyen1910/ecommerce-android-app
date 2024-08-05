@@ -1,38 +1,31 @@
 package Fragments.Store;
-
 import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.example.stores.databinding.FragmentProductsInStockBinding;
-import com.example.stores.databinding.FragmentProductsOutOfStockBinding;
-
+import com.example.stores.databinding.FragmentWithOnlyRecyclerviewBinding;
 import java.util.ArrayList;
-
 import Adapters.MyProductsAdapter;
 import interfaces.GetCollectionCallback;
 import models.Product;
 
 public class ProductsInStockFragment extends Fragment {
-    FragmentProductsInStockBinding binding;
+    FragmentWithOnlyRecyclerviewBinding binding;
 
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentProductsInStockBinding.inflate(getLayoutInflater());
+        binding = FragmentWithOnlyRecyclerviewBinding.inflate(getLayoutInflater());
         initProducts();
         return binding.getRoot();
     }

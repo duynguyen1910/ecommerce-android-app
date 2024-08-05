@@ -1,9 +1,7 @@
 package Fragments.Invoice;
-
 import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
-
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -12,17 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.example.stores.databinding.FragmentInvoiceAwaitPickupBinding;
-
+import com.example.stores.databinding.FragmentWithOnlyRecyclerviewBinding;
 import java.util.ArrayList;
-
-import Adapters.InvoiceAdapter;
+import Adapters.Invoices.InvoiceAdapter;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
@@ -30,12 +24,12 @@ import models.Invoice;
 
 
 public class InTransitFragment extends Fragment {
-    FragmentInvoiceAwaitPickupBinding binding;
+    FragmentWithOnlyRecyclerviewBinding binding;
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentInvoiceAwaitPickupBinding.inflate(getLayoutInflater());
+        binding = FragmentWithOnlyRecyclerviewBinding.inflate(getLayoutInflater());
 
         setupUI();
 

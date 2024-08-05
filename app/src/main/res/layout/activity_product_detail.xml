@@ -6,12 +6,18 @@
     android:layout_height="match_parent"
     android:background="@color/lightgray"
     android:orientation="vertical"
-    tools:context="Activities.ProductDetailActivity">
+    tools:context="Activities.BuyProduct.ProductDetailActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="match_parent" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:layout_weight="1">
 
         <ScrollView
@@ -23,19 +29,15 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="vertical"
-                    android:paddingVertical="4dp">
+                    android:orientation="vertical">
 
                     <androidx.viewpager2.widget.ViewPager2
                         android:id="@+id/viewPager2Slider"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
+                        android:layout_height="match_parent"
                         android:clipChildren="false"
                         android:clipToPadding="false" />
 
@@ -59,7 +61,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white">
+                    android:background="@color/white"
+                    android:paddingTop="10dp">
 
                     <LinearLayout
                         android:id="@+id/layoutProductsInfo"
@@ -123,7 +126,6 @@
                             android:background="@color/white"
                             android:gravity="center_vertical"
                             android:paddingHorizontal="16dp">
-
 
                             <RatingBar
                                 android:id="@+id/ratingBar"
@@ -345,7 +347,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="#80D5D4D3"
-                app:cardCornerRadius="30dp">
+                app:cardCornerRadius="20dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -353,8 +355,8 @@
                     android:background="#80D5D4D3">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_centerVertical="true"
                         android:layout_marginStart="12dp"
                         android:src="@drawable/ic_back"
@@ -366,17 +368,17 @@
 
 
             <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginEnd="10dp"
                 android:layout_toStartOf="@id/imageShare"
                 android:background="#80D5D4D3"
-                app:cardCornerRadius="30dp">
+                app:cardCornerRadius="20dp">
 
                 <RelativeLayout
                     android:id="@+id/iconCart"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="#80D5D4D3">
 
                     <ImageView
@@ -445,9 +447,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:gravity="center_horizontal"
                 android:text="Thêm vào Giỏ hàng"
+                android:id="@+id/txtAddToCart"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
         </LinearLayout>

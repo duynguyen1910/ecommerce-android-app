@@ -13,22 +13,22 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityMyProductsBinding;
-import com.example.stores.databinding.ItemTabLayoutProductsBinding;
+import com.example.stores.databinding.ItemTabLabelAndQuantityBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.Objects;
 
-import Activities.AddProductsActivity;
+import Activities.ProductSetup.AddProductsActivity;
 import Adapters.ViewPager2Adapter;
 import Fragments.Store.ProductsInStockFragment;
 import Fragments.Store.ProductsOutOfStockFragment;
-import interfaces.GetCountCallback;
+import interfaces.GetAggregateCallback;
 import models.Product;
+import utils.DecorateUtils;
 
 public class MyProductsActivity extends AppCompatActivity {
 
@@ -62,31 +62,31 @@ public class MyProductsActivity extends AppCompatActivity {
         String storeId = sharedPreferences.getString(STORE_ID, null);
         Product product = new Product();
 
-        product.countProductsOutOfStockByStoreId(storeId, new GetCountCallback<Product>() {
+        product.countProductsOutOfStockByStoreId(storeId, new GetAggregateCallback() {
             @Override
-            public void onGetCountSuccess(int count) {
-                outOfStock = count;
+            public void onSuccess(double aggregateResult) {
+                outOfStock = (int) aggregateResult;
                 countCompleted++;
                 updateTabQuantity();
             }
 
             @Override
-            public void onGetCountFailure(String errorMessage) {
+            public void onFailure(String errorMessage) {
                 countCompleted++;
                 updateTabQuantity();
             }
         });
 
-        product.countProductsInStockByStoreId(storeId, new GetCountCallback<Product>() {
+        product.countProductsInStockByStoreId(storeId, new GetAggregateCallback() {
             @Override
-            public void onGetCountSuccess(int count) {
-                inStock = count;
+            public void onSuccess(double aggregateResult) {
+                inStock = (int) aggregateResult;
                 countCompleted++;
                 updateTabQuantity();
             }
 
             @Override
-            public void onGetCountFailure(String errorMessage) {
+            public void onFailure(String errorMessage) {
                 countCompleted++;
                 updateTabQuantity();
             }
@@ -104,7 +104,7 @@ public class MyProductsActivity extends AppCompatActivity {
         new TabLayoutMediator(binding.tabLayout, binding.viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                ItemTabLayoutProductsBinding tabLayoutBinding = ItemTabLayoutProductsBinding.inflate(getLayoutInflater());
+                ItemTabLabelAndQuantityBinding tabLayoutBinding = ItemTabLabelAndQuantityBinding.inflate(getLayoutInflater());
                 TextView tabLabel = tabLayoutBinding.tabLabel;
                 tabLabel.setText(viewPager2Adapter.getPageTitle(position));
                 tab.setCustomView(tabLayoutBinding.getRoot());
@@ -118,8 +118,7 @@ public class MyProductsActivity extends AppCompatActivity {
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
                     TextView tabQuantity = tab.getCustomView().findViewById(R.id.tabQuantity);
-                    tabLabel.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
-                    tabQuantity.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.primary_color));
+                    DecorateUtils.decorateSelectedTextViews(MyProductsActivity.this, tabLabel, tabQuantity);
                 }
             }
 
@@ -129,8 +128,7 @@ public class MyProductsActivity extends AppCompatActivity {
                 if (customView != null) {
                     TextView tabLabel = customView.findViewById(R.id.tabLabel);
                     TextView tabQuantity = tab.getCustomView().findViewById(R.id.tabQuantity);
-                    tabLabel.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.darkgray));
-                    tabQuantity.setTextColor(ContextCompat.getColor(MyProductsActivity.this, R.color.darkgray));
+                    DecorateUtils.decorateUnselectedTextViews(MyProductsActivity.this, tabLabel, tabQuantity);
                 }
             }
 

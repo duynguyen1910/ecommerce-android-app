@@ -6,16 +6,17 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import com.example.stores.databinding.FragmentHistoryBinding;
+import com.example.stores.databinding.FragmentEmptyBinding;
+
 
 
 public class HistoryFragment extends Fragment {
-    FragmentHistoryBinding binding;
+    FragmentEmptyBinding binding;
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentHistoryBinding.inflate(getLayoutInflater());
+        binding = FragmentEmptyBinding.inflate(getLayoutInflater());
 
         return binding.getRoot();
     }

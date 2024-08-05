@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#333"
     android:orientation="vertical"
-    tools:context="Activities.ProductDetailActivity">
+    tools:context="Activities.BuyProduct.ProductDetailActivity">
 
 
     <androidx.cardview.widget.CardView

@@ -122,5 +122,39 @@
             app:drawableTint="@color/darkgray" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:text="Ảnh đại diện của Store"
+            android:textColor="@color/black" />
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/custom_stroke_primary_color"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:src="@drawable/ic_add_photo_24"
+                android:textColor="@color/primary_color"
+                app:tint="@color/primary_color" />
+        </LinearLayout>
+    </LinearLayout>
+
 
 </LinearLayout>

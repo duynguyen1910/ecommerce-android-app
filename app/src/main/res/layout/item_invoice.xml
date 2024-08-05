@@ -4,17 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="6dp"
-    android:background="@drawable/custom_edit_text_border"
+    android:paddingBottom="15dp"
+    android:background="@drawable/custom_border_bottom"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:gravity="center_vertical"
         android:paddingHorizontal="10dp"
-        android:paddingVertical="16dp"
-        android:background="@color/white"
-        >
+        android:paddingVertical="16dp">
 
         <ImageView
             android:id="@+id/ic_store"
@@ -25,7 +25,7 @@
 
         <TextView
             android:id="@+id/txtStoreName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_weight="1"
@@ -49,22 +49,20 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewProducts"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-      />
+        android:layout_height="wrap_content" />
 
     <ProgressBar
-        android:visibility="gone"
-        android:layout_gravity="center"
+        android:id="@+id/progressBar"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:id="@+id/progressBar"
+        android:layout_gravity="center"
         android:indeterminateTintMode="src_atop"
-        />
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_border_bottom"
+        android:background="@color/white"
         android:padding="16dp">
 
         <TextView
@@ -83,12 +81,12 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_alignParentEnd="true">
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/txtTotal"
                 android:text="Thành tiền: "
                 android:textColor="@color/black"
                 android:textSize="14sp" />
@@ -97,24 +95,23 @@
                 android:id="@+id/txtTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:text="đ128.000"
-                android:textSize="15sp"
                 android:textColor="@color/primary_color"
+                android:textSize="15sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </RelativeLayout>
 
     <Button
-        android:visibility="gone"
         android:id="@+id/btnCancelInvoice"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:background="@drawable/custom_button_close"
+        android:layout_height="40dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/custom_edit_text_border"
         android:text="Hủy đơn"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:visibility="visible" />
 
 </LinearLayout>

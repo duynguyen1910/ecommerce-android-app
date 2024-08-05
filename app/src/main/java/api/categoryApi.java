@@ -1,5 +1,7 @@
 package api;
 import static constants.collectionName.CATEGORY_COLLECTION;
+import static constants.collectionName.PRODUCT_COLLECTION;
+import static constants.toastMessage.INTERNET_ERROR;
 
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -11,6 +13,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import interfaces.GetCollectionCallback;
+import interfaces.GetDocumentCallback;
 import models.Category;
 
 public class categoryApi {
@@ -40,6 +43,18 @@ public class categoryApi {
             }
         });
 
+    }
+
+    public void getCategoryDetailApi(String categoryID, GetDocumentCallback callback) {
+        db.collection(CATEGORY_COLLECTION)
+                .document(categoryID)
+                .get()
+                .addOnSuccessListener(task -> {
+                    callback.onGetDataSuccess(task.getData());
+
+                }).addOnFailureListener(e -> {
+                    callback.onGetDataFailure(INTERNET_ERROR);
+                });
     }
 
 

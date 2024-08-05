@@ -1,136 +1,69 @@
 package Fragments.Delivery;
+import static android.content.Context.MODE_PRIVATE;
+import static constants.keyName.USER_ID;
+import static constants.keyName.USER_INFO;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.example.stores.databinding.FragmentDeliveryBeingTransportedBinding;
-import java.text.SimpleDateFormat;
+import com.example.stores.databinding.FragmentWithOnlyRecyclerviewBinding;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
-import Adapters.DeliveryAdapter;
-import Adapters.RequestInvoiceAdapter;
-import models.CartItem;
+import Adapters.Invoices.DeliveryAdapter;
+import Adapters.Invoices.InvoiceAdapter;
+import api.invoiceApi;
+import enums.OrderStatus;
+import interfaces.GetCollectionCallback;
 import models.Invoice;
-import models.Product;
 
 public class DeliveryBeingTransportedFragment extends Fragment {
-    FragmentDeliveryBeingTransportedBinding binding;
-    ArrayList<Invoice> invoices = new ArrayList<>();
+    FragmentWithOnlyRecyclerviewBinding binding;
 
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentDeliveryBeingTransportedBinding.inflate(getLayoutInflater());
-        fakeInvoices();
-        initProducts();
+        binding = FragmentWithOnlyRecyclerviewBinding.inflate(getLayoutInflater());
+        setupUI();
         return binding.getRoot();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        initProducts();
-    }
+    private void setupUI() {
+        invoiceApi invoiceApi = new invoiceApi();
+        SharedPreferences sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        String userID = sharedPreferences.getString(USER_ID, null);
 
+        if (userID == null) return;
 
-
-    private void initProducts() {
         binding.progressBar.setVisibility(View.VISIBLE);
-        binding.progressBar.setVisibility(View.GONE);
-        DeliveryAdapter adapter = new DeliveryAdapter(requireActivity(), invoices);
-        binding.recyclerView.setAdapter(adapter);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
-    }
+        binding.progressBar.getIndeterminateDrawable()
+                .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
-    private void fakeInvoices() {
+        invoiceApi.getInvoicesByStatusApi(userID, OrderStatus.IN_TRANSIT.getOrderStatusValue(),
+                new GetCollectionCallback<Invoice>() {
+                    @Override
+                    public void onGetListSuccess(ArrayList<Invoice> invoiceList) {
+                        binding.progressBar.setVisibility(View.GONE);
+                        DeliveryAdapter invoiceAdapter = new DeliveryAdapter(requireActivity(), invoiceList);
+                        binding.recyclerView.setAdapter(invoiceAdapter);
+                        binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
+                    }
 
-        CartItem cartItem = new CartItem();
-        ArrayList<Product> listProducts = new ArrayList<>();
-        Product product1 = new Product(
-                "CLOUDFOAM PURE SPW SHOES",
-                "CLOUDFOAM PURE SPW SHOES",
-                189000,
-                189000,
-                130,
-                "o4qWt9OUVo6UE3i6dizL",
-                3);
-        Product product2 = new Product(
-                "Giày Reebok Club C 85 Vintage - Chalk / Alabaster / Maroon Rep 1:1",
-                "Giày Reebok Club C 85 Vintage - Chalk / Alabaster / Maroon Rep 1:1",
-                159000,
-                159000,
-                110,
-                "o4qWt9OUVo6UE3i6dizL",
-                1);
-        listProducts.add(product1);
-        listProducts.add(product2);
-        cartItem.setStoreName("One Piece Clothes");
-        cartItem.setListProducts(listProducts);
+                    @Override
+                    public void onGetListFailure(String errorMessage) {
+                        binding.progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
-        String deliveryAddress = "Duy Nguyen Tan | 0968191001\nQuận 12, Hồ Chí Minh";
-        String createdDate = generateTime();
-        String paidDate = "";
-        String giveToDeliveryDate = "";
-        String completedDate = "";
-        String note = "";
-        int paymentMethod = 0; // 0: Thanh toán khi nhận hàng
-        int orderStatus = 3;  // 3 Đang giao hàng
-        String customerID = "rN1sLvf2d6M0tgbtGd9X";
-        String customerName = "Duy Nguyen Tan";
-
-//        Invoice newInvoice = new Invoice(
-//                deliveryAddress,
-//                createdDate,
-//                paidDate,
-//                giveToDeliveryDate,
-//                completedDate,
-//                getTotalForCartItem(cartItem),
-//                note,
-//                paymentMethod,
-//                orderStatus,
-//                cartItem,
-//                customerID,
-//                customerName);
-//        newInvoice.setInvoiceID(generateInvoiceId(29));
-//
-//        invoices.add(newInvoice);
-    }
-
-    private double getTotalForCartItem(CartItem cartItem) {
-        double fee = 0;
-
-        for (Product product : cartItem.getListProducts()) {
-            if (product.getCheckedStatus()) {
-                fee += (product.getOldPrice() * product.getNumberInCart());
-            }
-
-        }
-
-        return fee;
-    }
-
-    private String generateTime() {
-        Calendar calendar = Calendar.getInstance();
-        Date currentDate = calendar.getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd, HH:mm");
-        String invoiceId = dateFormat.format(currentDate);
-        return invoiceId;
-    }
-
-    private String generateInvoiceId(int random) {
-        Calendar calendar = Calendar.getInstance();
-        Date currentDate = calendar.getTime();
-        // Định dạng chuỗi ID cho hóa đơn
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        String invoiceId = dateFormat.format(currentDate) + random;
-        return invoiceId;
     }
 }

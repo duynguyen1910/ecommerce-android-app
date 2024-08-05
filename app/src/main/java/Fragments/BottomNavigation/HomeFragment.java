@@ -1,11 +1,12 @@
 package Fragments.BottomNavigation;
 
 import static constants.toastMessage.INTERNET_ERROR;
-import static utils.CartUtils.updateQuantityInCart;
+import static utils.Cart.CartUtils.updateQuantityInCart;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +23,11 @@ import com.example.stores.databinding.FragmentHomeBinding;
 
 import java.util.ArrayList;
 
-import Activities.CartActivity;
-import Activities.SearchActivity;
+import Activities.BuyProduct.CartActivity;
+import Activities.BuyProduct.SearchActivity;
 import Activities.StatisticsActivity;
-import Adapters.CategoryGridAdapter;
-import Adapters.ProductAdapter;
+import Adapters.Category.CategoryGridAdapter;
+import Adapters.ProductGridAdapter;
 import Adapters.SliderAdapter;
 import interfaces.GetCollectionCallback;
 import models.Category;
@@ -39,34 +40,52 @@ public class HomeFragment extends Fragment {
     Handler sliderHandler;
     Runnable sliderRunnable;
     ArrayList<Category> categoriesList = new ArrayList<>();
-    int fetchCategories = 0;
+    boolean getCategoriesSuccess = false;
+    String tagHome = "Home4";
 
     @Nullable
     @Override
-
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(getLayoutInflater());
-        updateQuantityInCart(binding.txtQuantityInCart);
+        Log.d(tagHome, "OnCreateView");
+        return binding.getRoot();
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d(tagHome, "OnViewCreated");
         initBanner();
-        fetchCategories();
         initProducts();
         setupEvents();
 
-        return binding.getRoot();
 
+
+        if (!getCategoriesSuccess) {
+            getCategories();
+        } else {
+            setupCategoryUI();
+        }
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(tagHome, "Onstart");
+    }
+
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(tagHome, "OnResume set category RecyclerView");
         updateQuantityInCart(binding.txtQuantityInCart);
+        setupCategoryUI();
     }
 
-    private void initBanner() {
-//        binding.progressBarBanner.setVisibility(View.VISIBLE);
-        sliderItems = new ArrayList<>();
 
+    private void initBanner() {
+        sliderItems = new ArrayList<>();
         sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-ly0hr2zmqifv2e_xxhdpi"));
         sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-lxuu1mpyl1w9ec_xxhdpi"));
         sliderItems.add(new SliderItem("https://cf.shopee.vn/file/vn-11134258-7r98o-lxutdtxck0yj9c_xxhdpi"));
@@ -78,41 +97,43 @@ public class HomeFragment extends Fragment {
         startSliderAutoCycle();
     }
 
-    private void setupCategoryUI(){
-        if (fetchCategories == 1){
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(tagHome, "onPause");
+    }
+
+
+    private void setupCategoryUI() {
+        if (!categoriesList.isEmpty()) {
             binding.progressBarCategory.setVisibility(View.GONE);
             binding.recyclerViewCategory.setLayoutManager(new GridLayoutManager(requireActivity(), 3, GridLayoutManager.HORIZONTAL, false));
             binding.recyclerViewCategory.setAdapter(new CategoryGridAdapter(requireActivity(), categoriesList));
         }
-
     }
 
-    private void fetchCategories() {
+    private void getCategories() {
         Category category = new Category();
+        Log.d(tagHome, "OnViewCreated, dang tai categories");
 
+
+        // Show progress bar while loading
         binding.progressBarCategory.setVisibility(View.VISIBLE);
 
         category.getCategoryCollection(new GetCollectionCallback<Category>() {
             @Override
-
             public void onGetListSuccess(ArrayList<Category> categories) {
-                binding.progressBarCategory.setVisibility(View.GONE);
-                binding.recyclerViewCategory.setLayoutManager(new GridLayoutManager(requireActivity(), 3, GridLayoutManager.HORIZONTAL, false));
-                binding.recyclerViewCategory.setAdapter(new CategoryGridAdapter(requireActivity(), categories));
-
                 categoriesList = new ArrayList<>(categories);
-                fetchCategories = 1;
+                getCategoriesSuccess = true;
                 setupCategoryUI();
-
             }
 
             @Override
             public void onGetListFailure(String errorMessage) {
+                binding.progressBarCategory.setVisibility(View.GONE);
                 Toast.makeText(requireActivity(), INTERNET_ERROR, Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
 
@@ -140,6 +161,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroyView() {
         stopSliderAutoCycle();
+        Log.d(tagHome, "OnDestroyView");
         super.onDestroyView();
     }
 
@@ -159,7 +181,7 @@ public class HomeFragment extends Fragment {
 
         if (!list.isEmpty()) {
             binding.recyclerViewProducts.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
-            binding.recyclerViewProducts.setAdapter(new ProductAdapter(requireActivity(), list));
+            binding.recyclerViewProducts.setAdapter(new ProductGridAdapter(requireActivity(), list));
         }
         binding.progressBarProducts.setVisibility(View.GONE);
 

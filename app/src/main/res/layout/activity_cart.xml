@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#F4F4F4"
     android:orientation="vertical"
-    tools:context="Activities.CartActivity">
+    tools:context="Activities.BuyProduct.CartActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

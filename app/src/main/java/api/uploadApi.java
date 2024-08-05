@@ -1,16 +1,24 @@
 package api;
 
 import android.net.Uri;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.UUID;
+
 import constants.toastMessage;
+import interfaces.GetCollectionCallback;
 import interfaces.UploadCallback;
 
 public class uploadApi {
@@ -40,6 +48,33 @@ public class uploadApi {
                     callback.uploadFailure(toastMessage.UPLOAD_FAILED);
                 }
             });
+        }
+    }
+
+    public void uploadMultiImageToStorageApi(ArrayList<Uri> imagesUriList,
+                                             final GetCollectionCallback callback) {
+        ArrayList<String> imagesUrl = new ArrayList<>();
+        StorageReference storageRef = storage.getReference();
+
+        for (Uri uri : imagesUriList) {
+            if (uri != null) {
+                StorageReference imageRef = storageRef.child("images/" + UUID.randomUUID().toString());
+
+                imageRef.putFile(uri).addOnSuccessListener(taskSnapshot -> {
+                    imageRef.getDownloadUrl().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            String url = task.getResult().toString();
+                            imagesUrl.add(url);
+
+                            if (imagesUrl.size() == imagesUriList.size()) {
+                                callback.onGetListSuccess(imagesUrl);
+                            }
+                        } else {
+                            callback.onGetListFailure(task.getException().getMessage());
+                        }
+                    });
+                }).addOnFailureListener(e -> callback.onGetListFailure(e.getMessage()));
+            }
         }
     }
 }

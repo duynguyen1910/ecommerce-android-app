@@ -35,8 +35,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import Activities.UpdateProfileActivity;
 import Adapters.DeliveryAddressAdapter;
 import api.addressApi;
 import api.userApi;

@@ -22,22 +22,29 @@ public class keyName {
 
     public static final String PRODUCT_ID = "productID";
     public static final String PRODUCT_NAME = "productName";
+    public static final String PRODUCT_IMAGES = "productImages";
     public static final String PRODUCT_DESC = "description";
     public static final String PRODUCT_NEW_PRICE = "newPrice";
     public static final String PRODUCT_OLD_PRICE = "oldPrice";
     public static final String PRODUCT_INSTOCK = "inStock";
+    public static final String PRODUCT_SOLD = "sold";
 
 
     public static final String CATEGORY_ID = "categoryID";
     public static final String CATEGORY_NAME = "categoryName";
 
+    public static final String PAYMENT = "payment";
+
     public static final String INVOICE_ID = "invoiceID";
     public static final String STATUS = "status";
+    public static final String NOTE = "note";
     public static final String CREATE_AT = "createdAt";
     public static final String CONFIRMED_AT = "confirmedAt";
     public static final String SHIPPED_AT = "shippedAt";
     public static final String DELIVERED_AT = "deliveredAt";
     public static final String CANCELED_AT = "cancelledAt";
+    public static final String CANCELED_BY = "cancelledBy";
+    public static final String CANCELED_REASON = "cancelledReason";
 
 
     public static final String TYPES = "TYPES";
@@ -54,5 +61,8 @@ public class keyName {
     public static final String PROVINCE_NAME = "provinceName";
     public static final String DISTRICT_NAME = "districtName";
     public static final String WARD_NAME = "wardName";
+
+    public static final String ADDRESS = "address";
+
 
 }

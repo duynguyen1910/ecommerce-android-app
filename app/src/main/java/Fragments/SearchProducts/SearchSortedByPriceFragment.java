@@ -25,13 +25,12 @@ import com.example.stores.databinding.FragmentSearchSortedByPriceBinding;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import Adapters.CategoryGridForDialogAdapter;
-import Adapters.ProductAdapter;
-import interfaces.CategoryDialogListener;
+import Adapters.Category.CategoryGridForDialogAdapter;
+import Adapters.ProductGridAdapter;
+import interfaces.InAdapter.CategoryDialogListener;
 import interfaces.GetCollectionCallback;
 import models.Category;
 import models.Product;
@@ -44,7 +43,7 @@ public class SearchSortedByPriceFragment extends Fragment implements CategoryDia
     ArrayList<Product> listProducts;
     int transferedselectedPosition = -1;
     String categoryName;
-    ProductAdapter adapter;
+    ProductGridAdapter adapter;
 
     @Nullable
     @Override
@@ -102,7 +101,7 @@ public class SearchSortedByPriceFragment extends Fragment implements CategoryDia
 
     private void initUI() {
         listProducts = new ArrayList<>();
-        adapter = new ProductAdapter(requireActivity(), listProducts);
+        adapter = new ProductGridAdapter(requireActivity(), listProducts);
         binding.recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
         binding.recyclerView.setAdapter(adapter);
     }

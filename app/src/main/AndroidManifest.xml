@@ -28,23 +28,41 @@
             android:name="Activities.AddAddress.CreateAddressActivity"
             android:exported="false"/>
         <activity
-            android:name="Activities.SettingVariantDetailActivity"
+            android:name="Activities.SplashScreen"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    <activity
+        android:name="Activities.ProductSetup.SettingVariantDetailActivity"
+        android:exported="false" />
+        <activity
+            android:name="Activities.StoreSetup.RevenueActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.DeliveryActivity"
+            android:name="Activities.StoreSetup.UpdateStoreInfoActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.RequestInvoiceActivity"
+            android:name="Activities.Invoices.DeliveryActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.Invoices.RequestInvoiceActivity"
             android:exported="false" />
 
         <activity
-            android:name="Activities.SearchActivity"
+            android:name="Activities.BuyProduct.SearchActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.PaymentMethodActivity"
+            android:name="Activities.BuyProduct.CartActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.SelectCategoryActivity"
+            android:name="Activities.BuyProduct.PaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.ProductSetup.SelectCategoryActivity"
             android:exported="false" />
         <activity
             android:name="Activities.RegisterActivity"
@@ -54,28 +72,17 @@
             android:name="Activities.AddAddress.SelectAddressActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.CartActivity"
+            android:name="Activities.ProductSetup.AddVariantActivity"
+            android:exported="false" />
+
+        <activity
+            android:name="Activities.ProductSetup.UpdateProductActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.SelectProductsToCategoryActivity"
+            android:name="Activities.ProductSetup.DeliveryFeeActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.AddCategoryActivity"
-            android:exported="false" />
-        <activity
-            android:name="Activities.AddVariantActivity"
-            android:exported="false" />
-        <activity
-            android:name="Activities.DecorateMyStoreActivity"
-            android:exported="false" />
-        <activity
-            android:name="Activities.UpdateProductActivity"
-            android:exported="false" />
-        <activity
-            android:name="Activities.DeliveryFeeActivity"
-            android:exported="false" />
-        <activity
-            android:name="Activities.AddProductsActivity"
+            android:name="Activities.ProductSetup.AddProductsActivity"
             android:exported="false" />
         <activity
             android:name="Activities.StoreSetup.ViewMyStoreActivity"
@@ -87,53 +94,35 @@
             android:name="Activities.StoreSetup.CreateStoreActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.StoreSetup.RegisterStoreSuccessfulActivity"
-            android:exported="false" />
-        <activity
-            android:name="Activities.RegisteredBusinessAddressActivity"
-            android:exported="false" />
-        <activity
-            android:name="Activities.SelectDeliveryMethodActivity"
-            android:exported="false" />
-        <activity
-            android:name="Activities.SplashScreen"
-            android:exported="false" />
-        <activity
             android:name="Activities.StoreSetup.StoreOwnerActivity"
             android:exported="false" />
         <activity
             android:name="Activities.StoreSetup.ActivateStoreActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.InvoiceDetailActivity"
+            android:name="Activities.Invoices.InvoiceDetailActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.InvoiceActivity"
+            android:name="Activities.Invoices.InvoiceActivity"
             android:exported="false"
            />
         <activity
-            android:name="Activities.PaymentActivity"
+            android:name="Activities.ProfileSetup.AccountAndSecurityActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.AccountAndSecurityActivity"
+            android:name="Activities.ProfileSetup.UpdateProfileActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.UpdateProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name="Activities.SettingsActivity"
+            android:name="Activities.ProfileSetup.SettingsActivity"
             android:exported="false" />
         <activity
             android:name="Activities.StatisticsActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.DeliveryMethodActivity"
+            android:name="Activities.BuyProduct.ProductImagesDetailActivity"
             android:exported="false" />
         <activity
-            android:name="Activities.ProductImagesDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name="Activities.ProductDetailActivity"
+            android:name="Activities.BuyProduct.ProductDetailActivity"
             android:exported="false" />
         <activity
             android:name="Activities.LoginActivity"
@@ -141,12 +130,7 @@
         </activity>
         <activity
             android:name="Activities.MainActivity"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false" >
         </activity>
     </application>
 

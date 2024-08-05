@@ -18,7 +18,7 @@ import com.example.stores.databinding.ActivityStoreOwnerBinding;
 import java.util.Map;
 import java.util.Objects;
 
-import Activities.RequestInvoiceActivity;
+import Activities.Invoices.RequestInvoiceActivity;
 import interfaces.GetDocumentCallback;
 import models.Store;
 import models.UserAddress;
@@ -80,6 +80,21 @@ public class StoreOwnerActivity extends AppCompatActivity {
 //            intent.putExtra(STORE_ID, storeId);
             intent.putExtra("invoiceStatus", 2); //2 đã hủy
             startActivity(intent);
+        });
+        binding.imvSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StoreOwnerActivity.this, UpdateStoreInfoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        binding.layoutRevenue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StoreOwnerActivity.this, RevenueActivity.class);
+                startActivity(intent);
+            }
         });
 
     }

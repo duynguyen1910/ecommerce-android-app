@@ -62,6 +62,8 @@
     <color name="red">#ff343b</color>
     <color name="gray">#d2d2d2</color>
     <color name="darkgray">#616161</color>
+
+    <color name="gray_cancel">#F2F2F2</color>
     <color name="lightgray">#EFEFEF</color>
     <color name="mediumgray">#ECEBEB</color>
     <color name="yellow">#EDD707</color>

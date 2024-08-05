@@ -3,44 +3,35 @@ import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
-
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.example.stores.R;
-import com.example.stores.databinding.FragmentRequestInvoiceAwaitConfirmBinding;
-import java.text.SimpleDateFormat;
+import com.example.stores.databinding.FragmentWithOnlyRecyclerviewBinding;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import Adapters.RequestInvoiceAdapter;
+import Adapters.Invoices.RequestInvoiceAdapter;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
-import models.CartItem;
 import models.Invoice;
-import models.Product;
 
 public class AwaitConfirmFragment extends Fragment {
-    FragmentRequestInvoiceAwaitConfirmBinding binding;
+    FragmentWithOnlyRecyclerviewBinding binding;
 
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentRequestInvoiceAwaitConfirmBinding.inflate(getLayoutInflater());
+        binding = FragmentWithOnlyRecyclerviewBinding.inflate(getLayoutInflater());
 
         initInvoicesRequest();
 

@@ -7,7 +7,7 @@ import java.util.Map;
 import api.productApi;
 import interfaces.CreateDocumentCallback;
 import interfaces.GetCollectionCallback;
-import interfaces.GetCountCallback;
+import interfaces.GetAggregateCallback;
 import interfaces.GetDocumentCallback;
 import interfaces.UpdateDocumentCallback;
 
@@ -24,10 +24,12 @@ public class Product extends BaseObject implements Serializable {
     private boolean checkedStatus;
     private api.productApi productApi;
     private ArrayList<String> productImages;
+    private int sold;
 
-    public Product(String productName, String description, double newPrice, double oldPrice,
+    public Product(String productName, ArrayList<String> productImages, String description, double newPrice, double oldPrice,
                    int inStock, String storeID, int numberInCart) {
         this.productName = productName;
+        this.productImages = productImages;
         this.description = description;
         this.newPrice = newPrice;
         this.oldPrice = oldPrice;
@@ -59,6 +61,14 @@ public class Product extends BaseObject implements Serializable {
         this.numberInCart = numberInCart;
         this.checkedStatus = checkedStatus;
         this.productImages = productImages;
+    }
+
+    public int getSold() {
+        return sold;
+    }
+
+    public void setSold(int sold) {
+        this.sold = sold;
     }
 
     public Product() {
@@ -205,11 +215,11 @@ public class Product extends BaseObject implements Serializable {
         productApi.getAllProductByStoreIdAndCategoryIdApi(storeId, categoryId, callback);
     }
 
-    public void countProductsOutOfStockByStoreId(String storeId, GetCountCallback<Product> callback){
+    public void countProductsOutOfStockByStoreId(String storeId, GetAggregateCallback callback){
         productApi.countProductsOutOfStockByStoreIdApi(storeId, callback);
     }
 
-    public void countProductsInStockByStoreId(String storeId, GetCountCallback<Product> callback){
+    public void countProductsInStockByStoreId(String storeId, GetAggregateCallback callback){
         productApi.countProductsInStockByStoreIdApi(storeId, callback);
     }
     public void getAllProductDescendingByCategoryId(String categoryId,final GetCollectionCallback<Product> callback) {

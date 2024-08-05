@@ -4,18 +4,19 @@
     android:id="@+id/layoutSize"
     android:layout_width="match_parent"
     android:layout_gravity="center"
-    android:background="@color/lightlightgreen"
+    android:background="#EFEFEF"
     android:layout_height="wrap_content"
     android:layout_weight="1"
     android:layout_margin="4dp"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtCategoryName"
+    <CheckBox
+        android:id="@+id/chkCategoryName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:padding="8dp"
+        android:button="@null"
         android:text="Điện Thoại &amp; Phụ Kiện"
         android:textColor="@color/black" />
 </LinearLayout>

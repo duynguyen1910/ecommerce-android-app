@@ -9,5 +9,6 @@ public class collectionName {
     public static final String PRODUCT_COLLECTION = "Product";
     public static final String ADDRESS_COLLECTION = "Address";
     public static final String USER_ADDRESS_COLLECTION = "UserAddress";
+    public static final String VARIANT_COLLECTION = "Variant";
 
 }

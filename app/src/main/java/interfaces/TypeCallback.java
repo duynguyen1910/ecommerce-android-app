@@ -7,5 +7,6 @@ public interface TypeCallback {
     public void controlPopUpVariantDialog(boolean popupable);
     public void updateSelectableTypeSet(String typeName);
     public void setVisibleForSelectSizeLayout();
+    void onImageClick(int position);
     
 }
