@@ -60,7 +60,7 @@
                 android:background="@drawable/custom_border_bottom"
                 android:padding="16dp"
                 android:button="@null"
-                android:text="Size (VN)"
+                android:text="Size (VN) (33, 34, 35, ..., 49)"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:visibility="gone" />
@@ -73,7 +73,7 @@
                 android:background="@drawable/custom_border_bottom"
                 android:padding="16dp"
                 android:button="@null"
-                android:text="Size (Quốc Tế)"
+                android:text="Size (Quốc Tế) (S, M, L, ...)"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:visibility="gone" />

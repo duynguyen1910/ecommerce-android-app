@@ -154,9 +154,9 @@ public class AddProductsActivity extends AppCompatActivity {
 
 
             uploadApi uploadApi = new uploadApi();
-            uploadApi.uploadMultiImageToStorageApi(imagesUriList, new GetCollectionCallback() {
+            uploadApi.uploadMultiImageToStorageApi(imagesUriList, new GetCollectionCallback<String >() {
                 @Override
-                public void onGetListSuccess(ArrayList imagesUrlList) {
+                public void onGetListSuccess(ArrayList<String> imagesUrlList) {
                     Map<String, Object> newProduct = new HashMap<>();
                     double price = Double.parseDouble(priceStr.replace(",", ""));
                     int inStock = Integer.parseInt(inStockStr.replace(",", ""));

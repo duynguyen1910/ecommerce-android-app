@@ -22,13 +22,16 @@ public class Variant extends BaseObject implements Serializable {
         this.productID = productID;
     }
 
+    public Variant() {
+    }
+
     @Override
     protected String getBaseID() {
         return super.baseID;
     }
 
     @Override
-    protected void setBaseID(String variantID) {
+    public void setBaseID(String variantID) {
         super.baseID = variantID;
     }
 

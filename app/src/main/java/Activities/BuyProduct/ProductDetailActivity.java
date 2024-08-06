@@ -26,6 +26,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityProductDetailBinding;
 import com.example.stores.databinding.DialogAddToCartBinding;
@@ -47,6 +50,7 @@ import com.example.stores.databinding.LayoutProductDetailBinding;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -54,14 +58,21 @@ import java.util.Objects;
 import Activities.LoginActivity;
 import Activities.StoreSetup.ViewMyStoreActivity;
 import Adapters.BuyProduct.SliderAdapterForProductDetail;
+import Adapters.BuyProduct.VariantGridAdapter;
+import Adapters.ProductGridAdapter;
+import api.variantApi;
+import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
+import interfaces.InAdapter.ItemSelectionListener;
 import models.CartItem;
 import models.Product;
 import models.SliderItem;
 import models.Store;
+import models.TypeValue;
+import models.Variant;
 import utils.Cart.CartUtils;
 
-public class ProductDetailActivity extends AppCompatActivity {
+public class ProductDetailActivity extends AppCompatActivity{
 
     private ActivityProductDetailBinding binding;
     private String productID;
@@ -69,6 +80,10 @@ public class ProductDetailActivity extends AppCompatActivity {
     private String storeName;
     private boolean buyable;
     private Product currentProduct;
+    int g_transferedPos = -1;
+    Variant g_tranferedVariant = new Variant();
+    String tagVariant = "variant5";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +110,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             storeID = bundle.getString(STORE_ID, null);
             buyable = bundle.getBoolean("buyable");
 
-            if (!buyable){
+            if (!buyable) {
                 binding.btnAddToCart.setBackground(ContextCompat.getDrawable(this, R.color.gray));
                 binding.layoutBuyNow.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
                 binding.txtAddToCart.setTextColor(ContextCompat.getColor(this, R.color.black));
@@ -139,9 +154,9 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                     String formattedNewPrice = formatter.format(currentProduct.getNewPrice());
                     binding.txtNewPrice.setText(formattedNewPrice);
-                    binding.ratingBar.setRating(4.5F);
+                    binding.ratingBar.setRating(5.0F);
                     binding.txtRating.setText(4.5 + " / 5");
-                    binding.txtSold.setText("Đã bán " + 200);
+//                    binding.txtSold.setText("Đã bán " + 200);
                     binding.txtProdctDescription.setText(currentProduct.getDescription());
                     binding.txtNewPriceInBuyNow.setText(formattedNewPrice);
 
@@ -235,9 +250,9 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private void setupEvents() {
         binding.btnAddToCart.setOnClickListener(v -> {
-            if (buyable){
+            if (buyable) {
                 popUpAddToCartDialog();
-            }else {
+            } else {
                 showToast(ProductDetailActivity.this, "Bạn đang bán sản phẩm này\nKhông thể mua");
             }
 
@@ -249,7 +264,6 @@ public class ProductDetailActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        binding.txtProductDetail.setOnClickListener(v -> popUpProductDetailDialog());
 
         binding.btnViewStore.setOnClickListener(v -> {
             Intent intent = new Intent(ProductDetailActivity.this, ViewMyStoreActivity.class);
@@ -260,9 +274,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding.layoutBuyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (buyable){
+                if (buyable) {
                     popUpBuyNowDialog();
-                }else {
+                } else {
                     showToast(ProductDetailActivity.this, "Bạn đang bán sản phẩm này\nKhông thể mua");
                 }
             }
@@ -287,6 +301,33 @@ public class ProductDetailActivity extends AppCompatActivity {
             Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
             dialogBinding.getRoot().startAnimation(slideUp);
         }
+        Glide.with(ProductDetailActivity.this).load(currentProduct.getProductImages().get(0)).centerCrop().into(dialogBinding.imageView);
+        variantApi mVariantApi = new variantApi();
+        dialogBinding.progressBar.setVisibility(View.VISIBLE);
+        g_transferedPos = -1;
+        mVariantApi.getVariantsByProductIdApi(productID, new GetCollectionCallback<Variant>() {
+            @Override
+            public void onGetListSuccess(ArrayList<Variant> variants) {
+                dialogBinding.progressBar.setVisibility(View.GONE);
+                if (!variants.isEmpty()) {
+                    dialogBinding.recyclerView.setLayoutManager(new GridLayoutManager(ProductDetailActivity.this, 2));
+                    dialogBinding.recyclerView.setAdapter(new VariantGridAdapter(ProductDetailActivity.this, variants, g_transferedPos, new ItemSelectionListener<Variant>() {
+                        @Override
+                        public void transferInfo(int selectedPosition, Variant variant) {
+                            g_transferedPos = selectedPosition;
+                            Glide.with(ProductDetailActivity.this).load(variant.getVariantImageUrl()).centerCrop().into(dialogBinding.imageView);
+                        }
+                    }));
+                }
+            }
+
+            @Override
+            public void onGetListFailure(String errorMessage) {
+                dialogBinding.progressBar.setVisibility(View.GONE);
+                showToast(ProductDetailActivity.this, INTERNET_ERROR);
+            }
+        });
+
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         String formattedOldPrice = formatter.format(currentProduct.getOldPrice());
         dialogBinding.txtOldPrice.setText("đ" + formattedOldPrice);
@@ -430,35 +471,10 @@ public class ProductDetailActivity extends AppCompatActivity {
         DialogProductImageExpandBinding dialogBinding = DialogProductImageExpandBinding.inflate(getLayoutInflater());
         dialog.setContentView(dialogBinding.getRoot());
         dialog.show();
-
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         dialogBinding.getRoot().startAnimation(slideUp);
 
         dialogBinding.imageClose.setOnClickListener(v -> dialog.dismiss());
-    }
-
-
-    private void popUpProductDetailDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutProductDetailBinding detailBinding = LayoutProductDetailBinding.inflate(getLayoutInflater());
-        builder.setView(detailBinding.getRoot());
-        AlertDialog dialog = builder.create();
-
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.custom_edit_text_border);
-        dialog.show();
-
-
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            window.setGravity(Gravity.BOTTOM);
-
-            Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-            detailBinding.getRoot().startAnimation(slideUp);
-        }
-
-
-        detailBinding.btnClose.setOnClickListener(v -> dialog.dismiss());
     }
 
     private void initUI() {
@@ -467,4 +483,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         updateQuantityInCart(binding.txtQuantityInCart);
     }
+
+
 }

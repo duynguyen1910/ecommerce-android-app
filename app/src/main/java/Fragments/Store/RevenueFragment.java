@@ -199,6 +199,7 @@ public class RevenueFragment extends Fragment {
         dataSet.setValueTextColor(Color.BLACK);
         dataSet.setValueTextSize(14f);
         dataSet.setDrawValues(true);
+        dataSet.setValueFormatter(new CustomValueMoneyFormatter());
 
         BarData barData = new BarData(dataSet);
         barChart1.setData(barData);
@@ -217,11 +218,11 @@ public class RevenueFragment extends Fragment {
         entry.formColor = ColorTemplate.JOYFUL_COLORS[0 % ColorTemplate.JOYFUL_COLORS.length];
         legendEntries.add(entry);
         barChart1.getLegend().setCustom(legendEntries);
-        barChart1.setExtraOffsets(10f, 80f, 10f, 40f);
+        barChart1.setExtraOffsets(10f, 10f, 10f, 40f);
 
         YAxis yAxis = barChart1.getAxisLeft();
-        yAxis.setTextSize(12f);
-        yAxis.setValueFormatter(new CustomValueMoneyFormatter());
+        yAxis.setDrawGridLines(false);
+        yAxis.setDrawLabels(false);
 
 
         barChart1.invalidate();
@@ -229,16 +230,7 @@ public class RevenueFragment extends Fragment {
 
     private void setupBarChart(BarChart barChart) {
         Legend legend = barChart.getLegend();
-        legend.setEnabled(true);
-        legend.setWordWrapEnabled(true);
-        legend.setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        legend.setYOffset(0f);
-        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-        legend.setTextSize(14f);
-        legend.setFormSize(14f);
-        legend.setDrawInside(false);
+        legend.setEnabled(false);
 
         barChart.setFitBars(true);
         barChart.getDescription().setEnabled(false);
@@ -251,12 +243,10 @@ public class RevenueFragment extends Fragment {
 
         // Thiết lập trục X
         XAxis xAxis = barChart.getXAxis();
+        xAxis.setDrawLabels(false);
+        xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // Đặt trục X ở phía dưới
         xAxis.setGranularity(1f); // Đảm bảo các nhãn được phân bố đều
-        xAxis.setLabelRotationAngle(20f); // Xoay nhãn để tránh chồng chéo
-        xAxis.setLabelCount(5, true); // Thiết lập số lượng nhãn
-        xAxis.setTextSize(12f);
-
 
         barChart.getAxisRight().setEnabled(false);
     }

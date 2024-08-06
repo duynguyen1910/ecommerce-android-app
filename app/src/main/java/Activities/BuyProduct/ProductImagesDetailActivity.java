@@ -43,7 +43,6 @@ public class ProductImagesDetailActivity extends AppCompatActivity {
 
     private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
-
         getWindow().setNavigationBarColor(Color.parseColor("#EFEFEF"));
         Objects.requireNonNull(getSupportActionBar()).hide();
     }

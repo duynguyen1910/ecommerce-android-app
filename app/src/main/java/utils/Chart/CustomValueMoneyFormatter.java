@@ -9,6 +9,6 @@ public class CustomValueMoneyFormatter extends ValueFormatter {
         if (value < 1000000) {
             return String.format("%.0f k", value / 1000);
         }
-        return String.format("%.1f Tr", value / 1000000); // Hiển thị giá trị theo triệu
+        return String.format("%.1f Tr", value / 1000000);
     }
 }
