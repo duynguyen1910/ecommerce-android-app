@@ -3,6 +3,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,14 +48,15 @@ public class ProductsAdapterForInvoice extends RecyclerView.Adapter<ProductsAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Variant variant = list.get(holder.getBindingAdapterPosition());
-
         if(variant.getVariantImageUrl() != null) {
             Glide.with(context).load(variant.getVariantImageUrl()).into(holder.binding.imageView);
         }
-
-
         holder.binding.txtProductName.setText(variant.getProductName());
-        holder.binding.txtVariantName.setText(variant.getVariantName());
+        if (variant.getVariantName() != null){
+            holder.binding.txtVariantName.setText(variant.getVariantName());
+        }else {
+            holder.binding.txtVariantName.setVisibility(View.GONE);
+        }
         holder.binding.txtNewPrice.setText(FormatHelper.formatVND(variant.getNewPrice()));
         holder.binding.txtOldPrice.setText(FormatHelper.formatVND(variant.getOldPrice()));
         holder.binding.txtOldPrice.setPaintFlags(holder.binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);

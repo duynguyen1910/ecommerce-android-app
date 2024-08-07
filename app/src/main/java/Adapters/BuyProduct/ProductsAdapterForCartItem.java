@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
@@ -81,8 +82,14 @@ public class ProductsAdapterForCartItem extends RecyclerView.Adapter<ProductsAda
             Glide.with(context).load(variant.getVariantImageUrl()).into(holder.binding.imageView);
         }
 
+
         holder.binding.txtProductName.setText(variant.getProductName());
-        holder.binding.txtVariantName.setText(variant.getVariantName());
+        if (variant.getVariantName() != null){
+            holder.binding.txtVariantName.setText(variant.getVariantName());
+        }else {
+            holder.binding.txtVariantName.setVisibility(View.GONE);
+        }
+
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         String formattedOldPrice = formatter.format(variant.getOldPrice());
         holder.binding.txtOldPrice.setText("đ" + formattedOldPrice);

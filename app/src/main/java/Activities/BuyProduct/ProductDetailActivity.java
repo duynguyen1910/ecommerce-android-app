@@ -25,6 +25,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,9 +78,9 @@ public class ProductDetailActivity extends AppCompatActivity {
     private Product currentProduct;
     private int g_selectedPos = -1;
     private int g_totalInstock = 0;
-    private Variant g_selectedVariant;
+    private Variant g_selectedVariant = null;
     ArrayList<Variant> g_variants = new ArrayList<>();
-    String tagVariant = "variant5";
+    String tagVariant = "variant6";
 
 
     @Override
@@ -207,29 +208,55 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void addToCart(String storeName, Product product, Variant selectedVariant, int quantity) {
-        if (storeName == null || product == null || selectedVariant == null) {
+        if (storeName == null || product == null) {
             // Handle error or throw exception
             return;
         }
-
+        Log.d(tagVariant, "Adding to cart: StoreName = " + storeName + ", ProductName = " + product.getProductName() + ", SelectedVariant = " + selectedVariant);
         boolean storeFound = false;
-        boolean variantFound = false;
+        boolean productFound = false;
 
         for (CartItem cartItem : MY_CART) {
             if (storeName.equals(cartItem.getStoreName())) {
                 storeFound = true;
-                for (Variant variant : cartItem.getListVariants()) {
-                    if (selectedVariant.getBaseID() != null && selectedVariant.getBaseID().equals(variant.getBaseID())) { // Ensure product baseID is not null
-                        int currQuantity = variant.getNumberInCart();
-                        variant.setNumberInCart(currQuantity + quantity);
-                        variantFound = true;
-                        break;
+                if (selectedVariant == null) {
+                    // Case when product has no variant
+                    for (Variant variant : cartItem.getListVariants()) {
+                        if (product.getProductName().equals(variant.getProductName())) {
+                            Log.d(tagVariant, "1. storeFound, đã có sản phẩm này (0 có variant), tăng số lượng lên thôi");
+                            int currQuantity = variant.getNumberInCart();
+                            variant.setNumberInCart(currQuantity + quantity);
+                            productFound = true;
+
+                            break;
+                        }
                     }
-                }
-                if (!variantFound) {
-                    selectedVariant.setNumberInCart(quantity);
-                    selectedVariant.setProductName(product.getProductName());
-                    cartItem.getListVariants().add(selectedVariant);
+                    if (!productFound) {
+                        Log.d(tagVariant, "2. storeFound, chưa có sản phẩm này (0 có variant), thêm variant fake vào");
+                        Variant newVariant = new Variant(null, product.getOldPrice(), product.getNewPrice(), product.getInStock()
+                                , product.getProductImages().get(0), productID);
+                        newVariant.setProductName(product.getProductName());
+                        newVariant.setNumberInCart(quantity);
+                        cartItem.getListVariants().add(newVariant);
+                    }
+                } else {
+                    // Case when product has variant
+                    boolean variantFound = false;
+                    for (Variant variant : cartItem.getListVariants()) {
+                        if (selectedVariant.getBaseID() != null && selectedVariant.getBaseID().equals(variant.getBaseID())) {
+                            Log.d(tagVariant, "3. storeFound, productFound, có variant này, tăng quantity thôi");
+                            int currQuantity = variant.getNumberInCart();
+                            variant.setNumberInCart(currQuantity + quantity);
+                            variantFound = true;
+                            break;
+                        }
+                    }
+                    if (!variantFound) {
+                        Log.d(tagVariant, "4. storeFound, productFound, chưa có variant này, thêm variant vào");
+                        selectedVariant.setNumberInCart(quantity);
+                        selectedVariant.setProductName(product.getProductName());
+                        cartItem.getListVariants().add(selectedVariant);
+                    }
                 }
                 break;
             }
@@ -237,13 +264,25 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         if (!storeFound) {
             ArrayList<Variant> variants = new ArrayList<>();
-            selectedVariant.setNumberInCart(quantity);
-            selectedVariant.setProductName(product.getProductName());
-            variants.add(selectedVariant);
+            if (selectedVariant == null) {
+                Log.d(tagVariant, "5. storeNotFound, chưa có sản phẩm này, (0 có variant), thêm variant fake vào");
+                // Case when product has no variant
+                Variant newVariant = new Variant(null, product.getOldPrice(), product.getNewPrice(), product.getInStock()
+                        , product.getProductImages().get(0), productID);
+                newVariant.setProductName(product.getProductName());
+                newVariant.setNumberInCart(quantity);
+                variants.add(newVariant);
+            } else {
+                Log.d(tagVariant, "6. storeNotFound, productNotfound, (có variant), thêm variant này vào");
+                // Case when product has variant
+                selectedVariant.setNumberInCart(quantity);
+                selectedVariant.setProductName(product.getProductName());
+                variants.add(selectedVariant);
+            }
             MY_CART.add(new CartItem(storeID, storeName, variants));
         }
+        Log.d(tagVariant, "---------------------------");
     }
-
 
     private void setupEvents() {
         binding.btnAddToCart.setOnClickListener(v -> {
@@ -321,12 +360,14 @@ public class ProductDetailActivity extends AppCompatActivity {
             public void onGetListSuccess(ArrayList<Variant> variants) {
                 g_variants = new ArrayList<>(variants);
                 dialogBinding.progressBar.setVisibility(View.GONE);
+
                 if (!g_variants.isEmpty()) {
                     //Case Product có variant, totalInstock = tất cả inStock của các variant
                     g_variants.forEach(item -> {
                         g_totalInstock += item.getInStock();
                     });
                     dialogBinding.txtInStock.setText("Kho: " + g_totalInstock);
+                    dialogBinding.txtSelectVariant.setVisibility(View.VISIBLE);
 
                     dialogBinding.recyclerView.setLayoutManager(new GridLayoutManager(ProductDetailActivity.this, 2));
                     dialogBinding.recyclerView.setAdapter(new VariantGridAdapter(ProductDetailActivity.this, g_variants, g_selectedPos, new ItemSelectionListener<Variant>() {
@@ -353,6 +394,8 @@ public class ProductDetailActivity extends AppCompatActivity {
                     //Case Product không có variant, totalInstock =  inStock của product
                     g_totalInstock = currentProduct.getInStock();
                     dialogBinding.txtInStock.setText("Kho: " + g_totalInstock);
+                    dialogBinding.txtSelectVariant.setVisibility(View.GONE);
+                    g_selectedVariant = null;
                 }
             }
 
@@ -396,16 +439,31 @@ public class ProductDetailActivity extends AppCompatActivity {
                 startActivity(new Intent(ProductDetailActivity.this, LoginActivity.class));
                 return;
             }
-
-            if (g_selectedVariant.getNumberInCart() > g_selectedVariant.getInStock()) {
-                showToast(ProductDetailActivity.this, "Uiii, số lượng sản phẩm không đủ!");
+            if ((!g_variants.isEmpty()) && g_selectedPos == -1){
+                showToast(ProductDetailActivity.this, "Hãy chọn sản phẩm trước");
+                return;
+            }else if (!g_variants.isEmpty()){
+                if (g_selectedVariant.getNumberInCart() > g_selectedVariant.getInStock()) {
+                    showToast(ProductDetailActivity.this, "Uiii, số lượng sản phẩm không đủ!");
+                } else {
+                    int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
+                    addToCart(storeName, currentProduct, g_selectedVariant, quantity);
+                    showToast(ProductDetailActivity.this, "Đã thêm sản phẩm vào giỏ hàng");
+                    updateQuantityInCart(binding.txtQuantityInCart);
+                    dialog.dismiss();
+                }
             } else {
-                int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
-                addToCart(storeName, currentProduct, g_selectedVariant, quantity);
-                showToast(ProductDetailActivity.this, "Đã thêm sản phẩm vào giỏ hàng");
-                updateQuantityInCart(binding.txtQuantityInCart);
-                dialog.dismiss();
+                if (currentProduct.getNumberInCart() > currentProduct.getInStock()) {
+                    showToast(ProductDetailActivity.this, "Uiii, số lượng sản phẩm không đủ!");
+                } else {
+                    int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
+                    addToCart(storeName, currentProduct, null, quantity);
+                    showToast(ProductDetailActivity.this, "Đã thêm sản phẩm vào giỏ hàng");
+                    updateQuantityInCart(binding.txtQuantityInCart);
+                    dialog.dismiss();
+                }
             }
+
 
         });
     }

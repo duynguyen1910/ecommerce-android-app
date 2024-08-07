@@ -73,16 +73,17 @@ public class productApi implements Serializable {
                 .whereEqualTo(INVOICE_ID, invoiceID)
                 .get()
                 .addOnSuccessListener(task -> {
-                    Map<String, Integer> productMap = new HashMap<>();
+                    Map<String, Integer> variantMap = new HashMap<>();
                     for (DocumentSnapshot document : task.getDocuments()) {
                         InvoiceDetail invoiceDetail = document.toObject(InvoiceDetail.class);
-
-                        productMap.put(invoiceDetail.getVariantID(), invoiceDetail.getQuantity());
+                        if (invoiceDetail != null) {
+                            variantMap.put(invoiceDetail.getVariantID(), invoiceDetail.getQuantity());
+                        }
                     }
 
                     List<Task<Void>> updateTasks = new ArrayList<>();
 
-                    for (Map.Entry<String, Integer> entry : productMap.entrySet()) {
+                    for (Map.Entry<String, Integer> entry : variantMap.entrySet()) {
                         String productID = entry.getKey();
                         int quantity = entry.getValue();
 
@@ -183,6 +184,7 @@ public class productApi implements Serializable {
                 .orderBy(PRODUCT_INSTOCK, Query.Direction.DESCENDING);
         getProducts(query, 100, callback);
     }
+
     public void getTopBestSellerByStoreID(String storeID, int limit, final GetCollectionCallback<Product> callback) {
         Query query = db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(STORE_ID, storeID)
@@ -193,9 +195,9 @@ public class productApi implements Serializable {
 
 
     public void getHighestRevenueByStoreID(String storeID, int limit, final GetCollectionCallback<Product> callback) {
-       db.collection(PRODUCT_COLLECTION)
+        db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(STORE_ID, storeID)
-               .whereGreaterThan(PRODUCT_SOLD, 0)
+                .whereGreaterThan(PRODUCT_SOLD, 0)
                 .get()
                 .addOnSuccessListener(task -> {
                     ArrayList<Product> products = new ArrayList<>();
@@ -221,7 +223,6 @@ public class productApi implements Serializable {
                 })
                 .addOnFailureListener(e -> callback.onGetListFailure(INTERNET_ERROR));
     }
-
 
 
     public void getAllProductByCategoryIdApi(String categoryId, final GetCollectionCallback<Product> callback) {
