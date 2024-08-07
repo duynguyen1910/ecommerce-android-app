@@ -72,7 +72,25 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="vertical">
-
+            <TextView
+                android:id="@+id/txtProductName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Lovito Đầm chữ A phối ren hoa đơn giản dành cho nữ LNA38057"
+                android:textColor="@color/black" />
+            <TextView
+                android:id="@+id/txtVariantName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Xanh | M"
+                android:visibility="gone"
+                android:textColor="@color/secondary_color" />
 
             <LinearLayout
                 android:layout_width="match_parent"

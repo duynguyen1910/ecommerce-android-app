@@ -17,17 +17,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.stores.databinding.FragmentWithOnlyRecyclerviewBinding;
-import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+
 import Adapters.Invoices.DeliveryAdapter;
-import Adapters.Invoices.InvoiceAdapter;
 import api.invoiceApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
 import interfaces.InAdapter.UpdateCountListener;
-import models.CartItem;
 import models.Invoice;
 import models.Product;
 

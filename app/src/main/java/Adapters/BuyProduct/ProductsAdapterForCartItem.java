@@ -21,15 +21,16 @@ import java.util.Locale;
 import interfaces.InAdapter.CartItemListener;
 import interfaces.InAdapter.ToTalFeeCallback;
 import models.Product;
+import models.Variant;
 
 public class ProductsAdapterForCartItem extends RecyclerView.Adapter<ProductsAdapterForCartItem.ViewHolder> {
     private final Context context;
-    private final ArrayList<Product> list;
+    private final ArrayList<Variant> list;
     private final ToTalFeeCallback callbackClass;
     private final CartItemListener cartItemListener;
 
 
-    public ProductsAdapterForCartItem(Context context, ArrayList<Product> list, ToTalFeeCallback callbackClass, CartItemListener cartItemListener) {
+    public ProductsAdapterForCartItem(Context context, ArrayList<Variant> list, ToTalFeeCallback callbackClass, CartItemListener cartItemListener) {
         this.context = context;
         this.list = list;
         this.callbackClass = callbackClass;
@@ -57,14 +58,14 @@ public class ProductsAdapterForCartItem extends RecyclerView.Adapter<ProductsAda
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Product product = list.get(holder.getBindingAdapterPosition());
+        Variant variant = list.get(holder.getBindingAdapterPosition());
         holder.binding.checkbox.setOnCheckedChangeListener(null);
 
-        holder.binding.checkbox.setChecked(product.getCheckedStatus());
+        holder.binding.checkbox.setChecked(variant.getCheckedStatus());
         holder.binding.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                product.setCheckedStatus(isChecked);
+                variant.setCheckedStatus(isChecked);
                 if (getQuantityChecked() == list.size()) {
                     // Nếu tất cả các checkbox items được check, check checkboxAll
                     cartItemListener.updateCheckboxAllStatus(true);
@@ -76,26 +77,27 @@ public class ProductsAdapterForCartItem extends RecyclerView.Adapter<ProductsAda
             }
         });
 
-        if(product.getProductImages() != null) {
-            Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
+        if(variant.getVariantImageUrl() != null) {
+            Glide.with(context).load(variant.getVariantImageUrl()).into(holder.binding.imageView);
         }
 
-        holder.binding.txtTitle.setText(product.getProductName());
+        holder.binding.txtProductName.setText(variant.getProductName());
+        holder.binding.txtVariantName.setText(variant.getVariantName());
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedOldPrice = formatter.format(product.getOldPrice());
+        String formattedOldPrice = formatter.format(variant.getOldPrice());
         holder.binding.txtOldPrice.setText("đ" + formattedOldPrice);
         holder.binding.txtOldPrice.setPaintFlags(holder.binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        String formattedPrice = formatter.format(product.getOldPrice());
+        String formattedPrice = formatter.format(variant.getOldPrice());
 
         holder.binding.txtPrice.setText(formattedPrice);
 
-        holder.binding.txtQuantity.setText(String.valueOf(product.getNumberInCart()));
+        holder.binding.txtQuantity.setText(String.valueOf(variant.getNumberInCart()));
 
         holder.binding.btnPlus.setOnClickListener(v -> {
 
             int quantity = Integer.parseInt(holder.binding.txtQuantity.getText().toString().trim());
             holder.binding.txtQuantity.setText((quantity + 1) + "");
-            product.setNumberInCart(quantity + 1);
+            variant.setNumberInCart(quantity + 1);
             if (holder.binding.checkbox.isChecked()) {
                 callbackClass.totalFeeUpdate(getTotalFee());
             }
@@ -114,7 +116,7 @@ public class ProductsAdapterForCartItem extends RecyclerView.Adapter<ProductsAda
                 }
             } else {
                 holder.binding.txtQuantity.setText((quantity - 1) + "");
-                product.setNumberInCart(quantity - 1);
+                variant.setNumberInCart(quantity - 1);
 
             }
             if (holder.binding.checkbox.isChecked()) {
@@ -126,8 +128,8 @@ public class ProductsAdapterForCartItem extends RecyclerView.Adapter<ProductsAda
 
     private int getQuantityChecked() {
         int count = 0;
-        for (Product product : list) {
-            if (product.getCheckedStatus()) {
+        for (Variant variant : list) {
+            if (variant.getCheckedStatus()) {
                 count += 1;
             }
         }
@@ -136,9 +138,9 @@ public class ProductsAdapterForCartItem extends RecyclerView.Adapter<ProductsAda
 
     private double getTotalFee() {
         double fee = 0;
-        for (Product product : list) {
-            if (product.getCheckedStatus()) {
-                fee += (product.getNewPrice()  * product.getNumberInCart());
+        for (Variant variant : list) {
+            if (variant.getCheckedStatus()) {
+                fee += (variant.getNewPrice()  * variant.getNumberInCart());
             }
 
         }

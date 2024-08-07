@@ -9,7 +9,10 @@ public class Variant extends BaseObject implements Serializable {
     private double oldPrice;
     private double newPrice;
     private int inStock;
+    private int numberInCart;
+    private String productName;
     private String variantImageUrl;
+    private boolean checkedStatus;
     private String productID;
 
     public Variant(String variantName, double oldPrice, double newPrice, int inStock,
@@ -25,8 +28,32 @@ public class Variant extends BaseObject implements Serializable {
     public Variant() {
     }
 
+
+    public int getNumberInCart() {
+        return numberInCart;
+    }
+
+    public boolean getCheckedStatus() {
+        return checkedStatus;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public void setCheckedStatus(boolean checkedStatus) {
+        this.checkedStatus = checkedStatus;
+    }
+    public void setNumberInCart(int numberInCart) {
+        this.numberInCart = numberInCart;
+    }
+
     @Override
-    protected String getBaseID() {
+    public String getBaseID() {
         return super.baseID;
     }
 

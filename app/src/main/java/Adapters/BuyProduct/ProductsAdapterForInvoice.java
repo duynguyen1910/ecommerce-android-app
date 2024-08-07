@@ -1,6 +1,7 @@
 package Adapters.BuyProduct;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
@@ -13,12 +14,14 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import models.Product;
+import models.Variant;
+import utils.FormatHelper;
 
 public class ProductsAdapterForInvoice extends RecyclerView.Adapter<ProductsAdapterForInvoice.ViewHolder> {
     private final Context context;
-    private final ArrayList<Product> list;
+    private final ArrayList<Variant> list;
 
-    public ProductsAdapterForInvoice(Context context, ArrayList<Product> list) {
+    public ProductsAdapterForInvoice(Context context, ArrayList<Variant> list) {
         this.context = context;
         this.list = list;
     }
@@ -43,18 +46,19 @@ public class ProductsAdapterForInvoice extends RecyclerView.Adapter<ProductsAdap
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Product product = list.get(holder.getBindingAdapterPosition());
+        Variant variant = list.get(holder.getBindingAdapterPosition());
 
-        if(product.getProductImages() != null) {
-            Glide.with(context).load(product.getProductImages().get(0)).into(holder.binding.imageView);
+        if(variant.getVariantImageUrl() != null) {
+            Glide.with(context).load(variant.getVariantImageUrl()).into(holder.binding.imageView);
         }
 
 
-        holder.binding.txtProductTitle.setText(product.getProductName());
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedPrice = formatter.format(product.getNewPrice());
-        holder.binding.txtNewPrice.setText("đ" + formattedPrice);
-        holder.binding.txtQuantity.setText("x" + product.getNumberInCart());
+        holder.binding.txtProductName.setText(variant.getProductName());
+        holder.binding.txtVariantName.setText(variant.getVariantName());
+        holder.binding.txtNewPrice.setText(FormatHelper.formatVND(variant.getNewPrice()));
+        holder.binding.txtOldPrice.setText(FormatHelper.formatVND(variant.getOldPrice()));
+        holder.binding.txtOldPrice.setPaintFlags(holder.binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        holder.binding.txtQuantity.setText("x" + variant.getNumberInCart());
 
     }
     @Override

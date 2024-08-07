@@ -54,19 +54,21 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:background="@color/white"
-                    android:paddingTop="10dp">
+                    android:paddingVertical="10dp">
 
                     <LinearLayout
                         android:id="@+id/layoutProductsInfo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
                             android:background="@color/white"
                             android:gravity="center_vertical"
                             android:paddingHorizontal="16dp">
@@ -84,7 +86,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_marginEnd="10dp"
-                                android:text="135.000"
+
                                 android:textColor="@color/primary_color"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
@@ -94,7 +96,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:gravity="center_vertical"
-                                android:text="đ123.000"
+
                                 android:textColor="@color/darkgray"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -103,12 +105,12 @@
                             android:id="@+id/txtTitle"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
+                            android:layout_marginBottom="4dp"
                             android:layout_weight="1"
                             android:background="@color/white"
                             android:ellipsize="end"
                             android:maxLines="2"
                             android:paddingHorizontal="16dp"
-                            android:text="Plaid Shirt"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
@@ -127,28 +129,18 @@
                                 android:layout_height="wrap_content"
                                 android:indeterminate="false"
                                 android:isIndicator="true"
-                                android:numStars="1"
+                                android:numStars="5"
                                 android:progressTint="#ffc106"
-                                android:rating="3"
+                                android:rating="5"
                                 android:scaleX="0.9"
                                 android:stepSize="0.1"
                                 android:transformPivotX="0dp" />
-
-                            <TextView
-                                android:id="@+id/txtRating"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="12dp"
-                                android:text="0/5"
-                                android:textColor="@color/black"
-                                android:textSize="14sp" />
 
                             <TextView
                                 android:id="@+id/txtSold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="8dp"
-                                android:text="Đã bán 0"
                                 android:textColor="@color/text1"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -205,7 +197,6 @@
                                 android:id="@+id/txtStoreName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="LOVITO OFFICIAL STORE"
                                 android:textColor="@color/text1"
                                 android:textStyle="bold" />
 
@@ -347,7 +338,7 @@
                         android:layout_marginEnd="4dp"
                         android:background="@drawable/bg_quantity_in_cart"
                         android:gravity="center"
-                        android:text="05"
+
                         android:textColor="@color/white"
                         android:textSize="12sp" />
 
@@ -391,8 +382,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="Thêm vào Giỏ hàng"
-                android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textColor="@color/black" />
         </LinearLayout>
 
 
@@ -419,7 +409,7 @@
                 android:id="@+id/txtNewPriceInBuyNow"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="đ135.000"
+
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="16sp"

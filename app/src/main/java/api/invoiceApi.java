@@ -1,7 +1,9 @@
 package api;
+
 import static constants.collectionName.INVOICE_COLLECTION;
 import static constants.collectionName.INVOICE_DETAIL_COLLECTION;
 import static constants.collectionName.PRODUCT_COLLECTION;
+import static constants.collectionName.VARIANT_COLLECTION;
 import static constants.keyName.CREATE_AT;
 import static constants.keyName.CUSTOMER_ID;
 import static constants.keyName.INVOICE_ID;
@@ -14,6 +16,7 @@ import static constants.toastMessage.ORDER_SUCCESSFULLY;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,6 +30,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -34,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import interfaces.CreateDocumentCallback;
 import interfaces.GetAggregateCallback;
 import interfaces.GetCollectionCallback;
@@ -42,6 +47,7 @@ import interfaces.UpdateDocumentCallback;
 import models.Invoice;
 import models.InvoiceDetail;
 import models.Product;
+import models.Variant;
 import utils.Cart.CartUtils;
 
 public class invoiceApi {
@@ -140,7 +146,7 @@ public class invoiceApi {
 
     }
 
-    public int getMonthInCalendar(int month){
+    public int getMonthInCalendar(int month) {
         int[] calendarMonths = {
                 Calendar.JANUARY, Calendar.FEBRUARY, Calendar.MARCH,
                 Calendar.APRIL, Calendar.MAY, Calendar.JUNE,
@@ -160,7 +166,6 @@ public class invoiceApi {
 
         return new Timestamp[]{startDate, endDate};
     }
-
 
 
     public void getSpendingsInAMonthByCustomerID(String customerID, int month, GetAggregateCallback callback) {
@@ -229,6 +234,7 @@ public class invoiceApi {
                 .whereLessThanOrEqualTo(CREATE_AT, getDayRange(month)[1])
                 .get();
     }
+
     public void getRevenueInAMonthByStoreID(String storeID, int month, GetAggregateCallback callback) {
         List<Integer> orderStatuses = new ArrayList<>();
         orderStatuses.add(2);
@@ -314,15 +320,15 @@ public class invoiceApi {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             ArrayList<InvoiceDetail> invoiceDetails = new ArrayList<>();
-                            ArrayList<String> productIDs = new ArrayList<>();
+                            ArrayList<String> variantIDs = new ArrayList<>();
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 InvoiceDetail detail = document.toObject(InvoiceDetail.class);
                                 invoiceDetails.add(detail);
-                                productIDs.add(detail.getVariantID());
+                                variantIDs.add(detail.getVariantID());
                             }
 
-                            getProductsByListIDsApi(invoiceDetails, productIDs, callback);
+                            getVariantsByListIDsApi(invoiceID, invoiceDetails, variantIDs, callback);
                         } else {
                             callback.onGetListFailure("Failed to get invoice details: " + task.getException().getMessage());
                         }
@@ -331,40 +337,80 @@ public class invoiceApi {
     }
 
 
-    private void getProductsByListIDsApi(final ArrayList<InvoiceDetail> invoiceDetails, ArrayList<String> productIDs, final GetCollectionCallback<InvoiceDetail> callback) {
-        final Map<String, Product> productMap = new HashMap<>();
-        final AtomicInteger pendingRequests = new AtomicInteger(productIDs.size());
+    private void getVariantsByListIDsApi(String invoiceID, final ArrayList<InvoiceDetail> invoiceDetails, ArrayList<String> variantIDs, final GetCollectionCallback<InvoiceDetail> callback) {
+        final Map<String, Variant> VariantMap = new HashMap<>();
+        final AtomicInteger pendingRequests = new AtomicInteger(variantIDs.size());
 
-        for (String productID : productIDs) {
-            db.collection(PRODUCT_COLLECTION).document(productID)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    Product product = document.toObject(Product.class);
-                                    productMap.put(productID, product);
-                                }
-                            }
+        final String[] storeID = {""};
+        final String[] productName = {""};
 
-                            if (pendingRequests.decrementAndGet() == 0) {
-                                for (InvoiceDetail detail : invoiceDetails) {
-                                    Product product = productMap.get(detail.getVariantID());
-                                    if (product != null) {
-                                        detail.setProductName(product.getProductName());
-                                        detail.setProductImages(product.getProductImages());
-                                        detail.setNewPrice(product.getNewPrice());
-                                        detail.setOldPrice(product.getOldPrice());
-                                        detail.setStoreID(product.getStoreID());
+        db.collection(INVOICE_COLLECTION)
+                .document(invoiceID)
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Invoice invoice = documentSnapshot.toObject(Invoice.class);
+                        storeID[0] = invoice.getStoreID();
+                    }
+                });
+
+        db.collection(VARIANT_COLLECTION)
+                .document(variantIDs.get(0))
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Variant variant = documentSnapshot.toObject(Variant.class);
+                        db.collection(PRODUCT_COLLECTION)
+                                .document(variant.getProductID())
+                                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                        Product product = documentSnapshot.toObject(Product.class);
+                                        productName[0] = product.getProductName();
+
+
+                                        for (String variantID : variantIDs) {
+                                            db.collection(VARIANT_COLLECTION).document(variantID)
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                DocumentSnapshot document = task.getResult();
+                                                                if (document.exists()) {
+                                                                    Variant variant = document.toObject(Variant.class);
+                                                                    VariantMap.put(variantID, variant);
+                                                                }
+                                                            }
+
+                                                            if (pendingRequests.decrementAndGet() == 0) {
+                                                                for (InvoiceDetail detail : invoiceDetails) {
+                                                                    Variant variant = VariantMap.get(detail.getVariantID());
+                                                                    if (variant != null) {
+                                                                        detail.setProductName(variant.getProductName());
+                                                                        detail.setProductImage(variant.getVariantImageUrl());
+                                                                        detail.setVariantName(variant.getVariantName());
+                                                                        detail.setNewPrice(variant.getNewPrice());
+                                                                        detail.setOldPrice(variant.getOldPrice());
+                                                                        detail.setStoreID(storeID[0]);
+                                                                        detail.setProductName(productName[0]);
+                                                                    }
+                                                                }
+                                                                callback.onGetListSuccess(invoiceDetails);
+                                                            }
+                                                        }
+                                                    });
+                                        }
                                     }
-                                }
-                                callback.onGetListSuccess(invoiceDetails);
-                            }
-                        }
-                    });
-        }
+                                });
+
+                    }
+                });
+
+
+
+
+
 
     }
 

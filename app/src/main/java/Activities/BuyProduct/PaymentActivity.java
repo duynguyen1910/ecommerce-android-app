@@ -2,17 +2,13 @@ package Activities.BuyProduct;
 
 import static constants.keyName.DEFAULT_ADDRESS_ID;
 import static constants.keyName.DETAILED_ADDRESS;
-import static constants.keyName.DISTRICT_ID;
 import static constants.keyName.DISTRICT_NAME;
 import static constants.keyName.PROVINCE_NAME;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
-import static constants.keyName.WARD_ID;
 import static constants.keyName.WARD_NAME;
 import static constants.toastMessage.ADDRESS_REQUIRE;
 import static constants.keyName.PAYMENT;
-import static constants.keyName.USER_ID;
-import static constants.keyName.USER_INFO;
 import static utils.Cart.CartUtils.getCartItemFee;
 
 import android.app.Activity;
@@ -21,7 +17,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -33,15 +28,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.stores.R;
-import com.example.stores.databinding.ActivityCreateAddressBinding;
-import com.example.stores.databinding.ActivityDeliveryAddressBinding;
 import com.example.stores.databinding.ActivityPaymentBinding;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import Activities.AddAddress.DeliveryAddressActivity;
@@ -57,8 +48,8 @@ import interfaces.StatusCallback;
 import interfaces.UserCallback;
 import models.CartItem;
 import models.InvoiceDetail;
-import models.Product;
 import models.User;
+import models.Variant;
 import utils.FormatHelper;
 
 public class PaymentActivity extends AppCompatActivity {
@@ -132,7 +123,7 @@ public class PaymentActivity extends AppCompatActivity {
                 invoiceApi.createInvoiceApi(newInvoice, new CreateDocumentCallback() {
                     @Override
                     public void onCreateSuccess(String documentID) {
-                        createInvoiceDetail(invoiceApi, documentID, item.getListProducts());
+                        createInvoiceDetail(invoiceApi, documentID, item.getListVariants());
                     }
 
                     @Override
@@ -149,16 +140,12 @@ public class PaymentActivity extends AppCompatActivity {
             myLauncher.launch(new Intent(PaymentActivity.this, DeliveryAddressActivity.class));
         });
 
-//        binding.txtPaymentMethod.setOnClickListener(v -> {
-//            Intent intent = new Intent(PaymentActivity.this, PaymentMethodActivity.class);
-//            startActivity(intent);
-//        });
     }
 
-    private void createInvoiceDetail(invoiceApi invoiceApi, String invoiceID, ArrayList<Product> productList) {
+    private void createInvoiceDetail(invoiceApi invoiceApi, String invoiceID, ArrayList<Variant> variantsList) {
         ArrayList<InvoiceDetail> invoiceDetails = new ArrayList<>();
-        for (Product product : productList) {
-            invoiceDetails.add(new InvoiceDetail(invoiceID, product.getBaseID(), product.getNumberInCart()));
+        for (Variant variant : variantsList) {
+            invoiceDetails.add(new InvoiceDetail(invoiceID, variant.getBaseID(), variant.getNumberInCart()));
         }
 
         invoiceApi.createDetailInvoiceApi(invoiceDetails, new StatusCallback() {
@@ -185,29 +172,21 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
 
-    private double calculatorPayment() {
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        binding.txtTotalProductsFee.setText("đ" + formatter.format(getTotalProductsFee()));
+    private void calculatorPayment() {
+        binding.txtTotalProductsFee.setText(FormatHelper.formatVND(getTotalProductsFee()));
         double delivery = 25000;
         double totalDelivery = delivery * payment.size();
-        double ecommerceDeliveryDiscount = 50000;
-
-        binding.txtTotalDeliveryFee.setText("đ" + formatter.format(totalDelivery));
-
-//        binding.txtEcommerceDeliveryDiscount.setText("-đ" + formatter.format(ecommerceDeliveryDiscount));
-//        binding.txtTotalDiscount.setText("-đ" + formatter.format(ecommerceDeliveryDiscount));
-
+        binding.txtTotalDeliveryFee.setText(FormatHelper.formatVND(totalDelivery));
         double total = getTotalProductsFee() + totalDelivery;
-        binding.txtTotalPayment.setText("đ" + formatter.format(total));
-        binding.txtTotalOrder.setText("đ" + formatter.format(total));
-        return total;
+        binding.txtTotalPayment.setText(FormatHelper.formatVND(total));
+        binding.txtTotalOrder.setText(FormatHelper.formatVND(total));
     }
 
     private double getTotalProductsFee() {
         double fee = 0;
         for (CartItem item : payment) {
-            for (Product product : item.getListProducts()) {
-                fee += (product.getNewPrice() * product.getNumberInCart());
+            for (Variant variant : item.getListVariants()) {
+                fee += (variant.getNewPrice() * variant.getNumberInCart());
             }
         }
         return fee;

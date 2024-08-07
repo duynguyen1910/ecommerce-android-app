@@ -10,7 +10,6 @@ import com.example.stores.R;
 import com.example.stores.databinding.ItemVariantForBuyingBinding;
 import java.util.ArrayList;
 
-import interfaces.InAdapter.CategoryDialogListener;
 import interfaces.InAdapter.ItemSelectionListener;
 import models.Variant;
 import utils.DecorateUtils;

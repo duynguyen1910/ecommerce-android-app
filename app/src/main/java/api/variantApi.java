@@ -1,13 +1,9 @@
 package api;
 
-import static constants.collectionName.INVOICE_DETAIL_COLLECTION;
-import static constants.collectionName.PRODUCT_COLLECTION;
 import static constants.collectionName.VARIANT_COLLECTION;
 import static constants.keyName.PRODUCT_ID;
-import static constants.keyName.STORE_ID;
 import static constants.toastMessage.CREATE_VARIANT_SUCCESSFULLY;
 import static constants.toastMessage.INTERNET_ERROR;
-import static constants.toastMessage.ORDER_SUCCESSFULLY;
 
 import androidx.annotation.NonNull;
 
@@ -16,7 +12,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
@@ -25,10 +20,8 @@ import java.util.Map;
 
 import interfaces.GetCollectionCallback;
 import interfaces.StatusCallback;
-import models.InvoiceDetail;
 import models.Product;
 import models.Variant;
-import utils.Cart.CartUtils;
 
 public class variantApi {
     private FirebaseFirestore db;

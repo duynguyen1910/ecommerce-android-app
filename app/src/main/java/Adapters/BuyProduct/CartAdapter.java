@@ -24,6 +24,7 @@ import interfaces.InAdapter.ToTalFeeCallback;
 import models.CartItem;
 import models.Product;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+import models.Variant;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private final Context context;
@@ -58,10 +59,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         CartItem cartItem = list.get(holder.getBindingAdapterPosition());
-        ArrayList<Product> listProducts = cartItem.getListProducts();
+        ArrayList<Variant> listVariants = cartItem.getListVariants();
 
         holder.binding.txtStoreName.setText(cartItem.getStoreName());
-        ProductsAdapterForCartItem adapter = new ProductsAdapterForCartItem(context, cartItem.getListProducts(), totalFeeCallback, new CartItemListener() {
+        ProductsAdapterForCartItem adapter = new ProductsAdapterForCartItem(context, cartItem.getListVariants(), totalFeeCallback, new CartItemListener() {
             @Override
             public void updateCartItem() {
                 int cartItemPosition = holder.getBindingAdapterPosition();
@@ -83,13 +84,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             public void onCheckedStateChangedListener(@NonNull MaterialCheckBox checkBox, int state) {
                 if (state == MaterialCheckBox.STATE_CHECKED) {
                     // Nếu checkboxAll được check, check tất cả các sản phẩm
-                    for (Product product : listProducts) {
-                        product.setCheckedStatus(true);
+                    for (Variant variant : listVariants) {
+                        variant.setCheckedStatus(true);
                     }
                 } else if (state == MaterialCheckBox.STATE_UNCHECKED) {
                     // Nếu checkboxAll được uncheck, uncheck tất cả các sản phẩm
-                    for (Product product : listProducts) {
-                        product.setCheckedStatus(false);
+                    for (Variant variant : listVariants) {
+                        variant.setCheckedStatus(false);
                     }
                 }
                 // Thông báo adapter cập nhật dữ liệu
@@ -111,10 +112,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int productPosition = viewHolder.getBindingAdapterPosition();
-                cartItem.getListProducts().remove(productPosition);
+                cartItem.getListVariants().remove(productPosition);
                 totalFeeCallback.totalFeeUpdate(getTotalFee());
                 adapter.notifyItemRemoved(productPosition);
-                if (cartItem.getListProducts().size() == 0) {
+                if (cartItem.getListVariants().size() == 0) {
                     int cartItemPosition = holder.getBindingAdapterPosition();
                     list.remove(cartItemPosition);
                     notifyItemRemoved(cartItemPosition);
@@ -148,9 +149,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     private double getTotalFee() {
         double fee = 0;
         for (CartItem item : list) {
-            for (Product product : item.getListProducts()) {
-                if (product.getCheckedStatus()){
-                    fee += product.getNewPrice() * product.getNumberInCart();
+            for (Variant variant : item.getListVariants()) {
+                if (variant.getCheckedStatus()){
+                    fee += variant.getNewPrice() * variant.getNumberInCart();
                 }
 
             }

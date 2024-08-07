@@ -3,9 +3,6 @@ package models;
 
 import java.util.ArrayList;
 
-import api.invoiceApi;
-import interfaces.StatusCallback;
-
 public class InvoiceDetail {
     private String invoiceID;
     private String variantID;
@@ -16,7 +13,7 @@ public class InvoiceDetail {
     private int quantity;
     private String storeID;
 
-    private ArrayList<String> productImages;
+    private String productImage;
     public static int ITEM_TO_DISPLAY = 1;
 
     public InvoiceDetail() {
@@ -84,12 +81,12 @@ public class InvoiceDetail {
         this.quantity = quantity;
     }
 
-    public ArrayList<String> getProductImages() {
-        return productImages;
+    public String getProductImage() {
+        return productImage;
     }
 
-    public void setProductImages(ArrayList<String> productImages) {
-        this.productImages = productImages;
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 
     public String getStoreID() {

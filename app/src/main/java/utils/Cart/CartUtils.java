@@ -5,6 +5,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import models.CartItem;
 import models.Product;
+import models.Variant;
 
 public class CartUtils {
     public static ArrayList<CartItem> MY_CART = new ArrayList<>();
@@ -15,7 +16,7 @@ public class CartUtils {
     public static int getQuantityProductsInCart(){
         int count = 0;
         for (CartItem item : MY_CART) {
-            count += item.getListProducts().size();
+            count += item.getListVariants().size();
         }
         return count;
     }
@@ -27,8 +28,8 @@ public class CartUtils {
 
     public static double getCartItemFee(CartItem cartItem) {
         double fee = 0;
-        for (Product product : cartItem.getListProducts()) {
-            fee += (product.getNewPrice()  * product.getNumberInCart());
+        for (Variant variant : cartItem.getListVariants()) {
+            fee += (variant.getNewPrice()  * variant.getNumberInCart());
         }
         return fee;
     }

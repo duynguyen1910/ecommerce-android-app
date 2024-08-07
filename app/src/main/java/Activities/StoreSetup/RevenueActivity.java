@@ -1,11 +1,6 @@
 package Activities.StoreSetup;
-import static constants.keyName.STORE_ID;
-import static constants.keyName.USER_INFO;
-import static utils.Cart.CartUtils.showToast;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -16,42 +11,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityRevenueBinding;
 import com.example.stores.databinding.ItemTabLabelBinding;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LegendEntry;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
-import Activities.Invoices.InvoiceActivity;
 import Adapters.ViewPager2Adapter;
-import Fragments.Invoice.CancelledFragment;
-import Fragments.Invoice.DeliveredFragment;
-import Fragments.Invoice.InTransitFragment;
-import Fragments.Invoice.PendingConfirmationFragment;
-import Fragments.Invoice.PendingShipmentFragment;
 import Fragments.Store.RevenueFragment;
 import Fragments.Store.StatisticsProductsFragment;
-import api.invoiceApi;
-import api.productApi;
-import enums.OrderStatus;
-import interfaces.GetAggregateCallback;
-import interfaces.GetCollectionCallback;
 import models.Product;
-import utils.Chart.CustomMarkerView;
-import utils.Chart.CustomValueMoney2Formatter;
-import utils.Chart.CustomValueMoneyFormatter;
-import utils.Chart.CustomValueSoldFormatter;
 import utils.DecorateUtils;
-import utils.FormatHelper;
 
 public class RevenueActivity extends AppCompatActivity {
 

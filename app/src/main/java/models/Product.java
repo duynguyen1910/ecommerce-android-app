@@ -1,9 +1,7 @@
 package models;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
-
 import api.productApi;
 import interfaces.CreateDocumentCallback;
 import interfaces.GetCollectionCallback;

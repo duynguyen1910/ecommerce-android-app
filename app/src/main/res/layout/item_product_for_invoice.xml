@@ -39,7 +39,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtProductTitle"
+                android:id="@+id/txtProductName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -49,13 +49,13 @@
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/txtProductDetail"
+                android:id="@+id/txtVariantName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:layout_marginBottom="3dp"
                 android:lines="1"
-                android:text="Phân loại: XANH-Trend, SIZE L"
+                android:text="Red | M"
                 android:textColor="@color/text1" />
 
             <RelativeLayout

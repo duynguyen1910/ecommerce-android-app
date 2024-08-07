@@ -1,6 +1,6 @@
 package interfaces.InAdapter;
 
 public interface ItemSelectionListener<T> {
-    void transferInfo(int selectedPosition, T object);
+    void transferInfo(int transferPosition, T object);
 }
 
