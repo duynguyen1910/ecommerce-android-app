@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -58,6 +59,7 @@ public class PaymentActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     String userID = null;
     String defaultAddressID = null;
+    String tag = "payment1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +116,7 @@ public class PaymentActivity extends AppCompatActivity {
                 newInvoice.put("note", item.getNote());
                 newInvoice.put("storeID", item.getStoreID());
 
-                binding.progressBar.setVisibility(View.VISIBLE);
+//                binding.progressBar.setVisibility(View.VISIBLE);
                 binding.progressBar.getIndeterminateDrawable()
                         .setColorFilter(Color.parseColor("#f04d7f"), PorterDuff.Mode.MULTIPLY);
                 binding.btnBooking.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
@@ -139,14 +141,18 @@ public class PaymentActivity extends AppCompatActivity {
         binding.txtCustomerAddress.setOnClickListener(v -> {
             myLauncher.launch(new Intent(PaymentActivity.this, DeliveryAddressActivity.class));
         });
-
     }
 
     private void createInvoiceDetail(invoiceApi invoiceApi, String invoiceID, ArrayList<Variant> variantsList) {
         ArrayList<InvoiceDetail> invoiceDetails = new ArrayList<>();
         for (Variant variant : variantsList) {
-            invoiceDetails.add(new InvoiceDetail(invoiceID, variant.getBaseID(), variant.getNumberInCart()));
+            invoiceDetails.add(new InvoiceDetail(invoiceID, variant.getBaseID(), variant.getProductID(), variant.getNumberInCart()));
         }
+        invoiceDetails.forEach(invoiceDetail -> {
+            Log.d(tag, "variantID: " + invoiceDetail.getVariantID() + "\nquantity: " + invoiceDetail.getQuantity());
+        });
+        Log.d(tag, "--------------------");
+
 
         invoiceApi.createDetailInvoiceApi(invoiceDetails, new StatusCallback() {
             @Override

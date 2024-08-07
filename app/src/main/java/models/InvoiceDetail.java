@@ -14,6 +14,7 @@ public class InvoiceDetail {
     private String storeID;
 
     private String productImage;
+    private String productID;
     public static int ITEM_TO_DISPLAY = 1;
 
     public InvoiceDetail() {
@@ -23,6 +24,21 @@ public class InvoiceDetail {
         this.invoiceID = invoiceID;
         this.variantID = variantID;
         this.quantity = quantity;
+    }
+
+    public InvoiceDetail(String invoiceID, String variantID, String productID, int quantity) {
+        this.invoiceID = invoiceID;
+        this.variantID = variantID;
+        this.quantity = quantity;
+        this.productID = productID;
+    }
+
+    public String getProductID() {
+        return productID;
+    }
+
+    public void setProductID(String productID) {
+        this.productID = productID;
     }
 
     public String getVariantName() {

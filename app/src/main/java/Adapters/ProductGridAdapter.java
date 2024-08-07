@@ -21,6 +21,7 @@ import java.util.Locale;
 import java.util.Objects;
 import Activities.BuyProduct.ProductDetailActivity;
 import models.Product;
+import utils.FormatHelper;
 
 
 public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.ViewHolder> {
@@ -63,17 +64,13 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
         }
 
         holder.binding.txtTitle.setText(product.getProductName());
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedPrice = formatter.format(product.getNewPrice());
-
         if (product.getInStock() == 0){
             holder.binding.layoutOutOfStock.setVisibility(View.VISIBLE);
         }
-        holder.binding.txtPrice.setText("đ" + formattedPrice);
+        holder.binding.txtPrice.setText(FormatHelper.formatVND(product.getNewPrice()));
         holder.binding.txtSold.setText("Đã bán " + product.getSold());
         holder.binding.txtSaleoff.setText("-" + 40 + "%");
-        holder.binding.txtRating.setText("(" + 4.5 + ")");
-        holder.binding.ratingBar.setRating(4.5F);
+        holder.binding.ratingBar.setRating(5.0F);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
