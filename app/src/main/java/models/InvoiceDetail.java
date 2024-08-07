@@ -12,7 +12,6 @@ public class InvoiceDetail {
     private double oldPrice;
     private int quantity;
     private String storeID;
-
     private String productImage;
     private String productID;
     public static int ITEM_TO_DISPLAY = 1;
@@ -26,11 +25,12 @@ public class InvoiceDetail {
         this.quantity = quantity;
     }
 
-    public InvoiceDetail(String invoiceID, String variantID, String productID, int quantity) {
+    public InvoiceDetail(String invoiceID, String variantID, String productID, String productName, int quantity) {
         this.invoiceID = invoiceID;
         this.variantID = variantID;
         this.quantity = quantity;
         this.productID = productID;
+        this.productName = productName;
     }
 
     public String getProductID() {

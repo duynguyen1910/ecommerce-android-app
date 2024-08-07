@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,6 +88,7 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Invoice invoice = list.get(holder.getBindingAdapterPosition());
+        final ArrayList<InvoiceDetail>[] invoiceDetails = new ArrayList[]{new ArrayList<>()};
         User user = new User();
 
         user.getUserInfo(invoice.getCustomerID(), new UserCallback() {
@@ -115,6 +117,10 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
         invoiceApi.getInvoiceDetailApi(invoice.getBaseID(), new GetCollectionCallback<InvoiceDetail>() {
             @Override
             public void onGetListSuccess(ArrayList<InvoiceDetail> productList) {
+                invoiceDetails[0] = new ArrayList<>(productList);
+                invoiceDetails[0].forEach(item -> {
+                    Log.d("invoiceDetails", "productID: " + item.getProductID() + "\nsold: " + item.getQuantity());
+                });
                 holder.binding.progressBar.setVisibility(View.GONE);
 
                 InvoiceDetailAdapter adapter = new
@@ -160,7 +166,7 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
             //2. Trừ tồn kho của tất cả sản phẩm trong đơn hàng
 
             productApi productApi = new productApi();
-            productApi.updateProductWhenConfirmInvoice(invoice.getBaseID(), new StatusCallback() {
+            productApi.updateSoldQuantity(invoiceDetails[0], new StatusCallback() {
                 @Override
                 public void onSuccess(String successMessage) {
                     showToast(context, successMessage);

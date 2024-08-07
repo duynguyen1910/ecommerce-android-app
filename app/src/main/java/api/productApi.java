@@ -2,21 +2,30 @@ package api;
 
 import static constants.collectionName.INVOICE_DETAIL_COLLECTION;
 import static constants.collectionName.PRODUCT_COLLECTION;
+import static constants.collectionName.VARIANT_COLLECTION;
 import static constants.keyName.CATEGORY_ID;
+import static constants.keyName.INSTOCK;
 import static constants.keyName.INVOICE_ID;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_SOLD;
 import static constants.keyName.STORE_ID;
 import static constants.toastMessage.INTERNET_ERROR;
+import static constants.toastMessage.ORDER_SUCCESSFULLY;
 import static constants.toastMessage.UPDATE_SUCCESSFULLY;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,6 +42,7 @@ import interfaces.StatusCallback;
 import interfaces.UpdateDocumentCallback;
 import models.InvoiceDetail;
 import models.Product;
+import utils.Cart.CartUtils;
 
 public class productApi implements Serializable {
     private final FirebaseFirestore db;
@@ -67,6 +77,93 @@ public class productApi implements Serializable {
                 .addOnSuccessListener(unused -> callback.onUpdateSuccess(UPDATE_SUCCESSFULLY))
                 .addOnFailureListener(e -> Log.w("Firestore", "Error updating product", e));
     }
+
+    public void updateSoldQuantity(ArrayList<InvoiceDetail> invoiceDetails, StatusCallback callback) {
+        WriteBatch batch = db.batch();
+        Map<String, Integer> m_productSoldMap = new HashMap<>();
+
+        // Tính tổng số lượng của từng sản phẩm
+        for (InvoiceDetail detail : invoiceDetails) {
+            int quantity = detail.getQuantity();
+            String productID = detail.getProductID();
+            if (productID != null) {
+                if (!m_productSoldMap.containsKey(productID)) {
+                    m_productSoldMap.put(productID, quantity);
+                } else {
+                    int currentQuantity = m_productSoldMap.get(productID);
+                    m_productSoldMap.put(productID, currentQuantity + quantity);
+                }
+            }
+        }
+
+        // Cập nhật thuộc tính sold cho từng sản phẩm
+        for (Map.Entry<String, Integer> entry : m_productSoldMap.entrySet()) {
+            String productID = entry.getKey();
+            int totalSold = entry.getValue();
+
+            Log.d("sold", "productID: " + productID + "\nsold: " + totalSold);
+            DocumentReference productRef = db.collection(PRODUCT_COLLECTION).document(productID);
+            batch.update(productRef, PRODUCT_SOLD, FieldValue.increment(totalSold));
+        }
+
+        // Commit batch update
+        batch.commit().addOnSuccessListener(aVoid -> {
+            callback.onSuccess("Cập nhật số lượng đã bán thành công");
+        }).addOnFailureListener(e -> {
+            callback.onFailure("Cập nhật số lượng đã bán thất bại: " + e.getMessage());
+        });
+    }
+
+
+
+
+    public void updateInventory(ArrayList<InvoiceDetail> invoiceDetails, StatusCallback callback) {
+        WriteBatch batch = db.batch();  // Khởi tạo WriteBatch
+
+        // Tạo một map để lưu tổng số lượng tồn kho cần cập nhật cho mỗi sản phẩm có variant
+        Map<String, Integer> productSoldMap = new HashMap<>();
+
+        for (InvoiceDetail detail : invoiceDetails) {
+            int quantity = -detail.getQuantity(); // Số lượng tồn kho cần cập nhật là âm
+
+            if (detail.getVariantID() != null) {
+                // Cập nhật tồn kho cho variant
+                DocumentReference variantRef = db.collection(VARIANT_COLLECTION).document(detail.getVariantID());
+                batch.update(variantRef, INSTOCK, FieldValue.increment(quantity));
+
+                // Cộng tổng số lượng cho sản phẩm liên quan
+                String productID = detail.getProductID();
+                productSoldMap.put(productID, productSoldMap.getOrDefault(productID, 0) + detail.getQuantity());
+            } else {
+                // Cập nhật tồn kho cho product không có variant
+                DocumentReference productRef = db.collection(PRODUCT_COLLECTION).document(detail.getProductID());
+                batch.update(productRef, INSTOCK, FieldValue.increment(quantity));
+            }
+        }
+
+        // Cập nhật tồn kho cho mỗi sản phẩm
+        for (Map.Entry<String, Integer> entry : productSoldMap.entrySet()) {
+            String productID = entry.getKey();
+            int totalSold = entry.getValue();
+
+            DocumentReference productRef = db.collection(PRODUCT_COLLECTION).document(productID);
+            batch.update(productRef, INSTOCK, FieldValue.increment(-totalSold));
+        }
+
+        // Commit batch update
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    callback.onSuccess("Cập nhật tồn kho thành công");
+                } else {
+                    callback.onFailure("Failed to update inventory: " + task.getException().getMessage());
+                }
+            }
+        });
+    }
+
+
 
     public void updateProductWhenConfirmInvoice(String invoiceID, final StatusCallback callback) {
         db.collection(INVOICE_DETAIL_COLLECTION)

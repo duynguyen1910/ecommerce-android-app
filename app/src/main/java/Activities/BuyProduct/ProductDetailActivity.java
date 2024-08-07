@@ -110,7 +110,6 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             if (!buyable) {
                 binding.btnAddToCart.setBackground(ContextCompat.getDrawable(this, R.color.gray));
-                binding.layoutBuyNow.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
                 binding.txtAddToCart.setTextColor(ContextCompat.getColor(this, R.color.black));
                 Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_cart);
                 drawable.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN);
@@ -225,6 +224,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                         if (product.getProductName().equals(variant.getProductName())) {
                             Log.d(tagVariant, "1. storeFound, đã có sản phẩm này (0 có variant), tăng số lượng lên thôi");
                             int currQuantity = variant.getNumberInCart();
+                            variant.setProductID(product.getBaseID());
                             variant.setNumberInCart(currQuantity + quantity);
                             productFound = true;
 
@@ -246,6 +246,8 @@ public class ProductDetailActivity extends AppCompatActivity {
                         if (selectedVariant.getBaseID() != null && selectedVariant.getBaseID().equals(variant.getBaseID())) {
                             Log.d(tagVariant, "3. storeFound, productFound, có variant này, tăng quantity thôi");
                             int currQuantity = variant.getNumberInCart();
+                            variant.setProductID(product.getBaseID());
+                            variant.setProductName(product.getProductName());
                             variant.setNumberInCart(currQuantity + quantity);
                             variantFound = true;
                             break;
@@ -254,6 +256,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                     if (!variantFound) {
                         Log.d(tagVariant, "4. storeFound, productFound, chưa có variant này, thêm variant vào");
                         selectedVariant.setNumberInCart(quantity);
+                        selectedVariant.setProductID(product.getBaseID());
                         selectedVariant.setProductName(product.getProductName());
                         cartItem.getListVariants().add(selectedVariant);
                     }

@@ -10,6 +10,7 @@ import static constants.keyName.WARD_NAME;
 import static constants.toastMessage.ADDRESS_REQUIRE;
 import static constants.keyName.PAYMENT;
 import static utils.Cart.CartUtils.getCartItemFee;
+import static utils.Cart.CartUtils.showToast;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -41,6 +42,7 @@ import api.addressApi;
 import Activities.MainActivity;
 import Adapters.BuyProduct.PaymentAdapter;
 import api.invoiceApi;
+import api.productApi;
 import api.userApi;
 import enums.OrderStatus;
 import interfaces.CreateDocumentCallback;
@@ -59,7 +61,7 @@ public class PaymentActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     String userID = null;
     String defaultAddressID = null;
-    String tag = "payment1";
+    String tag = "payment5";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +124,7 @@ public class PaymentActivity extends AppCompatActivity {
                 binding.btnBooking.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
 
                 invoiceApi invoiceApi = new invoiceApi();
+
                 invoiceApi.createInvoiceApi(newInvoice, new CreateDocumentCallback() {
                     @Override
                     public void onCreateSuccess(String documentID) {
@@ -146,12 +149,12 @@ public class PaymentActivity extends AppCompatActivity {
     private void createInvoiceDetail(invoiceApi invoiceApi, String invoiceID, ArrayList<Variant> variantsList) {
         ArrayList<InvoiceDetail> invoiceDetails = new ArrayList<>();
         for (Variant variant : variantsList) {
-            invoiceDetails.add(new InvoiceDetail(invoiceID, variant.getBaseID(), variant.getProductID(), variant.getNumberInCart()));
+            invoiceDetails.add(new InvoiceDetail(invoiceID, variant.getBaseID(), variant.getProductID(), variant.getProductName(), variant.getNumberInCart()));
         }
-        invoiceDetails.forEach(invoiceDetail -> {
-            Log.d(tag, "variantID: " + invoiceDetail.getVariantID() + "\nquantity: " + invoiceDetail.getQuantity());
+        invoiceDetails.forEach(item -> {
+            Log.d(tag, "variantID: " + item.getVariantID() + "\nquantity: " + item.getQuantity() + "\nProductName: " + item.getProductName() + "\nProductID: " + item.getProductID());
+            Log.d(tag, "--------------------");
         });
-        Log.d(tag, "--------------------");
 
 
         invoiceApi.createDetailInvoiceApi(invoiceDetails, new StatusCallback() {
@@ -160,6 +163,21 @@ public class PaymentActivity extends AppCompatActivity {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.btnBooking.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.color.primary_color));
                 Toast.makeText(PaymentActivity.this, successMessage, Toast.LENGTH_SHORT).show();
+                // call API update tồn kho
+                productApi m_productApi = new productApi();
+                m_productApi.updateInventory(invoiceDetails, new StatusCallback() {
+                    @Override
+                    public void onSuccess(String successMessage) {
+                        showToast(PaymentActivity.this, successMessage);
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        showToast(PaymentActivity.this, errorMessage);
+                    }
+                });
+
+
 
                 Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
