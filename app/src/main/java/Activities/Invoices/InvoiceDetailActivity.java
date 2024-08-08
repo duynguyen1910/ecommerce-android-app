@@ -65,7 +65,7 @@ public class InvoiceDetailActivity extends AppCompatActivity {
             binding.txtDetailedCustomer.setText(detailedAddress);
             binding.txtCustomerAddress.setText(deliveryAddress);
 
-            binding.txtInvoiceStatus.setText("Đơn hàng của bạn " + invoiceStatusLabel);
+            binding.txtInvoiceStatus.setText("Trạng thái đơn hàng: " + invoiceStatusLabel);
 
             binding.txtTotal.setText(FormatHelper.formatVND(invoiceTotal));
             binding.txtInvoiceID.setText(invoiceID);

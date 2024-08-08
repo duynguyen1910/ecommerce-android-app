@@ -141,7 +141,7 @@ public class productApi implements Serializable {
             }
         }
 
-        // Cập nhật tồn kho cho mỗi sản phẩm
+        // Cập nhật tồn kho cho mỗi sản phẩm có variant
         for (Map.Entry<String, Integer> entry : productSoldMap.entrySet()) {
             String productID = entry.getKey();
             int totalSold = entry.getValue();
@@ -162,69 +162,6 @@ public class productApi implements Serializable {
             }
         });
     }
-
-
-
-    public void updateProductWhenConfirmInvoice(String invoiceID, final StatusCallback callback) {
-        db.collection(INVOICE_DETAIL_COLLECTION)
-                .whereEqualTo(INVOICE_ID, invoiceID)
-                .get()
-                .addOnSuccessListener(task -> {
-                    Map<String, Integer> variantMap = new HashMap<>();
-                    for (DocumentSnapshot document : task.getDocuments()) {
-                        InvoiceDetail invoiceDetail = document.toObject(InvoiceDetail.class);
-                        if (invoiceDetail != null) {
-                            variantMap.put(invoiceDetail.getVariantID(), invoiceDetail.getQuantity());
-                        }
-                    }
-
-                    List<Task<Void>> updateTasks = new ArrayList<>();
-
-                    for (Map.Entry<String, Integer> entry : variantMap.entrySet()) {
-                        String productID = entry.getKey();
-                        int quantity = entry.getValue();
-
-                        // Tạo tác vụ đọc sản phẩm
-                        Task<DocumentSnapshot> getProductTask = db.collection(PRODUCT_COLLECTION).document(productID).get();
-
-                        // Tạo tác vụ cập nhật sản phẩm sau khi đọc xong
-                        Task<Void> updateTask = getProductTask.continueWithTask(task1 -> {
-                            if (task1.isSuccessful()) {
-                                DocumentSnapshot documentSnapshot = task1.getResult();
-                                Product product = documentSnapshot.toObject(Product.class);
-                                int currentInStock = product.getInStock();
-
-                                Map<String, Object> updateData = new HashMap<>();
-                                updateData.put(PRODUCT_INSTOCK, currentInStock - quantity);
-                                updateData.put(PRODUCT_SOLD, product.getSold() + quantity);
-
-                                // Trả về tác vụ cập nhật sản phẩm
-                                return db.collection(PRODUCT_COLLECTION)
-                                        .document(productID)
-                                        .update(updateData);
-                            } else {
-                                // Nếu có lỗi, trả về tác vụ lỗi
-                                return Tasks.forException(task1.getException());
-                            }
-                        });
-
-                        updateTasks.add(updateTask);
-                    }
-
-                    // Chờ tất cả các tác vụ cập nhật hoàn tất
-                    Tasks.whenAll(updateTasks)
-                            .addOnSuccessListener(aVoid -> {
-                                callback.onSuccess("Đã xác nhận đơn hàng");
-                            })
-                            .addOnFailureListener(e -> {
-                                callback.onFailure(INTERNET_ERROR);
-                            });
-
-                })
-                .addOnFailureListener(e -> callback.onFailure(INTERNET_ERROR));
-    }
-
-
     private void getProducts(Query query, int limit, final GetCollectionCallback<Product> callback) {
         query.limit(limit)
                 .get()

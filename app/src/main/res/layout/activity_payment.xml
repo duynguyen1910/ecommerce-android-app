@@ -263,6 +263,39 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="@drawable/custom_border_bottom"
+                            android:orientation="vertical"
+                            android:paddingVertical="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:background="#00ffffff"
+                                android:drawablePadding="8dp"
+                                android:gravity="center_vertical"
+                                android:text="Phương thức thanh toán"
+                                android:textColor="@color/black"
+                                android:textStyle="bold"
+                                app:drawableStartCompat="@drawable/ic_paid"
+                                app:drawableTint="@color/primary_color" />
+
+                            <TextView
+
+                                android:id="@+id/txtPaymentMethod"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="30dp"
+                                android:gravity="center_vertical"
+                                android:text="Thanh toán khi nhận hàng"
+                                android:textColor="@color/darkgray"
+
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:paddingVertical="16dp">
 
                             <TextView

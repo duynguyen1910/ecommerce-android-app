@@ -11,12 +11,15 @@ import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.CANCEL_ORDER_SUCCESSFULLY;
 import static utils.Cart.CartUtils.showToast;
+import static utils.FormatHelper.formatDateTime;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -42,6 +45,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import Activities.Invoices.InvoiceDetailActivity;
 import api.invoiceApi;
 import api.productApi;
 import enums.OrderStatus;
@@ -182,6 +187,28 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
 
         holder.binding.btnCancel.setOnClickListener(v -> {
           DialogCancelInvoiceUtils.popUpCancelInvoiceByStoreDialog(this, context, invoice, holder.getBindingAdapterPosition());
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, InvoiceDetailActivity.class);
+                Bundle bundle = new Bundle();
+
+                bundle.putString("invoiceID", invoice.getBaseID());
+                bundle.putString("detailedAddress", invoice.getDetailedAddress());
+                bundle.putString("deliveryAddress", invoice.getDeliveryAddress());
+                bundle.putString("invoiceStatusLabel", invoice.getStatus().getOrderLabel());
+
+                bundle.putString("createdAt", formatDateTime(invoice.getCreatedAt()));
+                bundle.putString("confirmedAt", formatDateTime(invoice.getConfirmedAt()));
+                bundle.putString("shippedAt", formatDateTime(invoice.getShippedAt()));
+                bundle.putString("deliveredAt", formatDateTime(invoice.getDeliveredAt()));
+
+                bundle.putDouble("invoiceTotal", invoice.getTotal());
+
+                intent.putExtras(bundle);
+                context.startActivity(intent);
+            }
         });
 
 

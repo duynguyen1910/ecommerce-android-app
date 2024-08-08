@@ -11,6 +11,7 @@ import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
+import static constants.keyName.USER_ROLE;
 import static constants.toastMessage.INTERNET_ERROR;
 
 import static utils.Cart.CartUtils.MY_CART;
@@ -74,6 +75,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     private String productID;
     private String storeID;
     private String storeName;
+    private int g_roleValue;
     private boolean buyable;
     private Product currentProduct;
     private int g_selectedPos = -1;
@@ -102,6 +104,8 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void getBundle() {
+        SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        g_roleValue = sharedPreferences.getInt(USER_ROLE, -1);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             productID = bundle.getString(PRODUCT_ID, null);
@@ -110,6 +114,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             if (!buyable) {
                 binding.btnAddToCart.setBackground(ContextCompat.getDrawable(this, R.color.gray));
+                binding.layoutBuyNow.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
                 binding.txtAddToCart.setTextColor(ContextCompat.getColor(this, R.color.black));
                 Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_cart);
                 drawable.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN);
@@ -291,8 +296,10 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding.btnAddToCart.setOnClickListener(v -> {
             if (buyable) {
                 popUpAddToCartDialog();
-            } else {
+            } else if (g_roleValue == 2){
                 showToast(ProductDetailActivity.this, "Bạn đang bán sản phẩm này\nKhông thể mua");
+            } else if (g_roleValue == 3) {
+                showToast(ProductDetailActivity.this, "Đơn vị vận chuyển không thể mua hàng");
             }
 
         });
@@ -442,10 +449,10 @@ public class ProductDetailActivity extends AppCompatActivity {
                 startActivity(new Intent(ProductDetailActivity.this, LoginActivity.class));
                 return;
             }
-            if ((!g_variants.isEmpty()) && g_selectedPos == -1){
+            if ((!g_variants.isEmpty()) && g_selectedPos == -1) {
                 showToast(ProductDetailActivity.this, "Hãy chọn sản phẩm trước");
                 return;
-            }else if (!g_variants.isEmpty()){
+            } else if (!g_variants.isEmpty()) {
                 if (g_selectedVariant.getNumberInCart() > g_selectedVariant.getInStock()) {
                     showToast(ProductDetailActivity.this, "Uiii, số lượng sản phẩm không đủ!");
                 } else {

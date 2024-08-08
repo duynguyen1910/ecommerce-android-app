@@ -99,9 +99,9 @@ public class PaymentActivity extends AppCompatActivity {
         binding.imageBack.setOnClickListener(v -> finish());
 
         binding.btnBooking.setOnClickListener(v -> {
-            if(defaultAddressID == null) {
-                Toast.makeText(this, ADDRESS_REQUIRE, Toast.LENGTH_SHORT).show();
-            }
+//            if(defaultAddressID == null) {
+//                Toast.makeText(this, ADDRESS_REQUIRE, Toast.LENGTH_SHORT).show();
+//            }
 
             for(CartItem item : payment) {
                 Map<String, Object> newInvoice = new HashMap<>();
