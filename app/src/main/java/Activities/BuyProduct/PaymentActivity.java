@@ -106,6 +106,7 @@ public class PaymentActivity extends AppCompatActivity {
         binding.btnBooking.setOnClickListener(v -> {
             if(defaultAddressID == null) {
                 Toast.makeText(this, ADDRESS_REQUIRE, Toast.LENGTH_SHORT).show();
+                return;
             }
 
             for(CartItem item : payment) {
@@ -226,6 +227,8 @@ public class PaymentActivity extends AppCompatActivity {
         userApi.getUserInfoApi(userID, new UserCallback() {
             @Override
             public void getUserInfoSuccess(User user) {
+                if(user.getDefaultAddressID() == null) return;
+
                 addressApi addressApi = new addressApi();
                 addressApi.getAddressDetailApi(user.getDefaultAddressID(), new GetDocumentCallback() {
                     @Override

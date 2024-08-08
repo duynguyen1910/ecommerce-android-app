@@ -28,6 +28,7 @@ import java.util.Objects;
 import interfaces.UserCallback;
 import models.User;
 import constants.toastMessage;
+import utils.Encryptor;
 
 public class LoginActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
@@ -78,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
         User user = new User();
-       user.onLogin(phoneNumber, password, new UserCallback() {
+       user.onLogin(phoneNumber, Encryptor.encryptString(password), new UserCallback() {
            @Override
            public void getUserInfoSuccess(User user) {
                binding.progressBar.setVisibility(View.GONE);

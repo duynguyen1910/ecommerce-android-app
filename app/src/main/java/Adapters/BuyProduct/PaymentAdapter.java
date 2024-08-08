@@ -58,8 +58,8 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
         ArrayList<Product> listProducts = cartItem.getListProducts();
 
         holder.binding.txtStoreName.setText(cartItem.getStoreName());
-        ProductsAdapterForInvoice adapter = new ProductsAdapterForInvoice(context, cartItem.getListProducts());
 
+        ProductsAdapterForInvoice adapter = new ProductsAdapterForInvoice(context, cartItem.getListProducts());
         holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
         holder.binding.recyclerViewProducts.setAdapter(adapter);
 
