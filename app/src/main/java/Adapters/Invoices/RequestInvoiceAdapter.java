@@ -129,7 +129,7 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
                 holder.binding.progressBar.setVisibility(View.GONE);
 
                 InvoiceDetailAdapter adapter = new
-                        InvoiceDetailAdapter(context, productList);
+                        InvoiceDetailAdapter(context, productList, InvoiceDetail.ITEM_TO_DISPLAY);
                 holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
                 holder.binding.recyclerViewProducts.setAdapter(adapter);
 

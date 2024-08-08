@@ -62,14 +62,14 @@
             android:textSize="16sp" />
 
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginBottom="40dp"
-            android:text="Ghi nhớ đăng nhập?"
-            android:id="@+id/chkRemember"
-            android:textColor="@color/primary_color"
-            android:textSize="14dp" />
+<!--        <CheckBox-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_marginBottom="40dp"-->
+<!--            android:text="Ghi nhớ đăng nhập?"-->
+<!--            android:id="@+id/chkRemember"-->
+<!--            android:textColor="@color/primary_color"-->
+<!--            android:textSize="14dp" />-->
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
