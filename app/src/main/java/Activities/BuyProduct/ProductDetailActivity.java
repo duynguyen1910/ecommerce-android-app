@@ -7,6 +7,7 @@ import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
 import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
+import static constants.keyName.PRODUCT_SOLD;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 import static constants.keyName.USER_ID;
@@ -57,6 +58,7 @@ import Activities.LoginActivity;
 import Activities.StoreSetup.ViewMyStoreActivity;
 import Adapters.BuyProduct.SliderAdapterForProductDetail;
 import Adapters.BuyProduct.VariantGridAdapter;
+import api.productApi;
 import api.variantApi;
 import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
@@ -130,8 +132,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding.progressBarProduct.setVisibility(View.VISIBLE);
 
         if (storeID != null && productID != null) {
-            Product product = new Product();
-            product.getProductDetail(productID, new GetDocumentCallback() {
+            productApi m_productApi = new productApi();
+            m_productApi.getProductDetailApi(productID, new GetDocumentCallback() {
                 @Override
                 public void onGetDataSuccess(Map<String, Object> productDetail) {
                     currentProduct = new Product(
@@ -141,6 +143,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                             (double) productDetail.get(PRODUCT_NEW_PRICE),
                             (double) productDetail.get(PRODUCT_OLD_PRICE),
                             ((Long) productDetail.get(PRODUCT_INSTOCK)).intValue(),
+                            ((Long) productDetail.get(PRODUCT_SOLD)).intValue(),
                             storeID,
                             1);
 
@@ -321,9 +324,11 @@ public class ProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (buyable) {
-//                    popUpBuyNowDialog();
-                } else {
+//                    popUpAddToCartDialog();
+                } else if (g_roleValue == 2){
                     showToast(ProductDetailActivity.this, "Bạn đang bán sản phẩm này\nKhông thể mua");
+                } else if (g_roleValue == 3) {
+                    showToast(ProductDetailActivity.this, "Đơn vị vận chuyển không thể mua hàng");
                 }
             }
         });

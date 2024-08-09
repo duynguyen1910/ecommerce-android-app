@@ -75,18 +75,21 @@ public class addressApi {
 
 
     public void getAddressDetailApi(String addressID, final GetDocumentCallback callback) {
-        db.collection(ADDRESS_COLLECTION)
-                .document(addressID)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-                            Map<String, Object> data = documentSnapshot.getData();
-                            callback.onGetDataSuccess(data);
+        if(addressID != null) {
+            db.collection(ADDRESS_COLLECTION)
+                    .document(addressID)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()) {
+                                Map<String, Object> data = documentSnapshot.getData();
+                                callback.onGetDataSuccess(data);
+                            }
                         }
-                    }
-                });
+                    });
+        }
+
     }
 
 

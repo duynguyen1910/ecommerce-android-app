@@ -7,6 +7,7 @@ import static constants.keyName.CATEGORY_ID;
 import static constants.keyName.INSTOCK;
 import static constants.keyName.INVOICE_ID;
 import static constants.keyName.PRODUCT_INSTOCK;
+import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_SOLD;
 import static constants.keyName.STORE_ID;
 import static constants.toastMessage.INTERNET_ERROR;
@@ -207,7 +208,7 @@ public class productApi implements Serializable {
         Query query = db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(CATEGORY_ID, categoryId)
                 .whereGreaterThan(PRODUCT_INSTOCK, 0)
-                .orderBy(PRODUCT_INSTOCK, Query.Direction.ASCENDING);
+                .orderBy(PRODUCT_NEW_PRICE, Query.Direction.ASCENDING);
         getProducts(query, 100, callback);
     }
 
@@ -215,7 +216,7 @@ public class productApi implements Serializable {
         Query query = db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(CATEGORY_ID, categoryId)
                 .whereGreaterThan(PRODUCT_INSTOCK, 0)
-                .orderBy(PRODUCT_INSTOCK, Query.Direction.DESCENDING);
+                .orderBy(PRODUCT_NEW_PRICE, Query.Direction.DESCENDING);
         getProducts(query, 100, callback);
     }
 

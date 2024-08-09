@@ -78,7 +78,6 @@ public class DeliveryAddressActivity extends AppCompatActivity {
 
     private void setDefaultAddress() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
         userApi = new userApi();
         userApi.getUserInfoApi(userID, new UserCallback() {
             @Override

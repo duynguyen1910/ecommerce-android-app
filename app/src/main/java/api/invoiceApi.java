@@ -176,8 +176,6 @@ public class invoiceApi {
 
         return new Timestamp[]{startDate, endDate};
     }
-
-
     public void getSpendingsInAMonthByCustomerID(String customerID, int month, GetAggregateCallback callback) {
         List<Integer> orderStatuses = new ArrayList<>();
         orderStatuses.add(2);
