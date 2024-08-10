@@ -13,25 +13,33 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import com.example.stores.R;
 import com.example.stores.databinding.ActivitySpendingsBinding;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LegendEntry;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import api.invoiceApi;
-import interfaces.GetAggregateCallback;
+import interfaces.GetCollectionCallback;
 import utils.Chart.CustomValueMoneyFormatter;
-import utils.FormatHelper;
+import utils.TimeUtils;
 
 public class SpendingsActivity extends AppCompatActivity {
 
@@ -54,7 +62,7 @@ public class SpendingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        getSpendings(8);
+        getSpendingInHaftYear();
     }
 
     private void initUI() {
@@ -63,109 +71,108 @@ public class SpendingsActivity extends AppCompatActivity {
 
     }
 
-    private void getSpendings(int month) {
+    private void getSpendingInHaftYear() {
         binding.progressBar.setVisibility(View.VISIBLE);
-        invoiceApi invoiceApi = new invoiceApi();
-        invoiceApi.getSpendingsInAMonthByCustomerID(customerID, month, new GetAggregateCallback() {
+        invoiceApi m_invoiceApi = new invoiceApi();
+        int m_currentMonth = getCurrentMonth();
+
+        m_invoiceApi.getSpendingsInHaftYearByCustomerID(customerID, m_currentMonth, new GetCollectionCallback<Double>() {
             @Override
-            public void onSuccess(double spendings) {
+            public void onGetListSuccess(ArrayList<Double> listRevenues) {
                 binding.progressBar.setVisibility(View.GONE);
-                binding.txtSpendings.setText(FormatHelper.formatVND(spendings));
-                setupSpendingChart(spendings);
+                drawSpendingInHaftYear(listRevenues, m_currentMonth);
             }
 
             @Override
-            public void onFailure(String errorMessage) {
+            public void onGetListFailure(String errorMessage) {
                 binding.progressBar.setVisibility(View.GONE);
                 showToast(SpendingsActivity.this, errorMessage);
+
             }
         });
 
     }
 
-    private void setupSpendingChart(double spendings) {
-        BarChart barChart1 = binding.spendingsChart;
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(1, (float) spendings));
-
-        BarDataSet dataSet = new BarDataSet(entries, "Chi tiêu");
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-        dataSet.setValueTextColor(Color.BLACK);
-        dataSet.setValueTextSize(14f);
-        dataSet.setValueFormatter(new CustomValueMoneyFormatter());
-        dataSet.setDrawValues(true); // Hiển thị giá trị trên cột dữ liệu
-
-        BarData barData = new BarData(dataSet);
-        barChart1.setData(barData);
-        barData.setBarWidth(0.2f);
-
-        barChart1.setFitBars(true);
-        barChart1.getDescription().setEnabled(false);
-        barChart1.animateY(2000);
-
-        setupBarChart(barChart1);
-
-
-        barChart1.getAxisLeft().setDrawLabels(false); // Ẩn nhãn trục Y
-        barChart1.getAxisLeft().setDrawGridLines(false); // Ẩn đường lưới trục Y
-        barChart1.getXAxis().setEnabled(false); // Ẩn trục X
-        barChart1.getAxisRight().setEnabled(false); // Ẩn trục Y phải
-        barChart1.setBackgroundColor(Color.WHITE); // Đặt màu nền của biểu đồ thành trắng
-
-        barChart1.invalidate();
+    private int getCurrentMonth() {
+        int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+        Log.d("currentMonth", "currentMonth: " + month);
+        return month;
     }
 
-    private void setupBarChart(BarChart barChart) {
-        barChart.getLegend().setEnabled(false);
 
-        barChart.setFitBars(true);
+    private void drawSpendingInHaftYear(ArrayList<Double> listSpendings, int currentMonth) {
+        BarChart barChart = binding.spendingsChart;
+        List<BarEntry> spendingEntries = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
+        int colorCurrentMonth = ContextCompat.getColor(SpendingsActivity.this, R.color.primary_color);
+        int colorOtherMonths = ContextCompat.getColor(SpendingsActivity.this, R.color.light_light_primary);
+
+        if (currentMonth < 7) {
+            for (int i = 0; i < listSpendings.size(); i++) {
+                float monthLabel = i + 1;
+                float spending = listSpendings.get(i).floatValue();
+                spendingEntries.add(new BarEntry(monthLabel, spending));
+                if (monthLabel == currentMonth) {
+                    colors.add(colorCurrentMonth);
+                } else {
+                    colors.add(colorOtherMonths);
+                }
+            }
+        } else {
+            for (int i = 0; i < listSpendings.size(); i++) {
+                float monthLabel = currentMonth - 5 + i;
+                float spending = listSpendings.get(i).floatValue();
+                spendingEntries.add(new BarEntry(monthLabel, spending));
+                if (monthLabel == currentMonth) {
+                    colors.add(colorCurrentMonth);
+                } else {
+                    colors.add(colorOtherMonths);
+                }
+            }
+        }
+
         barChart.getDescription().setEnabled(false);
-        barChart.animateY(2000);
 
-        YAxis yAxisLeft = barChart.getAxisLeft();
-        yAxisLeft.setAxisMinimum(0f);
-        yAxisLeft.setDrawZeroLine(true);
-        yAxisLeft.setDrawAxisLine(true);
-        yAxisLeft.setDrawLabels(false); // Ẩn nhãn trục Y
+        BarDataSet dataSet = new BarDataSet(spendingEntries, "Chi tiêu");
+        dataSet.setColors(colors); // Set colors for each bar
+        dataSet.setValueTextColor(ContextCompat.getColor(SpendingsActivity.this, R.color.black));
+        dataSet.setValueTextSize(13f);
+        dataSet.setValueFormatter(new CustomValueMoneyFormatter());
 
-        // Thiết lập trục X
+        barChart.getLegend().setEnabled(false);
+        BarData barData = new BarData(dataSet);
+        barChart.setData(barData);
+        barChart.animateY(1000);
+        barChart.invalidate(); // Refresh the chart
+
+        // Cấu hình XAxis
         XAxis xAxis = barChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // Đặt trục X ở phía dưới
-        xAxis.setGranularity(1f); // Đảm bảo các nhãn được phân bố đều
-        xAxis.setLabelRotationAngle(20f); // Xoay nhãn để tránh chồng chéo
-        xAxis.setLabelCount(5, true); // Thiết lập số lượng nhãn
-        xAxis.setTextSize(12f);
-        xAxis.setDrawLabels(false); // Ẩn nhãn trục X
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularity(1f);
+        xAxis.setTextSize(13f);
+        xAxis.setLabelCount(12);
+        xAxis.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                int month = Math.round(value);
+                return TimeUtils.getMonth(month);
+            }
+        });
 
-        barChart.getAxisRight().setEnabled(false);
+        // Cấu hình trục Y
+        YAxis yAxisLeft = barChart.getAxisLeft();
+        yAxisLeft.setDrawLabels(false);
+        yAxisLeft.setDrawGridLinesBehindData(false);
+        yAxisLeft.setDrawGridLines(false);
+        yAxisLeft.setDrawAxisLine(false);
+        yAxisLeft.setAxisMinimum(0f);
+        yAxisLeft.setTextSize(13f);
+
+        barChart.getAxisRight().setEnabled(false); // Ẩn trục Y phải
+        barChart.setBackgroundColor(Color.WHITE); // Đặt màu nền của biểu đồ thành trắng
     }
 
     private void setupEvents() {
-        String[] calendarMonths = {
-                "Tháng 1", "Tháng 2", "Tháng 3",
-                "Tháng 4", "Tháng 5", "Tháng 6",
-                "Tháng 7", "Tháng 8", "Tháng 9",
-                "Tháng 10", "Tháng 11", "Tháng 12"};
-        ArrayAdapter<String> monthsAdapter = new ArrayAdapter<>(SpendingsActivity.this,
-                android.R.layout.simple_spinner_item, calendarMonths);
-        monthsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spnSelectMonth.setAdapter(monthsAdapter);
-        binding.spnSelectMonth.setSelection(7); // August
-        binding.spnSelectMonth.setDropDownVerticalOffset(100);
-        binding.spnSelectMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                binding.txtSelectedMonth.setText(calendarMonths[position] + " / 2024");
-                getSpendings(position + 1);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-
         binding.btnBack.setOnClickListener(v -> finish());
     }
 

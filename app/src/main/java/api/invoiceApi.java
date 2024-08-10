@@ -18,8 +18,10 @@ import static constants.keyName.VARIANT_ID;
 import static constants.toastMessage.CONFIRMED_ORDER_SUCCESSFULLY;
 import static constants.toastMessage.INTERNET_ERROR;
 import static constants.toastMessage.ORDER_SUCCESSFULLY;
+import static utils.Cart.CartUtils.showToast;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -178,6 +180,58 @@ public class invoiceApi {
         return new Timestamp[]{startDate, endDate};
     }
 
+    public void getSpendingsInHaftYearByCustomerID(String customerID, int currentMonth, GetCollectionCallback<Double> callback){
+        if (1 <= currentMonth && currentMonth <= 12) {
+            List<Task<QuerySnapshot>> tasks = new ArrayList<>();
+            if (currentMonth < 7) {
+                for (int month = 1; month <= currentMonth; month++) {
+                    // Tạo các task cho từng tháng
+                    tasks.add(getSpendingInAMonthTask(customerID, month));
+                }
+            }else {
+                for (int month = currentMonth - 5; month <= currentMonth; month++) {
+                    // Tạo các task cho từng tháng
+                    tasks.add(getSpendingInAMonthTask(customerID, month));
+                }
+            }
+
+
+            // Sử dụng Tasks.whenAll để thực hiện tất cả các task và nhận kết quả
+            Tasks.whenAll(tasks).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    ArrayList<Double> monthlySpendings = new ArrayList<>();
+                    for (int i = 0; i < tasks.size(); i++) {
+                        Task<QuerySnapshot> t = tasks.get(i);
+                        double spending = 0;
+                        try {
+                            for (DocumentSnapshot document : t.getResult().getDocuments()) {
+                                Invoice invoice = document.toObject(Invoice.class);
+                                double total = invoice.getTotal();
+                                spending += total;
+                            }
+                        } catch (Exception e) {
+                            Log.d("getSpendingsInHaftYearByCustomerID", "Error processing month " + (i + 1) + ": " + e.getMessage());
+                        }
+                        monthlySpendings.add(spending);
+                    }
+                    callback.onGetListSuccess(monthlySpendings);
+                } else {
+                    callback.onGetListFailure(INTERNET_ERROR);
+                }
+            });
+        }
+    }
+
+    private Task<QuerySnapshot> getSpendingInAMonthTask(String customerID, int month) {
+        List<Integer> orderStatuses = Arrays.asList(2, 3, 4);
+        return db.collection(INVOICE_COLLECTION)
+                .whereEqualTo(CUSTOMER_ID, customerID)
+                .whereIn(STATUS, orderStatuses)
+                .whereGreaterThanOrEqualTo(CREATE_AT, getDayRange(month)[0])
+                .whereLessThanOrEqualTo(CREATE_AT, getDayRange(month)[1])
+                .get();
+    }
+
     public void getSpendingsInAMonthByCustomerID(String customerID, int month, GetAggregateCallback callback) {
         List<Integer> orderStatuses = new ArrayList<>();
         orderStatuses.add(2);
@@ -234,6 +288,7 @@ public class invoiceApi {
             }
         });
     }
+
 
     private Task<QuerySnapshot> getRevenueInAMonthTask(String storeID, int month) {
         List<Integer> orderStatuses = Arrays.asList(2, 3, 4);

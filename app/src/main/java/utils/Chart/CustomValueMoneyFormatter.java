@@ -6,6 +6,9 @@ public class CustomValueMoneyFormatter extends ValueFormatter {
 
     @Override
     public String getFormattedValue(float value) {
+        if (value == 0) {
+            return ""; // Không hiển thị giá trị khi nó bằng 0
+        }
         if (value < 1000000) {
             return String.format("%.0f k", value / 1000);
         }

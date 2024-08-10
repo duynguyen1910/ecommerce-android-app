@@ -3,6 +3,8 @@ import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 import static utils.Cart.CartUtils.showToast;
+import static utils.TimeUtils.calendarMonths;
+
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -32,6 +34,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.sql.Time;
 import java.util.ArrayList;
 import api.invoiceApi;
 import interfaces.GetAggregateCallback;
@@ -39,6 +43,7 @@ import interfaces.GetCollectionCallback;
 import utils.Chart.CustomValueMoney2Formatter;
 import utils.Chart.CustomValueMoneyFormatter;
 import utils.FormatHelper;
+import utils.TimeUtils;
 
 public class RevenueFragment extends Fragment {
     FragmentRevenueBinding binding;
@@ -114,6 +119,7 @@ public class RevenueFragment extends Fragment {
         dataSet.setValueTextColor(ContextCompat.getColor(requireActivity(), R.color.black));
         dataSet.setValueTextSize(12f);
         dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+       dataSet.setValueFormatter(new CustomValueMoneyFormatter());
 
         dataSet.setDrawFilled(true);
         dataSet.setFillColor(ContextCompat.getColor(requireActivity(), R.color.secondary_color));
@@ -256,13 +262,8 @@ public class RevenueFragment extends Fragment {
         g_sStoreID = sharedPreferences.getString(STORE_ID, null);
     }
     private void setupEvents() {
-        String[] calendarMonths = {
-                "Tháng 1", "Tháng 2", "Tháng 3",
-                "Tháng 4", "Tháng 5", "Tháng 6",
-                "Tháng 7", "Tháng 8", "Tháng 9",
-                "Tháng 10", "Tháng 11", "Tháng 12"};
         ArrayAdapter<String> monthsAdapter = new ArrayAdapter<>(requireActivity(),
-                android.R.layout.simple_spinner_item, calendarMonths);
+                android.R.layout.simple_spinner_item, TimeUtils.calendarMonths);
         monthsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spnSelectMonth.setAdapter(monthsAdapter);
         binding.spnSelectMonth.setSelection(7); // August
@@ -270,7 +271,7 @@ public class RevenueFragment extends Fragment {
         binding.spnSelectMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                binding.txtSelectedMonth.setText(calendarMonths[position] + " / 2024");
+                binding.txtSelectedMonth.setText(TimeUtils.getMonth(position) + " / 2024");
                 getRevenueInMonth(position + 1);
             }
 
