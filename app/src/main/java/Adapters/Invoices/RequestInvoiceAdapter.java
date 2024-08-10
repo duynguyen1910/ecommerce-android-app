@@ -129,7 +129,7 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
 
         holder.binding.btnConfirm.setOnClickListener(v -> {
 
-            //1.  Cập nhật trạng thái đơn hàng
+            // Cập nhật trạng thái đơn hàng
             Map<String, Object> newMap = new HashMap<>();
             newMap.put(STATUS, OrderStatus.PENDING_SHIPMENT.getOrderStatusValue());
             newMap.put(CONFIRMED_AT, FormatHelper.getCurrentDateTime());
@@ -148,20 +148,8 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
                 }
             });
 
-            //2. Trừ tồn kho của tất cả sản phẩm trong đơn hàng
+            // Không cần trừ tồn kho nữa vì đã trừ lúc mua hàng rồi
 
-            productApi productApi = new productApi();
-            productApi.updateSoldQuantity(invoiceDetails[0], new StatusCallback() {
-                @Override
-                public void onSuccess(String successMessage) {
-                    showToast(context, successMessage);
-                }
-
-                @Override
-                public void onFailure(String errorMessage) {
-                    showToast(context, errorMessage);
-                }
-            });
         });
 
 

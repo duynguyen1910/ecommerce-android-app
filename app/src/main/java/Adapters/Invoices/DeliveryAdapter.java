@@ -73,6 +73,7 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         Invoice invoice = list.get(holder.getBindingAdapterPosition());
+        final ArrayList<InvoiceDetail>[] invoiceDetails = new ArrayList[]{new ArrayList<>()};
         User user = new User();
 
         user.getUserInfo(invoice.getCustomerID(), new UserCallback() {
@@ -101,6 +102,7 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
         invoiceApi.getInvoiceDetailApi(invoice.getBaseID(), new GetCollectionCallback<InvoiceDetail>() {
             @Override
             public void onGetListSuccess(ArrayList<InvoiceDetail> productList) {
+                invoiceDetails[0] = new ArrayList<>(productList);
                 holder.binding.progressBar.setVisibility(View.GONE);
 
                 InvoiceDetailAdapter adapter = new
@@ -163,7 +165,7 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
 
 
         holder.binding.btnCancel.setOnClickListener(v -> {
-            DialogCancelInvoiceUtils.popUpCancelInvoiceByDeliveryDialog(this, context, invoice, holder.getBindingAdapterPosition());
+            DialogCancelInvoiceUtils.popUpCancelInvoiceByDeliveryDialog(this, context, invoice, holder.getBindingAdapterPosition(), invoiceDetails[0]);
         });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,7 +201,7 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
             }
 
             case IN_TRANSIT:{
-                btnCancel.setVisibility(View.VISIBLE);
+                btnCancel.setVisibility(View.GONE);
                 btnDelivery.setVisibility(View.GONE);
                 btnComplete.setVisibility(View.VISIBLE);
                 break;

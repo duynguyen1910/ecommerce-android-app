@@ -169,7 +169,7 @@ public class PaymentActivity extends AppCompatActivity {
                 Toast.makeText(PaymentActivity.this, successMessage, Toast.LENGTH_SHORT).show();
                 // call API update tồn kho
                 productApi m_productApi = new productApi();
-                m_productApi.updateInventoryWhenBuying(invoiceDetails, new StatusCallback() {
+                m_productApi.updateProductWhenBuying(invoiceDetails, new StatusCallback() {
                     @Override
                     public void onSuccess(String successMessage) {
                         showToast(PaymentActivity.this, successMessage);

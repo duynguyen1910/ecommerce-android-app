@@ -117,10 +117,10 @@ public class DialogCancelInvoiceUtils {
                 });
 
 
-                // Cập nhật lại tồn kho, (tăng tồn kho của sản phẩm lên) do đơn hủy trước khi đơn vị vận chuyển đến lấy hàng
+                // Hủy đơn, tăng tồn kho lên, giảm số lượng bán xuống
 
                 productApi productApi = new productApi();
-                productApi.updateInStockWhenStoreOrCustomerCancelInvoice(invoiceDetails, new StatusCallback() {
+                productApi.updateProductWhenCancelInvoice(invoiceDetails, new StatusCallback() {
                     @Override
                     public void onSuccess(String successMessage) {
                         showToast(context, successMessage);
@@ -137,7 +137,7 @@ public class DialogCancelInvoiceUtils {
 
     }
 
-    public static void popUpCancelInvoiceByDeliveryDialog(DeliveryAdapter adapter, Context context, Invoice invoice, int position) {
+    public static void popUpCancelInvoiceByDeliveryDialog(DeliveryAdapter adapter, Context context, Invoice invoice, int position, ArrayList<InvoiceDetail> invoiceDetails) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         DialogCancelInvoiceByDeliveryBinding dialogBinding = DialogCancelInvoiceByDeliveryBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         builder.setView(dialogBinding.getRoot());
@@ -211,6 +211,22 @@ public class DialogCancelInvoiceUtils {
                         dialogBinding.progressBar.setVisibility(View.GONE);
                         showToast(context, errorMessage);
                         dialog.dismiss();
+                    }
+                });
+
+
+                // Hủy đơn, tăng tồn kho lên, giảm số lượng bán xuống
+
+                productApi productApi = new productApi();
+                productApi.updateProductWhenCancelInvoice(invoiceDetails, new StatusCallback() {
+                    @Override
+                    public void onSuccess(String successMessage) {
+                        showToast(context, successMessage);
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        showToast(context, errorMessage);
                     }
                 });
 
@@ -303,7 +319,7 @@ public class DialogCancelInvoiceUtils {
                 // Cập nhật lại tồn kho, (tăng tồn kho của sản phẩm lên) do đơn hủy trước khi đơn vị vận chuyển đến lấy hàng
 
                 productApi productApi = new productApi();
-                productApi.updateInStockWhenStoreOrCustomerCancelInvoice(invoiceDetails, new StatusCallback() {
+                productApi.updateProductWhenCancelInvoice(invoiceDetails, new StatusCallback() {
                     @Override
                     public void onSuccess(String successMessage) {
                         showToast(context, successMessage);

@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_border_bottom"
                 android:padding="16dp"
-                android:text="Sản phẩm hư hại trong quá trình vận chuyển"
+                android:text="Không liên lạc được với Người bán"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:visibility="visible" />
