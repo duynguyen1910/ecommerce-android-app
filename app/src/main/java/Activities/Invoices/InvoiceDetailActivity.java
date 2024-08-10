@@ -1,11 +1,14 @@
 package Activities.Invoices;
 
+import static constants.keyName.CANCELED_AT;
+import static constants.keyName.CANCELED_REASON;
 import static constants.keyName.STORE_NAME;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -55,6 +58,8 @@ public class InvoiceDetailActivity extends AppCompatActivity {
             String confirmedAt = bundle.getString("confirmedAt");
             String shippedAt = bundle.getString("shippedAt");
             String deliveredAt = bundle.getString("deliveredAt");
+            String cancelledAt = bundle.getString(CANCELED_AT);
+            String cancelledReason = bundle.getString(CANCELED_REASON);
 
             double invoiceTotal = bundle.getDouble("invoiceTotal");
 
@@ -85,6 +90,14 @@ public class InvoiceDetailActivity extends AppCompatActivity {
             if(!deliveredAt.isEmpty()) {
                 binding.deliveredAtRL.setVisibility(View.VISIBLE);
                 binding.txtDeliveredAt.setText(deliveredAt);
+            }
+            if(!cancelledAt.isEmpty()) {
+                binding.cancelledAtRL.setVisibility(View.VISIBLE);
+                binding.txtCanceledAt.setText(cancelledAt);
+            }
+            if(cancelledReason != null) {
+                binding.cancelledReasonRL.setVisibility(View.VISIBLE);
+                binding.txtCanceledReason.setText(cancelledReason);
             }
 
            binding.btnCancelInvoice.setVisibility(invoiceStatusLabel.equals(

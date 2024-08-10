@@ -1,0 +1,83 @@
+package utils.Invoice;
+import static android.content.Context.MODE_PRIVATE;
+import static constants.keyName.STORE_ID;
+import static constants.keyName.USER_ID;
+import static constants.keyName.USER_INFO;
+import static utils.FormatHelper.formatDateTime;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.example.stores.R;
+import com.example.stores.databinding.FragmentWithOnlyRecyclerviewBinding;
+
+import java.util.ArrayList;
+
+import Adapters.Invoices.RequestInvoiceAdapter;
+import api.invoiceApi;
+import interfaces.GetCollectionCallback;
+import interfaces.InAdapter.UpdateCountListener;
+import models.Invoice;
+
+public class InvoiceUtils {
+    public static void transferInvoiceDetail(Invoice invoice, Context contextStart, Context contextTarget){
+        Intent intent = new Intent(contextStart, contextTarget.getClass());
+        Bundle bundle = new Bundle();
+
+        bundle.putString("invoiceID", invoice.getBaseID());
+        bundle.putString("detailedAddress", invoice.getDetailedAddress());
+        bundle.putString("deliveryAddress", invoice.getDeliveryAddress());
+        bundle.putString("invoiceStatusLabel", invoice.getStatus().getOrderLabel());
+        bundle.putString("createdAt", formatDateTime(invoice.getCreatedAt()));
+        bundle.putString("confirmedAt", formatDateTime(invoice.getConfirmedAt()));
+        bundle.putString("shippedAt", formatDateTime(invoice.getShippedAt()));
+        bundle.putString("deliveredAt", formatDateTime(invoice.getDeliveredAt()));
+        bundle.putString("cancelledAt", formatDateTime(invoice.getCancelledAt()));
+        bundle.putString("cancelledReason", invoice.getCancelledReason());
+        bundle.putDouble("invoiceTotal", invoice.getTotal());
+
+        intent.putExtras(bundle);
+        contextStart.startActivity(intent);
+    }
+
+    public static void initRequestInvoiceByStatus(Context context, FragmentWithOnlyRecyclerviewBinding binding, int orderStatusValue) {
+        invoiceApi invoiceApi = new invoiceApi();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        String userID = sharedPreferences.getString(USER_ID, null);
+        String storeID = sharedPreferences.getString(STORE_ID, null);
+
+        if(userID == null || storeID == null) return;
+
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.progressBar.getIndeterminateDrawable()
+                .setColorFilter(ContextCompat.getColor(context, R.color.primary_color),
+                        PorterDuff.Mode.MULTIPLY);
+
+        invoiceApi.getInvoiceByStoreIDApi(storeID, orderStatusValue,
+                new GetCollectionCallback<Invoice>() {
+                    @Override
+                    public void onGetListSuccess(ArrayList<Invoice> requestInvoiceList) {
+                        binding.progressBar.setVisibility(View.GONE);
+
+                        RequestInvoiceAdapter adapter = new RequestInvoiceAdapter(context,
+                                requestInvoiceList, (UpdateCountListener) context);
+                        binding.recyclerView.setAdapter(adapter);
+                        binding.recyclerView.setLayoutManager(new LinearLayoutManager(context,
+                                LinearLayoutManager.VERTICAL, false));
+                    }
+
+                    @Override
+                    public void onGetListFailure(String errorMessage) {
+                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                        binding.progressBar.setVisibility(View.GONE);
+                    }
+                });
+    }
+}

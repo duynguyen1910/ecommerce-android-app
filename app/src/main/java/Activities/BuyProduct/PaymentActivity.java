@@ -61,7 +61,6 @@ public class PaymentActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     String userID = null;
     String defaultAddressID = null;
-    String tag = "payment5";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,10 +151,6 @@ public class PaymentActivity extends AppCompatActivity {
         for (Variant variant : variantsList) {
             invoiceDetails.add(new InvoiceDetail(invoiceID, variant.getBaseID(), variant.getProductID(), variant.getProductName(), variant.getNumberInCart()));
         }
-        invoiceDetails.forEach(item -> {
-            Log.d(tag, "variantID: " + item.getVariantID() + "\nquantity: " + item.getQuantity() + "\nProductName: " + item.getProductName() + "\nProductID: " + item.getProductID());
-            Log.d(tag, "--------------------");
-        });
 
 
         invoiceApi.createDetailInvoiceApi(invoiceDetails, new StatusCallback() {

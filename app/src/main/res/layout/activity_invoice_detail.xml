@@ -390,6 +390,52 @@
                             android:textColor="@color/darkgray"
                             app:backgroundTint="@null" />
                     </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/cancelledAtRL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="8dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thời gian hủy đơn:"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/txtCanceledAt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerInParent="true"
+                            android:text="2024/07/03, 08:54"
+                            android:textColor="@color/darkgray"
+                            app:backgroundTint="@null" />
+                    </RelativeLayout>
+                    <LinearLayout
+                        android:id="@+id/cancelledReasonRL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingVertical="8dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Lý do hủy đơn:"
+                            android:layout_marginBottom="4dp"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/txtCanceledReason"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sản phẩm hư hại trong quá trình vận chuyển"
+                            android:textColor="@color/darkgray"
+                            app:backgroundTint="@null" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <Button

@@ -30,8 +30,9 @@ import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
 import models.Invoice;
 import models.InvoiceDetail;
-import utils.DialogCancelInvoiceUtils;
+import utils.Invoice.DialogCancelInvoiceUtils;
 import utils.FormatHelper;
+import utils.Invoice.InvoiceUtils;
 
 public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHolder> {
     private final Context context;
@@ -105,23 +106,11 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, InvoiceDetailActivity.class);
-                Bundle bundle = new Bundle();
-
-                bundle.putString("invoiceID", invoice.getBaseID());
-                bundle.putString("detailedAddress", invoice.getDetailedAddress());
-                bundle.putString("deliveryAddress", invoice.getDeliveryAddress());
-                bundle.putString("invoiceStatusLabel", invoice.getStatus().getOrderLabel());
-
-                bundle.putString("createdAt", formatDateTime(invoice.getCreatedAt()));
-                bundle.putString("confirmedAt", formatDateTime(invoice.getConfirmedAt()));
-                bundle.putString("shippedAt", formatDateTime(invoice.getShippedAt()));
-                bundle.putString("deliveredAt", formatDateTime(invoice.getDeliveredAt()));
-
-                bundle.putDouble("invoiceTotal", invoice.getTotal());
-
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                try {
+                    InvoiceUtils.transferInvoiceDetail(invoice, context, InvoiceDetailActivity.class.newInstance());
+                } catch (IllegalAccessException | InstantiationException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 

@@ -1,4 +1,4 @@
-package utils;
+package utils.Invoice;
 
 import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.CANCELED_AT;
@@ -57,6 +57,7 @@ import interfaces.UserCallback;
 import models.Invoice;
 import models.TypeValue;
 import models.User;
+import utils.FormatHelper;
 
 public class DialogCancelInvoiceUtils {
     public static void popUpCancelInvoiceByCustomerDialog(InvoiceAdapter adapter, Context context, Invoice invoice, int position) {

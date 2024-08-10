@@ -101,8 +101,6 @@ public class productApi implements Serializable {
         for (Map.Entry<String, Integer> entry : m_productSoldMap.entrySet()) {
             String productID = entry.getKey();
             int totalSold = entry.getValue();
-
-            Log.d("sold", "productID: " + productID + "\nsold: " + totalSold);
             DocumentReference productRef = db.collection(PRODUCT_COLLECTION).document(productID);
             batch.update(productRef, PRODUCT_SOLD, FieldValue.increment(totalSold));
         }
