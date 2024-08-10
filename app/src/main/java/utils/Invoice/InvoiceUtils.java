@@ -7,6 +7,7 @@ import static utils.FormatHelper.formatDateTime;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
@@ -20,8 +21,11 @@ import com.example.stores.databinding.FragmentWithOnlyRecyclerviewBinding;
 
 import java.util.ArrayList;
 
+import Adapters.Invoices.DeliveryAdapter;
+import Adapters.Invoices.InvoiceAdapter;
 import Adapters.Invoices.RequestInvoiceAdapter;
 import api.invoiceApi;
+import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
 import interfaces.InAdapter.UpdateCountListener;
 import models.Invoice;
@@ -48,7 +52,7 @@ public class InvoiceUtils {
     }
 
     public static void initRequestInvoiceByStatus(Context context, FragmentWithOnlyRecyclerviewBinding binding, int orderStatusValue) {
-        invoiceApi invoiceApi = new invoiceApi();
+        invoiceApi m_invoiceApi = new invoiceApi();
         SharedPreferences sharedPreferences = context.getSharedPreferences(USER_INFO, MODE_PRIVATE);
         String userID = sharedPreferences.getString(USER_ID, null);
         String storeID = sharedPreferences.getString(STORE_ID, null);
@@ -60,7 +64,7 @@ public class InvoiceUtils {
                 .setColorFilter(ContextCompat.getColor(context, R.color.primary_color),
                         PorterDuff.Mode.MULTIPLY);
 
-        invoiceApi.getInvoiceByStoreIDApi(storeID, orderStatusValue,
+        m_invoiceApi.getInvoiceByStoreIDApi(storeID, orderStatusValue,
                 new GetCollectionCallback<Invoice>() {
                     @Override
                     public void onGetListSuccess(ArrayList<Invoice> requestInvoiceList) {
@@ -79,5 +83,69 @@ public class InvoiceUtils {
                         binding.progressBar.setVisibility(View.GONE);
                     }
                 });
+    }
+
+    public static void initCustomerInvoiceByStatus(Context context, FragmentWithOnlyRecyclerviewBinding binding, int orderStatusValue) {
+        invoiceApi m_invoiceApi = new invoiceApi();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        String userID = sharedPreferences.getString(USER_ID, null);
+
+        if(userID == null) return;
+
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.progressBar.getIndeterminateDrawable()
+                .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
+
+        m_invoiceApi.getInvoicesByStatusApi(userID, orderStatusValue
+                ,new GetCollectionCallback<Invoice>() {
+                    @Override
+                    public void onGetListSuccess(ArrayList<Invoice> invoiceList) {
+                        binding.progressBar.setVisibility(View.GONE);
+
+                        InvoiceAdapter invoiceAdapter = new InvoiceAdapter(context, invoiceList);
+                        binding.recyclerView.setAdapter(invoiceAdapter);
+                        binding.recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+
+                    }
+
+                    @Override
+                    public void onGetListFailure(String errorMessage) {
+                        binding.progressBar.setVisibility(View.GONE);
+                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+    }
+    public static void initDeliveryInvoiceByStatus(Context context, FragmentWithOnlyRecyclerviewBinding binding, int orderStatusValue) {
+        invoiceApi m_invoiceApi = new invoiceApi();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        String userID = sharedPreferences.getString(USER_ID, null);
+
+        if (userID == null) return;
+
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.progressBar.getIndeterminateDrawable()
+                .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
+
+        m_invoiceApi.getDeliveryInvoicesByStatusApi(orderStatusValue,
+                new GetCollectionCallback<Invoice>() {
+                    @Override
+                    public void onGetListSuccess(ArrayList<Invoice> invoiceList) {
+                        binding.progressBar.setVisibility(View.GONE);
+                        DeliveryAdapter invoiceAdapter = new DeliveryAdapter(context, invoiceList, (UpdateCountListener) context);
+                        binding.recyclerView.setAdapter(invoiceAdapter);
+                        binding.recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+                    }
+
+                    @Override
+                    public void onGetListFailure(String errorMessage) {
+                        binding.progressBar.setVisibility(View.GONE);
+                        Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+
     }
 }

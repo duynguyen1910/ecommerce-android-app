@@ -26,6 +26,7 @@ import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
 import interfaces.InAdapter.UpdateCountListener;
 import models.Invoice;
+import utils.Invoice.InvoiceUtils;
 
 public class DeliveryAwaitPickUpFragment extends Fragment {
     FragmentWithOnlyRecyclerviewBinding binding;
@@ -46,33 +47,6 @@ public class DeliveryAwaitPickUpFragment extends Fragment {
     }
 
     private void setupUI() {
-        invoiceApi invoiceApi = new invoiceApi();
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);
-        String userID = sharedPreferences.getString(USER_ID, null);
-
-        if (userID == null) return;
-
-        binding.progressBar.setVisibility(View.VISIBLE);
-        binding.progressBar.getIndeterminateDrawable()
-                .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
-
-        invoiceApi.getDeliveryInvoicesByStatusApi(OrderStatus.PENDING_SHIPMENT.getOrderStatusValue(),
-                new GetCollectionCallback<Invoice>() {
-                    @Override
-                    public void onGetListSuccess(ArrayList<Invoice> invoiceList) {
-                        binding.progressBar.setVisibility(View.GONE);
-                        DeliveryAdapter invoiceAdapter = new DeliveryAdapter(requireActivity(), invoiceList, (UpdateCountListener) requireActivity());
-                        binding.recyclerView.setAdapter(invoiceAdapter);
-                        binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
-                    }
-
-                    @Override
-                    public void onGetListFailure(String errorMessage) {
-                        binding.progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-
+        InvoiceUtils.initDeliveryInvoiceByStatus(requireContext(), binding, OrderStatus.PENDING_SHIPMENT.getOrderStatusValue());
     }
 }
