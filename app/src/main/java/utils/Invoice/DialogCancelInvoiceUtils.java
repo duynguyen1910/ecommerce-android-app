@@ -25,6 +25,8 @@ import com.example.stores.R;
 import com.example.stores.databinding.DialogCancelInvoiceByCustomerBinding;
 import com.example.stores.databinding.DialogCancelInvoiceByDeliveryBinding;
 import com.example.stores.databinding.DialogCancelInvoiceByStoreBinding;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -32,13 +34,16 @@ import Adapters.Invoices.DeliveryAdapter;
 import Adapters.Invoices.InvoiceAdapter;
 import Adapters.Invoices.RequestInvoiceAdapter;
 import api.invoiceApi;
+import api.productApi;
 import enums.OrderStatus;
+import interfaces.StatusCallback;
 import interfaces.UpdateDocumentCallback;
 import models.Invoice;
+import models.InvoiceDetail;
 import utils.FormatHelper;
 
 public class DialogCancelInvoiceUtils {
-    public static void popUpCancelInvoiceByCustomerDialog(InvoiceAdapter adapter, Context context, Invoice invoice, int position) {
+    public static void popUpCancelInvoiceByCustomerDialog(InvoiceAdapter adapter, Context context, Invoice invoice, int position, ArrayList<InvoiceDetail> invoiceDetails) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         DialogCancelInvoiceByCustomerBinding dialogBinding = DialogCancelInvoiceByCustomerBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         builder.setView(dialogBinding.getRoot());
@@ -111,6 +116,21 @@ public class DialogCancelInvoiceUtils {
                     }
                 });
 
+
+                // Cập nhật lại tồn kho, (tăng tồn kho của sản phẩm lên) do đơn hủy trước khi đơn vị vận chuyển đến lấy hàng
+
+                productApi productApi = new productApi();
+                productApi.updateInStockWhenStoreOrCustomerCancelInvoice(invoiceDetails, new StatusCallback() {
+                    @Override
+                    public void onSuccess(String successMessage) {
+                        showToast(context, successMessage);
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        showToast(context, errorMessage);
+                    }
+                });
             }
         });
 
@@ -200,7 +220,7 @@ public class DialogCancelInvoiceUtils {
 
     }
 
-    public static void popUpCancelInvoiceByStoreDialog(RequestInvoiceAdapter adapter, Context context, Invoice invoice, int position) {
+    public static void popUpCancelInvoiceByStoreDialog(RequestInvoiceAdapter adapter, Context context, Invoice invoice, int position, ArrayList<InvoiceDetail> invoiceDetails) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         DialogCancelInvoiceByStoreBinding dialogBinding = DialogCancelInvoiceByStoreBinding.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
         builder.setView(dialogBinding.getRoot());
@@ -277,6 +297,21 @@ public class DialogCancelInvoiceUtils {
                         dialogBinding.progressBar.setVisibility(View.GONE);
                         showToast(context, errorMessage);
                         dialog.dismiss();
+                    }
+                });
+
+                // Cập nhật lại tồn kho, (tăng tồn kho của sản phẩm lên) do đơn hủy trước khi đơn vị vận chuyển đến lấy hàng
+
+                productApi productApi = new productApi();
+                productApi.updateInStockWhenStoreOrCustomerCancelInvoice(invoiceDetails, new StatusCallback() {
+                    @Override
+                    public void onSuccess(String successMessage) {
+                        showToast(context, successMessage);
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        showToast(context, errorMessage);
                     }
                 });
 

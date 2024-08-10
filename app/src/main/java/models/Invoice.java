@@ -27,7 +27,6 @@ public class Invoice extends BaseObject implements Serializable {
     private String cancelledReason;
     private String storeID;
     private ArrayList<InvoiceDetail> invoiceItems;
-    //    private CartItem cartItem;
     private invoiceApi invoiceApi;
 
     public Invoice() {

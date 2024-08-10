@@ -22,14 +22,6 @@ public class InvoiceDetail {
         this.quantity = quantity;
     }
 
-    public InvoiceDetail(String invoiceID, String variantID, String productID, String productName, int quantity) {
-        this.invoiceID = invoiceID;
-        this.variantID = variantID;
-        this.quantity = quantity;
-        this.productID = productID;
-        this.productName = productName;
-    }
-
     public InvoiceDetail(String invoiceID, String productID, String variantID, String productName, double newPrice, double oldPrice, int quantity) {
         this.invoiceID = invoiceID;
         this.productID = productID;

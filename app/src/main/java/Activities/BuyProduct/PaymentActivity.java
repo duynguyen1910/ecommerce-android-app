@@ -18,7 +18,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -160,9 +159,7 @@ public class PaymentActivity extends AppCompatActivity {
                             variant.getNewPrice(),
                             variant.getOldPrice(),
                             variant.getNumberInCart()));
-//            invoiceDetails.add(new InvoiceDetail(invoiceID, variant.getBaseID(), variant.getProductID(), variant.getProductName(), variant.getNumberInCart()));
         }
-
 
         invoiceApi.createDetailInvoiceApi(invoiceDetails, new StatusCallback() {
             @Override
@@ -172,7 +169,7 @@ public class PaymentActivity extends AppCompatActivity {
                 Toast.makeText(PaymentActivity.this, successMessage, Toast.LENGTH_SHORT).show();
                 // call API update tồn kho
                 productApi m_productApi = new productApi();
-                m_productApi.updateInventory(invoiceDetails, new StatusCallback() {
+                m_productApi.updateInventoryWhenBuying(invoiceDetails, new StatusCallback() {
                     @Override
                     public void onSuccess(String successMessage) {
                         showToast(PaymentActivity.this, successMessage);
@@ -230,7 +227,7 @@ public class PaymentActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
         userID = sharedPreferences.getString(USER_ID, null);
         defaultAddressID = sharedPreferences.getString(DEFAULT_ADDRESS_ID, null);
-        Log.d("defaultAddressID", "defaultAddressID: " + defaultAddressID);
+
 
         userApi userApi = new userApi();
         userApi.getUserInfoApi(userID, new UserCallback() {

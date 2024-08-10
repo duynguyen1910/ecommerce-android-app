@@ -26,44 +26,9 @@ public class Product extends BaseObject implements Serializable {
     private ArrayList<String> productImages;
     private int sold;
 
-    public Product(String productName, ArrayList<String> productImages, String description, double newPrice, double oldPrice,
-                   int inStock, String storeID, int numberInCart) {
-        this.productName = productName;
-        this.productImages = productImages;
-        this.description = description;
-        this.newPrice = newPrice;
-        this.oldPrice = oldPrice;
-        this.inStock = inStock;
-        this.storeID = storeID;
-        this.numberInCart = numberInCart;
-    }
-
-    public Product(String productName, String description, double newPrice, double oldPrice,
-                   int inStock, String categoryName, String storeID) {
-        this.productName = productName;
-        this.description = description;
-        this.newPrice = newPrice;
-        this.oldPrice = oldPrice;
-        this.inStock = inStock;
-        this.categoryName = categoryName;
-        this.storeID = storeID;
-    }
-
-    public Product(String productName, String description, ArrayList<String> productImages,
-                   double newPrice, double oldPrice, int inStock, int numberInCart, String storeID,
-                   boolean checkedStatus) {
-        this.productName = productName;
-        this.description = description;
-        this.newPrice = newPrice;
-        this.oldPrice = oldPrice;
-        this.inStock = inStock;
-        this.storeID = storeID;
-        this.numberInCart = numberInCart;
-        this.checkedStatus = checkedStatus;
-        this.productImages = productImages;
-    }
-
-    public Product(String productName, ArrayList<String> productImages, String description, double newPrice, double oldPrice, int inStock, int sold, String storeID, int numberInCart) {
+    public Product(String productName, ArrayList<String> productImages,
+                   String description, double newPrice, double oldPrice,
+                   int inStock, int sold, String storeID, int numberInCart) {
         this.productName = productName;
         this.productImages = productImages;
         this.description = description;

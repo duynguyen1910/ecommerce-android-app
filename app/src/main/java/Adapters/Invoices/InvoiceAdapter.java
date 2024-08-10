@@ -64,7 +64,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Invoice invoice = invoiceList.get(holder.getBindingAdapterPosition());
-
+        final ArrayList<InvoiceDetail>[] invoiceDetails = new ArrayList[]{new ArrayList<>()};
         holder.binding.progressBar.setVisibility(View.VISIBLE);
         holder.binding.progressBar.getIndeterminateDrawable()
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
@@ -82,6 +82,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         invoiceApi.getInvoiceDetailApi(invoice.getBaseID(), new GetCollectionCallback<InvoiceDetail>() {
             @Override
             public void onGetListSuccess(ArrayList<InvoiceDetail> productList) {
+                invoiceDetails[0] = new ArrayList<>(productList);
                 holder.binding.progressBar.setVisibility(View.GONE);
 
                 getStoreNameByID(invoice.getStoreID(), holder.binding.txtStoreName);
@@ -115,7 +116,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         });
 
         holder.binding.btnCancelInvoice.setOnClickListener(v -> {
-            DialogCancelInvoiceUtils.popUpCancelInvoiceByCustomerDialog(this, context, invoice, holder.getBindingAdapterPosition());
+            DialogCancelInvoiceUtils.popUpCancelInvoiceByCustomerDialog(this, context, invoice, holder.getBindingAdapterPosition(), invoiceDetails[0]);
         });
 
 
