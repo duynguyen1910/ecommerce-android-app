@@ -110,6 +110,7 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString(PASSWORD, user.getPassword());
         editor.putInt(USER_ROLE, user.getRole().getRoleValue());
         editor.putString(STORE_ID, user.getStoreID());
+        editor.putString(DEFAULT_ADDRESS_ID, user.getDefaultAddressID());
         editor.apply();
     }
 

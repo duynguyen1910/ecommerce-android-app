@@ -29,6 +29,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityPaymentBinding;
 
@@ -37,6 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
 import Activities.AddAddress.DeliveryAddressActivity;
 import api.addressApi;
 import Activities.MainActivity;
@@ -84,7 +86,7 @@ public class PaymentActivity extends AppCompatActivity {
 
         if (intent != null) {
             payment = (ArrayList<CartItem>) getIntent().getSerializableExtra(PAYMENT);
-            if (payment != null){
+            if (payment != null) {
                 PaymentAdapter paymentAdapter = new PaymentAdapter(PaymentActivity.this, payment);
                 binding.recyclerViewPayment.setAdapter(paymentAdapter);
                 binding.recyclerViewPayment.setLayoutManager(new LinearLayoutManager(PaymentActivity.this, LinearLayoutManager.VERTICAL, false));
@@ -99,14 +101,14 @@ public class PaymentActivity extends AppCompatActivity {
 
         binding.btnBooking.setOnClickListener(v -> {
 
-            if(defaultAddressID == null) {
+            if (defaultAddressID == null) {
                 Toast.makeText(this, ADDRESS_REQUIRE, Toast.LENGTH_SHORT).show();
                 return;
             }
-            for(CartItem item : payment) {
+            for (CartItem item : payment) {
                 Map<String, Object> newInvoice = new HashMap<>();
 
-                String  detailedAddress = binding.txtDetailedCustomer.getText().toString();
+                String detailedAddress = binding.txtDetailedCustomer.getText().toString();
                 String deliveryAddress = binding.txtCustomerAddress.getText().toString();
 
                 newInvoice.put("customerID", userID);
@@ -149,7 +151,16 @@ public class PaymentActivity extends AppCompatActivity {
     private void createInvoiceDetail(invoiceApi invoiceApi, String invoiceID, ArrayList<Variant> variantsList) {
         ArrayList<InvoiceDetail> invoiceDetails = new ArrayList<>();
         for (Variant variant : variantsList) {
-            invoiceDetails.add(new InvoiceDetail(invoiceID, variant.getBaseID(), variant.getProductID(), variant.getProductName(), variant.getNumberInCart()));
+            invoiceDetails.add(
+                    new InvoiceDetail(
+                            invoiceID,
+                            variant.getProductID(),
+                            variant.getBaseID(),
+                            variant.getProductName(),
+                            variant.getNewPrice(),
+                            variant.getOldPrice(),
+                            variant.getNumberInCart()));
+//            invoiceDetails.add(new InvoiceDetail(invoiceID, variant.getBaseID(), variant.getProductID(), variant.getProductName(), variant.getNumberInCart()));
         }
 
 
@@ -172,7 +183,6 @@ public class PaymentActivity extends AppCompatActivity {
                         showToast(PaymentActivity.this, errorMessage);
                     }
                 });
-
 
 
                 Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
@@ -220,12 +230,13 @@ public class PaymentActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
         userID = sharedPreferences.getString(USER_ID, null);
         defaultAddressID = sharedPreferences.getString(DEFAULT_ADDRESS_ID, null);
+        Log.d("defaultAddressID", "defaultAddressID: " + defaultAddressID);
 
         userApi userApi = new userApi();
         userApi.getUserInfoApi(userID, new UserCallback() {
             @Override
             public void getUserInfoSuccess(User user) {
-                if(user.getDefaultAddressID() == null) return;
+                if (user.getDefaultAddressID() == null) return;
 
                 addressApi addressApi = new addressApi();
                 addressApi.getAddressDetailApi(user.getDefaultAddressID(), new GetDocumentCallback() {

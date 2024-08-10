@@ -9,6 +9,8 @@ import static constants.keyName.CUSTOMER_ID;
 import static constants.keyName.INVOICE_ID;
 import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.PRODUCT_NAME;
+import static constants.keyName.PRODUCT_NEW_PRICE;
+import static constants.keyName.PRODUCT_OLD_PRICE;
 import static constants.keyName.QUANTITY;
 import static constants.keyName.STATUS;
 import static constants.keyName.STORE_ID;
@@ -88,12 +90,11 @@ public class invoiceApi {
             newDetail.put(INVOICE_ID, detail.getInvoiceID());
             newDetail.put(QUANTITY, detail.getQuantity());
             newDetail.put(PRODUCT_NAME, detail.getProductName());
+            newDetail.put(PRODUCT_NEW_PRICE, detail.getNewPrice());
+            newDetail.put(PRODUCT_OLD_PRICE, detail.getOldPrice());
+            newDetail.put(VARIANT_ID, detail.getVariantID());
+            newDetail.put(PRODUCT_ID, detail.getProductID());
 
-            if (detail.getVariantID() != null) {
-                newDetail.put(VARIANT_ID, detail.getVariantID());
-            } else {
-                newDetail.put(PRODUCT_ID, detail.getProductID());
-            }
             batch.set(detailRef, newDetail);
         }
 
@@ -176,6 +177,7 @@ public class invoiceApi {
 
         return new Timestamp[]{startDate, endDate};
     }
+
     public void getSpendingsInAMonthByCustomerID(String customerID, int month, GetAggregateCallback callback) {
         List<Integer> orderStatuses = new ArrayList<>();
         orderStatuses.add(2);
@@ -321,70 +323,54 @@ public class invoiceApi {
 
 
     public void getInvoiceDetailApi(String invoiceID, final GetCollectionCallback<InvoiceDetail> callback) {
-        final String[] storeID = {""};
+        // Tìm tất cả invoice Detail thỏa mãn ID hóa đơn muốn tìm
 
-        // Tìm trong bảng invoice để lấy storeID của cửa hàng chứa invoiceID này
-        db.collection(INVOICE_COLLECTION)
-                .document(invoiceID)
+        db.collection(INVOICE_DETAIL_COLLECTION)
+                .whereEqualTo(INVOICE_ID, invoiceID)
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Invoice invoice = documentSnapshot.toObject(Invoice.class);
-                        storeID[0] = invoice.getStoreID();
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            ArrayList<InvoiceDetail> invoiceDetails = new ArrayList<>();
+                            AtomicInteger remainingDetails = new AtomicInteger(task.getResult().size());
 
-                        // Tìm tất cả invoice Detail thỏa mãn hóa đơn muốn tìm
+                            // Task lấy invoice Detail chia thành 2 hướng
+                            // 1. Hướng lấy invoice detail đối với sản phẩm có variant
+                            // 2. Hướng lấy invoice detail đối với sản phẩm không có variant
 
-                        db.collection(INVOICE_DETAIL_COLLECTION)
-                                .whereEqualTo(INVOICE_ID, invoiceID)
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            ArrayList<InvoiceDetail> invoiceDetails = new ArrayList<>();
-                                            AtomicInteger remainingDetails = new AtomicInteger(task.getResult().size());
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                InvoiceDetail detail = document.toObject(InvoiceDetail.class);
+                                String variantID = detail.getVariantID();
 
-                                            // Task lấy invoice Detail chia thành 2 hướng
-                                            // 1. Hướng lấy invoice detail đối với sản phẩm có variant
-                                            // 2. Hướng lấy invoice detail đối với sản phẩm không có variant
-
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                InvoiceDetail detail = document.toObject(InvoiceDetail.class);
-                                                String variantID = detail.getVariantID();
-                                                String productName = detail.getProductName();
-
-
-                                                // Hướng sản phẩm CÓ variant
-                                                if (variantID != null) {
-                                                    fetchVariantDetails(storeID[0], variantID, detail, invoiceDetails, remainingDetails, callback);
-                                                }
-                                                // Hướng sản phẩm KHÔNG CÓ variant
-                                                else {
-                                                    String productID = detail.getProductID();
-                                                    if (productID != null) {
-                                                        fetchProductDetails(storeID[0], productID, detail, invoiceDetails, remainingDetails, callback);
-                                                    } else {
-                                                        remainingDetails.decrementAndGet();
-                                                    }
-                                                }
-                                            }
-
-                                            // Check if no pending requests and notify callback
-                                            if (remainingDetails.get() == 0) {
-                                                callback.onGetListSuccess(invoiceDetails);
-                                            }
-                                        } else {
-                                            callback.onGetListFailure("Failed to get invoice details: " + task.getException().getMessage());
-                                        }
+                                // Hướng sản phẩm CÓ variant
+                                if (variantID != null) {
+                                    fetchVariantDetails(variantID, detail, invoiceDetails, remainingDetails, callback);
+                                }
+                                // Hướng sản phẩm KHÔNG CÓ variant
+                                else {
+                                    String productID = detail.getProductID();
+                                    if (productID != null) {
+                                        fetchProductDetails(productID, detail, invoiceDetails, remainingDetails, callback);
+                                    } else {
+                                        remainingDetails.decrementAndGet();
                                     }
-                                });
+                                }
+                            }
+
+                            // Check if no pending requests and notify callback
+                            if (remainingDetails.get() == 0) {
+                                callback.onGetListSuccess(invoiceDetails);
+                            }
+                        } else {
+                            callback.onGetListFailure("Failed to get invoice details: " + task.getException().getMessage());
+                        }
                     }
                 });
     }
 
 
-    private void fetchVariantDetails(String storeID, String variantID, final InvoiceDetail detail,
+    private void fetchVariantDetails(String variantID, final InvoiceDetail detail,
                                      final ArrayList<InvoiceDetail> invoiceDetails, final AtomicInteger remainingDetails, final GetCollectionCallback<InvoiceDetail> callback) {
         db.collection(VARIANT_COLLECTION)
                 .document(variantID)
@@ -396,10 +382,7 @@ public class invoiceApi {
                         if (variant != null) {
                             detail.setProductImage(variant.getVariantImageUrl());
                             detail.setVariantName(variant.getVariantName());
-                            detail.setProductID(variant.getProductID());
-                            detail.setNewPrice(variant.getNewPrice());
-                            detail.setOldPrice(variant.getOldPrice());
-                            detail.setStoreID(storeID);
+
                             invoiceDetails.add(detail);
                             if (remainingDetails.decrementAndGet() == 0) {
                                 callback.onGetListSuccess(invoiceDetails);
@@ -410,7 +393,7 @@ public class invoiceApi {
     }
 
 
-    private void fetchProductDetails(String storeID, String productID, final InvoiceDetail detail,
+    private void fetchProductDetails(String productID, final InvoiceDetail detail,
                                      final ArrayList<InvoiceDetail> invoiceDetails, final AtomicInteger remainingDetails, final GetCollectionCallback<InvoiceDetail> callback) {
         db.collection(PRODUCT_COLLECTION)
                 .document(productID)
@@ -420,11 +403,8 @@ public class invoiceApi {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Product product = documentSnapshot.toObject(Product.class);
                         if (product != null) {
-                            detail.setProductName(product.getProductName());
                             detail.setProductImage(product.getProductImages().get(0));
-                            detail.setNewPrice(product.getNewPrice());
-                            detail.setOldPrice(product.getOldPrice());
-                            detail.setStoreID(storeID);
+
                             invoiceDetails.add(detail);
                         }
                         if (remainingDetails.decrementAndGet() == 0) {

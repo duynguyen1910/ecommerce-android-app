@@ -123,10 +123,10 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
 
     }
 
-    private void getStoreNameByID(String invoiceID, TextView txtStoreName) {
+    private void getStoreNameByID(String storeID, TextView txtStoreName) {
 
         storeApi storeApi = new storeApi();
-        storeApi.getStoreDetailApi(invoiceID, new GetDocumentCallback() {
+        storeApi.getStoreDetailApi(storeID, new GetDocumentCallback() {
             @Override
             public void onGetDataSuccess(Map<String, Object> data) {
                 txtStoreName.setText((CharSequence) data.get(STORE_NAME));

@@ -1,8 +1,5 @@
 package models;
 
-
-import java.util.ArrayList;
-
 public class InvoiceDetail {
     private String invoiceID;
     private String variantID;
@@ -31,6 +28,16 @@ public class InvoiceDetail {
         this.quantity = quantity;
         this.productID = productID;
         this.productName = productName;
+    }
+
+    public InvoiceDetail(String invoiceID, String productID, String variantID, String productName, double newPrice, double oldPrice, int quantity) {
+        this.invoiceID = invoiceID;
+        this.productID = productID;
+        this.variantID = variantID;
+        this.productName = productName;
+        this.newPrice = newPrice;
+        this.oldPrice = oldPrice;
+        this.quantity = quantity;
     }
 
     public String getProductID() {

@@ -1,5 +1,6 @@
 package utils.Invoice;
 import static android.content.Context.MODE_PRIVATE;
+import static constants.keyName.INVOICE_ID;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
@@ -25,7 +26,6 @@ import Adapters.Invoices.DeliveryAdapter;
 import Adapters.Invoices.InvoiceAdapter;
 import Adapters.Invoices.RequestInvoiceAdapter;
 import api.invoiceApi;
-import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
 import interfaces.InAdapter.UpdateCountListener;
 import models.Invoice;
@@ -46,6 +46,7 @@ public class InvoiceUtils {
         bundle.putString("cancelledAt", formatDateTime(invoice.getCancelledAt()));
         bundle.putString("cancelledReason", invoice.getCancelledReason());
         bundle.putDouble("invoiceTotal", invoice.getTotal());
+        bundle.putString(STORE_ID, invoice.getStoreID());
 
         intent.putExtras(bundle);
         contextStart.startActivity(intent);

@@ -2,6 +2,7 @@ package Activities.Invoices;
 
 import static constants.keyName.CANCELED_AT;
 import static constants.keyName.CANCELED_REASON;
+import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 
 import android.content.Intent;
@@ -60,6 +61,7 @@ public class InvoiceDetailActivity extends AppCompatActivity {
             String deliveredAt = bundle.getString("deliveredAt");
             String cancelledAt = bundle.getString(CANCELED_AT);
             String cancelledReason = bundle.getString(CANCELED_REASON);
+            String storeID = bundle.getString(STORE_ID);
 
             double invoiceTotal = bundle.getDouble("invoiceTotal");
 
@@ -110,7 +112,7 @@ public class InvoiceDetailActivity extends AppCompatActivity {
                 public void onGetListSuccess(ArrayList<InvoiceDetail> productList) {
                     binding.progressBar.setVisibility(View.GONE);
 
-                    getStoreNameByID(productList);
+                    getStoreNameByID(storeID);
                     InvoiceDetailAdapter adapter =
                             new InvoiceDetailAdapter(InvoiceDetailActivity.this,
                                     productList);
@@ -130,10 +132,10 @@ public class InvoiceDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void getStoreNameByID(ArrayList<InvoiceDetail> productList) {
+    private void getStoreNameByID(String storeID) {
         storeApi storeApi = new storeApi();
 
-        storeApi.getStoreDetailApi(productList.get(0).getStoreID(), new GetDocumentCallback() {
+        storeApi.getStoreDetailApi(storeID, new GetDocumentCallback() {
             @Override
             public void onGetDataSuccess(Map<String, Object> data) {
                 binding.txtStoreName.setText(" " + (CharSequence) data.get(STORE_NAME));

@@ -1,17 +1,13 @@
 package utils.Invoice;
-
 import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.CANCELED_AT;
 import static constants.keyName.CANCELED_BY;
 import static constants.keyName.CANCELED_REASON;
 import static constants.keyName.STATUS;
-import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.CANCEL_ORDER_SUCCESSFULLY;
 import static utils.Cart.CartUtils.showToast;
-
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -21,42 +17,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RadioGroup;
-
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-
 import com.example.stores.R;
 import com.example.stores.databinding.DialogCancelInvoiceByCustomerBinding;
 import com.example.stores.databinding.DialogCancelInvoiceByDeliveryBinding;
 import com.example.stores.databinding.DialogCancelInvoiceByStoreBinding;
-import com.example.stores.databinding.DialogCancelledInvoiceDetailBinding;
-import com.example.stores.databinding.DialogFilterBinding;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import Activities.BuyProduct.SearchActivity;
 import Adapters.Invoices.DeliveryAdapter;
 import Adapters.Invoices.InvoiceAdapter;
 import Adapters.Invoices.RequestInvoiceAdapter;
-import Adapters.SettingVariant.TypeValueAdapterForFilter;
 import api.invoiceApi;
-import api.userApi;
 import enums.OrderStatus;
-import enums.UserRole;
-import interfaces.InAdapter.FilterListener;
 import interfaces.UpdateDocumentCallback;
-import interfaces.UserCallback;
 import models.Invoice;
-import models.TypeValue;
-import models.User;
 import utils.FormatHelper;
 
 public class DialogCancelInvoiceUtils {
