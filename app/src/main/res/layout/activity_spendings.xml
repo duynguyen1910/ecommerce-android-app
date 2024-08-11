@@ -40,9 +40,9 @@
         android:layout_marginBottom="16dp"
         android:background="@color/white"
         android:clipChildren="false"
-        android:paddingVertical="16dp"
         android:clipToPadding="false"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingVertical="16dp">
 
         <com.github.mikephil.charting.charts.BarChart
             android:id="@+id/spendingsChart"
@@ -59,6 +59,34 @@
             android:indeterminateTintMode="src_atop"
             android:visibility="gone" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/txtCurrentMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/txtCurrentMonthSpending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_color"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtCurrentMonthCountInvoice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary_color"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 
 </LinearLayout>

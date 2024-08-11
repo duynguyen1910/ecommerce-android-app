@@ -9,8 +9,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -18,28 +16,25 @@ import androidx.core.content.ContextCompat;
 import com.example.stores.R;
 import com.example.stores.databinding.ActivitySpendingsBinding;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import api.invoiceApi;
+import interfaces.GetAggregateCallback;
 import interfaces.GetCollectionCallback;
+import interfaces.GetManyAggregateCallback;
 import utils.Chart.CustomValueMoneyFormatter;
-import utils.TimeUtils;
+import utils.Chart.MonthNameFormatter;
+import utils.Chart.TimeUtils;
+
 
 public class SpendingsActivity extends AppCompatActivity {
 
@@ -74,13 +69,16 @@ public class SpendingsActivity extends AppCompatActivity {
     private void getSpendingInHaftYear() {
         binding.progressBar.setVisibility(View.VISIBLE);
         invoiceApi m_invoiceApi = new invoiceApi();
-        int m_currentMonth = getCurrentMonth();
+        int m_currentMonth = TimeUtils.getCurrentMonthValue();
+        int m_currentYear = TimeUtils.getCurrentYearValue();
 
-        m_invoiceApi.getSpendingsInHaftYearByCustomerID(customerID, m_currentMonth, new GetCollectionCallback<Double>() {
+        binding.txtCurrentMonth.setText(TimeUtils.setMonthText(m_currentYear, m_currentMonth));
+
+        m_invoiceApi.getSpendingsInHaftYearByCustomerID(customerID, m_currentYear, m_currentMonth, new GetCollectionCallback<Double>() {
             @Override
-            public void onGetListSuccess(ArrayList<Double> listRevenues) {
+            public void onGetListSuccess(ArrayList<Double> listSpendings) {
                 binding.progressBar.setVisibility(View.GONE);
-                drawSpendingInHaftYear(listRevenues, m_currentMonth);
+                drawSpendingInHaftYear(listSpendings, m_currentMonth);
             }
 
             @Override
@@ -91,12 +89,22 @@ public class SpendingsActivity extends AppCompatActivity {
             }
         });
 
-    }
+        m_invoiceApi.getCountOfInvoiceInAMonth(customerID, m_currentYear, m_currentMonth, new GetManyAggregateCallback() {
+            @Override
+            public void onSuccess(double... aggregateResults) {
+                float currentMonthSpending = (float) aggregateResults[0];
+                int countMonthInvoice = (int) aggregateResults[1];
 
-    private int getCurrentMonth() {
-        int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
-        Log.d("currentMonth", "currentMonth: " + month);
-        return month;
+                binding.txtCurrentMonthSpending.setText(new CustomValueMoneyFormatter().getFormattedValue(currentMonthSpending));
+                binding.txtCurrentMonthCountInvoice.setText(countMonthInvoice + " đơn");
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Log.d("getCountOfInvoiceInAMonth", errorMessage);
+            }
+        });
+
     }
 
 
@@ -107,7 +115,7 @@ public class SpendingsActivity extends AppCompatActivity {
         int colorCurrentMonth = ContextCompat.getColor(SpendingsActivity.this, R.color.primary_color);
         int colorOtherMonths = ContextCompat.getColor(SpendingsActivity.this, R.color.light_light_primary);
 
-        if (currentMonth < 7) {
+        if (currentMonth <= 6) {
             for (int i = 0; i < listSpendings.size(); i++) {
                 float monthLabel = i + 1;
                 float spending = listSpendings.get(i).floatValue();
@@ -134,7 +142,7 @@ public class SpendingsActivity extends AppCompatActivity {
         barChart.getDescription().setEnabled(false);
 
         BarDataSet dataSet = new BarDataSet(spendingEntries, "Chi tiêu");
-        dataSet.setColors(colors); // Set colors for each bar
+        dataSet.setColors(colors);
         dataSet.setValueTextColor(ContextCompat.getColor(SpendingsActivity.this, R.color.black));
         dataSet.setValueTextSize(13f);
         dataSet.setValueFormatter(new CustomValueMoneyFormatter());
@@ -142,24 +150,19 @@ public class SpendingsActivity extends AppCompatActivity {
         barChart.getLegend().setEnabled(false);
         BarData barData = new BarData(dataSet);
         barChart.setData(barData);
+        barData.setBarWidth(0.5f);
         barChart.animateY(1000);
-        barChart.invalidate(); // Refresh the chart
+        barChart.invalidate();
 
-        // Cấu hình XAxis
+
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
         xAxis.setTextSize(13f);
         xAxis.setLabelCount(12);
-        xAxis.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                int month = Math.round(value);
-                return TimeUtils.getMonth(month);
-            }
-        });
+        xAxis.setValueFormatter(new MonthNameFormatter());
 
-        // Cấu hình trục Y
+
         YAxis yAxisLeft = barChart.getAxisLeft();
         yAxisLeft.setDrawLabels(false);
         yAxisLeft.setDrawGridLinesBehindData(false);
@@ -168,8 +171,8 @@ public class SpendingsActivity extends AppCompatActivity {
         yAxisLeft.setAxisMinimum(0f);
         yAxisLeft.setTextSize(13f);
 
-        barChart.getAxisRight().setEnabled(false); // Ẩn trục Y phải
-        barChart.setBackgroundColor(Color.WHITE); // Đặt màu nền của biểu đồ thành trắng
+        barChart.getAxisRight().setEnabled(false);
+        barChart.setBackgroundColor(Color.WHITE);
     }
 
     private void setupEvents() {

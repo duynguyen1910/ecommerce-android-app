@@ -3,7 +3,6 @@ import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 import static utils.Cart.CartUtils.showToast;
-import static utils.TimeUtils.calendarMonths;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -35,15 +34,13 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import api.invoiceApi;
 import interfaces.GetAggregateCallback;
 import interfaces.GetCollectionCallback;
-import utils.Chart.CustomValueMoney2Formatter;
 import utils.Chart.CustomValueMoneyFormatter;
 import utils.FormatHelper;
-import utils.TimeUtils;
+import utils.Chart.TimeUtils;
 
 public class RevenueFragment extends Fragment {
     FragmentRevenueBinding binding;
@@ -87,7 +84,7 @@ public class RevenueFragment extends Fragment {
     private void getRevenueForAllMonths(){
         binding.progressBarLineChart.setVisibility(View.VISIBLE);
         invoiceApi mInvoiceApi = new invoiceApi();
-        mInvoiceApi.getRevenueForAllMonthsByStoreID(g_sStoreID, new GetCollectionCallback<Double>() {
+        mInvoiceApi.getRevenueForAllMonthsByStoreID(g_sStoreID, 2024, new GetCollectionCallback<Double>() {
             @Override
             public void onGetListSuccess(ArrayList<Double> listRevenues) {
                 binding.progressBarLineChart.setVisibility(View.GONE);
@@ -178,7 +175,7 @@ public class RevenueFragment extends Fragment {
     private void getRevenueInMonth(int month) {
         binding.progressBar.setVisibility(View.VISIBLE);
         invoiceApi invoiceApi = new invoiceApi();
-        invoiceApi.getRevenueInAMonthByStoreID(g_sStoreID, month, new GetAggregateCallback() {
+        invoiceApi.getRevenueInAMonthByStoreID(g_sStoreID, 2024, month, new GetAggregateCallback() {
             @Override
             public void onSuccess(double revenue) {
                 binding.progressBar.setVisibility(View.GONE);

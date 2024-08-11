@@ -51,6 +51,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import interfaces.CreateDocumentCallback;
 import interfaces.GetAggregateCallback;
 import interfaces.GetCollectionCallback;
+import interfaces.GetManyAggregateCallback;
 import interfaces.StatusCallback;
 import interfaces.UpdateDocumentCallback;
 import models.Invoice;
@@ -168,30 +169,30 @@ public class invoiceApi {
         return calendarMonths[month - 1];
     }
 
-    public Timestamp[] getDayRange(int month) {
+    public Timestamp[] getDayRange(int year, int month) {
         Calendar startCalendar = Calendar.getInstance();
-        startCalendar.set(2024, getMonthInCalendar(month), 1, 0, 0, 0); // Set to 00:00:00 of the 1st day
+        startCalendar.set(year, getMonthInCalendar(month), 1, 0, 0, 0); // Set to 00:00:00 of the 1st day
         Timestamp startDate = new Timestamp(startCalendar.getTime());
 
         Calendar endCalendar = Calendar.getInstance();
-        endCalendar.set(2024, getMonthInCalendar(month), endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59); // Set to 23:59:59 of the last day
+        endCalendar.set(year, getMonthInCalendar(month), endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59); // Set to 23:59:59 of the last day
         Timestamp endDate = new Timestamp(endCalendar.getTime());
 
         return new Timestamp[]{startDate, endDate};
     }
 
-    public void getSpendingsInHaftYearByCustomerID(String customerID, int currentMonth, GetCollectionCallback<Double> callback){
+    public void getSpendingsInHaftYearByCustomerID(String customerID, int year, int currentMonth, GetCollectionCallback<Double> callback) {
         if (1 <= currentMonth && currentMonth <= 12) {
             List<Task<QuerySnapshot>> tasks = new ArrayList<>();
-            if (currentMonth < 7) {
+            if (currentMonth <= 6) {
                 for (int month = 1; month <= currentMonth; month++) {
                     // Tạo các task cho từng tháng
-                    tasks.add(getSpendingInAMonthTask(customerID, month));
+                    tasks.add(getSpendingInAMonthTask(customerID, year, month));
                 }
-            }else {
+            } else {
                 for (int month = currentMonth - 5; month <= currentMonth; month++) {
                     // Tạo các task cho từng tháng
-                    tasks.add(getSpendingInAMonthTask(customerID, month));
+                    tasks.add(getSpendingInAMonthTask(customerID, year, month));
                 }
             }
 
@@ -222,17 +223,48 @@ public class invoiceApi {
         }
     }
 
-    private Task<QuerySnapshot> getSpendingInAMonthTask(String customerID, int month) {
+    public void getCountOfInvoiceInAMonth(String customerID, int year, int month, GetManyAggregateCallback callback) {
         List<Integer> orderStatuses = Arrays.asList(2, 3, 4);
+        Timestamp[] dayRange = getDayRange(year, month);
+        db.collection(INVOICE_COLLECTION)
+                .whereEqualTo(CUSTOMER_ID, customerID)
+                .whereIn(STATUS, orderStatuses)
+                .whereGreaterThanOrEqualTo(CREATE_AT, dayRange[0])
+                .whereLessThanOrEqualTo(CREATE_AT, dayRange[1])
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot tasks) {
+                        double spending = 0;
+                        double countMonthInvoice = tasks.size();
+                        for (DocumentSnapshot document : tasks.getDocuments()) {
+                            Invoice invoice = document.toObject(Invoice.class);
+                            double total = invoice.getTotal();
+                            spending += total;
+                        }
+                        callback.onSuccess(spending, countMonthInvoice);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onFailure("getCountOfInvoiceInAMonth: " + e.getMessage());
+                    }
+                });
+    }
+
+    private Task<QuerySnapshot> getSpendingInAMonthTask(String customerID, int year, int month) {
+        List<Integer> orderStatuses = Arrays.asList(2, 3, 4);
+        Timestamp[] dayRange = getDayRange(year, month);
         return db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(CUSTOMER_ID, customerID)
                 .whereIn(STATUS, orderStatuses)
-                .whereGreaterThanOrEqualTo(CREATE_AT, getDayRange(month)[0])
-                .whereLessThanOrEqualTo(CREATE_AT, getDayRange(month)[1])
+                .whereGreaterThanOrEqualTo(CREATE_AT, dayRange[0])
+                .whereLessThanOrEqualTo(CREATE_AT, dayRange[1])
                 .get();
     }
 
-    public void getSpendingsInAMonthByCustomerID(String customerID, int month, GetAggregateCallback callback) {
+    public void getSpendingsInAMonthByCustomerID(String customerID, int year, int month, GetAggregateCallback callback) {
         List<Integer> orderStatuses = new ArrayList<>();
         orderStatuses.add(2);
         orderStatuses.add(3);
@@ -240,8 +272,8 @@ public class invoiceApi {
         db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(CUSTOMER_ID, customerID)
                 .whereIn(STATUS, orderStatuses)
-                .whereGreaterThanOrEqualTo(CREATE_AT, getDayRange(month)[0])
-                .whereLessThanOrEqualTo(CREATE_AT, getDayRange(month)[1])
+                .whereGreaterThanOrEqualTo(CREATE_AT, getDayRange(month, year)[0])
+                .whereLessThanOrEqualTo(CREATE_AT, getDayRange(month, year)[1])
                 .get()
                 .addOnSuccessListener(task -> {
                     double spendings = 0;
@@ -257,11 +289,11 @@ public class invoiceApi {
 
     }
 
-    public void getRevenueForAllMonthsByStoreID(String storeID, GetCollectionCallback<Double> callback) {
+    public void getRevenueForAllMonthsByStoreID(String storeID, int year, GetCollectionCallback<Double> callback) {
         List<Task<QuerySnapshot>> tasks = new ArrayList<>();
         for (int month = 1; month <= 12; month++) {
             // Tạo các task cho từng tháng
-            tasks.add(getRevenueInAMonthTask(storeID, month));
+            tasks.add(getRevenueInAMonthTask(storeID, month, year));
         }
 
         // Sử dụng Tasks.whenAll để thực hiện tất cả các task và nhận kết quả
@@ -290,17 +322,17 @@ public class invoiceApi {
     }
 
 
-    private Task<QuerySnapshot> getRevenueInAMonthTask(String storeID, int month) {
+    private Task<QuerySnapshot> getRevenueInAMonthTask(String storeID, int year, int month) {
         List<Integer> orderStatuses = Arrays.asList(2, 3, 4);
         return db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(STORE_ID, storeID)
                 .whereIn(STATUS, orderStatuses)
-                .whereGreaterThanOrEqualTo(CREATE_AT, getDayRange(month)[0])
-                .whereLessThanOrEqualTo(CREATE_AT, getDayRange(month)[1])
+                .whereGreaterThanOrEqualTo(CREATE_AT, getDayRange(month, year)[0])
+                .whereLessThanOrEqualTo(CREATE_AT, getDayRange(month, year)[1])
                 .get();
     }
 
-    public void getRevenueInAMonthByStoreID(String storeID, int month, GetAggregateCallback callback) {
+    public void getRevenueInAMonthByStoreID(String storeID, int year, int month, GetAggregateCallback callback) {
         List<Integer> orderStatuses = new ArrayList<>();
         orderStatuses.add(2);
         orderStatuses.add(3);
@@ -308,8 +340,8 @@ public class invoiceApi {
         db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(STORE_ID, storeID)
                 .whereIn(STATUS, orderStatuses)
-                .whereGreaterThanOrEqualTo(CREATE_AT, getDayRange(month)[0])
-                .whereLessThanOrEqualTo(CREATE_AT, getDayRange(month)[1])
+                .whereGreaterThanOrEqualTo(CREATE_AT, getDayRange(month, year)[0])
+                .whereLessThanOrEqualTo(CREATE_AT, getDayRange(month, year)[1])
                 .get()
                 .addOnSuccessListener(task -> {
                     double spendings = 0;

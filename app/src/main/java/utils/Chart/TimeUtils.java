@@ -1,4 +1,6 @@
-package utils;
+package utils.Chart;
+
+import java.util.Calendar;
 
 public class TimeUtils {
     public static String[] calendarMonths = {
@@ -12,6 +14,18 @@ public class TimeUtils {
         } else {
             return "";
         }
+    }
+
+
+    public static int getCurrentMonthValue() {
+        return Calendar.getInstance().get(Calendar.MONTH) + 1;
+    }
+    public static int getCurrentYearValue() {
+        return Calendar.getInstance().get(Calendar.YEAR);
+    }
+
+    public static String setMonthText( int year, int month) {
+        return "Tháng " + month + " / " + year;
     }
 
 }
