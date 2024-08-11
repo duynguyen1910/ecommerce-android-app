@@ -10,8 +10,8 @@ public class CustomValueMoneyFormatter extends ValueFormatter {
             return ""; // Không hiển thị giá trị khi nó bằng 0
         }
         if (value < 1000000) {
-            return String.format("%.0f k", value / 1000);
+            return String.format("%.0fk", value / 1000);
         }
-        return String.format("%.1f Tr", value / 1000000);
+        return String.format("%.1fTr", value / 1000000);
     }
 }

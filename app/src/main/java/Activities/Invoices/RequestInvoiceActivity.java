@@ -29,7 +29,7 @@ import Fragments.RequestedInvoices.ConfirmedFragment;
 import Fragments.RequestedInvoices.DeliveredRequestFragment;
 import api.invoiceApi;
 import enums.OrderStatus;
-import interfaces.GetAggregateCallback;
+import interfaces.GetAggregate.GetAggregateCallback;
 import interfaces.InAdapter.UpdateCountListener;
 import utils.DecorateUtils;
 

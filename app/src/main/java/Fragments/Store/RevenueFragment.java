@@ -3,42 +3,23 @@ import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 import static utils.Cart.CartUtils.showToast;
-
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
-import com.example.stores.R;
 import com.example.stores.databinding.FragmentRevenueBinding;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LegendEntry;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
-
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicReference;
 import api.invoiceApi;
-import interfaces.GetAggregateCallback;
+import interfaces.GetAggregate.GetManyAggregateCallback;
 import interfaces.GetCollectionCallback;
 import utils.Chart.CustomValueMoneyFormatter;
+import utils.Chart.DrawChartUtils;
 import utils.FormatHelper;
 import utils.Chart.TimeUtils;
 
@@ -52,7 +33,6 @@ public class RevenueFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentRevenueBinding.inflate(getLayoutInflater());
         getStoreID();
-        setupEvents();
         return binding.getRoot();
     }
 
@@ -61,224 +41,58 @@ public class RevenueFragment extends Fragment {
     public void onResume() {
         super.onResume();
         getRevenueForAllMonths();
-        getTotalRevenueInYear();
-        getRevenueInMonth(8);
-    }
-    private void getTotalRevenueInYear() {
-        invoiceApi invoiceApi = new invoiceApi();
-        invoiceApi.getRevenueByStoreID(g_sStoreID, new GetAggregateCallback() {
-            @Override
-            public void onSuccess(double revenue) {
-                binding.txtRevenueInYear.setText(FormatHelper.formatVND(revenue));
-                setupRevenueInMonthChart(revenue);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                showToast(requireActivity(), errorMessage);
-            }
-        });
-
     }
 
     private void getRevenueForAllMonths(){
-        binding.progressBarLineChart.setVisibility(View.VISIBLE);
-        invoiceApi mInvoiceApi = new invoiceApi();
-        mInvoiceApi.getRevenueForAllMonthsByStoreID(g_sStoreID, 2024, new GetCollectionCallback<Double>() {
+        binding.progressBar.setVisibility(View.VISIBLE);
+        invoiceApi m_invoiceApi = new invoiceApi();
+        int m_currentMonth = TimeUtils.getCurrentMonthValue();
+        int m_currentYear = TimeUtils.getCurrentYearValue();
+
+        m_invoiceApi.getRevenueForAllMonthsByStoreID(g_sStoreID, m_currentYear, new GetCollectionCallback<Double>() {
             @Override
             public void onGetListSuccess(ArrayList<Double> listRevenues) {
-                binding.progressBarLineChart.setVisibility(View.GONE);
-                drawRevenuesInYear(listRevenues);
+                AtomicReference<Double> yearRevenue = new AtomicReference<>((double) 0);
+                listRevenues.forEach(item -> {
+                    yearRevenue.updateAndGet(v -> v + item);
+                });
+                binding.txtCurrentYear.setText(String.valueOf(m_currentYear));
+                binding.txtRevenueInYear.setText(FormatHelper.formatVND(yearRevenue.get()));
+                binding.progressBar.setVisibility(View.GONE);
+                DrawChartUtils.drawRevenuesBarChart(requireActivity(), listRevenues,m_currentMonth, binding.barChart);
+                DrawChartUtils.drawRevenuesLineChart(requireActivity(), listRevenues, binding.lineChart);
             }
 
             @Override
             public void onGetListFailure(String errorMessage) {
-                binding.progressBarLineChart.setVisibility(View.GONE);
+                binding.progressBar.setVisibility(View.GONE);
                 showToast(requireActivity(), errorMessage);
 
             }
         });
-    }
 
-    private void drawRevenuesInYear(ArrayList<Double> listRevenues) {
-        LineChart lineChart = binding.lineChart;
-
-        // Dữ liệu mẫu cho doanh thu của 12 tháng
-        ArrayList<Entry> revenueEntries = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
-            float revenue = listRevenues.get(i).floatValue();
-            revenueEntries.add(new Entry(i + 1, revenue));
-        }
-
-        lineChart.getDescription().setEnabled(false);
-        LineDataSet dataSet = new LineDataSet(revenueEntries, "Doanh thu");
-        dataSet.setColor(ContextCompat.getColor(requireActivity(), R.color.secondary_color));
-        dataSet.setValueTextColor(ContextCompat.getColor(requireActivity(), R.color.black));
-        dataSet.setValueTextSize(12f);
-        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-       dataSet.setValueFormatter(new CustomValueMoneyFormatter());
-
-        dataSet.setDrawFilled(true);
-        dataSet.setFillColor(ContextCompat.getColor(requireActivity(), R.color.secondary_color));
-        dataSet.setFillAlpha(100);
-
-        lineChart.getLegend().setEnabled(false);
-        LineData lineData = new LineData(dataSet);
-        lineChart.setData(lineData);
-        lineChart.invalidate(); // Refresh the chart
-
-        // Cấu hình XAxis
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setGranularity(1f);
-        xAxis.setTextSize(12f);
-        xAxis.setLabelCount(12);
-        xAxis.setValueFormatter(new ValueFormatter() {
+        m_invoiceApi.getStoreMonthStatistics(g_sStoreID, m_currentYear, m_currentMonth, new GetManyAggregateCallback() {
             @Override
-            public String getFormattedValue(float value) {
-                int month = Math.round(value); // Convert the float to int
-                switch (month) {
-                    case 1: return "1";
-                    case 2: return "2";
-                    case 3: return "3";
-                    case 4: return "4";
-                    case 5: return "5";
-                    case 6: return "6";
-                    case 7: return "7";
-                    case 8: return "8";
-                    case 9: return "9";
-                    case 10: return "10";
-                    case 11: return "11";
-                    case 12: return "12";
-                    default: return "";
-                }
-            }
-        });
+            public void onSuccess(double... aggregateResults) {
+                double currentMonthRevenue = aggregateResults[0];
+                int countMonthInvoice = (int) aggregateResults[1];
 
-        // Cấu hình trục Y
-        YAxis yAxisLeft = lineChart.getAxisLeft();
-        yAxisLeft.setDrawLabels(false); // Hiển thị nhãn trục Y
-        yAxisLeft.setDrawGridLines(false); // Ẩn đường lưới trục Y
-        yAxisLeft.setDrawAxisLine(true); // Hiển thị đường trục Y
-        yAxisLeft.setAxisMinimum(0f); // Đặt điểm thấp nhất của trục Y là 0
-        yAxisLeft.setTextSize(12f);
-        yAxisLeft.setLabelCount(6, true); // Số lượng nhãn trục Y
-
-        lineChart.getAxisRight().setEnabled(false); // Ẩn trục Y phải
-        lineChart.setBackgroundColor(Color.WHITE); // Đặt màu nền của biểu đồ thành trắng
-    }
-
-
-
-
-
-    private void getRevenueInMonth(int month) {
-        binding.progressBar.setVisibility(View.VISIBLE);
-        invoiceApi invoiceApi = new invoiceApi();
-        invoiceApi.getRevenueInAMonthByStoreID(g_sStoreID, 2024, month, new GetAggregateCallback() {
-            @Override
-            public void onSuccess(double revenue) {
-                binding.progressBar.setVisibility(View.GONE);
-                binding.txtRevenueInMonth.setText(FormatHelper.formatVND(revenue));
-                setupRevenueInMonthChart(revenue);
+                binding.txtCurrentMonth.setText(TimeUtils.setMonthText(m_currentYear, m_currentMonth));
+                binding.txtCurrentMonthRevenue.setText(FormatHelper.formatVND(currentMonthRevenue));
+                binding.txtCurrentMonthCountInvoice.setText(countMonthInvoice + " đơn");
             }
 
             @Override
             public void onFailure(String errorMessage) {
-                binding.progressBar.setVisibility(View.GONE);
-                showToast(requireActivity(), errorMessage);
+                Log.d("getCountOfInvoiceInAMonth", errorMessage);
             }
         });
-
     }
-
-    private void setupRevenueInMonthChart(double revenue) {
-        BarChart barChart1 = binding.spendingsChart;
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(1, (float) revenue));
-
-        BarDataSet dataSet = new BarDataSet(entries, "Products");
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-        dataSet.setValueTextColor(Color.BLACK);
-        dataSet.setValueTextSize(14f);
-        dataSet.setDrawValues(true);
-        dataSet.setValueFormatter(new CustomValueMoneyFormatter());
-
-        BarData barData = new BarData(dataSet);
-        barChart1.setData(barData);
-        barData.setBarWidth(0.4f);
-
-        barChart1.setFitBars(true);
-        barChart1.getDescription().setEnabled(false);
-        barChart1.animateY(2000);
-
-        setupBarChart(barChart1);
-
-        ArrayList<LegendEntry> legendEntries = new ArrayList<>();
-
-        LegendEntry entry = new LegendEntry();
-        entry.label = "Doanh thu";
-        entry.formColor = ColorTemplate.JOYFUL_COLORS[0 % ColorTemplate.JOYFUL_COLORS.length];
-        legendEntries.add(entry);
-        barChart1.getLegend().setCustom(legendEntries);
-        barChart1.setExtraOffsets(10f, 10f, 10f, 40f);
-
-        YAxis yAxis = barChart1.getAxisLeft();
-        yAxis.setDrawGridLines(false);
-        yAxis.setDrawLabels(false);
-
-
-        barChart1.invalidate();
-    }
-
-    private void setupBarChart(BarChart barChart) {
-        Legend legend = barChart.getLegend();
-        legend.setEnabled(false);
-
-        barChart.setFitBars(true);
-        barChart.getDescription().setEnabled(false);
-        barChart.animateY(2000);
-
-        YAxis yAxisLeft = barChart.getAxisLeft();
-        yAxisLeft.setAxisMinimum(0f);
-        yAxisLeft.setDrawZeroLine(true);
-        yAxisLeft.setDrawAxisLine(true);
-
-        // Thiết lập trục X
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setDrawLabels(false);
-        xAxis.setDrawGridLines(false);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // Đặt trục X ở phía dưới
-        xAxis.setGranularity(1f); // Đảm bảo các nhãn được phân bố đều
-
-        barChart.getAxisRight().setEnabled(false);
-    }
-
     private void getStoreID() {
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(USER_INFO, MODE_PRIVATE);
         g_sStoreID = sharedPreferences.getString(STORE_ID, null);
     }
-    private void setupEvents() {
-        ArrayAdapter<String> monthsAdapter = new ArrayAdapter<>(requireActivity(),
-                android.R.layout.simple_spinner_item, TimeUtils.calendarMonths);
-        monthsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spnSelectMonth.setAdapter(monthsAdapter);
-        binding.spnSelectMonth.setSelection(7); // August
-        binding.spnSelectMonth.setDropDownVerticalOffset(100);
-        binding.spnSelectMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                binding.txtSelectedMonth.setText(TimeUtils.getMonth(position) + " / 2024");
-                getRevenueInMonth(position + 1);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-    }
 
 
 }

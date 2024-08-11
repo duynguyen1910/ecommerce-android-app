@@ -7,7 +7,7 @@ import java.util.Map;
 import api.productApi;
 import interfaces.CreateDocumentCallback;
 import interfaces.GetCollectionCallback;
-import interfaces.GetAggregateCallback;
+import interfaces.GetAggregate.GetAggregateCallback;
 import interfaces.GetDocumentCallback;
 import interfaces.UpdateDocumentCallback;
 

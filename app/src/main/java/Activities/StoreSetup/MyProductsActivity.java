@@ -26,7 +26,7 @@ import Activities.ProductSetup.AddProductsActivity;
 import Adapters.ViewPager2Adapter;
 import Fragments.Store.ProductsInStockFragment;
 import Fragments.Store.ProductsOutOfStockFragment;
-import interfaces.GetAggregateCallback;
+import interfaces.GetAggregate.GetAggregateCallback;
 import models.Product;
 import utils.DecorateUtils;
 

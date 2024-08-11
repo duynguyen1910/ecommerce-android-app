@@ -1,4 +1,4 @@
-package interfaces;
+package interfaces.GetAggregate;
 
 public interface GetAggregateCallback {
     // (các hàm tổng hợp dữ liệu sum, count, average)

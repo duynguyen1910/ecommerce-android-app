@@ -21,7 +21,7 @@ import java.util.Objects;
 import Activities.Invoices.RequestInvoiceActivity;
 import api.invoiceApi;
 import enums.OrderStatus;
-import interfaces.GetAggregateCallback;
+import interfaces.GetAggregate.GetAggregateCallback;
 import interfaces.GetDocumentCallback;
 import models.Store;
 import utils.FormatHelper;
