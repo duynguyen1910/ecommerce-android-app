@@ -1,6 +1,11 @@
 package utils.Chart;
 
+import com.google.firebase.Timestamp;
+
 import java.util.Calendar;
+
+import models.Invoice;
+import utils.FormatHelper;
 
 public class TimeUtils {
     public static String[] monthNames = {
@@ -40,6 +45,28 @@ public class TimeUtils {
 
     public static String setMonthText( int year, int month) {
         return "Tháng " + month + " / " + year;
+    }
+
+    public static String setDateTimeByInvoice(Invoice invoice) {
+        Timestamp time;
+        switch (invoice.getStatus()) {
+            case PENDING_CONFIRMATION:
+                time = invoice.getCreatedAt();
+                break;
+            case PENDING_SHIPMENT:
+                time = invoice.getConfirmedAt();
+                break;
+            case IN_TRANSIT:
+                time = invoice.getShippedAt();
+                break;
+            case DELIVERED:
+                time = invoice.getDeliveredAt();
+                break;
+            default:
+                time = invoice.getCancelledAt();
+                break;
+        }
+        return FormatHelper.formatDateTime(time);
     }
 
 }

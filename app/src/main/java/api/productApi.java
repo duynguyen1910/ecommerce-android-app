@@ -234,7 +234,6 @@ public class productApi implements Serializable {
     public void getTopBestSellerByStoreID(String storeID, int limit, final GetCollectionCallback<Product> callback) {
         Query query = db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(STORE_ID, storeID)
-                .whereGreaterThan(PRODUCT_SOLD, 0)
                 .orderBy(PRODUCT_SOLD, Query.Direction.DESCENDING);
         getProducts(query, limit, callback);
     }

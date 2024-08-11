@@ -30,6 +30,7 @@ import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
 import models.Invoice;
 import models.InvoiceDetail;
+import utils.Chart.TimeUtils;
 import utils.Invoice.DialogCancelInvoiceUtils;
 import utils.FormatHelper;
 import utils.Invoice.InvoiceUtils;
@@ -69,12 +70,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         holder.binding.progressBar.getIndeterminateDrawable()
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
-
-
         holder.binding.txtTotal.setText(FormatHelper.formatVND(invoice.getTotal()));
-
-
-
         holder.binding.btnCancelInvoice.setVisibility(
                 invoice.getStatus() == OrderStatus.PENDING_CONFIRMATION ? View.VISIBLE : View.GONE);
 
@@ -92,8 +88,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
                         productList, InvoiceDetail.ITEM_TO_DISPLAY);
                 holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
                 holder.binding.recyclerViewProducts.setAdapter(adapter);
-                holder.binding.txtInvoiceStatus.setText(
-                        FormatHelper.formatDateTime(setDateTimeByInvoice(invoice)));
+                holder.binding.txtTime.setText(TimeUtils.setDateTimeByInvoice(invoice));
 
             }
 
@@ -119,9 +114,6 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
             DialogCancelInvoiceUtils.popUpCancelInvoiceByCustomerDialog(this, context, invoice, holder.getBindingAdapterPosition(), invoiceDetails[0]);
         });
 
-
-
-
     }
 
     private void getStoreNameByID(String storeID, TextView txtStoreName) {
@@ -143,19 +135,6 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
         invoiceList.remove(position);
         notifyItemRemoved(position);
     }
-
-    private Timestamp setDateTimeByInvoice(Invoice invoice) {
-        switch (invoice.getStatus()) {
-            case PENDING_CONFIRMATION:
-                return invoice.getCreatedAt();
-            case PENDING_SHIPMENT:
-                return invoice.getShippedAt();
-            default:
-                return invoice.getCancelledAt();
-        }
-    }
-
-
     @Override
     public int getItemCount() {
         return invoiceList.size();

@@ -3,6 +3,7 @@ import static constants.keyName.DELIVERED_AT;
 import static constants.keyName.SHIPPED_AT;
 import static constants.keyName.STATUS;
 import static utils.Cart.CartUtils.showToast;
+import static utils.Chart.TimeUtils.setDateTimeByInvoice;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -35,6 +36,7 @@ import interfaces.UserCallback;
 import models.Invoice;
 import models.InvoiceDetail;
 import models.User;
+import utils.Chart.TimeUtils;
 import utils.Invoice.DialogCancelInvoiceUtils;
 import utils.FormatHelper;
 import utils.Invoice.InvoiceUtils;
@@ -111,8 +113,7 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
                 holder.binding.recyclerViewProducts.setAdapter(adapter);
 
                 holder.binding.txtQuantityProducts.setText(productList.size() + " sản phẩm");
-                holder.binding.txtTime.setText(
-                        FormatHelper.formatDateTime(setDateTimeByInvoice(invoice)));
+                holder.binding.txtTime.setText(TimeUtils.setDateTimeByInvoice(invoice));
                 holder.binding.txtTotal.setText(FormatHelper.formatVND(invoice.getTotal()));
 
             }
@@ -212,23 +213,8 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
                 btnComplete.setVisibility(View.GONE);
                 break;
             }
-
         }
     }
-
-    private Timestamp setDateTimeByInvoice(Invoice invoice) {
-        switch (invoice.getStatus()) {
-            case PENDING_SHIPMENT:
-                return invoice.getCreatedAt();
-            case IN_TRANSIT:
-                return invoice.getShippedAt();
-            case DELIVERED:
-                return invoice.getDeliveredAt();
-            default:
-                return invoice.getCancelledAt();
-        }
-    }
-
 
     @Override
     public int getItemCount() {

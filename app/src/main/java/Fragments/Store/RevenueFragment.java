@@ -48,17 +48,18 @@ public class RevenueFragment extends Fragment {
         invoiceApi m_invoiceApi = new invoiceApi();
         int m_currentMonth = TimeUtils.getCurrentMonthValue();
         int m_currentYear = TimeUtils.getCurrentYearValue();
+        binding.txtCurrentYear.setText(String.valueOf(m_currentYear));
 
         m_invoiceApi.getRevenueForAllMonthsByStoreID(g_sStoreID, m_currentYear, new GetCollectionCallback<Double>() {
             @Override
             public void onGetListSuccess(ArrayList<Double> listRevenues) {
+                binding.progressBar.setVisibility(View.GONE);
                 AtomicReference<Double> yearRevenue = new AtomicReference<>((double) 0);
                 listRevenues.forEach(item -> {
                     yearRevenue.updateAndGet(v -> v + item);
                 });
-                binding.txtCurrentYear.setText(String.valueOf(m_currentYear));
+
                 binding.txtRevenueInYear.setText(FormatHelper.formatVND(yearRevenue.get()));
-                binding.progressBar.setVisibility(View.GONE);
                 DrawChartUtils.drawRevenuesBarChart(requireActivity(), listRevenues,m_currentMonth, binding.barChart);
                 DrawChartUtils.drawRevenuesLineChart(requireActivity(), listRevenues, binding.lineChart);
             }

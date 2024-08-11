@@ -57,7 +57,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Thời gian:"
+                    android:text="Tháng hiện tại:"
                     android:textColor="@color/black" />
 
                 <TextView

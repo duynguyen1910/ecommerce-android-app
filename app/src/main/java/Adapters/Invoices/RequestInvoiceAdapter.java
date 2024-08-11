@@ -3,6 +3,7 @@ package Adapters.Invoices;
 import static constants.keyName.CONFIRMED_AT;
 import static constants.keyName.STATUS;
 import static utils.Cart.CartUtils.showToast;
+import static utils.Chart.TimeUtils.setDateTimeByInvoice;
 import static utils.FormatHelper.formatDateTime;
 
 import android.annotation.SuppressLint;
@@ -40,6 +41,7 @@ import interfaces.UserCallback;
 import models.Invoice;
 import models.InvoiceDetail;
 import models.User;
+import utils.Chart.TimeUtils;
 import utils.Invoice.DialogCancelInvoiceUtils;
 import utils.FormatHelper;
 import utils.Invoice.InvoiceUtils;
@@ -114,8 +116,8 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
                 holder.binding.recyclerViewProducts.setAdapter(adapter);
 
                 holder.binding.txtQuantityProducts.setText(productList.size() + " sản phẩm");
-                holder.binding.txtInvoiceStatus.setText(
-                        FormatHelper.formatDateTime(setDateTimeByInvoice(invoice)));
+                holder.binding.txtTime.setText(TimeUtils.setDateTimeByInvoice(invoice));
+
                 holder.binding.txtTotal.setText(FormatHelper.formatVND(invoice.getTotal()));
 
             }
@@ -197,17 +199,6 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
                 break;
             }
 
-        }
-    }
-
-    private Timestamp setDateTimeByInvoice(Invoice invoice) {
-        switch (invoice.getStatus()) {
-            case PENDING_CONFIRMATION:
-                return invoice.getCreatedAt();
-            case PENDING_SHIPMENT:
-                return invoice.getShippedAt();
-            default:
-                return invoice.getCancelledAt();
         }
     }
 
