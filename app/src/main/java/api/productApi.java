@@ -314,36 +314,6 @@ public class productApi implements Serializable {
     }
 
 
-    public void getHighestRevenueByStoreID(String storeID, int limit, final GetCollectionCallback<Product> callback) {
-        db.collection(PRODUCT_COLLECTION)
-                .whereEqualTo(STORE_ID, storeID)
-                .whereGreaterThan(PRODUCT_SOLD, 0)
-                .get()
-                .addOnSuccessListener(task -> {
-                    ArrayList<Product> products = new ArrayList<>();
-                    for (DocumentSnapshot document : task.getDocuments()) {
-                        Product product = document.toObject(Product.class);
-                        product.setBaseID(document.getId());
-                        products.add(product);
-                    }
-
-                    // Sắp xếp sản phẩm dựa trên doanh thu (tính theo số lượng bán ra * giá mới)
-                    products.sort((product1, product2) -> {
-                        double revenue1 = product1.getNewPrice() * product1.getSold();
-                        double revenue2 = product2.getNewPrice() * product2.getSold();
-                        return Double.compare(revenue2, revenue1); // Sắp xếp giảm dần
-                    });
-
-                    // Cắt bớt danh sách sản phẩm nếu cần
-                    if (products.size() > limit) {
-                        products = new ArrayList<>(products.subList(0, limit));
-                    }
-
-                    callback.onGetListSuccess(products);
-                })
-                .addOnFailureListener(e -> callback.onGetListFailure(INTERNET_ERROR));
-    }
-
 
     public void getAllProductByCategoryIdApi(String categoryId, final GetCollectionCallback<Product> callback) {
         Query query = db.collection(PRODUCT_COLLECTION)

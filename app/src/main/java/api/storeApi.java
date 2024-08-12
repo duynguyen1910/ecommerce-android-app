@@ -2,20 +2,24 @@ package api;
 
 import static android.content.ContentValues.TAG;
 import static constants.collectionName.STORE_COLLECTION;
+import static constants.toastMessage.INTERNET_ERROR;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Map;
 
 import constants.toastMessage;
 import interfaces.CreateDocumentCallback;
+import interfaces.GetAggregate.GetAggregateCallback;
 import interfaces.GetDocumentCallback;
 
 public class storeApi {
@@ -57,6 +61,13 @@ public class storeApi {
                 Log.d(TAG, "get failed with ", task.getException());
             }
         });
+
+    }
+    public void getCountOfStores(GetAggregateCallback callback){
+      db.collection(STORE_COLLECTION)
+              .get()
+              .addOnSuccessListener(task -> callback.onSuccess(task.size()))
+              .addOnFailureListener(e -> callback.onFailure(INTERNET_ERROR));
 
     }
 

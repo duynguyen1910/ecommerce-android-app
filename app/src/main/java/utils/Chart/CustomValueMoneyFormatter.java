@@ -12,6 +12,9 @@ public class CustomValueMoneyFormatter extends ValueFormatter {
         if (value < 1000000) {
             return String.format("%.0fk", value / 1000);
         }
-        return String.format("%.1fTr", value / 1000000);
+        if (value < 1000000000 ){
+            return String.format("%.1fTr", value / 1000000);
+        }
+        return String.format("%.1fB", value / 1000000000);
     }
 }

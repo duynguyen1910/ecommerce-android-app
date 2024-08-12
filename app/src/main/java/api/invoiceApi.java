@@ -3,6 +3,7 @@ package api;
 import static constants.collectionName.INVOICE_COLLECTION;
 import static constants.collectionName.INVOICE_DETAIL_COLLECTION;
 import static constants.collectionName.PRODUCT_COLLECTION;
+import static constants.collectionName.STORE_COLLECTION;
 import static constants.collectionName.VARIANT_COLLECTION;
 import static constants.keyName.CREATE_AT;
 import static constants.keyName.CUSTOMER_ID;
@@ -40,10 +41,11 @@ import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import interfaces.CreateDocumentCallback;
@@ -55,6 +57,7 @@ import interfaces.UpdateDocumentCallback;
 import models.Invoice;
 import models.InvoiceDetail;
 import models.Product;
+import models.Store;
 import models.Variant;
 import utils.Cart.CartUtils;
 import utils.Chart.TimeUtils;
@@ -82,6 +85,7 @@ public class invoiceApi {
                     }
                 });
     }
+
 
     public void createDetailInvoiceApi(ArrayList<InvoiceDetail> invoiceItems,
                                        final StatusCallback callback) {
@@ -132,7 +136,6 @@ public class invoiceApi {
     }
 
 
-
     public void getSpendingsInHaftYearByCustomerID(String customerID, int year, int currentMonth, GetCollectionCallback<Double> callback) {
         if (1 <= currentMonth && currentMonth <= 12) {
             List<Task<QuerySnapshot>> tasks = new ArrayList<>();
@@ -176,7 +179,7 @@ public class invoiceApi {
     }
 
     public void getCustomerMonthCountInvoice(String customerID, int year, int month, GetManyAggregateCallback callback) {
-        List<Integer> orderStatuses = Arrays.asList(2, 3, 4);
+        List<Integer> orderStatuses = Arrays.asList(1, 2, 3, 4);
         Timestamp[] dayRange = TimeUtils.getDayRange(year, month);
         db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(CUSTOMER_ID, customerID)
@@ -206,9 +209,8 @@ public class invoiceApi {
     }
 
 
-
     private Task<QuerySnapshot> getSpendingInAMonthTask(String customerID, int year, int month) {
-        List<Integer> orderStatuses = Arrays.asList(2, 3, 4);
+        List<Integer> orderStatuses = Arrays.asList(1, 2, 3, 4);
         Timestamp[] dayRange = TimeUtils.getDayRange(year, month);
         return db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(CUSTOMER_ID, customerID)
@@ -226,7 +228,7 @@ public class invoiceApi {
             tasks.add(getRevenueInAMonthTask(storeID, year, month));
         }
 
-        // Sử dụng Tasks.whenAll để thực hiện tất cả các task và nhận kết quả
+
         Tasks.whenAll(tasks).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 ArrayList<Double> monthlyRevenues = new ArrayList<>();
@@ -251,8 +253,9 @@ public class invoiceApi {
         });
     }
 
+
     private Task<QuerySnapshot> getRevenueInAMonthTask(String storeID, int year, int month) {
-        List<Integer> orderStatuses = Arrays.asList(2, 3, 4);
+        List<Integer> orderStatuses = Arrays.asList(1, 2, 3, 4);
         Timestamp[] dayRange = TimeUtils.getDayRange(year, month);
         return db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(STORE_ID, storeID)
@@ -263,7 +266,7 @@ public class invoiceApi {
     }
 
     public void getStoreMonthStatistics(String storeID, int year, int month, GetManyAggregateCallback callback) {
-        List<Integer> orderStatuses = Arrays.asList(2, 3, 4);
+        List<Integer> orderStatuses = Arrays.asList(1, 2, 3, 4);
         Timestamp[] dayRange = TimeUtils.getDayRange(year, month);
         db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(STORE_ID, storeID)
@@ -292,6 +295,104 @@ public class invoiceApi {
                 });
     }
 
+    public void getAllStoreRevenueByYear(int year, GetCollectionCallback<Store> callback) {
+        List<Integer> orderStatuses = Arrays.asList(1, 2, 3, 4);
+        Timestamp[] yearRange = TimeUtils.getYearRange(year);
+
+        HashMap<String, Store> storeRevenueMap = new HashMap<>();
+        ArrayList<Task<DocumentSnapshot>> storeTasks = new ArrayList<>();
+
+        db.collection(INVOICE_COLLECTION)
+                .whereIn(STATUS, orderStatuses)
+                .whereGreaterThanOrEqualTo(CREATE_AT, yearRange[0])
+                .whereLessThanOrEqualTo(CREATE_AT, yearRange[1])
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+
+                    for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                        Invoice invoice = document.toObject(Invoice.class);
+                        if (invoice != null) {
+                            String storeID = invoice.getStoreID();
+                            Store store = storeRevenueMap.get(storeID);
+                            if (store == null) {
+
+                                store = new Store();
+                                store.setStoreRevenue(invoice.getTotal());
+                                storeRevenueMap.put(storeID, store);
+                                storeTasks.add(getStoreDetail(storeID, store));
+                            } else {
+                                store.setStoreRevenue(store.getStoreRevenue() + invoice.getTotal());
+                            }
+                        }
+                    }
+
+                    Tasks.whenAllSuccess(storeTasks)
+                            .addOnSuccessListener(results -> {
+                                ArrayList<Store> stores = new ArrayList<>(storeRevenueMap.values());
+                                callback.onGetListSuccess(stores);
+                            }).addOnFailureListener(e -> {
+                                callback.onGetListFailure(INTERNET_ERROR);
+                            });
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onGetListFailure(INTERNET_ERROR);
+                    }
+                });
+    }
+
+    private Task<DocumentSnapshot> getStoreDetail(String storeID, Store store) {
+        return db.collection(STORE_COLLECTION)
+                .document(storeID)
+                .get()
+                .addOnSuccessListener(document -> {
+                    store.setStoreName(document.toObject(Store.class).getStoreName());
+                });
+    }
+
+
+    public void getEcommerceMonthRevenueByYear(int year, GetCollectionCallback<Double> callback) {
+        List<Task<QuerySnapshot>> tasks = new ArrayList<>();
+        for (int month = 1; month <= 12; month++) {
+            // Tạo các task cho từng tháng
+            tasks.add(getEcommerceMonthRevenueTask(year, month));
+        }
+
+
+        Tasks.whenAll(tasks).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ArrayList<Double> monthlyRevenues = new ArrayList<>();
+                for (int i = 0; i < tasks.size(); i++) {
+                    Task<QuerySnapshot> t = tasks.get(i);
+                    double revenue = 0;
+                    try {
+                        for (DocumentSnapshot document : t.getResult().getDocuments()) {
+                            Invoice invoice = document.toObject(Invoice.class);
+                            double total = invoice.getTotal();
+                            revenue += total;
+                        }
+                    } catch (Exception e) {
+                        Log.d("getRevenueForAllMonthsByStoreID", "Error processing month " + (i + 1) + ": " + e.getMessage());
+                    }
+                    monthlyRevenues.add(revenue);
+                }
+                callback.onGetListSuccess(monthlyRevenues);
+            } else {
+                callback.onGetListFailure(INTERNET_ERROR);
+            }
+        });
+    }
+
+    private Task<QuerySnapshot> getEcommerceMonthRevenueTask(int year, int month) {
+        List<Integer> orderStatuses = Arrays.asList(1, 2, 3, 4);
+        Timestamp[] dayRange = TimeUtils.getDayRange(year, month);
+        return db.collection(INVOICE_COLLECTION)
+                .whereIn(STATUS, orderStatuses)
+                .whereGreaterThanOrEqualTo(CREATE_AT, dayRange[0])
+                .whereLessThanOrEqualTo(CREATE_AT, dayRange[1])
+                .get();
+    }
 
     public void getInvoicesByStatusApi(String customerID, int invoiceStatus, final GetCollectionCallback<Invoice> callback) {
         db.collection(INVOICE_COLLECTION)

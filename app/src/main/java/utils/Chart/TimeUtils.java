@@ -28,6 +28,16 @@ public class TimeUtils {
         return calendarMonths[month - 1];
     }
 
+    public static String getToday() {
+//        12 tháng 08/2024
+
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DATE);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int year = calendar.get(Calendar.YEAR);
+        return (day + " tháng " + month + "/" + year);
+    }
+
     public static Timestamp[] getDayRange(int year, int month) {
         Calendar startCalendar = Calendar.getInstance();
         startCalendar.set(year, getMonthInCalendar(month), 1, 0, 0, 0); // Set to 00:00:00 of the 1st day
@@ -35,6 +45,18 @@ public class TimeUtils {
 
         Calendar endCalendar = Calendar.getInstance();
         endCalendar.set(year, getMonthInCalendar(month), endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59); // Set to 23:59:59 of the last day
+        Timestamp endDate = new Timestamp(endCalendar.getTime());
+
+        return new Timestamp[]{startDate, endDate};
+    }
+
+    public static Timestamp[] getYearRange(int year) {
+        Calendar startCalendar = Calendar.getInstance();
+        startCalendar.set(year, Calendar.JANUARY, 1, 0, 0, 0);
+        Timestamp startDate = new Timestamp(startCalendar.getTime());
+
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.set(year, Calendar.DECEMBER, 31, 23, 59, 59);
         Timestamp endDate = new Timestamp(endCalendar.getTime());
 
         return new Timestamp[]{startDate, endDate};

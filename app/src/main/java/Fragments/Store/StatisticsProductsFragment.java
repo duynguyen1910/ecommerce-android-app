@@ -1,14 +1,13 @@
 package Fragments.Store;
-
 import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.INTERNET_ERROR;
 import static utils.Cart.CartUtils.showToast;
-
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,54 +16,30 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.RadioGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.example.stores.R;
-import com.example.stores.databinding.DialogFilterBinding;
 import com.example.stores.databinding.DialogSortStatisticProductBinding;
 import com.example.stores.databinding.FragmentStatisticsProductsBinding;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import Activities.AddAddress.SelectAddressActivity;
-import Activities.BuyProduct.SearchActivity;
-import Adapters.SettingVariant.TypeValueAdapterForFilter;
 import Adapters.Statistics.ProductStatisticsAdapter;
 import api.productApi;
-import interfaces.GetAggregate.GetAggregateCallback;
 import interfaces.GetCollectionCallback;
-import interfaces.InAdapter.FilterListener;
-import models.Addresses;
-import models.Invoice;
 import models.Product;
-import models.TypeValue;
-import utils.DecorateUtils;
-import utils.FormatHelper;
+
 
 
 public class StatisticsProductsFragment extends Fragment {
-    FragmentStatisticsProductsBinding binding;
-    String g_sStoreID;
-    ArrayList<Product> g_bestSellers;
-    ProductStatisticsAdapter g_adapter;
-    int g_sortChoice = 0;
+    private FragmentStatisticsProductsBinding binding;
+    private String g_sStoreID;
+    private ArrayList<Product> g_bestSellers;
+    private ProductStatisticsAdapter g_adapter;
+    private int g_sortChoice = 0;
 
 
     @Nullable
@@ -195,6 +170,8 @@ public class StatisticsProductsFragment extends Fragment {
 
     private void sortProduct(ArrayList<Product> products, int sortChoice, ProductStatisticsAdapter adapter) {
 
+
+
         if (sortChoice == 1) {
             products.sort((product1, product2) -> {
                 double revenue1 = product1.getProductRevenue();
@@ -208,8 +185,16 @@ public class StatisticsProductsFragment extends Fragment {
                 return Double.compare(revenue2, revenue1);
             });
         }
+        Handler handler = new Handler();
+        binding.progressBar.setVisibility(View.VISIBLE);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+                binding.progressBar.setVisibility(View.GONE);
+            }
+        }, 500);
 
-        adapter.notifyDataSetChanged();
     }
 
 

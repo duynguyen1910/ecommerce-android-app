@@ -1,5 +1,6 @@
 package api;
 import static constants.collectionName.CATEGORY_COLLECTION;
+import static constants.collectionName.STORE_COLLECTION;
 import static constants.toastMessage.INTERNET_ERROR;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import interfaces.GetAggregate.GetAggregateCallback;
 import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
 import models.Category;
@@ -89,6 +91,14 @@ public class categoryApi {
                 }).addOnFailureListener(e -> {
                     callback.onGetDataFailure(INTERNET_ERROR);
                 });
+    }
+
+    public void getCountOfCategories(GetAggregateCallback callback){
+        db.collection(CATEGORY_COLLECTION)
+                .get()
+                .addOnSuccessListener(task -> callback.onSuccess(task.size()))
+                .addOnFailureListener(e -> callback.onFailure(INTERNET_ERROR));
+
     }
 
 

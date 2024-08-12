@@ -47,7 +47,7 @@ public class ProductsInStockFragment extends Fragment {
                 binding.progressBar.setVisibility(View.GONE);
                 MyProductsAdapter adapter = new MyProductsAdapter(requireActivity(), products);
                 binding.recyclerView.setAdapter(adapter);
-                binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
+                binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, true));
             }
 
             @Override

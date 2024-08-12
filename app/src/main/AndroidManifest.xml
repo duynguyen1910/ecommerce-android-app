@@ -37,6 +37,12 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="Activities.Admin.ERevenueTableActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.Admin.AdminActivity"
+            android:exported="false" />
+        <activity
             android:name="Activities.StoreSetup.RegisterStoreSuccessfulActivity"
             android:exported="false" />
         <activity

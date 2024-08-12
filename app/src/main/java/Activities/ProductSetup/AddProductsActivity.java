@@ -8,6 +8,7 @@ import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
 import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
+import static constants.keyName.PRODUCT_SOLD;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.CREATE_PRODUCT_SUCCESSFULLY;
@@ -170,6 +171,7 @@ public class AddProductsActivity extends AppCompatActivity {
                     newProduct.put(PRODUCT_INSTOCK, inStock);
                     newProduct.put(CATEGORY_ID, categoryID);
                     newProduct.put(STORE_ID, storeID);
+                    newProduct.put(PRODUCT_SOLD, 0);
 
                     onAddProduct(newProduct);
                 }
