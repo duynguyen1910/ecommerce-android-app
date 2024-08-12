@@ -282,7 +282,6 @@ public class productApi implements Serializable {
                                     documentTasks.add(getInvoiceTask(checkedInvoiceIDSet, invoiceID, productRevenue, invoiceDetail));
                                 } else {
                                     productRevenue[0] += invoiceDetail.getNewPrice() * invoiceDetail.getQuantity();
-
                                 }
                             }
                         }
@@ -293,6 +292,7 @@ public class productApi implements Serializable {
                 })
                 .addOnSuccessListener(aVoid -> {
                     product.setProductRevenue(productRevenue[0]);
+
                     long endTime = System.currentTimeMillis();
                     long duration = endTime - startTime;
                     Log.d("Performance", "getProductRevenueTask duration: " + duration + "ms");

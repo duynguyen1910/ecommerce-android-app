@@ -1,14 +1,11 @@
 package Adapters.Statistics;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.example.stores.databinding.ItemProductForStatisticsBinding;
 
@@ -59,8 +56,6 @@ public class ProductStatisticsAdapter extends RecyclerView.Adapter<ProductStatis
 
         holder.binding.txtSold.setText(String.valueOf(product.getSold()));
         holder.binding.txtProductRevenue.setText(new CustomValueMoneyFormatter().getFormattedValue((float) product.getProductRevenue()));
-
-
     }
 
     @Override
