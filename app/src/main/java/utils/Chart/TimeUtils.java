@@ -19,7 +19,26 @@ public class TimeUtils {
             "4", "5", "6",
             "7", "8", "9",
             "10", "11", "12"};
+    public static int getMonthInCalendar(int month) {
+        int[] calendarMonths = {
+                Calendar.JANUARY, Calendar.FEBRUARY, Calendar.MARCH,
+                Calendar.APRIL, Calendar.MAY, Calendar.JUNE,
+                Calendar.JULY, Calendar.AUGUST, Calendar.SEPTEMBER,
+                Calendar.OCTOBER, Calendar.NOVEMBER, Calendar.DECEMBER};
+        return calendarMonths[month - 1];
+    }
 
+    public static Timestamp[] getDayRange(int year, int month) {
+        Calendar startCalendar = Calendar.getInstance();
+        startCalendar.set(year, getMonthInCalendar(month), 1, 0, 0, 0); // Set to 00:00:00 of the 1st day
+        Timestamp startDate = new Timestamp(startCalendar.getTime());
+
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.set(year, getMonthInCalendar(month), endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59); // Set to 23:59:59 of the last day
+        Timestamp endDate = new Timestamp(endCalendar.getTime());
+
+        return new Timestamp[]{startDate, endDate};
+    }
     public static String getMonthValue(int value) {
         if (value >= 1 && value <= 12) {
             return monthValues[value - 1];

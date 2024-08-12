@@ -23,14 +23,6 @@
             android:text="STT"
             android:textColor="@color/white" />
 
-        <TextView
-            android:id="@+id/txtImageLabel"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textAlignment="center"
-            android:text="Hình"
-            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/txtProductName"
@@ -41,7 +33,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:paddingHorizontal="4dp"
-            android:text="Tên sản phẩm"
+            android:text="Sản phẩm"
             android:textAlignment="center"
             android:textColor="@color/white" />
 

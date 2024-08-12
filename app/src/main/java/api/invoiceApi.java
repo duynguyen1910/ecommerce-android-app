@@ -11,6 +11,7 @@ import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.PRODUCT_NAME;
 import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
+import static constants.keyName.PRODUCT_SOLD;
 import static constants.keyName.QUANTITY;
 import static constants.keyName.STATUS;
 import static constants.keyName.STORE_ID;
@@ -56,6 +57,7 @@ import models.InvoiceDetail;
 import models.Product;
 import models.Variant;
 import utils.Cart.CartUtils;
+import utils.Chart.TimeUtils;
 
 public class invoiceApi {
     private FirebaseFirestore db;
@@ -111,26 +113,25 @@ public class invoiceApi {
         });
     }
 
-    public int getMonthInCalendar(int month) {
-        int[] calendarMonths = {
-                Calendar.JANUARY, Calendar.FEBRUARY, Calendar.MARCH,
-                Calendar.APRIL, Calendar.MAY, Calendar.JUNE,
-                Calendar.JULY, Calendar.AUGUST, Calendar.SEPTEMBER,
-                Calendar.OCTOBER, Calendar.NOVEMBER, Calendar.DECEMBER};
-        return calendarMonths[month - 1];
+    public void getTopBestSellerByStoreID(String storeID, int limit, final GetCollectionCallback<Product> callback) {
+        db.collection(PRODUCT_COLLECTION)
+                .whereEqualTo(STORE_ID, storeID)
+                .orderBy(PRODUCT_SOLD, Query.Direction.DESCENDING)
+                .limit(limit)
+                .get()
+                .addOnSuccessListener(task -> {
+                    ArrayList<Product> products = new ArrayList<>();
+                    for (DocumentSnapshot document : task.getDocuments()) {
+                        Product product = document.toObject(Product.class);
+                        product.setBaseID(document.getId());
+                        products.add(product);
+                    }
+                    callback.onGetListSuccess(products);
+                })
+                .addOnFailureListener(e -> callback.onGetListFailure(INTERNET_ERROR));
     }
 
-    public Timestamp[] getDayRange(int year, int month) {
-        Calendar startCalendar = Calendar.getInstance();
-        startCalendar.set(year, getMonthInCalendar(month), 1, 0, 0, 0); // Set to 00:00:00 of the 1st day
-        Timestamp startDate = new Timestamp(startCalendar.getTime());
 
-        Calendar endCalendar = Calendar.getInstance();
-        endCalendar.set(year, getMonthInCalendar(month), endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH), 23, 59, 59); // Set to 23:59:59 of the last day
-        Timestamp endDate = new Timestamp(endCalendar.getTime());
-
-        return new Timestamp[]{startDate, endDate};
-    }
 
     public void getSpendingsInHaftYearByCustomerID(String customerID, int year, int currentMonth, GetCollectionCallback<Double> callback) {
         if (1 <= currentMonth && currentMonth <= 12) {
@@ -176,7 +177,7 @@ public class invoiceApi {
 
     public void getCustomerMonthCountInvoice(String customerID, int year, int month, GetManyAggregateCallback callback) {
         List<Integer> orderStatuses = Arrays.asList(2, 3, 4);
-        Timestamp[] dayRange = getDayRange(year, month);
+        Timestamp[] dayRange = TimeUtils.getDayRange(year, month);
         db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(CUSTOMER_ID, customerID)
                 .whereIn(STATUS, orderStatuses)
@@ -208,7 +209,7 @@ public class invoiceApi {
 
     private Task<QuerySnapshot> getSpendingInAMonthTask(String customerID, int year, int month) {
         List<Integer> orderStatuses = Arrays.asList(2, 3, 4);
-        Timestamp[] dayRange = getDayRange(year, month);
+        Timestamp[] dayRange = TimeUtils.getDayRange(year, month);
         return db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(CUSTOMER_ID, customerID)
                 .whereIn(STATUS, orderStatuses)
@@ -252,7 +253,7 @@ public class invoiceApi {
 
     private Task<QuerySnapshot> getRevenueInAMonthTask(String storeID, int year, int month) {
         List<Integer> orderStatuses = Arrays.asList(2, 3, 4);
-        Timestamp[] dayRange = getDayRange(year, month);
+        Timestamp[] dayRange = TimeUtils.getDayRange(year, month);
         return db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(STORE_ID, storeID)
                 .whereIn(STATUS, orderStatuses)
@@ -263,7 +264,7 @@ public class invoiceApi {
 
     public void getStoreMonthStatistics(String storeID, int year, int month, GetManyAggregateCallback callback) {
         List<Integer> orderStatuses = Arrays.asList(2, 3, 4);
-        Timestamp[] dayRange = getDayRange(year, month);
+        Timestamp[] dayRange = TimeUtils.getDayRange(year, month);
         db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(STORE_ID, storeID)
                 .whereIn(STATUS, orderStatuses)
@@ -291,28 +292,6 @@ public class invoiceApi {
                 });
     }
 
-    public void getRevenueInAMonthByStoreID(String storeID, int year, int month, GetAggregateCallback callback) {
-        List<Integer> orderStatuses = Arrays.asList(2, 3, 4);
-        Timestamp[] dayRange = getDayRange(year, month);
-        db.collection(INVOICE_COLLECTION)
-                .whereEqualTo(STORE_ID, storeID)
-                .whereIn(STATUS, orderStatuses)
-                .whereGreaterThanOrEqualTo(CREATE_AT, dayRange[0])
-                .whereLessThanOrEqualTo(CREATE_AT, dayRange[1])
-                .get()
-                .addOnSuccessListener(task -> {
-                    double spendings = 0;
-                    for (DocumentSnapshot document : task.getDocuments()) {
-                        Invoice invoice = document.toObject(Invoice.class);
-                        double total = invoice.getTotal();
-                        spendings += total;
-                    }
-                    callback.onSuccess(spendings);
-                }).addOnFailureListener(e -> {
-                    callback.onFailure(INTERNET_ERROR);
-                });
-
-    }
 
     public void getInvoicesByStatusApi(String customerID, int invoiceStatus, final GetCollectionCallback<Invoice> callback) {
         db.collection(INVOICE_COLLECTION)

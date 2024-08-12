@@ -1,12 +1,16 @@
 package api;
 
+import static constants.collectionName.INVOICE_COLLECTION;
+import static constants.collectionName.INVOICE_DETAIL_COLLECTION;
 import static constants.collectionName.PRODUCT_COLLECTION;
 import static constants.collectionName.VARIANT_COLLECTION;
 import static constants.keyName.CATEGORY_ID;
 import static constants.keyName.INSTOCK;
+import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_SOLD;
+import static constants.keyName.STATUS;
 import static constants.keyName.STORE_ID;
 import static constants.toastMessage.INTERNET_ERROR;
 import static constants.toastMessage.UPDATE_SUCCESSFULLY;
@@ -16,7 +20,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -27,9 +34,13 @@ import com.google.firebase.firestore.WriteBatch;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import constants.toastMessage;
+import enums.OrderStatus;
 import interfaces.CreateDocumentCallback;
 import interfaces.GetCollectionCallback;
 import interfaces.GetAggregate.GetAggregateCallback;
@@ -232,10 +243,74 @@ public class productApi implements Serializable {
     }
 
     public void getTopBestSellerByStoreID(String storeID, int limit, final GetCollectionCallback<Product> callback) {
-        Query query = db.collection(PRODUCT_COLLECTION)
+        db.collection(PRODUCT_COLLECTION)
                 .whereEqualTo(STORE_ID, storeID)
-                .orderBy(PRODUCT_SOLD, Query.Direction.DESCENDING);
-        getProducts(query, limit, callback);
+                .orderBy(PRODUCT_SOLD, Query.Direction.DESCENDING)
+                .limit(limit)
+                .get()
+                .addOnSuccessListener(task -> {
+                    ArrayList<Product> products = new ArrayList<>();
+                    for (DocumentSnapshot document : task.getDocuments()) {
+                        Product product = document.toObject(Product.class);
+                        product.setBaseID(document.getId());
+                        products.add(product);
+                    }
+                    callback.onGetListSuccess(products);
+                })
+                .addOnFailureListener(e -> callback.onGetListFailure(INTERNET_ERROR));
+    }
+
+
+    public Task<Void> getProductRevenueTask(Product product) {
+        final double[] productRevenue = {0};
+        CollectionReference invoiceDetailRef = db.collection(INVOICE_DETAIL_COLLECTION);
+        HashSet<String> checkedInvoiceIDSet = new HashSet<>();
+        // Set này chứa các invoiceID đã được kiểm tra và là invoiceID của 1 hóa đơn không bị hủy
+
+        long startTime = System.currentTimeMillis();
+
+        return invoiceDetailRef.whereEqualTo(PRODUCT_ID, product.getBaseID())
+                .get()
+                .continueWithTask(task -> {
+                    if (task.isSuccessful()) {
+                        List<Task<DocumentSnapshot>> documentTasks = new ArrayList<>();
+                        for (DocumentSnapshot document : task.getResult().getDocuments()) {
+                            InvoiceDetail invoiceDetail = document.toObject(InvoiceDetail.class);
+                            if (invoiceDetail != null) {
+                                String invoiceID = invoiceDetail.getInvoiceID();
+                                if (!checkedInvoiceIDSet.contains(invoiceID)) {
+                                    documentTasks.add(getInvoiceTask(checkedInvoiceIDSet, invoiceID, productRevenue, invoiceDetail));
+                                } else {
+                                    productRevenue[0] += invoiceDetail.getNewPrice() * invoiceDetail.getQuantity();
+
+                                }
+                            }
+                        }
+                        return Tasks.whenAllSuccess(documentTasks);
+                    } else {
+                        throw Objects.requireNonNull(task.getException());
+                    }
+                })
+                .addOnSuccessListener(aVoid -> {
+                    product.setProductRevenue(productRevenue[0]);
+                    long endTime = System.currentTimeMillis();
+                    long duration = endTime - startTime;
+                    Log.d("Performance", "getProductRevenueTask duration: " + duration + "ms");
+                })
+                .continueWith(task -> null);
+    }
+
+    public Task<DocumentSnapshot> getInvoiceTask(HashSet<String> checkedInvoiceIDSet, String invoiceID, double[] productRevenue, InvoiceDetail invoiceDetail) {
+        return db.collection(INVOICE_COLLECTION)
+                .document(invoiceID)
+                .get()
+                .addOnSuccessListener(document -> {
+                    int status = Objects.requireNonNull(document.getLong(STATUS)).intValue();
+                    if (status != OrderStatus.CANCELLED.getOrderStatusValue()) {
+                        checkedInvoiceIDSet.add(invoiceID);
+                        productRevenue[0] += invoiceDetail.getNewPrice() * invoiceDetail.getQuantity();
+                    }
+                });
     }
 
 
