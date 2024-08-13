@@ -15,13 +15,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import constants.toastMessage;
-import interfaces.CreateDocumentCallback;
 import interfaces.GetAggregate.GetAggregateCallback;
 import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;

@@ -16,19 +16,6 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@mipmap/default_img" />
-
-        <TextView
-            android:id="@+id/txtSaleoff"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="3dp"
-            android:background="@drawable/bg_sale_off"
-            android:padding="3dp"
-            android:text="-50%"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
     </RelativeLayout>
 
 

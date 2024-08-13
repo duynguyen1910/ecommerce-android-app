@@ -1,6 +1,7 @@
 package Fragments.BottomNavigation;
 
 import static constants.toastMessage.INTERNET_ERROR;
+import static utils.Cart.CartUtils.showToast;
 import static utils.Cart.CartUtils.updateQuantityInCart;
 
 import android.content.Intent;
@@ -29,6 +30,7 @@ import Activities.SpendingsActivity;
 import Adapters.Category.CategoryGridAdapter;
 import Adapters.ProductGridAdapter;
 import Adapters.SliderAdapter;
+import api.productApi;
 import interfaces.GetCollectionCallback;
 import models.Category;
 import models.Product;
@@ -167,14 +169,24 @@ public class HomeFragment extends Fragment {
 
     private void initProducts() {
 
-//        binding.progressBarProducts.setVisibility(View.VISIBLE);
-        ArrayList<Product> list = new ArrayList<>();
+        binding.progressBarProducts.setVisibility(View.VISIBLE);
+        productApi m_productApi = new productApi();
+        m_productApi.getPopularProduct(new GetCollectionCallback<Product>() {
+            @Override
+            public void onGetListSuccess(ArrayList<Product> list) {
+                if (!list.isEmpty()) {
+                    binding.recyclerViewProducts.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
+                    binding.recyclerViewProducts.setAdapter(new ProductGridAdapter(requireActivity(), list));
+                }
+                binding.progressBarProducts.setVisibility(View.GONE);
+            }
 
-        if (!list.isEmpty()) {
-            binding.recyclerViewProducts.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
-            binding.recyclerViewProducts.setAdapter(new ProductGridAdapter(requireActivity(), list));
-        }
-        binding.progressBarProducts.setVisibility(View.GONE);
+            @Override
+            public void onGetListFailure(String errorMessage) {
+                showToast(requireActivity(), errorMessage);
+                binding.progressBarProducts.setVisibility(View.GONE);
+            }
+        });
 
     }
 

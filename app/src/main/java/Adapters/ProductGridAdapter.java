@@ -71,7 +71,6 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
         }
         holder.binding.txtPrice.setText(FormatHelper.formatVND(product.getNewPrice()));
         holder.binding.txtSold.setText("Đã bán " + product.getSold());
-        holder.binding.txtSaleoff.setText("-" + 40 + "%");
         holder.binding.ratingBar.setRating(5.0F);
 
 

@@ -157,11 +157,7 @@ public class StoreOwnerActivity extends AppCompatActivity {
             Intent intent = new Intent(StoreOwnerActivity.this, MyProductsActivity.class);
             startActivity(intent);
         });
-        binding.txtViewHistory.setOnClickListener(v -> {
-            Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
-            intent.putExtra(STORE_ID, storeId);
-            startActivity(intent);
-        });
+
 
         binding.layoutAwaitConfirmedInvoice.setOnClickListener(v -> {
             Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
