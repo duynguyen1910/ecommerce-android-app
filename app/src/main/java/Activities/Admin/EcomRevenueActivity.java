@@ -1,32 +1,27 @@
 package Activities.Admin;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.example.stores.databinding.ActivityErevenueTableBinding;
+import com.example.stores.databinding.ActivityEcomRevenueBinding;
 import java.util.ArrayList;
 import java.util.Objects;
-
-import Adapters.Statistics.ProductStatisticsAdapter;
 import Adapters.Statistics.StoreRevenueAdapter;
 import api.invoiceApi;
 import interfaces.GetCollectionCallback;
 import models.Store;
-import models.User;
-import utils.Chart.TimeUtils;
+import utils.TimeUtils;
 
-public class ERevenueTableActivity extends AppCompatActivity {
+public class EcomRevenueActivity extends AppCompatActivity {
 
-    ActivityErevenueTableBinding binding;
+    ActivityEcomRevenueBinding binding;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityErevenueTableBinding.inflate(getLayoutInflater());
+        binding = ActivityEcomRevenueBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initUI();
         setupEvents();
@@ -41,9 +36,9 @@ public class ERevenueTableActivity extends AppCompatActivity {
             @Override
             public void onGetListSuccess(ArrayList<Store> stores) {
                 binding.progressBar.setVisibility(View.GONE);
-                StoreRevenueAdapter adapter = new StoreRevenueAdapter(ERevenueTableActivity.this, stores);
+                StoreRevenueAdapter adapter = new StoreRevenueAdapter(EcomRevenueActivity.this, stores);
                 binding.recyclerView.setAdapter(adapter);
-                binding.recyclerView.setLayoutManager(new LinearLayoutManager(ERevenueTableActivity.this, LinearLayoutManager.VERTICAL, false));
+                binding.recyclerView.setLayoutManager(new LinearLayoutManager(EcomRevenueActivity.this, LinearLayoutManager.VERTICAL, false));
 
             }
 

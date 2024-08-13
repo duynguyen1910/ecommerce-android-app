@@ -16,7 +16,7 @@ import interfaces.GetCollectionCallback;
 import interfaces.GetAggregate.GetManyAggregateCallback;
 import utils.Chart.CustomValueMoneyFormatter;
 import utils.Chart.DrawChartUtils;
-import utils.Chart.TimeUtils;
+import utils.TimeUtils;
 
 
 public class SpendingsActivity extends AppCompatActivity {

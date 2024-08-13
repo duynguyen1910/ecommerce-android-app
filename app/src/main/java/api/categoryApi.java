@@ -1,8 +1,10 @@
 package api;
 import static constants.collectionName.CATEGORY_COLLECTION;
-import static constants.collectionName.STORE_COLLECTION;
+import static constants.toastMessage.CREATE_CATEGORY_FAILED;
+import static constants.toastMessage.CREATE_CATEGORY_SUCCESSFULLY;
 import static constants.toastMessage.INTERNET_ERROR;
-
+import static constants.toastMessage.UPDATE_SUCCESSFULLY;
+import static constants.toastMessage.UPLOAD_FAILED;
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -15,11 +17,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import constants.toastMessage;
+import interfaces.CreateDocumentCallback;
 import interfaces.GetAggregate.GetAggregateCallback;
 import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
+import interfaces.StatusCallback;
 import models.Category;
 
 public class categoryApi {
@@ -29,6 +35,13 @@ public class categoryApi {
         db = FirebaseFirestore.getInstance();
     }
 
+    public void createCategory(Map<String, Object> newCategory, StatusCallback callback) {
+        db.collection(CATEGORY_COLLECTION)
+                .add(newCategory)
+                .addOnSuccessListener(documentReference -> callback.onSuccess(CREATE_CATEGORY_SUCCESSFULLY))
+                .addOnFailureListener(e -> callback.onFailure(CREATE_CATEGORY_FAILED));
+
+    }
 
     public void getAllCategoryApi(final GetCollectionCallback<Category> callback) {
         ArrayList<Category> categories = new ArrayList<>();
@@ -44,7 +57,7 @@ public class categoryApi {
                     }
                     callback.onGetListSuccess(categories);
                 } else {
-                    callback.onGetListFailure("Lấy thông tin sản phẩm thất bại");
+                    callback.onGetListFailure(INTERNET_ERROR);
                 }
             }
         });
@@ -90,6 +103,17 @@ public class categoryApi {
 
                 }).addOnFailureListener(e -> {
                     callback.onGetDataFailure(INTERNET_ERROR);
+                });
+    }
+    public void updateCategory(Map<String, Object> updateData, String categoryID, StatusCallback callback) {
+        db.collection(CATEGORY_COLLECTION)
+                .document(categoryID)
+                .update(updateData)
+                .addOnSuccessListener(task -> {
+                    callback.onSuccess(UPDATE_SUCCESSFULLY);
+
+                }).addOnFailureListener(e -> {
+                    callback.onFailure(UPLOAD_FAILED);
                 });
     }
 

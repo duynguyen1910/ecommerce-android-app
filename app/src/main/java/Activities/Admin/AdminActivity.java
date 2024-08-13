@@ -12,7 +12,6 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.stores.databinding.ActivityAdminBinding;
-import com.example.stores.databinding.ActivityErevenueTableBinding;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -25,7 +24,7 @@ import interfaces.GetCollectionCallback;
 import interfaces.ImageCallback;
 import models.User;
 import utils.Chart.DrawChartUtils;
-import utils.Chart.TimeUtils;
+import utils.TimeUtils;
 import utils.FormatHelper;
 
 public class AdminActivity extends AppCompatActivity {
@@ -79,10 +78,10 @@ public class AdminActivity extends AppCompatActivity {
         super.onResume();
         getUserInfo();
         getCount();
-        getRevenueForAllMonths();
+        getEcomRevenue();
     }
 
-    private void getRevenueForAllMonths(){
+    private void getEcomRevenue(){
         binding.progressBar.setVisibility(View.VISIBLE);
         invoiceApi m_invoiceApi = new invoiceApi();
         int m_currentMonth = TimeUtils.getCurrentMonthValue();
@@ -135,12 +134,13 @@ public class AdminActivity extends AppCompatActivity {
 
 
     private void setupEvents() {
-        binding.layoutTotalStore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AdminActivity.this, ERevenueTableActivity.class);
-                startActivity(intent);
-            }
+        binding.layoutTotalStores.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminActivity.this, EcomRevenueActivity.class);
+            startActivity(intent);
+        });
+        binding.layoutTotalCategories.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminActivity.this, EcomCategoryActivity.class);
+            startActivity(intent);
         });
         binding.imageBack.setOnClickListener(v -> finish());
     }

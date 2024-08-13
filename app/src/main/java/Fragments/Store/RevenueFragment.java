@@ -18,10 +18,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import api.invoiceApi;
 import interfaces.GetAggregate.GetManyAggregateCallback;
 import interfaces.GetCollectionCallback;
-import utils.Chart.CustomValueMoneyFormatter;
 import utils.Chart.DrawChartUtils;
 import utils.FormatHelper;
-import utils.Chart.TimeUtils;
+import utils.TimeUtils;
 
 public class RevenueFragment extends Fragment {
     FragmentRevenueBinding binding;

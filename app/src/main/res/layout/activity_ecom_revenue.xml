@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,7 +45,7 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/secondary_color"
+        android:background="@color/primary_color"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingHorizontal="4dp"
@@ -59,10 +60,9 @@
             android:text="STT"
             android:textColor="@color/white" />
 
-
         <TextView
             android:id="@+id/txtProductName"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"

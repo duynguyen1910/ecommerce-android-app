@@ -1,12 +1,10 @@
 package Adapters.Invoices;
 import static constants.keyName.STORE_NAME;
-import static utils.FormatHelper.formatDateTime;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.stores.databinding.ItemInvoiceBinding;
-import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -30,7 +27,7 @@ import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
 import models.Invoice;
 import models.InvoiceDetail;
-import utils.Chart.TimeUtils;
+import utils.TimeUtils;
 import utils.Invoice.DialogCancelInvoiceUtils;
 import utils.FormatHelper;
 import utils.Invoice.InvoiceUtils;

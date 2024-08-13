@@ -2,16 +2,10 @@ package Adapters.Invoices;
 
 import static constants.keyName.CONFIRMED_AT;
 import static constants.keyName.STATUS;
-import static utils.Cart.CartUtils.showToast;
-import static utils.Chart.TimeUtils.setDateTimeByInvoice;
-import static utils.FormatHelper.formatDateTime;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,24 +18,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.stores.R;
 import com.example.stores.databinding.ItemRequestInvoiceBinding;
-import com.google.firebase.Timestamp;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import Activities.Invoices.InvoiceDetailActivity;
 import api.invoiceApi;
-import api.productApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
 import interfaces.InAdapter.UpdateCountListener;
-import interfaces.StatusCallback;
 import interfaces.UpdateDocumentCallback;
 import interfaces.UserCallback;
 import models.Invoice;
 import models.InvoiceDetail;
 import models.User;
-import utils.Chart.TimeUtils;
+import utils.TimeUtils;
 import utils.Invoice.DialogCancelInvoiceUtils;
 import utils.FormatHelper;
 import utils.Invoice.InvoiceUtils;

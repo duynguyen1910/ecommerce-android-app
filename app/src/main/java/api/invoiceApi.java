@@ -42,10 +42,8 @@ import com.google.firebase.firestore.WriteBatch;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import interfaces.CreateDocumentCallback;
@@ -60,7 +58,7 @@ import models.Product;
 import models.Store;
 import models.Variant;
 import utils.Cart.CartUtils;
-import utils.Chart.TimeUtils;
+import utils.TimeUtils;
 
 public class invoiceApi {
     private FirebaseFirestore db;
@@ -180,7 +178,7 @@ public class invoiceApi {
 
     public void getCustomerMonthCountInvoice(String customerID, int year, int month, GetManyAggregateCallback callback) {
         List<Integer> orderStatuses = Arrays.asList(1, 2, 3, 4);
-        Timestamp[] dayRange = TimeUtils.getDayRange(year, month);
+        Timestamp[] dayRange = TimeUtils.getMonthRange(year, month);
         db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(CUSTOMER_ID, customerID)
                 .whereIn(STATUS, orderStatuses)
@@ -211,7 +209,7 @@ public class invoiceApi {
 
     private Task<QuerySnapshot> getSpendingInAMonthTask(String customerID, int year, int month) {
         List<Integer> orderStatuses = Arrays.asList(1, 2, 3, 4);
-        Timestamp[] dayRange = TimeUtils.getDayRange(year, month);
+        Timestamp[] dayRange = TimeUtils.getMonthRange(year, month);
         return db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(CUSTOMER_ID, customerID)
                 .whereIn(STATUS, orderStatuses)
@@ -256,7 +254,7 @@ public class invoiceApi {
 
     private Task<QuerySnapshot> getRevenueInAMonthTask(String storeID, int year, int month) {
         List<Integer> orderStatuses = Arrays.asList(1, 2, 3, 4);
-        Timestamp[] dayRange = TimeUtils.getDayRange(year, month);
+        Timestamp[] dayRange = TimeUtils.getMonthRange(year, month);
         return db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(STORE_ID, storeID)
                 .whereIn(STATUS, orderStatuses)
@@ -267,7 +265,7 @@ public class invoiceApi {
 
     public void getStoreMonthStatistics(String storeID, int year, int month, GetManyAggregateCallback callback) {
         List<Integer> orderStatuses = Arrays.asList(1, 2, 3, 4);
-        Timestamp[] dayRange = TimeUtils.getDayRange(year, month);
+        Timestamp[] dayRange = TimeUtils.getMonthRange(year, month);
         db.collection(INVOICE_COLLECTION)
                 .whereEqualTo(STORE_ID, storeID)
                 .whereIn(STATUS, orderStatuses)
@@ -318,6 +316,7 @@ public class invoiceApi {
 
                                 store = new Store();
                                 store.setStoreRevenue(invoice.getTotal());
+                                store.setBaseID(invoice.getStoreID());
                                 storeRevenueMap.put(storeID, store);
                                 storeTasks.add(getStoreDetail(storeID, store));
                             } else {
@@ -386,7 +385,7 @@ public class invoiceApi {
 
     private Task<QuerySnapshot> getEcommerceMonthRevenueTask(int year, int month) {
         List<Integer> orderStatuses = Arrays.asList(1, 2, 3, 4);
-        Timestamp[] dayRange = TimeUtils.getDayRange(year, month);
+        Timestamp[] dayRange = TimeUtils.getMonthRange(year, month);
         return db.collection(INVOICE_COLLECTION)
                 .whereIn(STATUS, orderStatuses)
                 .whereGreaterThanOrEqualTo(CREATE_AT, dayRange[0])

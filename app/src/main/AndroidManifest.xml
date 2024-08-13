@@ -37,7 +37,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="Activities.Admin.ERevenueTableActivity"
+            android:name="Activities.Admin.EcomCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.Admin.EcomRevenueActivity"
             android:exported="false" />
         <activity
             android:name="Activities.Admin.AdminActivity"

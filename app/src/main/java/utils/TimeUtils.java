@@ -1,11 +1,10 @@
-package utils.Chart;
+package utils;
 
 import com.google.firebase.Timestamp;
 
 import java.util.Calendar;
 
 import models.Invoice;
-import utils.FormatHelper;
 
 public class TimeUtils {
     public static String[] monthNames = {
@@ -38,7 +37,7 @@ public class TimeUtils {
         return (day + " tháng " + month + "/" + year);
     }
 
-    public static Timestamp[] getDayRange(int year, int month) {
+    public static Timestamp[] getMonthRange(int year, int month) {
         Calendar startCalendar = Calendar.getInstance();
         startCalendar.set(year, getMonthInCalendar(month), 1, 0, 0, 0); // Set to 00:00:00 of the 1st day
         Timestamp startDate = new Timestamp(startCalendar.getTime());
