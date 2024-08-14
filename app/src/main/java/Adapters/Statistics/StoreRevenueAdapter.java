@@ -1,6 +1,9 @@
 package Adapters.Statistics;
+import static constants.keyName.STORE_ID;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.stores.databinding.ItemStoreRevenueBinding;
 
 import java.util.ArrayList;
+
+import Activities.BuyProduct.ProductDetailActivity;
+import Activities.StoreSetup.ViewMyStoreActivity;
 import models.Store;
 import utils.Chart.CustomValueMoneyFormatter;
 
@@ -47,6 +53,16 @@ public class StoreRevenueAdapter extends RecyclerView.Adapter<StoreRevenueAdapte
         holder.binding.txtStoreName.setText(store.getStoreName());
 
         holder.binding.txtProductRevenue.setText(new CustomValueMoneyFormatter().getFormattedValue((float) store.getStoreRevenue()));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ViewMyStoreActivity.class);
+                intent.putExtra(STORE_ID, store.getBaseID());
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override

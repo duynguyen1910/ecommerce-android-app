@@ -123,10 +123,10 @@ public class UpdateProductActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        binding.layoutDeliveryFee.setOnClickListener(v -> {
-            Intent intent = new Intent(UpdateProductActivity.this, DeliveryFeeActivity.class);
-            startActivity(intent);
-        });
+//        binding.layoutDeliveryFee.setOnClickListener(v -> {
+//            Intent intent = new Intent(UpdateProductActivity.this, DeliveryFeeActivity.class);
+//            startActivity(intent);
+//        });
 
         binding.btnSave.setOnClickListener(v -> {
             Map<String, Object> productData = validateForm();

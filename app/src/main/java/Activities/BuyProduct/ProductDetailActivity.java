@@ -330,6 +330,9 @@ public class ProductDetailActivity extends AppCompatActivity {
                 } else if (g_roleValue == 3) {
                     showToast(ProductDetailActivity.this, "Đơn vị vận chuyển không thể mua hàng");
                 }
+                else if (g_roleValue == 0) {
+                    showToast(ProductDetailActivity.this, "Admin không thể mua hàng");
+                }
             }
         });
     }

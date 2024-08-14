@@ -84,7 +84,7 @@ public class ProductGridAdapter extends RecyclerView.Adapter<ProductGridAdapter.
                 Bundle bundle = new Bundle();
                 bundle.putString(PRODUCT_ID, product.getBaseID());
                 bundle.putString(STORE_ID, product.getStoreID());
-                if (Objects.equals(storeId, product.getStoreID()) || roleValue == 3){
+                if (Objects.equals(storeId, product.getStoreID()) || roleValue == 3 || roleValue == 0){
                     bundle.putBoolean("buyable", false);
                 }else {
                     bundle.putBoolean("buyable", true);

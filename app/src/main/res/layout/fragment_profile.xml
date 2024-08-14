@@ -460,7 +460,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_truck_24" />
+                android:src="@drawable/ic_admin_24" />
 
             <TextView
                 android:layout_width="wrap_content"

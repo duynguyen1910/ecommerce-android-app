@@ -69,10 +69,10 @@ public class AddProductsActivity extends AppCompatActivity {
 
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
-        binding.layoutDeliveryFee.setOnClickListener(v -> {
-            Intent intent = new Intent(AddProductsActivity.this, DeliveryFeeActivity.class);
-            startActivity(intent);
-        });
+//        binding.layoutDeliveryFee.setOnClickListener(v -> {
+//            Intent intent = new Intent(AddProductsActivity.this, DeliveryFeeActivity.class);
+//            startActivity(intent);
+//        });
 
         binding.btnAdd.setOnClickListener(v -> {
             submitProductWithValidation();
@@ -193,6 +193,7 @@ public class AddProductsActivity extends AppCompatActivity {
                 @Override
                 public void onCreateSuccess(String documentId) {
                     binding.progressBar.setVisibility(View.GONE);
+                    Log.d("productID", "productID: " + documentId);
                     showToast(AddProductsActivity.this, CREATE_PRODUCT_SUCCESSFULLY);
                     finish();
                 }

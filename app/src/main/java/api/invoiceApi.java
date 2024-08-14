@@ -58,6 +58,7 @@ import models.Product;
 import models.Store;
 import models.Variant;
 import utils.Cart.CartUtils;
+import utils.Invoice.InvoiceUtils;
 import utils.TimeUtils;
 
 public class invoiceApi {
@@ -328,6 +329,11 @@ public class invoiceApi {
                     Tasks.whenAllSuccess(storeTasks)
                             .addOnSuccessListener(results -> {
                                 ArrayList<Store> stores = new ArrayList<>(storeRevenueMap.values());
+                                stores.sort((store1, store2) -> {
+                                    double revenue1 = store1.getStoreRevenue();
+                                    double revenue2 = store2.getStoreRevenue();
+                                    return Double.compare(revenue2, revenue1);
+                                });
                                 callback.onGetListSuccess(stores);
                             }).addOnFailureListener(e -> {
                                 callback.onGetListFailure(INTERNET_ERROR);
@@ -411,6 +417,7 @@ public class invoiceApi {
                                 invoices.add(invoice);
                             }
 
+                            InvoiceUtils.sortInvoicesByStatus(invoices, invoiceStatus);
                             callback.onGetListSuccess(invoices);
                         } else {
                             callback.onGetListFailure("Failed to get invoices: " + task.getException().getMessage());
@@ -436,6 +443,7 @@ public class invoiceApi {
                                 invoices.add(invoice);
                             }
 
+                            InvoiceUtils.sortInvoicesByStatus(invoices, invoiceStatus);
                             callback.onGetListSuccess(invoices);
                         } else {
                             callback.onGetListFailure("Failed to get invoices: " + task.getException().getMessage());
@@ -556,6 +564,7 @@ public class invoiceApi {
                                 invoices.add(invoice);
                             }
 
+                            InvoiceUtils.sortInvoicesByStatus(invoices, invoiceStatus);
                             callback.onGetListSuccess(invoices);
                         } else {
                             callback.onGetListFailure("Failed to get invoices: " + task.getException().getMessage());

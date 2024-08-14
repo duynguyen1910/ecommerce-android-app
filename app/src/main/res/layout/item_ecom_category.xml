@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical|end"
         android:background="@drawable/custom_button_primary"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="26dp"
         android:paddingVertical="8dp"
         android:src="@drawable/ic_edit"
         app:tint="@color/white" />
