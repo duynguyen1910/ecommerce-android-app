@@ -67,17 +67,17 @@
                     android:orientation="vertical"
                     android:paddingVertical="6dp">
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/txtInvoiceStatus"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginBottom="10dp"-->
-<!--                        android:background="@color/primary_color"-->
-<!--                        android:gravity="center_vertical"-->
-<!--                        android:padding="16dp"-->
-<!--                        android:text="Đơn hàng đang chờ xác nhận"-->
-<!--                        android:textColor="@color/white"-->
-<!--                        android:textSize="16sp" />-->
+                    <!--                    <TextView-->
+                    <!--                        android:id="@+id/txtInvoiceStatus"-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_marginBottom="10dp"-->
+                    <!--                        android:background="@color/primary_color"-->
+                    <!--                        android:gravity="center_vertical"-->
+                    <!--                        android:padding="16dp"-->
+                    <!--                        android:text="Đơn hàng đang chờ xác nhận"-->
+                    <!--                        android:textColor="@color/white"-->
+                    <!--                        android:textSize="16sp" />-->
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -99,11 +99,10 @@
                             android:id="@+id/txtInvoiceStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
                             android:layout_alignParentEnd="true"
+                            android:gravity="center_vertical"
                             android:text="Chờ xác nhận"
-                            android:textColor="@color/secondary_color"
-                          />
+                            android:textColor="@color/secondary_color" />
                     </RelativeLayout>
 
                     <TextView
@@ -190,6 +189,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_border_bottom"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:text="Tin nhắn"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/txtInvoiceNote"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:text="..."
+                        android:gravity="center_vertical|end"
+                        android:textColor="@color/darkgray"
+                        android:textSize="14sp"
+                        app:drawableTint="@color/darkgray" />
+                </LinearLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -390,6 +416,7 @@
                             android:textColor="@color/darkgray"
                             app:backgroundTint="@null" />
                     </RelativeLayout>
+
                     <RelativeLayout
                         android:id="@+id/cancelledAtRL"
                         android:layout_width="match_parent"
@@ -413,6 +440,7 @@
                             android:textColor="@color/darkgray"
                             app:backgroundTint="@null" />
                     </RelativeLayout>
+
                     <LinearLayout
                         android:id="@+id/cancelledReasonRL"
                         android:layout_width="match_parent"
@@ -424,8 +452,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Lý do hủy đơn:"
                             android:layout_marginBottom="4dp"
+                            android:text="Lý do hủy đơn:"
                             android:textColor="@color/black" />
 
                         <TextView
@@ -439,7 +467,6 @@
                 </LinearLayout>
 
                 <Button
-                    android:visibility="gone"
                     android:id="@+id/btnCancelInvoice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -448,7 +475,8 @@
                     android:text="Hủy đơn"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:visibility="gone" />
 
             </LinearLayout>
         </LinearLayout>

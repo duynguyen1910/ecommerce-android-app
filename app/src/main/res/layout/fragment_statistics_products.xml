@@ -1,139 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:paddingVertical="8dp"
-        android:paddingHorizontal="16dp"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginEnd="10dp"
-            android:id="@+id/txtSort"
-            android:text="Sắp xếp theo"
-            android:background="@color/light_bg_primary"
-            android:paddingHorizontal="8dp"
-            android:gravity="center_vertical"
-            android:drawablePadding="4dp"
-            android:textColor="@color/black"
-            app:drawableEndCompat="@drawable/ic_sort_24"
-            app:drawableTint="@color/primary_color" />
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="10dp"
-            app:cardCornerRadius="2dp">
-
-            <TextView
-                android:id="@+id/txtSortChoice"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/custom_border_green_persian"
-                android:gravity="center"
-                android:minWidth="30dp"
-                android:text="Số lượng bán"
-                android:paddingVertical="4dp"
-                android:paddingHorizontal="8dp"
-                android:textColor="@color/secondary_color"
-                android:textSize="14sp"
-                android:visibility="visible" />
-        </androidx.cardview.widget.CardView>
-
-    </LinearLayout>
-    <TableRow
+        android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/secondary_color"
-        android:gravity="center_vertical"
         android:orientation="vertical"
-        android:paddingHorizontal="4dp"
-        android:paddingVertical="16dp">
+        android:visibility="gone">
 
-        <TextView
-            android:id="@+id/txtIndex"
-            android:layout_width="28dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="4dp"
-            android:text="STT"
-            android:textColor="@color/white" />
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp">
 
+            <TextView
+                android:id="@+id/txtSort"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="10dp"
+                android:background="@color/light_bg_primary"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="8dp"
+                android:text="Sắp xếp theo"
+                android:textColor="@color/black"
+                app:drawableEndCompat="@drawable/ic_sort_24"
+                app:drawableTint="@color/primary_color" />
 
-        <TextView
-            android:id="@+id/txtProductName"
-            android:layout_width="0dp"
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                app:cardCornerRadius="2dp">
+
+                <TextView
+                    android:id="@+id/txtSortChoice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/custom_border_green_persian"
+                    android:gravity="center"
+                    android:minWidth="30dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:text="Số lượng bán"
+                    android:textColor="@color/secondary_color"
+                    android:textSize="14sp"
+                    android:visibility="visible" />
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <TableRow
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:maxLines="2"
+            android:background="@color/secondary_color"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
             android:paddingHorizontal="4dp"
-            android:text="Sản phẩm"
-            android:textAlignment="center"
-            android:textColor="@color/white" />
+            android:paddingVertical="16dp">
+
+            <TextView
+                android:id="@+id/txtIndex"
+                android:layout_width="28dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="4dp"
+                android:text="STT"
+                android:textColor="@color/white" />
+
+
+            <TextView
+                android:id="@+id/txtProductName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:paddingHorizontal="4dp"
+                android:text="Sản phẩm"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/txtSold"
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Đã bán"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/txtNewPrice"
+                android:layout_width="45dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Giá"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/txtProductRevenue"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Doanh thu"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+        </TableRow>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="horizontal" />
 
         <TextView
-            android:id="@+id/txtSold"
-            android:layout_width="45dp"
+            android:id="@+id/txtNotice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Đã bán"
-            android:textAlignment="center"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/txtNewPrice"
-            android:layout_width="45dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Giá"
-            android:textAlignment="center"
-            android:textColor="@color/white" />
-
-        <TextView
-            android:id="@+id/txtProductRevenue"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Doanh thu"
-            android:textAlignment="center"
-            android:textColor="@color/white" />
-
-    </TableRow>
-
-
-
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scrollbars="horizontal" />
+            android:layout_gravity="start"
+            android:layout_marginVertical="16dp"
+            android:lineSpacingExtra="4dp"
+            android:paddingHorizontal="16dp"
+            android:text="@string/product_revenue_desc"
+            android:textColor="@color/darkgray"
+            android:textSize="12sp"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerInParent="true"
         android:indeterminateTintMode="src_atop"
-        android:visibility="visible" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:lineSpacingExtra="4dp"
-        android:layout_marginVertical="16dp"
-        android:paddingHorizontal="16dp"
-        android:textSize="12sp"
-        android:text="@string/product_revenue_desc"
-        android:textColor="@color/darkgray" />
-</LinearLayout>
+        android:visibility="gone" />
+</RelativeLayout>

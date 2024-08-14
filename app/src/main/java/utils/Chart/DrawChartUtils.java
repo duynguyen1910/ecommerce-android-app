@@ -1,7 +1,11 @@
 package utils.Chart;
+
 import android.content.Context;
 import android.graphics.Color;
+import android.widget.TextView;
+
 import androidx.core.content.ContextCompat;
+
 import com.example.stores.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -16,6 +20,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import utils.FormatHelper;
 
 public class DrawChartUtils {
     public static void drawSpendingBarChart(Context context, ArrayList<Double> listData, int currentMonth, BarChart barChart) {
@@ -186,4 +192,24 @@ public class DrawChartUtils {
         barChart.getAxisRight().setEnabled(false);
         barChart.setBackgroundColor(Color.WHITE);
     }
+
+    public static void compareRevenueToLastMonth(Context context, TextView textView, ArrayList<Double> listRevenues, int currentMonth) {
+
+        double currentRevenue = listRevenues.get(currentMonth - 1);
+        double lastMonthRevenue = listRevenues.get(currentMonth - 2);
+        if (lastMonthRevenue == 0) {
+            textView.setText("Không có dữ liệu tháng trước");
+            return;
+        }
+        double percent = (currentRevenue / lastMonthRevenue) * 100 - 100;
+        double remain = currentRevenue - lastMonthRevenue;
+        if (percent > 1){
+            textView.setText("Tăng " + String.format("%.2f", percent) + "% (+" + FormatHelper.formatVND(remain) + ")");
+            textView.setTextColor(ContextCompat.getColor(context, R.color.green));
+        }else {
+            textView.setText("Giảm " + String.format("%.2f", -percent) + "% (" + FormatHelper.formatVND(remain) + ")");
+            textView.setTextColor(ContextCompat.getColor(context, R.color.primary_color));
+        }
+    }
+
 }

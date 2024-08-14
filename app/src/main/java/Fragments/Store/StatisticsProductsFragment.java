@@ -73,11 +73,13 @@ public class StatisticsProductsFragment extends Fragment {
     private void getBestSeller() {
         resetSortChoice();
         binding.progressBar.setVisibility(View.VISIBLE);
+
         productApi m_productApi = new productApi();
 
         m_productApi.getTopBestSellerByStoreID(g_sStoreID, 100, new GetCollectionCallback<Product>() {
             @Override
             public void onGetListSuccess(ArrayList<Product> bestSellers) {
+
                 g_bestSellers = new ArrayList<>(bestSellers);
                 List<Task<Void>> tasks = new ArrayList<>();
                 for (int i = 0; i < bestSellers.size(); i++) {
@@ -86,10 +88,12 @@ public class StatisticsProductsFragment extends Fragment {
 
                 Tasks.whenAllSuccess(tasks)
                         .addOnSuccessListener(unused -> {
+                            binding.body.setVisibility(View.VISIBLE);
                             binding.progressBar.setVisibility(View.GONE);
                             g_adapter = new ProductStatisticsAdapter(requireActivity(), g_bestSellers);
                             binding.recyclerView.setAdapter(g_adapter);
                             binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
+                            binding.txtNotice.setVisibility(View.VISIBLE);
 
                         })
                         .addOnFailureListener(e -> {

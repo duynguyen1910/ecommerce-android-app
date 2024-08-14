@@ -147,6 +147,29 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/custom_border_bottom"
+                                android:padding="16dp"
+                                android:id="@+id/layoutCompare"
+                                android:visibility="visible">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/white"
+                                    android:text="So với tháng trước: "
+                                    android:textColor="@color/black" />
+
+                                <TextView
+                                    android:id="@+id/txtCompareToLastMonth"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:textStyle="bold" />
+
+                            </RelativeLayout>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/custom_border_bottom"
                                 android:padding="16dp">
 
                                 <TextView
@@ -163,6 +186,8 @@
                                     android:textColor="@color/secondary_color"
                                     android:textStyle="bold" />
                             </RelativeLayout>
+
+
 
                         </LinearLayout>
                     </LinearLayout>

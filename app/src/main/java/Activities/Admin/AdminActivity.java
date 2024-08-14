@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
@@ -96,9 +97,11 @@ public class AdminActivity extends AppCompatActivity {
                 listRevenues.forEach(item -> {
                     yearRevenue.updateAndGet(v -> v + item);
                 });
-
                 binding.txtRevenueInYear.setText(FormatHelper.formatVND(yearRevenue.get()));
                 DrawChartUtils.drawRevenuesLineChart(AdminActivity.this, listRevenues, binding.lineChart);
+
+                binding.layoutCompare.setVisibility(View.VISIBLE);
+                DrawChartUtils.compareRevenueToLastMonth(AdminActivity.this, binding.txtCompareToLastMonth, listRevenues, m_currentMonth);
             }
 
             @Override

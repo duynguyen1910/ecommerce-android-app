@@ -2,6 +2,7 @@ package Activities.Invoices;
 
 import static constants.keyName.CANCELED_AT;
 import static constants.keyName.CANCELED_REASON;
+import static constants.keyName.NOTE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 
@@ -21,6 +22,7 @@ import com.example.stores.databinding.ActivityInvoiceDetailBinding;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
+
 import Adapters.Invoices.InvoiceDetailAdapter;
 import api.invoiceApi;
 import api.storeApi;
@@ -46,7 +48,7 @@ public class InvoiceDetailActivity extends AppCompatActivity {
 
     }
 
-    private void setupUI(){
+    private void setupUI() {
         Intent intent = getIntent();
         if (intent != null) {
             Bundle bundle = intent.getExtras();
@@ -54,7 +56,7 @@ public class InvoiceDetailActivity extends AppCompatActivity {
             String detailedAddress = bundle.getString("detailedAddress");
             String deliveryAddress = bundle.getString("deliveryAddress");
             String invoiceStatusLabel = bundle.getString("invoiceStatusLabel");
-
+            String note = bundle.getString(NOTE);
             String createdAt = bundle.getString("createdAt");
             String confirmedAt = bundle.getString("confirmedAt");
             String shippedAt = bundle.getString("shippedAt");
@@ -79,31 +81,35 @@ public class InvoiceDetailActivity extends AppCompatActivity {
 
             binding.txtCreatedDate.setText(createdAt);
 
-            if(!confirmedAt.isEmpty()) {
+            if (!confirmedAt.isEmpty()) {
                 binding.confirmedAtRL.setVisibility(View.VISIBLE);
                 binding.txtConfirmedAt.setText(confirmedAt);
             }
 
-            if(!shippedAt.isEmpty()) {
+            if (!shippedAt.isEmpty()) {
                 binding.shippedAtRL.setVisibility(View.VISIBLE);
                 binding.txtShippedAt.setText(shippedAt);
             }
 
-            if(!deliveredAt.isEmpty()) {
+            if (!deliveredAt.isEmpty()) {
                 binding.deliveredAtRL.setVisibility(View.VISIBLE);
                 binding.txtDeliveredAt.setText(deliveredAt);
             }
-            if(!cancelledAt.isEmpty()) {
+            if (!cancelledAt.isEmpty()) {
                 binding.cancelledAtRL.setVisibility(View.VISIBLE);
                 binding.txtCanceledAt.setText(cancelledAt);
             }
-            if(cancelledReason != null) {
+            if (!note.isEmpty()) {
+                binding.txtInvoiceNote.setText(note);
+            }
+            if (cancelledReason != null) {
                 binding.cancelledReasonRL.setVisibility(View.VISIBLE);
                 binding.txtCanceledReason.setText(cancelledReason);
             }
 
-           binding.btnCancelInvoice.setVisibility(invoiceStatusLabel.equals(
-                   OrderStatus.PENDING_CONFIRMATION.getOrderLabel()) ? View.VISIBLE : View.GONE);
+
+            binding.btnCancelInvoice.setVisibility(invoiceStatusLabel.equals(
+                    OrderStatus.PENDING_CONFIRMATION.getOrderLabel()) ? View.VISIBLE : View.GONE);
 
 
             invoiceApi invoiceApi = new invoiceApi();
@@ -148,7 +154,7 @@ public class InvoiceDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void setupEvent(){
+    private void setupEvent() {
         binding.imageBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,7 +163,7 @@ public class InvoiceDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void initUI(){
+    private void initUI() {
         getWindow().setStatusBarColor(Color.parseColor("#F04D7F"));
         Objects.requireNonNull(getSupportActionBar()).hide();
     }

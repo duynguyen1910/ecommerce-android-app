@@ -2,6 +2,7 @@ package utils.Invoice;
 
 import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.INVOICE_ID;
+import static constants.keyName.NOTE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
@@ -52,6 +53,8 @@ public class InvoiceUtils {
         bundle.putString("shippedAt", formatDateTime(invoice.getShippedAt()));
         bundle.putString("deliveredAt", formatDateTime(invoice.getDeliveredAt()));
         bundle.putString("cancelledAt", formatDateTime(invoice.getCancelledAt()));
+        bundle.putString("cancelledAt", formatDateTime(invoice.getCancelledAt()));
+        bundle.putString(NOTE, invoice.getNote());
         bundle.putString("cancelledReason", invoice.getCancelledReason());
         bundle.putDouble("invoiceTotal", invoice.getTotal());
         bundle.putString(STORE_ID, invoice.getStoreID());

@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import com.example.stores.databinding.FragmentRevenueBinding;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicReference;
+
+import Activities.Admin.AdminActivity;
 import api.invoiceApi;
 import interfaces.GetAggregate.GetManyAggregateCallback;
 import interfaces.GetCollectionCallback;
@@ -52,6 +54,7 @@ public class RevenueFragment extends Fragment {
         m_invoiceApi.getRevenueForAllMonthsByStoreID(g_sStoreID, m_currentYear, new GetCollectionCallback<Double>() {
             @Override
             public void onGetListSuccess(ArrayList<Double> listRevenues) {
+
                 binding.progressBar.setVisibility(View.GONE);
                 AtomicReference<Double> yearRevenue = new AtomicReference<>((double) 0);
                 listRevenues.forEach(item -> {
@@ -61,6 +64,9 @@ public class RevenueFragment extends Fragment {
                 binding.txtRevenueInYear.setText(FormatHelper.formatVND(yearRevenue.get()));
                 DrawChartUtils.drawRevenuesBarChart(requireActivity(), listRevenues,m_currentMonth, binding.barChart);
                 DrawChartUtils.drawRevenuesLineChart(requireActivity(), listRevenues, binding.lineChart);
+
+                binding.layoutCompare.setVisibility(View.VISIBLE);
+                DrawChartUtils.compareRevenueToLastMonth(requireActivity(), binding.txtCompareToLastMonth, listRevenues, m_currentMonth);
             }
 
             @Override
