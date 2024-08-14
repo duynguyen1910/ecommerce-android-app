@@ -1,6 +1,7 @@
 package Activities.StoreSetup;
 
 import static constants.keyName.STORE_ID;
+import static constants.keyName.STORE_IMAGE_URL;
 import static constants.keyName.STORE_NAME;
 
 import android.annotation.SuppressLint;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityViewMyStoreBinding;
 import com.example.stores.databinding.ItemTabLabelBinding;
@@ -18,6 +21,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import java.util.Map;
 import java.util.Objects;
+
+import Activities.BuyProduct.ProductDetailActivity;
 import Adapters.ViewPager2Adapter;
 import Fragments.Store.StoreCategoriesFragment;
 import Fragments.Store.StoreProductsFragment;
@@ -64,7 +69,10 @@ public class ViewMyStoreActivity extends AppCompatActivity {
                 public void onGetDataSuccess(Map<String, Object> data) {
                     binding.progressBar.setVisibility(View.GONE);
                     binding.txtStoreName.setText((CharSequence) data.get(STORE_NAME));
-
+                    String storeImageUrl = (String) data.get(STORE_IMAGE_URL);
+                    if (storeImageUrl != null){
+                        Glide.with(ViewMyStoreActivity.this).load(storeImageUrl).into(binding.imvAvatar);
+                    }
                     // set up UI avatar, invoice
 
                 }

@@ -77,8 +77,8 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_store_fill_24"
-                    app:tint="@color/primary_color"  />
+                    android:src="@mipmap/default_img"
+                  />
             </androidx.cardview.widget.CardView>
 
             <ProgressBar

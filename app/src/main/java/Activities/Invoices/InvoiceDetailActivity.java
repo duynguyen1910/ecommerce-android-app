@@ -99,7 +99,7 @@ public class InvoiceDetailActivity extends AppCompatActivity {
                 binding.cancelledAtRL.setVisibility(View.VISIBLE);
                 binding.txtCanceledAt.setText(cancelledAt);
             }
-            if (!note.isEmpty()) {
+            if (note != null) {
                 binding.txtInvoiceNote.setText(note);
             }
             if (cancelledReason != null) {

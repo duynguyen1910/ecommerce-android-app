@@ -123,7 +123,7 @@ public class DialogCancelInvoiceUtils {
                 productApi.updateProductWhenCancelInvoice(invoiceDetails, new StatusCallback() {
                     @Override
                     public void onSuccess(String successMessage) {
-                        showToast(context, successMessage);
+
                     }
 
                     @Override
@@ -221,7 +221,7 @@ public class DialogCancelInvoiceUtils {
                 productApi.updateProductWhenCancelInvoice(invoiceDetails, new StatusCallback() {
                     @Override
                     public void onSuccess(String successMessage) {
-                        showToast(context, successMessage);
+
                     }
 
                     @Override
@@ -322,7 +322,7 @@ public class DialogCancelInvoiceUtils {
                 productApi.updateProductWhenCancelInvoice(invoiceDetails, new StatusCallback() {
                     @Override
                     public void onSuccess(String successMessage) {
-                        showToast(context, successMessage);
+
                     }
 
                     @Override

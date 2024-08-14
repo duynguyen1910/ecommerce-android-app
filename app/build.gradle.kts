@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+
     implementation("com.github.zerobranch:SwipeLayout:1.3.1")
     implementation("com.google.android.material:material:1.12.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

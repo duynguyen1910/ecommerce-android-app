@@ -172,7 +172,7 @@ public class PaymentActivity extends AppCompatActivity {
                 m_productApi.updateProductWhenBuying(invoiceDetails, new StatusCallback() {
                     @Override
                     public void onSuccess(String successMessage) {
-                        showToast(PaymentActivity.this, successMessage);
+
                     }
 
                     @Override
@@ -206,7 +206,6 @@ public class PaymentActivity extends AppCompatActivity {
         binding.txtTotalDeliveryFee.setText(FormatHelper.formatVND(totalDelivery));
         double total = getTotalProductsFee() + totalDelivery;
         binding.txtTotalPayment.setText(FormatHelper.formatVND(total));
-        binding.txtTotalOrder.setText(FormatHelper.formatVND(total));
     }
 
     private double getTotalProductsFee() {

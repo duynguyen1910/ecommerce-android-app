@@ -2,7 +2,10 @@ package api;
 
 import static android.content.ContentValues.TAG;
 import static constants.collectionName.STORE_COLLECTION;
+import static constants.collectionName.USER_COLLECTION;
+import static constants.keyName.USER_IMAGE_URL;
 import static constants.toastMessage.INTERNET_ERROR;
+import static constants.toastMessage.URL_NOT_FOUND;
 
 import android.util.Log;
 
@@ -21,6 +24,7 @@ import constants.toastMessage;
 import interfaces.CreateDocumentCallback;
 import interfaces.GetAggregate.GetAggregateCallback;
 import interfaces.GetDocumentCallback;
+import interfaces.ImageCallback;
 
 public class storeApi {
     private FirebaseFirestore db;
@@ -44,6 +48,8 @@ public class storeApi {
                 });
 
     }
+
+
 
     public void getStoreDetailApi(String storeID, GetDocumentCallback callback){
         if(storeID == null) return;

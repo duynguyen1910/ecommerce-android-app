@@ -102,6 +102,8 @@ public class AdminActivity extends AppCompatActivity {
 
                 binding.layoutCompare.setVisibility(View.VISIBLE);
                 DrawChartUtils.compareRevenueToLastMonth(AdminActivity.this, binding.txtCompareToLastMonth, listRevenues, m_currentMonth);
+                binding.txtCurrentMonth.setText(TimeUtils.setMonthText(m_currentYear, m_currentMonth));
+                binding.txtCurrentMonthRevenue.setText(FormatHelper.formatVND(listRevenues.get(m_currentMonth - 1)));
             }
 
             @Override

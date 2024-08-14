@@ -9,6 +9,7 @@ import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
 import static constants.keyName.PRODUCT_SOLD;
 import static constants.keyName.STORE_ID;
+import static constants.keyName.STORE_IMAGE_URL;
 import static constants.keyName.STORE_NAME;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
@@ -55,6 +56,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import Activities.LoginActivity;
+import Activities.StoreSetup.StoreOwnerActivity;
 import Activities.StoreSetup.ViewMyStoreActivity;
 import Adapters.BuyProduct.SliderAdapterForProductDetail;
 import Adapters.BuyProduct.VariantGridAdapter;
@@ -116,11 +118,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             if (!buyable) {
                 binding.btnAddToCart.setBackground(ContextCompat.getDrawable(this, R.color.gray));
-                binding.layoutBuyNow.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
-                binding.txtAddToCart.setTextColor(ContextCompat.getColor(this, R.color.black));
                 Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_cart);
                 drawable.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN);
-                binding.viewAnimation.setImageDrawable(drawable);
             }
 
         }
@@ -161,7 +160,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                     binding.txtSold.setText("Đã bán " + currentProduct.getSold());
                     binding.txtProdctDescription.setText(currentProduct.getDescription());
-                    binding.txtNewPriceInBuyNow.setText(FormatHelper.formatVND(currentProduct.getNewPrice()));
+
 
 
                     // setup productImages
@@ -200,7 +199,10 @@ public class ProductDetailActivity extends AppCompatActivity {
                     storeName = (String) data.get(STORE_NAME);
                     binding.progressBarStore.setVisibility(View.GONE);
                     binding.txtStoreName.setText(storeName);
-
+                    String storeImageUrl = (String) data.get(STORE_IMAGE_URL);
+                    if (storeImageUrl != null){
+                        Glide.with(ProductDetailActivity.this).load(storeImageUrl).into(binding.imvStoreImage);
+                    }
                     // set up UI avatar, invoice
 
 
@@ -296,16 +298,6 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void setupEvents() {
-        binding.btnAddToCart.setOnClickListener(v -> {
-            if (buyable) {
-                popUpAddToCartDialog();
-            } else if (g_roleValue == 2){
-                showToast(ProductDetailActivity.this, "Bạn đang bán sản phẩm này\nKhông thể mua");
-            } else if (g_roleValue == 3) {
-                showToast(ProductDetailActivity.this, "Đơn vị vận chuyển không thể mua hàng");
-            }
-
-        });
         binding.imageBack.setOnClickListener(v -> finish());
 
         binding.iconCart.setOnClickListener(v -> {
@@ -314,17 +306,17 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
 
 
-        binding.btnViewStore.setOnClickListener(v -> {
+        binding.layoutInfo.setOnClickListener(v -> {
             Intent intent = new Intent(ProductDetailActivity.this, ViewMyStoreActivity.class);
             intent.putExtra(STORE_ID, storeID);
             startActivity(intent);
         });
 
-        binding.layoutBuyNow.setOnClickListener(new View.OnClickListener() {
+        binding.btnAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (buyable) {
-//                    popUpAddToCartDialog();
+                    popUpAddToCartDialog();
                 } else if (g_roleValue == 2){
                     showToast(ProductDetailActivity.this, "Bạn đang bán sản phẩm này\nKhông thể mua");
                 } else if (g_roleValue == 3) {

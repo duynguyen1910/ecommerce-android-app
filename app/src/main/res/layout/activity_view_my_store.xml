@@ -94,7 +94,6 @@
                         android:id="@+id/layoutAvatar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:layout_marginEnd="10dp"
                         app:cardCornerRadius="50dp">
 
@@ -103,8 +102,8 @@
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_store_fill_24"
-                            app:tint="@color/primary_color"  />
+                            android:src="@mipmap/default_img"
+                             />
                     </androidx.cardview.widget.CardView>
 
                     <LinearLayout

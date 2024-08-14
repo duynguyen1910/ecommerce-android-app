@@ -20,7 +20,42 @@
             android:orientation="horizontal"
             android:paddingVertical="10dp">
 
+            <LinearLayout
+                android:id="@+id/layoutActivateStore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_begin_store_owner"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="4dp">
 
+                <ImageView
+                    android:id="@+id/ic_store"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_store"
+                    app:tint="@color/text1" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarForTxtStore"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:indeterminateTintMode="src_atop"
+                    android:visibility="gone"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:id="@+id/txtStore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="6dp"
+                    android:drawablePadding="2dp"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:textColor="@color/text1"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -258,6 +293,16 @@
                 android:text="Đơn mua"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:gravity="center_vertical"
+                android:text="Xem lịch sử mua hàng"
+                android:textColor="@color/secondary_color"
+                app:drawableEndCompat="@drawable/ic_arrow_right_24"
+                app:drawableTint="@color/secondary_color" />
         </RelativeLayout>
 
         <LinearLayout
@@ -330,42 +375,42 @@
                     android:textColor="@color/black" />
             </LinearLayout>
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="1"-->
-<!--                android:gravity="center"-->
-<!--                android:orientation="vertical">-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
-<!--                <FrameLayout-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginStart="4dp">-->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp">
 
-<!--                    <ImageView-->
-<!--                        android:layout_width="35dp"-->
-<!--                        android:layout_height="35dp"-->
-<!--                        android:src="@drawable/ic_star"-->
-<!--                        app:tint="@color/darkgray" />-->
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/ic_star"
+                        app:tint="@color/darkgray" />
 
-<!--                    <TextView-->
-<!--                        android:layout_width="20dp"-->
-<!--                        android:layout_height="20dp"-->
-<!--                        android:layout_marginStart="26dp"-->
-<!--                        android:background="@drawable/bg_quantity_in_cart"-->
-<!--                        android:gravity="center"-->
-<!--                        android:text="4"-->
-<!--                        android:textColor="@color/white"-->
-<!--                        android:textSize="12sp" />-->
-<!--                </FrameLayout>-->
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="26dp"
+                        android:background="@drawable/bg_quantity_in_cart"
+                        android:gravity="center"
+                        android:text="4"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+                </FrameLayout>
 
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginTop="8dp"-->
-<!--                    android:text="Đánh giá"-->
-<!--                    android:textColor="@color/black" />-->
-<!--            </LinearLayout>-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Đánh giá"
+                    android:textColor="@color/black" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
@@ -389,6 +434,28 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/layoutAdmin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_border_bottom"
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:paddingHorizontal="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_admin_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Admin Dashboard"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <LinearLayout
             android:id="@+id/layoutLogistics"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -409,67 +476,8 @@
                 android:text="Đơn hàng cần vận chuyển"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
-
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/layoutActivateStore"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/custom_border_bottom"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="16dp">
 
-            <ImageView
-                android:id="@+id/ic_store"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_store"
-                app:tint="@color/black" />
-
-            <ProgressBar
-                android:id="@+id/progressBarForTxtStore"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:indeterminateTintMode="src_atop"
-                android:visibility="gone"
-                tools:ignore="MissingConstraints" />
-
-            <TextView
-                android:id="@+id/txtStore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:drawablePadding="2dp"
-                android:fontFamily="sans-serif-light"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/layoutAdmin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/custom_border_bottom"
-            android:gravity="center_vertical"
-            android:padding="16dp"
-            android:paddingHorizontal="10dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_admin_24" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Admin Page"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-        </LinearLayout>
         <LinearLayout
             android:id="@+id/layoutLogoutLn"
             android:layout_width="match_parent"

@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
-    android:background="@drawable/custom_edit_text_border"
-    android:orientation="vertical"
-    android:paddingHorizontal="8dp">
+    android:background="@color/white"
+    android:orientation="vertical">
 
 
     <LinearLayout
@@ -14,7 +13,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingVertical="4dp">
+        android:padding="8dp">
 
         <androidx.cardview.widget.CardView
             android:layout_width="64dp"

@@ -156,15 +156,6 @@
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnViewStore"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:layout_alignParentEnd="true"
-                        android:background="@drawable/custom_border_primary_color"
-                        android:text="Xem Store"
-                        android:textAllCaps="false"
-                        android:textColor="@color/primary_color" />
 
                 </LinearLayout>
 
@@ -172,6 +163,7 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/lightgray"
                     android:layout_weight="1" />
 
                 <ProgressBar
