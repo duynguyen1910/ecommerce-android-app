@@ -1,50 +1,28 @@
 package Adapters.Invoices;
-import static android.content.Context.MODE_PRIVATE;
-import static constants.keyName.CANCELED_AT;
-import static constants.keyName.CANCELED_BY;
-import static constants.keyName.CANCELED_REASON;
 import static constants.keyName.DELIVERED_AT;
 import static constants.keyName.SHIPPED_AT;
 import static constants.keyName.STATUS;
-import static constants.keyName.STORE_ID;
-import static constants.keyName.USER_ID;
-import static constants.keyName.USER_INFO;
-import static constants.toastMessage.CANCEL_ORDER_SUCCESSFULLY;
 import static utils.Cart.CartUtils.showToast;
-import static utils.FormatHelper.formatDateTime;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.stores.R;
-import com.example.stores.databinding.DialogCancelInvoiceByDeliveryBinding;
 import com.example.stores.databinding.ItemDeliveryBinding;
-import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import Activities.Invoices.InvoiceDetailActivity;
 import api.invoiceApi;
@@ -56,8 +34,10 @@ import interfaces.UserCallback;
 import models.Invoice;
 import models.InvoiceDetail;
 import models.User;
-import utils.DialogCancelInvoiceUtils;
+import utils.TimeUtils;
+import utils.Invoice.DialogCancelInvoiceUtils;
 import utils.FormatHelper;
+import utils.Invoice.InvoiceUtils;
 
 public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHolder> {
     private final Context context;
@@ -93,6 +73,7 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         Invoice invoice = list.get(holder.getBindingAdapterPosition());
+        final ArrayList<InvoiceDetail>[] invoiceDetails = new ArrayList[]{new ArrayList<>()};
         User user = new User();
 
         user.getUserInfo(invoice.getCustomerID(), new UserCallback() {
@@ -121,6 +102,7 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
         invoiceApi.getInvoiceDetailApi(invoice.getBaseID(), new GetCollectionCallback<InvoiceDetail>() {
             @Override
             public void onGetListSuccess(ArrayList<InvoiceDetail> productList) {
+                invoiceDetails[0] = new ArrayList<>(productList);
                 holder.binding.progressBar.setVisibility(View.GONE);
 
                 InvoiceDetailAdapter adapter = new
@@ -129,8 +111,7 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
                 holder.binding.recyclerViewProducts.setAdapter(adapter);
 
                 holder.binding.txtQuantityProducts.setText(productList.size() + " sản phẩm");
-                holder.binding.txtTime.setText(
-                        FormatHelper.formatDateTime(setDateTimeByInvoice(invoice)));
+                holder.binding.txtTime.setText(TimeUtils.setDateTimeByInvoice(invoice));
                 holder.binding.txtTotal.setText(FormatHelper.formatVND(invoice.getTotal()));
 
             }
@@ -183,28 +164,16 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
 
 
         holder.binding.btnCancel.setOnClickListener(v -> {
-            DialogCancelInvoiceUtils.popUpCancelInvoiceByDeliveryDialog(this, context, invoice, holder.getBindingAdapterPosition());
+            DialogCancelInvoiceUtils.popUpCancelInvoiceByDeliveryDialog(this, context, invoice, holder.getBindingAdapterPosition(), invoiceDetails[0]);
         });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, InvoiceDetailActivity.class);
-                Bundle bundle = new Bundle();
-
-                bundle.putString("invoiceID", invoice.getBaseID());
-                bundle.putString("detailedAddress", invoice.getDetailedAddress());
-                bundle.putString("deliveryAddress", invoice.getDeliveryAddress());
-                bundle.putString("invoiceStatusLabel", invoice.getStatus().getOrderLabel());
-
-                bundle.putString("createdAt", formatDateTime(invoice.getCreatedAt()));
-                bundle.putString("confirmedAt", formatDateTime(invoice.getConfirmedAt()));
-                bundle.putString("shippedAt", formatDateTime(invoice.getShippedAt()));
-                bundle.putString("deliveredAt", formatDateTime(invoice.getDeliveredAt()));
-
-                bundle.putDouble("invoiceTotal", invoice.getTotal());
-
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                try {
+                    InvoiceUtils.transferInvoiceDetail(invoice, context, InvoiceDetailActivity.class.newInstance());
+                } catch (IllegalAccessException | InstantiationException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -242,23 +211,8 @@ public class DeliveryAdapter extends RecyclerView.Adapter<DeliveryAdapter.ViewHo
                 btnComplete.setVisibility(View.GONE);
                 break;
             }
-
         }
     }
-
-    private Timestamp setDateTimeByInvoice(Invoice invoice) {
-        switch (invoice.getStatus()) {
-            case PENDING_SHIPMENT:
-                return invoice.getCreatedAt();
-            case IN_TRANSIT:
-                return invoice.getShippedAt();
-            case DELIVERED:
-                return invoice.getDeliveredAt();
-            default:
-                return invoice.getCancelledAt();
-        }
-    }
-
 
     @Override
     public int getItemCount() {

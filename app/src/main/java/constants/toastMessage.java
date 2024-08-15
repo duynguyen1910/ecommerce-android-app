@@ -29,6 +29,8 @@ public class toastMessage {
     public static final String CREATE_PRODUCT_FAILED = "Thêm sản phẩm thất bại";
     public static final String CREATE_PRODUCT_SUCCESSFULLY = "Thêm sản phẩm thành công";
     public static final String CREATE_VARIANT_SUCCESSFULLY = "Thêm phân loại hàng thành công";
+    public static final String CREATE_CATEGORY_FAILED = "Thêm ngành hàng thất bại";
+    public static final String CREATE_CATEGORY_SUCCESSFULLY = "Thêm ngành hàng thành công";
 
 
     public static final String ORDER_SUCCESSFULLY = "Đặt hàng thành công";

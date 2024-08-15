@@ -1,11 +1,7 @@
 package Activities.Invoices;
 
-import static constants.keyName.STORE_ID;
-import static constants.keyName.USER_INFO;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -30,7 +26,7 @@ import Fragments.Delivery.DeliveryCancelledFragment;
 import Fragments.Delivery.DeliveryCompletedFragment;
 import api.invoiceApi;
 import enums.OrderStatus;
-import interfaces.GetAggregateCallback;
+import interfaces.GetAggregate.GetAggregateCallback;
 import interfaces.InAdapter.UpdateCountListener;
 import utils.DecorateUtils;
 

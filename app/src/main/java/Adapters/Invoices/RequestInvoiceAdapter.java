@@ -1,65 +1,42 @@
 package Adapters.Invoices;
 
-import static android.content.Context.MODE_PRIVATE;
-import static constants.keyName.CANCELED_AT;
-import static constants.keyName.CANCELED_BY;
-import static constants.keyName.CANCELED_REASON;
 import static constants.keyName.CONFIRMED_AT;
 import static constants.keyName.STATUS;
-import static constants.keyName.STORE_ID;
-import static constants.keyName.USER_ID;
-import static constants.keyName.USER_INFO;
-import static constants.toastMessage.CANCEL_ORDER_SUCCESSFULLY;
-import static utils.Cart.CartUtils.showToast;
-import static utils.FormatHelper.formatDateTime;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.stores.R;
-import com.example.stores.databinding.DialogCancelInvoiceByStoreBinding;
 import com.example.stores.databinding.ItemRequestInvoiceBinding;
-import com.google.firebase.Timestamp;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 import Activities.Invoices.InvoiceDetailActivity;
 import api.invoiceApi;
-import api.productApi;
 import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
 import interfaces.InAdapter.UpdateCountListener;
-import interfaces.StatusCallback;
 import interfaces.UpdateDocumentCallback;
 import interfaces.UserCallback;
 import models.Invoice;
 import models.InvoiceDetail;
 import models.User;
-import utils.DialogCancelInvoiceUtils;
+import utils.TimeUtils;
+import utils.Invoice.DialogCancelInvoiceUtils;
 import utils.FormatHelper;
+import utils.Invoice.InvoiceUtils;
 
 public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAdapter.ViewHolder> {
     private final Context context;
@@ -123,9 +100,6 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
             @Override
             public void onGetListSuccess(ArrayList<InvoiceDetail> productList) {
                 invoiceDetails[0] = new ArrayList<>(productList);
-                invoiceDetails[0].forEach(item -> {
-                    Log.d("invoiceDetails", "productID: " + item.getProductID() + "\nsold: " + item.getQuantity());
-                });
                 holder.binding.progressBar.setVisibility(View.GONE);
 
                 InvoiceDetailAdapter adapter = new
@@ -134,8 +108,8 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
                 holder.binding.recyclerViewProducts.setAdapter(adapter);
 
                 holder.binding.txtQuantityProducts.setText(productList.size() + " sản phẩm");
-                holder.binding.txtInvoiceStatus.setText(
-                        FormatHelper.formatDateTime(setDateTimeByInvoice(invoice)));
+                holder.binding.txtTime.setText(TimeUtils.setDateTimeByInvoice(invoice));
+
                 holder.binding.txtTotal.setText(FormatHelper.formatVND(invoice.getTotal()));
 
             }
@@ -149,7 +123,7 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
 
         holder.binding.btnConfirm.setOnClickListener(v -> {
 
-            //1.  Cập nhật trạng thái đơn hàng
+            // Cập nhật trạng thái đơn hàng
             Map<String, Object> newMap = new HashMap<>();
             newMap.put(STATUS, OrderStatus.PENDING_SHIPMENT.getOrderStatusValue());
             newMap.put(CONFIRMED_AT, FormatHelper.getCurrentDateTime());
@@ -168,46 +142,22 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
                 }
             });
 
-            //2. Trừ tồn kho của tất cả sản phẩm trong đơn hàng
+            // Không cần trừ tồn kho nữa vì đã trừ lúc mua hàng rồi
 
-            productApi productApi = new productApi();
-            productApi.updateSoldQuantity(invoiceDetails[0], new StatusCallback() {
-                @Override
-                public void onSuccess(String successMessage) {
-                    showToast(context, successMessage);
-                }
-
-                @Override
-                public void onFailure(String errorMessage) {
-                    showToast(context, errorMessage);
-                }
-            });
         });
 
 
         holder.binding.btnCancel.setOnClickListener(v -> {
-          DialogCancelInvoiceUtils.popUpCancelInvoiceByStoreDialog(this, context, invoice, holder.getBindingAdapterPosition());
+          DialogCancelInvoiceUtils.popUpCancelInvoiceByStoreDialog(this, context, invoice, holder.getBindingAdapterPosition(), invoiceDetails[0]);
         });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, InvoiceDetailActivity.class);
-                Bundle bundle = new Bundle();
-
-                bundle.putString("invoiceID", invoice.getBaseID());
-                bundle.putString("detailedAddress", invoice.getDetailedAddress());
-                bundle.putString("deliveryAddress", invoice.getDeliveryAddress());
-                bundle.putString("invoiceStatusLabel", invoice.getStatus().getOrderLabel());
-
-                bundle.putString("createdAt", formatDateTime(invoice.getCreatedAt()));
-                bundle.putString("confirmedAt", formatDateTime(invoice.getConfirmedAt()));
-                bundle.putString("shippedAt", formatDateTime(invoice.getShippedAt()));
-                bundle.putString("deliveredAt", formatDateTime(invoice.getDeliveredAt()));
-
-                bundle.putDouble("invoiceTotal", invoice.getTotal());
-
-                intent.putExtras(bundle);
-                context.startActivity(intent);
+                try {
+                    InvoiceUtils.transferInvoiceDetail(invoice, context, InvoiceDetailActivity.class.newInstance());
+                } catch (IllegalAccessException | InstantiationException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -241,17 +191,6 @@ public class RequestInvoiceAdapter extends RecyclerView.Adapter<RequestInvoiceAd
                 break;
             }
 
-        }
-    }
-
-    private Timestamp setDateTimeByInvoice(Invoice invoice) {
-        switch (invoice.getStatus()) {
-            case PENDING_CONFIRMATION:
-                return invoice.getCreatedAt();
-            case PENDING_SHIPMENT:
-                return invoice.getShippedAt();
-            default:
-                return invoice.getCancelledAt();
         }
     }
 

@@ -24,12 +24,12 @@ import java.util.Objects;
 import Activities.MainActivity;
 import Adapters.ViewPager2Adapter;
 import Fragments.RequestedInvoices.AwaitConfirmFragment;
-import Fragments.RequestedInvoices.CancelledFragment;
+import Fragments.RequestedInvoices.CancelledRequestFragment;
 import Fragments.RequestedInvoices.ConfirmedFragment;
 import Fragments.RequestedInvoices.DeliveredRequestFragment;
 import api.invoiceApi;
 import enums.OrderStatus;
-import interfaces.GetAggregateCallback;
+import interfaces.GetAggregate.GetAggregateCallback;
 import interfaces.InAdapter.UpdateCountListener;
 import utils.DecorateUtils;
 
@@ -157,7 +157,7 @@ public class RequestInvoiceActivity extends AppCompatActivity implements UpdateC
         ViewPager2Adapter viewPager2Adapter = new ViewPager2Adapter(this);
         viewPager2Adapter.addFragment(new AwaitConfirmFragment(), "Chờ xác nhận"); // 0
         viewPager2Adapter.addFragment(new ConfirmedFragment(), "Chờ lấy hàng"); // 1
-        viewPager2Adapter.addFragment(new CancelledFragment(), "Đơn hủy"); // 2
+        viewPager2Adapter.addFragment(new CancelledRequestFragment(), "Đơn hủy"); // 2
         viewPager2Adapter.addFragment(new DeliveredRequestFragment(), "Hoàn thành"); // 3
 
         binding.viewPager2.setAdapter(viewPager2Adapter);

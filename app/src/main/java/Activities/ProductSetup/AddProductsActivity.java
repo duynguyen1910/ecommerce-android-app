@@ -8,6 +8,7 @@ import static constants.keyName.PRODUCT_INSTOCK;
 import static constants.keyName.PRODUCT_NAME;
 import static constants.keyName.PRODUCT_NEW_PRICE;
 import static constants.keyName.PRODUCT_OLD_PRICE;
+import static constants.keyName.PRODUCT_SOLD;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
 import static constants.toastMessage.CREATE_PRODUCT_SUCCESSFULLY;
@@ -68,10 +69,10 @@ public class AddProductsActivity extends AppCompatActivity {
 
     private void setupEvents() {
         binding.imageBack.setOnClickListener(v -> finish());
-        binding.layoutDeliveryFee.setOnClickListener(v -> {
-            Intent intent = new Intent(AddProductsActivity.this, DeliveryFeeActivity.class);
-            startActivity(intent);
-        });
+//        binding.layoutDeliveryFee.setOnClickListener(v -> {
+//            Intent intent = new Intent(AddProductsActivity.this, DeliveryFeeActivity.class);
+//            startActivity(intent);
+//        });
 
         binding.btnAdd.setOnClickListener(v -> {
             submitProductWithValidation();
@@ -170,6 +171,7 @@ public class AddProductsActivity extends AppCompatActivity {
                     newProduct.put(PRODUCT_INSTOCK, inStock);
                     newProduct.put(CATEGORY_ID, categoryID);
                     newProduct.put(STORE_ID, storeID);
+                    newProduct.put(PRODUCT_SOLD, 0);
 
                     onAddProduct(newProduct);
                 }
@@ -191,6 +193,7 @@ public class AddProductsActivity extends AppCompatActivity {
                 @Override
                 public void onCreateSuccess(String documentId) {
                     binding.progressBar.setVisibility(View.GONE);
+                    Log.d("productID", "productID: " + documentId);
                     showToast(AddProductsActivity.this, CREATE_PRODUCT_SUCCESSFULLY);
                     finish();
                 }

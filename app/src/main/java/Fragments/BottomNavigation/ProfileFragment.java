@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.example.stores.R;
 import com.example.stores.databinding.FragmentProfileBinding;
 
+import Activities.Admin.AdminActivity;
 import Activities.BuyProduct.CartActivity;
 import Activities.Invoices.DeliveryActivity;
 import Activities.Invoices.InvoiceActivity;
@@ -108,6 +109,7 @@ public class ProfileFragment extends Fragment {
         UserRole userRole = UserRole.fromInt(roleValue);
         // reset trạng thái ban đầu
         binding.layoutLogistics.setVisibility(View.VISIBLE);
+        binding.layoutAdmin.setVisibility(View.VISIBLE);
         binding.layoutInvoices.setVisibility(View.VISIBLE);
         binding.layoutActivateStore.setVisibility(View.VISIBLE);
         binding.iconCart.setVisibility(View.VISIBLE);
@@ -117,12 +119,14 @@ public class ProfileFragment extends Fragment {
             case CUSTOMER_ROLE:
             case STORE_OWNER_ROLE:
                 binding.layoutLogistics.setVisibility(View.GONE);
+                binding.layoutAdmin.setVisibility(View.GONE);
                 break;
 
             case SHIPPER_ROLE:
                 binding.layoutInvoices.setVisibility(View.GONE);
                 binding.layoutActivateStore.setVisibility(View.GONE);
                 binding.iconCart.setVisibility(View.GONE);
+                binding.layoutAdmin.setVisibility(View.GONE);
 
                 break;
             case ADMIN_ROLE:
@@ -147,6 +151,10 @@ public class ProfileFragment extends Fragment {
         });
         binding.layoutLogistics.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), DeliveryActivity.class);
+            startActivity(intent);
+        });
+        binding.layoutAdmin.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), AdminActivity.class);
             startActivity(intent);
         });
 

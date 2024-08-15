@@ -24,30 +24,19 @@
             android:layout_marginStart="6dp"
             android:src="@drawable/ic_back"
             app:tint="@color/darkgray" />
-
-        <EditText
-            android:id="@+id/edtSearch"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
+            android:layout_marginStart="6dp"
             android:layout_weight="1"
-            android:background="@drawable/custom_edit_text_border"
-            android:drawableStart="@drawable/baseline_search_24"
-            android:drawablePadding="10dp"
-            android:hint="Tìm kiếm thông tin"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="10dp"
-            android:textColor="#fff"
-            android:textColorHint="@color/text1"
-            android:textSize="14dp" />
-
-        <ImageView
-            android:id="@+id/imvSettings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_more_vertical_24"
-            app:tint="@color/darkgray" />
+            android:drawablePadding="2dp"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="Xem cửa hàng"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -105,7 +94,6 @@
                         android:id="@+id/layoutAvatar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:layout_marginEnd="10dp"
                         app:cardCornerRadius="50dp">
 
@@ -114,8 +102,8 @@
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_store_fill_24"
-                            app:tint="@color/primary_color"  />
+                            android:src="@mipmap/default_img"
+                             />
                     </androidx.cardview.widget.CardView>
 
                     <LinearLayout

@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_border_bottom"
                 android:padding="16dp"
-                android:text="Người bán xác nhận đơn hàng nhưng không giao hàng cho đơn vị vận chuyển"
+                android:text="Store đóng gói sản phẩm không đúng quy định của đơn vị vận chuyển"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:visibility="visible" />
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_border_bottom"
                 android:padding="16dp"
-                android:text="Shop đóng gói sản phẩm không đúng quy định của nhà vận chuyển"
+                android:text="Không liên lạc được với Người bán"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
                 android:visibility="visible" />

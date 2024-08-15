@@ -306,35 +306,35 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/layoutDeliveryFee"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="16dp">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/layoutDeliveryFee"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:background="@color/white"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:paddingHorizontal="16dp"-->
+<!--                android:paddingVertical="16dp">-->
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_truck_24"
-                    app:tint="@color/darkgray" />
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginEnd="8dp"-->
+<!--                    android:src="@drawable/ic_truck_24"-->
+<!--                    app:tint="@color/darkgray" />-->
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawablePadding="8dp"
-                    android:gravity="center_vertical"
-                    android:text="Phí vận chuyển *"
-                    android:textColor="@color/black"
-                    app:drawableEndCompat="@drawable/ic_arrow_right_24" />
+<!--                <TextView-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:drawablePadding="8dp"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:text="Phí vận chuyển *"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    app:drawableEndCompat="@drawable/ic_arrow_right_24" />-->
 
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
             <Button
                 android:id="@+id/btnAdd"

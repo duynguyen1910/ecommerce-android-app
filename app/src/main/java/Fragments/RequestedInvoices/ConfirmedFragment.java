@@ -24,6 +24,7 @@ import enums.OrderStatus;
 import interfaces.GetCollectionCallback;
 import interfaces.InAdapter.UpdateCountListener;
 import models.Invoice;
+import utils.Invoice.InvoiceUtils;
 
 public class ConfirmedFragment extends Fragment {
     FragmentWithOnlyRecyclerviewBinding binding;
@@ -42,36 +43,6 @@ public class ConfirmedFragment extends Fragment {
     }
 
     private void initInvoicesRequest() {
-
-        invoiceApi invoiceApi = new invoiceApi();
-        SharedPreferences sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);
-        String userID = sharedPreferences.getString(USER_ID, null);
-        String storeID = sharedPreferences.getString(STORE_ID, null);
-
-        if(userID == null || storeID == null) return;
-
-        binding.progressBar.setVisibility(View.VISIBLE);
-        binding.progressBar.getIndeterminateDrawable()
-                .setColorFilter(ContextCompat.getColor(getContext(), R.color.primary_color),
-                        PorterDuff.Mode.MULTIPLY);
-
-        invoiceApi.getInvoiceByStoreIDApi(storeID, OrderStatus.PENDING_SHIPMENT.getOrderStatusValue(),
-                new GetCollectionCallback<Invoice>() {
-                    @Override
-                    public void onGetListSuccess(ArrayList<Invoice> requestInvoiceList) {
-                        binding.progressBar.setVisibility(View.GONE);
-
-                        RequestInvoiceAdapter adapter = new RequestInvoiceAdapter(requireActivity(),
-                                requestInvoiceList, (UpdateCountListener) requireActivity());
-                        binding.recyclerView.setAdapter(adapter);
-                        binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(),
-                                LinearLayoutManager.VERTICAL, false));
-                    }
-
-                    @Override
-                    public void onGetListFailure(String errorMessage) {
-
-                    }
-                });
+        InvoiceUtils.initRequestInvoiceByStatus(requireContext(), binding, OrderStatus.PENDING_SHIPMENT.getOrderStatusValue());
     }
 }

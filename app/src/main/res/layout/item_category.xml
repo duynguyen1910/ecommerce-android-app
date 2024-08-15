@@ -18,4 +18,5 @@
         android:text="Điện Thoại &amp; Phụ Kiện"
         android:textColor="@color/black"
         app:drawableEndCompat="@drawable/ic_arrow_right_24" />
+
 </LinearLayout>

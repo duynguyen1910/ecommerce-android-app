@@ -1,6 +1,7 @@
 package Activities.StoreSetup;
 
 import static constants.keyName.STORE_ID;
+import static constants.keyName.STORE_IMAGE_URL;
 import static constants.keyName.STORE_NAME;
 import static constants.keyName.USER_INFO;
 
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.stores.databinding.ActivityStoreOwnerBinding;
 
 import java.util.Map;
@@ -21,9 +23,11 @@ import java.util.Objects;
 import Activities.Invoices.RequestInvoiceActivity;
 import api.invoiceApi;
 import enums.OrderStatus;
-import interfaces.GetAggregateCallback;
+import interfaces.GetAggregate.GetAggregateCallback;
 import interfaces.GetDocumentCallback;
+import interfaces.ImageCallback;
 import models.Store;
+import models.User;
 import utils.FormatHelper;
 
 public class StoreOwnerActivity extends AppCompatActivity {
@@ -157,11 +161,7 @@ public class StoreOwnerActivity extends AppCompatActivity {
             Intent intent = new Intent(StoreOwnerActivity.this, MyProductsActivity.class);
             startActivity(intent);
         });
-        binding.txtViewHistory.setOnClickListener(v -> {
-            Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
-            intent.putExtra(STORE_ID, storeId);
-            startActivity(intent);
-        });
+
 
         binding.layoutAwaitConfirmedInvoice.setOnClickListener(v -> {
             Intent intent = new Intent(StoreOwnerActivity.this, RequestInvoiceActivity.class);
@@ -212,14 +212,18 @@ public class StoreOwnerActivity extends AppCompatActivity {
         storeId = sharedPreferences.getString(STORE_ID, null);
         // lấy thông tin avatar, invoice
 
-
         if (storeId != null) {
             Store store = new Store();
             store.onGetStoreDetail(storeId, new GetDocumentCallback() {
                 @Override
-                public void onGetDataSuccess(Map<String, Object> data) {
+                public void onGetDataSuccess(Map<String, Object> storeDetail) {
                     binding.progressBarStoreName.setVisibility(View.GONE);
-                    binding.txtStoreName.setText((CharSequence) data.get(STORE_NAME));
+                    binding.txtStoreName.setText((CharSequence) storeDetail.get(STORE_NAME));
+                    String storeImageUrl = (String) storeDetail.get(STORE_IMAGE_URL);
+                    if (storeImageUrl != null){
+                        Glide.with(StoreOwnerActivity.this).load(storeImageUrl).into(binding.imvAvatar);
+                    }
+
 
                     // set up UI avatar, invoice
                 }

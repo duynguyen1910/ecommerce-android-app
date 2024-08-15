@@ -88,4 +88,9 @@
         phong cách hoàn toàn độc đáo của Shop
     </string>
     <string name="text_empty">Không tìm thấy sản phẩm nào :(( \n Bạn thử tìm sản phẩm khác nhé</string>
+    <string name="product_revenue_desc">Lưu ý:
+        \n<b>Doanh thu</b> sản phẩm được tính từ <b>số lượng</b> và <b>giá bán</b> tại thời điểm tạo hóa đơn.
+        \n<b>Giá bán</b> có thể thay đổi nên kết quả có thể sẽ khác so với việc bạn tính với công thức
+        \n(<b>Doanh thu</b> = <b>Đã bán</b> x <b>Giá</b>) từ bảng trên</string>
+
 </resources>

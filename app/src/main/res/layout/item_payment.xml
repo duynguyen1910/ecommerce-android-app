@@ -192,7 +192,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|end"
             android:hint="Để lại lời nhắn cho người bán"
             android:textColor="@color/darkgray"
             android:textSize="14sp"

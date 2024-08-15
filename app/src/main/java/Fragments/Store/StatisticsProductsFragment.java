@@ -2,39 +2,45 @@ package Fragments.Store;
 import static android.content.Context.MODE_PRIVATE;
 import static constants.keyName.STORE_ID;
 import static constants.keyName.USER_INFO;
+import static constants.toastMessage.INTERNET_ERROR;
 import static utils.Cart.CartUtils.showToast;
+import android.app.Dialog;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.stores.R;
+import com.example.stores.databinding.DialogSortStatisticProductBinding;
 import com.example.stores.databinding.FragmentStatisticsProductsBinding;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LegendEntry;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import java.util.ArrayList;
+import java.util.List;
+import Adapters.Statistics.ProductStatisticsAdapter;
 import api.productApi;
 import interfaces.GetCollectionCallback;
 import models.Product;
-import utils.Chart.CustomMarkerView;
-import utils.Chart.CustomValueMoney2Formatter;
-import utils.Chart.CustomValueMoneyFormatter;
-import utils.Chart.CustomValueSoldFormatter;
+
+
 
 public class StatisticsProductsFragment extends Fragment {
-    FragmentStatisticsProductsBinding binding;
-    String g_sStoreID;
+    private FragmentStatisticsProductsBinding binding;
+    private String g_sStoreID;
+    private ArrayList<Product> g_bestSellers;
+    private ProductStatisticsAdapter g_adapter;
+    private int g_sortChoice = 0;
+
 
     @Nullable
     @Override
@@ -42,6 +48,7 @@ public class StatisticsProductsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentStatisticsProductsBinding.inflate(getLayoutInflater());
         getStoreID();
+        setupEvents();
         return binding.getRoot();
     }
 
@@ -50,7 +57,6 @@ public class StatisticsProductsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         getBestSeller();
-        getHighesRevenue();
     }
 
 
@@ -59,16 +65,40 @@ public class StatisticsProductsFragment extends Fragment {
         g_sStoreID = sharedPreferences.getString(STORE_ID, null);
     }
 
+    private void resetSortChoice() {
+        binding.txtSortChoice.setText("Số lượng bán");
+        g_sortChoice = 0;
+    }
+
     private void getBestSeller() {
-        productApi productApi = new productApi();
-        productApi.getTopBestSellerByStoreID(g_sStoreID, 5, new GetCollectionCallback<Product>() {
+        resetSortChoice();
+        binding.progressBar.setVisibility(View.VISIBLE);
+
+        productApi m_productApi = new productApi();
+
+        m_productApi.getTopBestSellerByStoreID(g_sStoreID, 100, new GetCollectionCallback<Product>() {
             @Override
             public void onGetListSuccess(ArrayList<Product> bestSellers) {
-                ArrayList<String> productNames = new ArrayList<>();
-                for (Product product : bestSellers) {
-                    productNames.add(product.getProductName());
+
+                g_bestSellers = new ArrayList<>(bestSellers);
+                List<Task<Void>> tasks = new ArrayList<>();
+                for (int i = 0; i < bestSellers.size(); i++) {
+                    tasks.add(m_productApi.getProductRevenueTask(bestSellers.get(i)));
                 }
-                setupBestSellerChart(productNames, bestSellers);
+
+                Tasks.whenAllSuccess(tasks)
+                        .addOnSuccessListener(unused -> {
+                            binding.body.setVisibility(View.VISIBLE);
+                            binding.progressBar.setVisibility(View.GONE);
+                            g_adapter = new ProductStatisticsAdapter(requireActivity(), g_bestSellers);
+                            binding.recyclerView.setAdapter(g_adapter);
+                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false));
+                            binding.txtNotice.setVisibility(View.VISIBLE);
+
+                        })
+                        .addOnFailureListener(e -> {
+                            showToast(requireActivity(), INTERNET_ERROR);
+                        });
             }
 
             @Override
@@ -77,156 +107,100 @@ public class StatisticsProductsFragment extends Fragment {
             }
         });
     }
-    private void getHighesRevenue() {
-        productApi productApi = new productApi();
-        productApi.getHighestRevenueByStoreID(g_sStoreID, 5, new GetCollectionCallback<Product>() {
-            @Override
-            public void onGetListSuccess(ArrayList<Product> highestRevenueList) {
 
-                ArrayList<String> productNames = new ArrayList<>();
-                for (Product product : highestRevenueList) {
-                    productNames.add(product.getProductName());
-                }
-                setupHighestRevenueChart(productNames, highestRevenueList);
+    private void setupEvents() {
+
+
+        binding.txtSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popUpSortDialog();
             }
+        });
 
+
+    }
+
+    private void popUpSortDialog() {
+        Dialog dialog = new Dialog(requireActivity(), android.R.style.Theme_Material_Light_Dialog);
+        DialogSortStatisticProductBinding dialogBinding = DialogSortStatisticProductBinding.inflate(getLayoutInflater());
+        dialog.setContentView(dialogBinding.getRoot());
+
+
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        Window window = dialog.getWindow();
+        if (window != null) {
+            layoutParams.copyFrom(window.getAttributes());
+            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            layoutParams.horizontalMargin = (int) (100 * getResources().getDisplayMetrics().density); // 100dp
+            window.setAttributes(layoutParams);
+        }
+
+        dialog.show();
+        Animation slideUp = AnimationUtils.loadAnimation(requireActivity(), R.anim.slide_in_from_right);
+        dialogBinding.getRoot().startAnimation(slideUp);
+
+        if (g_sortChoice == 0) {
+            dialogBinding.rdoSortBySold.setChecked(true);
+            binding.txtSortChoice.setText("Số lượng bán");
+        } else {
+            dialogBinding.rdoSortByRevenue.setChecked(true);
+            binding.txtSortChoice.setText("Doanh thu sản phẩm");
+        }
+
+        dialogBinding.rdoGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rdoSortBySold) {
+                g_sortChoice = 0;
+            } else if (checkedId == R.id.rdoSortByRevenue) {
+                g_sortChoice = 1;
+            }
+        });
+
+
+        dialogBinding.btnClose.setOnClickListener(v -> dialog.dismiss());
+
+
+        dialogBinding.btnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onGetListFailure(String errorMessage) {
-                showToast(requireActivity(), errorMessage);
+            public void onClick(View v) {
+
+                sortProduct(g_bestSellers, g_sortChoice, g_adapter);
+                binding.txtSortChoice.setText((g_sortChoice == 0) ? "Số lượng bán" : "Doanh thu sản phẩm");
+                dialog.dismiss();
             }
         });
     }
 
-    private void setupHighestRevenueChart(ArrayList<String> productNames, ArrayList<Product> products) {
-        BarChart barChart1 = binding.highestRevenueChart;
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        for (int i = 0; i < products.size(); i++) {
-            entries.add(new BarEntry(i + 1, (float) (products.get(i).getSold() * products.get(i).getNewPrice())));
+    private void sortProduct(ArrayList<Product> products, int sortChoice, ProductStatisticsAdapter adapter) {
+
+
+
+        if (sortChoice == 1) {
+            products.sort((product1, product2) -> {
+                double revenue1 = product1.getProductRevenue();
+                double revenue2 = product2.getProductRevenue();
+                return Double.compare(revenue2, revenue1);
+            });
+        } else {
+            products.sort((product1, product2) -> {
+                double revenue1 = product1.getSold();
+                double revenue2 = product2.getSold();
+                return Double.compare(revenue2, revenue1);
+            });
         }
-
-        BarDataSet dataSet = new BarDataSet(entries, "Products");
-        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-        dataSet.setValueTextColor(Color.BLACK);
-        dataSet.setValueTextSize(14f);
-        dataSet.setDrawValues(true);
-        dataSet.setValueFormatter(new CustomValueMoney2Formatter());
-
-        BarData barData = new BarData(dataSet);
-        barChart1.setData(barData);
-        barData.setBarWidth(0.4f);
-
-        barChart1.setFitBars(true);
-        barChart1.getDescription().setEnabled(false);
-        barChart1.animateY(2000);
-
-        setupBarChart(barChart1, productNames);
-
-        ArrayList<LegendEntry> legendEntries = new ArrayList<>();
-        for (int i = 0; i < productNames.size(); i++) {
-            LegendEntry entry = new LegendEntry();
-            if (productNames.get(i).length() > 30){
-                entry.label = productNames.get(i).substring(0, 30) + "...";
-            }else {
-                entry.label = productNames.get(i);
+        Handler handler = new Handler();
+        binding.progressBar.setVisibility(View.VISIBLE);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+                binding.progressBar.setVisibility(View.GONE);
             }
-            entry.formColor = ColorTemplate.MATERIAL_COLORS[i % ColorTemplate.MATERIAL_COLORS.length];
-            legendEntries.add(entry);
-        }
-        barChart1.getLegend().setCustom(legendEntries);
-        barChart1.setExtraOffsets(10f, 80f, 10f, 40f);
+        }, 500);
 
-        YAxis yAxis = barChart1.getAxisLeft();
-        yAxis.setTextSize(12f);
-        yAxis.setValueFormatter(new CustomValueMoneyFormatter());
-
-
-        barChart1.invalidate();
-    }
-
-
-    private void setupBestSellerChart(ArrayList<String> productNames, ArrayList<Product> products) {
-        BarChart barChart1 = binding.bestSellerChart;
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        for (int i = 0; i < products.size(); i++) {
-            entries.add(new BarEntry(i + 1, (float) products.get(i).getSold()));
-        }
-
-        BarDataSet dataSet = new BarDataSet(entries, "Products");
-        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-        dataSet.setValueTextColor(Color.BLACK);
-        dataSet.setValueTextSize(14f);
-        dataSet.setDrawValues(true);
-
-        BarData barData = new BarData(dataSet);
-        barChart1.setData(barData);
-        barData.setBarWidth(0.4f);
-
-        barChart1.setFitBars(true);
-        barChart1.getDescription().setEnabled(false);
-        barChart1.animateY(2000);
-
-        setupBarChart(barChart1, productNames);
-
-        ArrayList<LegendEntry> legendEntries = new ArrayList<>();
-        for (int i = 0; i < productNames.size(); i++) {
-            LegendEntry entry = new LegendEntry();
-            if (productNames.get(i).length() > 30){
-                entry.label = productNames.get(i).substring(0, 30) + "...";
-            }else {
-                entry.label = productNames.get(i);
-            }
-
-            entry.formColor = ColorTemplate.MATERIAL_COLORS[i % ColorTemplate.MATERIAL_COLORS.length];
-            legendEntries.add(entry);
-        }
-        barChart1.getLegend().setCustom(legendEntries);
-        barChart1.setExtraOffsets(10f, 80f, 10f, 40f);
-
-        YAxis yAxis = barChart1.getAxisLeft();
-        yAxis.setTextSize(12f);
-        yAxis.setValueFormatter(new CustomValueSoldFormatter());
-
-
-        barChart1.invalidate();
-    }
-
-
-    private void setupBarChart(BarChart barChart, ArrayList<String> productNames) {
-        Legend legend = barChart.getLegend();
-        legend.setEnabled(true);
-        legend.setWordWrapEnabled(true);
-        legend.setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
-        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        legend.setYOffset(0f);
-        legend.setOrientation(Legend.LegendOrientation.VERTICAL);
-        legend.setTextSize(14f);
-        legend.setFormSize(14f);
-        legend.setDrawInside(false);
-
-        barChart.setFitBars(true);
-        barChart.getDescription().setEnabled(false);
-        barChart.animateY(2000);
-
-        YAxis yAxisLeft = barChart.getAxisLeft();
-        yAxisLeft.setAxisMinimum(0f);
-        yAxisLeft.setDrawZeroLine(true);
-        yAxisLeft.setDrawAxisLine(true);
-
-        CustomMarkerView markerView = new CustomMarkerView(requireActivity(), R.layout.layout_marker_view, productNames);
-        barChart.setMarker(markerView);
-        markerView.setTextAlignment(CustomMarkerView.TEXT_ALIGNMENT_TEXT_START);
-
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // Đặt trục X ở phía dưới
-        xAxis.setGranularity(1f); // Đảm bảo các nhãn được phân bố đều
-        xAxis.setLabelRotationAngle(20f); // Xoay nhãn để tránh chồng chéo
-        xAxis.setLabelCount(5, true); // Thiết lập số lượng nhãn
-        xAxis.setTextSize(12f);
-
-
-        barChart.getAxisRight().setEnabled(false);
     }
 
 
 }
+

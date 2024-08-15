@@ -18,7 +18,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,6 +28,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityPaymentBinding;
 
@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
 import Activities.AddAddress.DeliveryAddressActivity;
 import api.addressApi;
 import Activities.MainActivity;
@@ -61,7 +62,6 @@ public class PaymentActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     String userID = null;
     String defaultAddressID = null;
-    String tag = "payment5";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +85,7 @@ public class PaymentActivity extends AppCompatActivity {
 
         if (intent != null) {
             payment = (ArrayList<CartItem>) getIntent().getSerializableExtra(PAYMENT);
-            if (payment != null){
+            if (payment != null) {
                 PaymentAdapter paymentAdapter = new PaymentAdapter(PaymentActivity.this, payment);
                 binding.recyclerViewPayment.setAdapter(paymentAdapter);
                 binding.recyclerViewPayment.setLayoutManager(new LinearLayoutManager(PaymentActivity.this, LinearLayoutManager.VERTICAL, false));
@@ -99,15 +99,15 @@ public class PaymentActivity extends AppCompatActivity {
         binding.imageBack.setOnClickListener(v -> finish());
 
         binding.btnBooking.setOnClickListener(v -> {
-            if(defaultAddressID == null) {
+
+            if (defaultAddressID == null) {
                 Toast.makeText(this, ADDRESS_REQUIRE, Toast.LENGTH_SHORT).show();
                 return;
             }
-
-            for(CartItem item : payment) {
+            for (CartItem item : payment) {
                 Map<String, Object> newInvoice = new HashMap<>();
 
-                String  detailedAddress = binding.txtDetailedCustomer.getText().toString();
+                String detailedAddress = binding.txtDetailedCustomer.getText().toString();
                 String deliveryAddress = binding.txtCustomerAddress.getText().toString();
 
                 newInvoice.put("customerID", userID);
@@ -150,13 +150,16 @@ public class PaymentActivity extends AppCompatActivity {
     private void createInvoiceDetail(invoiceApi invoiceApi, String invoiceID, ArrayList<Variant> variantsList) {
         ArrayList<InvoiceDetail> invoiceDetails = new ArrayList<>();
         for (Variant variant : variantsList) {
-            invoiceDetails.add(new InvoiceDetail(invoiceID, variant.getBaseID(), variant.getProductID(), variant.getProductName(), variant.getNumberInCart()));
+            invoiceDetails.add(
+                    new InvoiceDetail(
+                            invoiceID,
+                            variant.getProductID(),
+                            variant.getBaseID(),
+                            variant.getProductName(),
+                            variant.getNewPrice(),
+                            variant.getOldPrice(),
+                            variant.getNumberInCart()));
         }
-        invoiceDetails.forEach(item -> {
-            Log.d(tag, "variantID: " + item.getVariantID() + "\nquantity: " + item.getQuantity() + "\nProductName: " + item.getProductName() + "\nProductID: " + item.getProductID());
-            Log.d(tag, "--------------------");
-        });
-
 
         invoiceApi.createDetailInvoiceApi(invoiceDetails, new StatusCallback() {
             @Override
@@ -166,10 +169,10 @@ public class PaymentActivity extends AppCompatActivity {
                 Toast.makeText(PaymentActivity.this, successMessage, Toast.LENGTH_SHORT).show();
                 // call API update tồn kho
                 productApi m_productApi = new productApi();
-                m_productApi.updateInventory(invoiceDetails, new StatusCallback() {
+                m_productApi.updateProductWhenBuying(invoiceDetails, new StatusCallback() {
                     @Override
                     public void onSuccess(String successMessage) {
-                        showToast(PaymentActivity.this, successMessage);
+
                     }
 
                     @Override
@@ -177,7 +180,6 @@ public class PaymentActivity extends AppCompatActivity {
                         showToast(PaymentActivity.this, errorMessage);
                     }
                 });
-
 
 
                 Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
@@ -204,7 +206,6 @@ public class PaymentActivity extends AppCompatActivity {
         binding.txtTotalDeliveryFee.setText(FormatHelper.formatVND(totalDelivery));
         double total = getTotalProductsFee() + totalDelivery;
         binding.txtTotalPayment.setText(FormatHelper.formatVND(total));
-        binding.txtTotalOrder.setText(FormatHelper.formatVND(total));
     }
 
     private double getTotalProductsFee() {
@@ -226,11 +227,12 @@ public class PaymentActivity extends AppCompatActivity {
         userID = sharedPreferences.getString(USER_ID, null);
         defaultAddressID = sharedPreferences.getString(DEFAULT_ADDRESS_ID, null);
 
+
         userApi userApi = new userApi();
         userApi.getUserInfoApi(userID, new UserCallback() {
             @Override
             public void getUserInfoSuccess(User user) {
-                if(user.getDefaultAddressID() == null) return;
+                if (user.getDefaultAddressID() == null) return;
 
                 addressApi addressApi = new addressApi();
                 addressApi.getAddressDetailApi(user.getDefaultAddressID(), new GetDocumentCallback() {

@@ -77,8 +77,8 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_store_fill_24"
-                    app:tint="@color/primary_color"  />
+                    android:src="@mipmap/default_img"
+                  />
             </androidx.cardview.widget.CardView>
 
             <ProgressBar
@@ -136,21 +136,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingVertical="16dp"
-                android:text="Đơn hàng"
+                android:text="Đơn đặt hàng"
                 android:textColor="@color/black"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/txtViewHistory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:gravity="center_vertical"
-                android:paddingVertical="16dp"
-                android:text="Xem lịch sử đơn hàng"
-                android:textColor="@color/darkgray"
-                app:drawableEndCompat="@drawable/ic_arrow_right_24"
-                app:drawableTint="@color/darkgray" />
         </RelativeLayout>
 
         <LinearLayout

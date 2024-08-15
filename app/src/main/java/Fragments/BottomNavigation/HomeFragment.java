@@ -1,6 +1,7 @@
 package Fragments.BottomNavigation;
 
 import static constants.toastMessage.INTERNET_ERROR;
+import static utils.Cart.CartUtils.showToast;
 import static utils.Cart.CartUtils.updateQuantityInCart;
 
 import android.content.Intent;
@@ -29,6 +30,7 @@ import Activities.SpendingsActivity;
 import Adapters.Category.CategoryGridAdapter;
 import Adapters.ProductGridAdapter;
 import Adapters.SliderAdapter;
+import api.productApi;
 import interfaces.GetCollectionCallback;
 import models.Category;
 import models.Product;
@@ -41,20 +43,17 @@ public class HomeFragment extends Fragment {
     Runnable sliderRunnable;
     ArrayList<Category> categoriesList = new ArrayList<>();
     boolean getCategoriesSuccess = false;
-    String tagHome = "Home4";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(getLayoutInflater());
-        Log.d(tagHome, "OnCreateView");
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(tagHome, "OnViewCreated");
         initBanner();
         initProducts();
         setupEvents();
@@ -71,14 +70,12 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(tagHome, "Onstart");
     }
 
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(tagHome, "OnResume set category RecyclerView");
         updateQuantityInCart(binding.txtQuantityInCart);
         setupCategoryUI();
     }
@@ -100,7 +97,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(tagHome, "onPause");
     }
 
 
@@ -114,8 +110,6 @@ public class HomeFragment extends Fragment {
 
     private void getCategories() {
         Category category = new Category();
-        Log.d(tagHome, "OnViewCreated, dang tai categories");
-
 
         // Show progress bar while loading
         binding.progressBarCategory.setVisibility(View.VISIBLE);
@@ -161,7 +155,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroyView() {
         stopSliderAutoCycle();
-        Log.d(tagHome, "OnDestroyView");
         super.onDestroyView();
     }
 
@@ -176,14 +169,24 @@ public class HomeFragment extends Fragment {
 
     private void initProducts() {
 
-//        binding.progressBarProducts.setVisibility(View.VISIBLE);
-        ArrayList<Product> list = new ArrayList<>();
+        binding.progressBarProducts.setVisibility(View.VISIBLE);
+        productApi m_productApi = new productApi();
+        m_productApi.getPopularProduct(new GetCollectionCallback<Product>() {
+            @Override
+            public void onGetListSuccess(ArrayList<Product> list) {
+                if (!list.isEmpty()) {
+                    binding.recyclerViewProducts.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
+                    binding.recyclerViewProducts.setAdapter(new ProductGridAdapter(requireActivity(), list));
+                }
+                binding.progressBarProducts.setVisibility(View.GONE);
+            }
 
-        if (!list.isEmpty()) {
-            binding.recyclerViewProducts.setLayoutManager(new GridLayoutManager(requireActivity(), 2));
-            binding.recyclerViewProducts.setAdapter(new ProductGridAdapter(requireActivity(), list));
-        }
-        binding.progressBarProducts.setVisibility(View.GONE);
+            @Override
+            public void onGetListFailure(String errorMessage) {
+                showToast(requireActivity(), errorMessage);
+                binding.progressBarProducts.setVisibility(View.GONE);
+            }
+        });
 
     }
 
@@ -211,7 +214,6 @@ public class HomeFragment extends Fragment {
                 Intent intent = new Intent(requireActivity(), SearchActivity.class);
                 intent.putExtra("stringQuery", stringQuery);
                 startActivity(intent);
-
             }
         });
     }

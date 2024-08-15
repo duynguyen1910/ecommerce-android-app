@@ -26,7 +26,7 @@
             android:exported="false" />
         <activity
             android:name="Activities.AddAddress.CreateAddressActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name="Activities.SplashScreen"
             android:exported="true">
@@ -36,9 +36,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    <activity
-        android:name="Activities.ProductSetup.SettingVariantDetailActivity"
-        android:exported="false" />
+        <activity
+            android:name="Activities.Admin.EcomCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.Admin.EcomRevenueActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.Admin.AdminActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.StoreSetup.RegisterStoreSuccessfulActivity"
+            android:exported="false" />
+        <activity
+            android:name="Activities.ProductSetup.SettingVariantDetailActivity"
+            android:exported="false" />
         <activity
             android:name="Activities.StoreSetup.RevenueActivity"
             android:exported="false" />
@@ -104,8 +116,7 @@
             android:exported="false" />
         <activity
             android:name="Activities.Invoices.InvoiceActivity"
-            android:exported="false"
-           />
+            android:exported="false" />
         <activity
             android:name="Activities.ProfileSetup.AccountAndSecurityActivity"
             android:exported="false" />
@@ -126,12 +137,10 @@
             android:exported="false" />
         <activity
             android:name="Activities.LoginActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name="Activities.MainActivity"
-            android:exported="false" >
-        </activity>
+            android:exported="false"></activity>
     </application>
 
 </manifest>
