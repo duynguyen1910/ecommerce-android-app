@@ -7,13 +7,13 @@ public class CartItem implements Serializable {
     private String storeID;
     private String storeName;
     private String note;
-    ArrayList<Product> listProducts;
+    ArrayList<Variant> listVariants;
 
 
-    public CartItem(String storeID, String storeName, ArrayList<Product> listProducts) {
+    public CartItem(String storeID, String storeName, ArrayList<Variant> listVariants) {
         this.storeID = storeID;
         this.storeName = storeName;
-        this.listProducts = listProducts;
+        this.listVariants = listVariants;
     }
 
     public CartItem() {
@@ -43,11 +43,11 @@ public class CartItem implements Serializable {
         this.note = note;
     }
 
-    public ArrayList<Product> getListProducts() {
-        return listProducts;
+    public ArrayList<Variant> getListVariants() {
+        return listVariants;
     }
 
-    public void setListProducts(ArrayList<Product> listProducts) {
-        this.listProducts = listProducts;
+    public void setListVariants(ArrayList<Variant> listVariants) {
+        this.listVariants = listVariants;
     }
 }

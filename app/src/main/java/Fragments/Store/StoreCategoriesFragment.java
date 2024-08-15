@@ -1,6 +1,8 @@
 package Fragments.Store;
 
 import static constants.keyName.STORE_ID;
+import static constants.toastMessage.INTERNET_ERROR;
+import static utils.Cart.CartUtils.showToast;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import com.example.stores.databinding.FragmentStoreCategoriesBinding;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 
 import Adapters.Category.CategoryAdapterForSearch;
 import api.categoryApi;
@@ -27,12 +30,12 @@ import models.Product;
 
 public class StoreCategoriesFragment extends Fragment {
     FragmentStoreCategoriesBinding binding;
+
     @Nullable
     @Override
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentStoreCategoriesBinding.inflate(getLayoutInflater());
-        initCategories();
         return binding.getRoot();
     }
 
@@ -53,27 +56,28 @@ public class StoreCategoriesFragment extends Fragment {
                 @Override
                 public void onGetListSuccess(ArrayList<Product> products) {
                     binding.progressBar.setVisibility(View.GONE);
-                    HashSet<String> categoryIDSet = new HashSet<>();
-                    products.forEach(item -> {
-                        categoryIDSet.add(item.getCategoryID());
-                    });
+                    if (!products.isEmpty()) {
+                        Set<String> categoryIDSet = new HashSet<>();
+                        products.forEach(item -> {
+                            categoryIDSet.add(item.getCategoryID());
+                        });
 
-                    categoryApi mCategoryApi = new categoryApi();
-                    mCategoryApi.getCategoriesByIDSetApi(categoryIDSet, new GetCollectionCallback<Category>() {
-                        @Override
-                        public void onGetListSuccess(ArrayList<Category> categories) {
-                            CategoryAdapterForSearch adapter = new CategoryAdapterForSearch(requireActivity(), categories, storeId);
-                            binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-                            binding.recyclerView.setAdapter(adapter);
-                        }
+                        categoryApi mCategoryApi = new categoryApi();
+                        mCategoryApi.getCategoriesByIDSetApi(categoryIDSet, new GetCollectionCallback<Category>() {
+                            @Override
+                            public void onGetListSuccess(ArrayList<Category> categories) {
+                                CategoryAdapterForSearch adapter = new CategoryAdapterForSearch(requireActivity(), categories, storeId);
+                                binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+                                binding.recyclerView.setAdapter(adapter);
+                            }
 
-                        @Override
-                        public void onGetListFailure(String errorMessage) {
+                            @Override
+                            public void onGetListFailure(String errorMessage) {
+                                showToast(requireActivity(), INTERNET_ERROR);
+                            }
+                        });
 
-                        }
-                    });
-
-
+                    }
 
                 }
 

@@ -67,17 +67,17 @@
                     android:orientation="vertical"
                     android:paddingVertical="6dp">
 
-                    <TextView
-                        android:id="@+id/txtInvoiceStatus"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@color/secondary_color"
-                        android:gravity="center_vertical"
-                        android:padding="16dp"
-                        android:text="Đơn hàng đang chờ xác nhận"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/txtInvoiceStatus"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginBottom="10dp"-->
+<!--                        android:background="@color/primary_color"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:padding="16dp"-->
+<!--                        android:text="Đơn hàng đang chờ xác nhận"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="16sp" />-->
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -96,14 +96,14 @@
                             app:drawableTint="@color/primary_color" />
 
                         <TextView
+                            android:id="@+id/txtInvoiceStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
                             android:layout_alignParentEnd="true"
-                            android:drawablePadding="6dp"
-                            android:text="Sao chép"
-                            android:textColor="@color/black"
-                            app:drawableEndCompat="@drawable/ic_copy_16"
-                            app:drawableTint="@color/secondary_color" />
+                            android:text="Chờ xác nhận"
+                            android:textColor="@color/secondary_color"
+                          />
                     </RelativeLayout>
 
                     <TextView

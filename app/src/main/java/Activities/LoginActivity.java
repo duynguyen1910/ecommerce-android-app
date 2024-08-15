@@ -117,16 +117,16 @@ public class LoginActivity extends AppCompatActivity {
     private void getDataRememberLogin() {
         sharedPreferences = getSharedPreferences("dataRememberLogin", MODE_PRIVATE);
         boolean checkedStatus = sharedPreferences.getBoolean("checked", false);
-        binding.chkRemember.setChecked(checkedStatus);  // Set the checkbox status
-        if (checkedStatus) {
-            String key_phoneNumber = sharedPreferences.getString("phoneNumber", "");
-            String key_password = sharedPreferences.getString("password", "");
-            binding.edtPhoneNumber.setText(key_phoneNumber);
-            binding.edtPassword.setText(key_password);
-        } else {
-            binding.edtPhoneNumber.setText("");
-            binding.edtPassword.setText("");
-        }
+//        binding.chkRemember.setChecked(checkedStatus);  // Set the checkbox status
+//        if (checkedStatus) {
+//            String key_phoneNumber = sharedPreferences.getString("phoneNumber", "");
+//            String key_password = sharedPreferences.getString("password", "");
+//            binding.edtPhoneNumber.setText(key_phoneNumber);
+//            binding.edtPassword.setText(key_password);
+//        } else {
+//            binding.edtPhoneNumber.setText("");
+//            binding.edtPassword.setText("");
+//        }
     }
 
     @Override

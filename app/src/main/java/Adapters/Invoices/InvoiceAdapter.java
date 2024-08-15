@@ -83,7 +83,7 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
             public void onGetListSuccess(ArrayList<InvoiceDetail> productList) {
                 holder.binding.progressBar.setVisibility(View.GONE);
 
-                getStoreNameByID(productList, holder.binding.txtStoreName);
+                getStoreNameByID(invoice.getStoreID(), holder.binding.txtStoreName);
                 holder.binding.txtQuantityProducts.setText(productList.size() + " sản phẩm");
 
                 InvoiceDetailAdapter adapter = new InvoiceDetailAdapter(context,
@@ -134,10 +134,10 @@ public class InvoiceAdapter extends RecyclerView.Adapter<InvoiceAdapter.ViewHold
 
     }
 
-    private void getStoreNameByID(ArrayList<InvoiceDetail> productList, TextView txtStoreName) {
+    private void getStoreNameByID(String invoiceID, TextView txtStoreName) {
 
         storeApi storeApi = new storeApi();
-        storeApi.getStoreDetailApi(productList.get(0).getStoreID(), new GetDocumentCallback() {
+        storeApi.getStoreDetailApi(invoiceID, new GetDocumentCallback() {
             @Override
             public void onGetDataSuccess(Map<String, Object> data) {
                 txtStoreName.setText((CharSequence) data.get(STORE_NAME));

@@ -28,12 +28,16 @@ public class keyName {
     public static final String PRODUCT_OLD_PRICE = "oldPrice";
     public static final String PRODUCT_INSTOCK = "inStock";
     public static final String PRODUCT_SOLD = "sold";
+    public static final String INSTOCK = "inStock";
+
+    public static final String VARIANT_ID = "variantID";
 
 
     public static final String CATEGORY_ID = "categoryID";
     public static final String CATEGORY_NAME = "categoryName";
 
     public static final String PAYMENT = "payment";
+    public static final String QUANTITY = "quantity";
 
     public static final String INVOICE_ID = "invoiceID";
     public static final String STATUS = "status";

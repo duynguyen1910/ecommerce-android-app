@@ -3,6 +3,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,11 +53,17 @@ public class InvoiceDetailAdapter extends RecyclerView.Adapter<InvoiceDetailAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         InvoiceDetail detail = list.get(holder.getBindingAdapterPosition());
 
-        if(detail.getProductImages() != null) {
-            Glide.with(context).load(detail.getProductImages().get(0)).into(holder.binding.imageView);
+        if(detail.getProductImage() != null) {
+            Glide.with(context).load(detail.getProductImage()).into(holder.binding.imageView);
         }
 
-        holder.binding.txtProductTitle.setText(detail.getProductName());
+        holder.binding.txtProductName.setText(detail.getProductName());
+        if (detail.getVariantName() != null){
+            holder.binding.txtVariantName.setText(detail.getVariantName());
+        }else {
+            holder.binding.txtVariantName.setVisibility(View.GONE);
+        }
+
 
         holder.binding.txtNewPrice.setText(FormatHelper.formatVND(detail.getNewPrice()));
         holder.binding.txtOldPrice.setText(FormatHelper.formatVND(detail.getOldPrice()));

@@ -38,11 +38,12 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtTitle"
+                android:id="@+id/txtProductName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -53,7 +54,7 @@
                 android:textColor="@color/darkgray" />
 
             <TextView
-                android:id="@+id/txtDetail"
+                android:id="@+id/txtVariantName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -63,9 +64,7 @@
                 android:maxLines="2"
                 android:padding="3dp"
                 android:text="XANH-Trend, SIZE L"
-                android:textColor="@color/text1"
-                app:drawableEndCompat="@drawable/ic_dropdown_14"
-                app:drawableTint="@color/black" />
+                android:textColor="@color/text1" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -75,6 +74,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
                     android:gravity="center_vertical">
 
                     <TextView

@@ -18,9 +18,7 @@ import com.example.stores.databinding.ActivityCartBinding;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 import Activities.MainActivity;
@@ -28,6 +26,7 @@ import Adapters.BuyProduct.CartAdapter;
 import interfaces.InAdapter.ToTalFeeCallback;
 import models.CartItem;
 import models.Product;
+import models.Variant;
 
 public class CartActivity extends AppCompatActivity implements ToTalFeeCallback {
     ActivityCartBinding binding;
@@ -76,16 +75,16 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
         // Tìm xem trong MY_CART có cartItem chứa product được check không?
         // bỏ qua cartItem không thỏa mãn
         MY_CART.forEach(cartItem -> {
-            ArrayList<Product> checkedListProducts = new ArrayList<>();
+            ArrayList<Variant> checkedListVariants = new ArrayList<>();
 
-            cartItem.getListProducts().forEach(product -> {
-                if (product.getCheckedStatus()) {
-                    checkedListProducts.add(product);
+            cartItem.getListVariants().forEach(variant -> {
+                if (variant.getCheckedStatus()) {
+                    checkedListVariants.add(variant);
                 }
             });
 
-            if (!checkedListProducts.isEmpty()) {
-                result.add(new CartItem(cartItem.getStoreID(), cartItem.getStoreName(), checkedListProducts));
+            if (!checkedListVariants.isEmpty()) {
+                result.add(new CartItem(cartItem.getStoreID(), cartItem.getStoreName(), checkedListVariants));
             }
         });
 
@@ -135,9 +134,9 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
     private double getTotalFee() {
         double fee = 0;
         for (CartItem item : MY_CART) {
-            for (Product product : item.getListProducts()) {
-                if (product.getCheckedStatus()) {
-                    fee += (product.getNewPrice() * product.getNumberInCart());
+            for (Variant variant : item.getListVariants()) {
+                if (variant.getCheckedStatus()) {
+                    fee += (variant.getNewPrice() * variant.getNumberInCart());
                 }
 
             }
@@ -149,8 +148,8 @@ public class CartActivity extends AppCompatActivity implements ToTalFeeCallback 
     private int getQuantityCheckedProducts() {
         int count = 0;
         for (CartItem item : MY_CART) {
-            for (Product product : item.getListProducts()) {
-                if (product.getCheckedStatus()) {
+            for (Variant variant : item.getListVariants()) {
+                if (variant.getCheckedStatus()) {
                     count += 1;
                 }
 

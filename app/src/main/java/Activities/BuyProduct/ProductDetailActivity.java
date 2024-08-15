@@ -1,6 +1,5 @@
 package Activities.BuyProduct;
 
-import static constants.keyName.PAYMENT;
 import static constants.keyName.PRODUCT_DESC;
 import static constants.keyName.PRODUCT_ID;
 import static constants.keyName.PRODUCT_IMAGES;
@@ -12,6 +11,7 @@ import static constants.keyName.STORE_ID;
 import static constants.keyName.STORE_NAME;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
+import static constants.keyName.USER_ROLE;
 import static constants.toastMessage.INTERNET_ERROR;
 
 import static utils.Cart.CartUtils.MY_CART;
@@ -26,6 +26,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,29 +38,36 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityProductDetailBinding;
 import com.example.stores.databinding.DialogAddToCartBinding;
-import com.example.stores.databinding.DialogBuyNowBinding;
 import com.example.stores.databinding.DialogProductImageExpandBinding;
-import com.example.stores.databinding.LayoutProductDetailBinding;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import Activities.LoginActivity;
 import Activities.StoreSetup.ViewMyStoreActivity;
 import Adapters.BuyProduct.SliderAdapterForProductDetail;
+import Adapters.BuyProduct.VariantGridAdapter;
+import api.variantApi;
+import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
+import interfaces.InAdapter.ItemSelectionListener;
 import models.CartItem;
 import models.Product;
 import models.SliderItem;
 import models.Store;
+import models.Variant;
 import utils.Cart.CartUtils;
+import utils.FormatHelper;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -67,8 +75,15 @@ public class ProductDetailActivity extends AppCompatActivity {
     private String productID;
     private String storeID;
     private String storeName;
+    private int g_roleValue;
     private boolean buyable;
     private Product currentProduct;
+    private int g_selectedPos = -1;
+    private int g_totalInstock = 0;
+    private Variant g_selectedVariant = null;
+    ArrayList<Variant> g_variants = new ArrayList<>();
+    String tagVariant = "variant6";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,13 +104,15 @@ public class ProductDetailActivity extends AppCompatActivity {
     }
 
     private void getBundle() {
+        SharedPreferences sharedPreferences = getSharedPreferences(USER_INFO, MODE_PRIVATE);
+        g_roleValue = sharedPreferences.getInt(USER_ROLE, -1);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             productID = bundle.getString(PRODUCT_ID, null);
             storeID = bundle.getString(STORE_ID, null);
             buyable = bundle.getBoolean("buyable");
 
-            if (!buyable){
+            if (!buyable) {
                 binding.btnAddToCart.setBackground(ContextCompat.getDrawable(this, R.color.gray));
                 binding.layoutBuyNow.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
                 binding.txtAddToCart.setTextColor(ContextCompat.getColor(this, R.color.black));
@@ -132,18 +149,16 @@ public class ProductDetailActivity extends AppCompatActivity {
                     binding.layoutProductsInfo.setVisibility(View.VISIBLE);
                     // setup product information
                     binding.txtTitle.setText(currentProduct.getProductName());
-                    NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-                    String formattedOldPrice = formatter.format(currentProduct.getOldPrice());
-                    binding.txtOldPrice.setText("đ" + formattedOldPrice);
+                    binding.txtOldPrice.setText(FormatHelper.formatVND(currentProduct.getOldPrice()));
                     binding.txtOldPrice.setPaintFlags(binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-                    String formattedNewPrice = formatter.format(currentProduct.getNewPrice());
-                    binding.txtNewPrice.setText(formattedNewPrice);
-                    binding.ratingBar.setRating(4.5F);
-                    binding.txtRating.setText(4.5 + " / 5");
-                    binding.txtSold.setText("Đã bán " + 200);
+
+                    binding.txtNewPrice.setText(FormatHelper.formatDecimal(currentProduct.getNewPrice()));
+                    binding.ratingBar.setRating(5.0F);
+
+                    binding.txtSold.setText("Đã bán " + currentProduct.getSold());
                     binding.txtProdctDescription.setText(currentProduct.getDescription());
-                    binding.txtNewPriceInBuyNow.setText(formattedNewPrice);
+                    binding.txtNewPriceInBuyNow.setText(FormatHelper.formatVND(currentProduct.getNewPrice()));
 
 
                     // setup productImages
@@ -196,49 +211,95 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void addToCart(String storeName, Product product, int quantity) {
+    private void addToCart(String storeName, Product product, Variant selectedVariant, int quantity) {
         if (storeName == null || product == null) {
             // Handle error or throw exception
             return;
         }
-
+        Log.d(tagVariant, "Adding to cart: StoreName = " + storeName + ", ProductName = " + product.getProductName() + ", SelectedVariant = " + selectedVariant);
         boolean storeFound = false;
         boolean productFound = false;
 
         for (CartItem cartItem : MY_CART) {
-            if (storeName.equals(cartItem.getStoreName())) { // storeName cannot be null here
+            if (storeName.equals(cartItem.getStoreName())) {
                 storeFound = true;
-                for (Product pr : cartItem.getListProducts()) {
-                    if (product.getBaseID() != null && product.getBaseID().equals(pr.getBaseID())) { // Ensure product baseID is not null
-                        int currQuantity = pr.getNumberInCart();
-                        pr.setNumberInCart(currQuantity + quantity);
-                        productFound = true;
-                        break;
+                if (selectedVariant == null) {
+                    // Case when product has no variant
+                    for (Variant variant : cartItem.getListVariants()) {
+                        if (product.getProductName().equals(variant.getProductName())) {
+                            Log.d(tagVariant, "1. storeFound, đã có sản phẩm này (0 có variant), tăng số lượng lên thôi");
+                            int currQuantity = variant.getNumberInCart();
+                            variant.setProductID(product.getBaseID());
+                            variant.setNumberInCart(currQuantity + quantity);
+                            productFound = true;
+
+                            break;
+                        }
                     }
-                }
-                if (!productFound) {
-                    product.setNumberInCart(quantity);
-                    cartItem.getListProducts().add(product);
+                    if (!productFound) {
+                        Log.d(tagVariant, "2. storeFound, chưa có sản phẩm này (0 có variant), thêm variant fake vào");
+                        Variant newVariant = new Variant(null, product.getOldPrice(), product.getNewPrice(), product.getInStock()
+                                , product.getProductImages().get(0), productID);
+                        newVariant.setProductName(product.getProductName());
+                        newVariant.setNumberInCart(quantity);
+                        cartItem.getListVariants().add(newVariant);
+                    }
+                } else {
+                    // Case when product has variant
+                    boolean variantFound = false;
+                    for (Variant variant : cartItem.getListVariants()) {
+                        if (selectedVariant.getBaseID() != null && selectedVariant.getBaseID().equals(variant.getBaseID())) {
+                            Log.d(tagVariant, "3. storeFound, productFound, có variant này, tăng quantity thôi");
+                            int currQuantity = variant.getNumberInCart();
+                            variant.setProductID(product.getBaseID());
+                            variant.setProductName(product.getProductName());
+                            variant.setNumberInCart(currQuantity + quantity);
+                            variantFound = true;
+                            break;
+                        }
+                    }
+                    if (!variantFound) {
+                        Log.d(tagVariant, "4. storeFound, productFound, chưa có variant này, thêm variant vào");
+                        selectedVariant.setNumberInCart(quantity);
+                        selectedVariant.setProductID(product.getBaseID());
+                        selectedVariant.setProductName(product.getProductName());
+                        cartItem.getListVariants().add(selectedVariant);
+                    }
                 }
                 break;
             }
         }
 
         if (!storeFound) {
-            ArrayList<Product> products = new ArrayList<>();
-            product.setNumberInCart(quantity);
-            products.add(product);
-            MY_CART.add(new CartItem(storeID, storeName, products));
+            ArrayList<Variant> variants = new ArrayList<>();
+            if (selectedVariant == null) {
+                Log.d(tagVariant, "5. storeNotFound, chưa có sản phẩm này, (0 có variant), thêm variant fake vào");
+                // Case when product has no variant
+                Variant newVariant = new Variant(null, product.getOldPrice(), product.getNewPrice(), product.getInStock()
+                        , product.getProductImages().get(0), productID);
+                newVariant.setProductName(product.getProductName());
+                newVariant.setNumberInCart(quantity);
+                variants.add(newVariant);
+            } else {
+                Log.d(tagVariant, "6. storeNotFound, productNotfound, (có variant), thêm variant này vào");
+                // Case when product has variant
+                selectedVariant.setNumberInCart(quantity);
+                selectedVariant.setProductName(product.getProductName());
+                variants.add(selectedVariant);
+            }
+            MY_CART.add(new CartItem(storeID, storeName, variants));
         }
+        Log.d(tagVariant, "---------------------------");
     }
-
 
     private void setupEvents() {
         binding.btnAddToCart.setOnClickListener(v -> {
-            if (buyable){
+            if (buyable) {
                 popUpAddToCartDialog();
-            }else {
+            } else if (g_roleValue == 2){
                 showToast(ProductDetailActivity.this, "Bạn đang bán sản phẩm này\nKhông thể mua");
+            } else if (g_roleValue == 3) {
+                showToast(ProductDetailActivity.this, "Đơn vị vận chuyển không thể mua hàng");
             }
 
         });
@@ -249,7 +310,6 @@ public class ProductDetailActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        binding.txtProductDetail.setOnClickListener(v -> popUpProductDetailDialog());
 
         binding.btnViewStore.setOnClickListener(v -> {
             Intent intent = new Intent(ProductDetailActivity.this, ViewMyStoreActivity.class);
@@ -260,9 +320,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         binding.layoutBuyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (buyable){
-                    popUpBuyNowDialog();
-                }else {
+                if (buyable) {
+//                    popUpBuyNowDialog();
+                } else {
                     showToast(ProductDetailActivity.this, "Bạn đang bán sản phẩm này\nKhông thể mua");
                 }
             }
@@ -287,19 +347,77 @@ public class ProductDetailActivity extends AppCompatActivity {
             Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
             dialogBinding.getRoot().startAnimation(slideUp);
         }
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedOldPrice = formatter.format(currentProduct.getOldPrice());
-        dialogBinding.txtOldPrice.setText("đ" + formattedOldPrice);
+
+        //reset thông tin trên dialog mỗi lần popup dialog
+        g_selectedVariant = null;
+        g_totalInstock = 0;
+        g_selectedPos = -1;
+        dialogBinding.txtOldPrice.setText(FormatHelper.formatVND(currentProduct.getOldPrice()));
         dialogBinding.txtOldPrice.setPaintFlags(binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-        String formattedNewPrice = formatter.format(currentProduct.getNewPrice());
-
-        dialogBinding.txtNewPrice.setText(formattedNewPrice);
-        dialogBinding.txtInStock.setText("Kho: " + currentProduct.getInStock());
-
-        //reset số lượng trên dialog sau mỗi lần popup dialog
-
+        dialogBinding.txtNewPrice.setText(FormatHelper.formatDecimal(currentProduct.getNewPrice()));
+        dialogBinding.txtProductName.setText(currentProduct.getProductName());
+        Glide.with(ProductDetailActivity.this).load(currentProduct.getProductImages().get(0)).into(dialogBinding.imageView);
         dialogBinding.txtQuantity.setText(String.valueOf(1));
+        dialogBinding.progressBar.setVisibility(View.VISIBLE);
+
+
+        // gọi api lấy toàn bộ variant của sản phẩm về
+        variantApi mVariantApi = new variantApi();
+
+
+        mVariantApi.getVariantsByProductIdApi(productID, new GetCollectionCallback<Variant>() {
+            @Override
+            public void onGetListSuccess(ArrayList<Variant> variants) {
+                g_variants = new ArrayList<>(variants);
+                dialogBinding.progressBar.setVisibility(View.GONE);
+
+                if (!g_variants.isEmpty()) {
+                    //Case Product có variant, totalInstock = tất cả inStock của các variant
+                    g_variants.forEach(item -> {
+                        g_totalInstock += item.getInStock();
+                    });
+                    dialogBinding.txtInStock.setText("Kho: " + g_totalInstock);
+                    dialogBinding.txtSelectVariant.setVisibility(View.VISIBLE);
+
+                    dialogBinding.recyclerView.setLayoutManager(new GridLayoutManager(ProductDetailActivity.this, 2));
+                    dialogBinding.recyclerView.setAdapter(new VariantGridAdapter(ProductDetailActivity.this, g_variants, g_selectedPos, new ItemSelectionListener<Variant>() {
+                        @Override
+                        public void transferInfo(int transferPosition, Variant variant) {
+                            if (transferPosition != -1) {
+                                dialogBinding.txtVariantName.setVisibility(View.VISIBLE);
+                            } else {
+                                dialogBinding.txtVariantName.setVisibility(View.GONE);
+                            }
+                            if (g_selectedPos != transferPosition) {
+                                g_selectedPos = transferPosition;
+                                g_selectedVariant = variant;
+                                Glide.with(ProductDetailActivity.this).load(variant.getVariantImageUrl()).centerCrop().into(dialogBinding.imageView);
+                                dialogBinding.txtVariantName.setText(variant.getVariantName());
+                                dialogBinding.txtInStock.setText("Kho: " + variant.getInStock());
+                                dialogBinding.txtNewPrice.setText(FormatHelper.formatVND(variant.getOldPrice()));
+                                dialogBinding.txtOldPrice.setPaintFlags(binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                                dialogBinding.txtNewPrice.setText(FormatHelper.formatDecimal(variant.getNewPrice()));
+                            }
+                        }
+                    }));
+                } else {
+                    //Case Product không có variant, totalInstock =  inStock của product
+                    g_totalInstock = currentProduct.getInStock();
+                    dialogBinding.txtInStock.setText("Kho: " + g_totalInstock);
+                    dialogBinding.txtSelectVariant.setVisibility(View.GONE);
+                    g_selectedVariant = null;
+                }
+            }
+
+            @Override
+            public void onGetListFailure(String errorMessage) {
+                dialogBinding.progressBar.setVisibility(View.GONE);
+                showToast(ProductDetailActivity.this, INTERNET_ERROR);
+            }
+        });
+
+
+        // setup Events
 
         dialogBinding.btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -312,7 +430,7 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
-        dialogBinding.imageExpand.setOnClickListener(v -> popUpProductImageExpandDialog());
+        dialogBinding.imageExpand.setOnClickListener(v -> popUpProductImageExpandDialog(g_selectedVariant));
         dialogBinding.btnMinus.setOnClickListener(v -> {
             int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
             if (quantity > 1) {
@@ -331,134 +449,51 @@ public class ProductDetailActivity extends AppCompatActivity {
                 startActivity(new Intent(ProductDetailActivity.this, LoginActivity.class));
                 return;
             }
-
-            if (currentProduct.getNumberInCart() > currentProduct.getInStock()) {
-                showToast(ProductDetailActivity.this, "Uiii, số lượng sản phẩm không đủ!");
+            if ((!g_variants.isEmpty()) && g_selectedPos == -1) {
+                showToast(ProductDetailActivity.this, "Hãy chọn sản phẩm trước");
+                return;
+            } else if (!g_variants.isEmpty()) {
+                if (g_selectedVariant.getNumberInCart() > g_selectedVariant.getInStock()) {
+                    showToast(ProductDetailActivity.this, "Uiii, số lượng sản phẩm không đủ!");
+                } else {
+                    int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
+                    addToCart(storeName, currentProduct, g_selectedVariant, quantity);
+                    showToast(ProductDetailActivity.this, "Đã thêm sản phẩm vào giỏ hàng");
+                    updateQuantityInCart(binding.txtQuantityInCart);
+                    dialog.dismiss();
+                }
             } else {
-                int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
-                addToCart(storeName, currentProduct, quantity);
-                showToast(ProductDetailActivity.this, "Đã thêm sản phẩm vào giỏ hàng");
-                updateQuantityInCart(binding.txtQuantityInCart);
-                dialog.dismiss();
-
+                if (currentProduct.getNumberInCart() > currentProduct.getInStock()) {
+                    showToast(ProductDetailActivity.this, "Uiii, số lượng sản phẩm không đủ!");
+                } else {
+                    int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
+                    addToCart(storeName, currentProduct, null, quantity);
+                    showToast(ProductDetailActivity.this, "Đã thêm sản phẩm vào giỏ hàng");
+                    updateQuantityInCart(binding.txtQuantityInCart);
+                    dialog.dismiss();
+                }
             }
 
-        });
-    }
-
-    private void popUpBuyNowDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        DialogBuyNowBinding dialogBinding = DialogBuyNowBinding.inflate(getLayoutInflater());
-        builder.setView(dialogBinding.getRoot());
-        AlertDialog dialog = builder.create();
-
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.custom_edit_text_border);
-        dialog.show();
-
-
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            window.setGravity(Gravity.BOTTOM);
-
-            Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-            dialogBinding.getRoot().startAnimation(slideUp);
-        }
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        String formattedOldPrice = formatter.format(currentProduct.getOldPrice());
-        dialogBinding.txtOldPrice.setText("đ" + formattedOldPrice);
-        dialogBinding.txtOldPrice.setPaintFlags(binding.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-        String formattedNewPrice = formatter.format(currentProduct.getNewPrice());
-
-        dialogBinding.txtNewPrice.setText(formattedNewPrice);
-        dialogBinding.txtInStock.setText("Kho: " + currentProduct.getInStock());
-
-        //reset số lượng trên dialog sau mỗi lần popup dialog
-
-        dialogBinding.txtQuantity.setText(String.valueOf(1));
-
-        dialogBinding.btnPlus.setOnClickListener(v -> {
-            int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
-            if (quantity < 99) {
-                dialogBinding.txtQuantity.setText(String.valueOf(quantity + 1));
-            }
-
-        });
-
-        dialogBinding.imageExpand.setOnClickListener(v -> popUpProductImageExpandDialog());
-        dialogBinding.btnMinus.setOnClickListener(v -> {
-            int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
-            if (quantity > 1) {
-                dialogBinding.txtQuantity.setText(String.valueOf(quantity - 1));
-            }
-
-        });
-
-        dialogBinding.imageClose.setOnClickListener(v -> dialog.dismiss());
-
-        dialogBinding.btnBuyNow.setOnClickListener(v -> {
-            if (currentProduct.getNumberInCart() > currentProduct.getInStock()) {
-                showToast(ProductDetailActivity.this, "Uiii, số lượng sản phẩm không đủ!");
-            } else {
-
-                Intent intent = new Intent(ProductDetailActivity.this, PaymentActivity.class);
-                ArrayList<CartItem> payment = new ArrayList<>();
-                CartItem cartItem = new CartItem();
-                ArrayList<Product> listProducts = new ArrayList<>();
-                int quantity = Integer.parseInt(dialogBinding.txtQuantity.getText().toString().trim());
-                currentProduct.setNumberInCart(quantity);
-
-                listProducts.add(currentProduct);
-
-                cartItem.setStoreID(storeID);
-                cartItem.setNote("");
-                cartItem.setStoreName(storeName);
-                cartItem.setListProducts(listProducts);
-                payment.add(cartItem);
-
-                intent.putExtra(PAYMENT, payment);
-                startActivity(intent);
-            }
 
         });
     }
 
 
-    private void popUpProductImageExpandDialog() {
+    private void popUpProductImageExpandDialog(Variant variant) {
         Dialog dialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         DialogProductImageExpandBinding dialogBinding = DialogProductImageExpandBinding.inflate(getLayoutInflater());
         dialog.setContentView(dialogBinding.getRoot());
         dialog.show();
-
-        Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+        Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_in_from_right);
         dialogBinding.getRoot().startAnimation(slideUp);
-
-        dialogBinding.imageClose.setOnClickListener(v -> dialog.dismiss());
-    }
-
-
-    private void popUpProductDetailDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutProductDetailBinding detailBinding = LayoutProductDetailBinding.inflate(getLayoutInflater());
-        builder.setView(detailBinding.getRoot());
-        AlertDialog dialog = builder.create();
-
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(R.drawable.custom_edit_text_border);
-        dialog.show();
-
-
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            window.setGravity(Gravity.BOTTOM);
-
-            Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-            detailBinding.getRoot().startAnimation(slideUp);
+        if (variant != null) {
+            Glide.with(ProductDetailActivity.this).load(variant.getVariantImageUrl()).into(dialogBinding.imageView);
+        } else {
+            Glide.with(ProductDetailActivity.this).load(currentProduct.getProductImages().get(0)).into(dialogBinding.imageView);
         }
 
 
-        detailBinding.btnClose.setOnClickListener(v -> dialog.dismiss());
+        dialogBinding.imageClose.setOnClickListener(v -> dialog.dismiss());
     }
 
     private void initUI() {
@@ -467,4 +502,6 @@ public class ProductDetailActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
         updateQuantityInCart(binding.txtQuantityInCart);
     }
+
+
 }

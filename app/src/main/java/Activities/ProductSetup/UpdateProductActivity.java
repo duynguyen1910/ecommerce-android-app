@@ -32,7 +32,6 @@ import api.categoryApi;
 import interfaces.GetDocumentCallback;
 import interfaces.UpdateDocumentCallback;
 import models.Product;
-import models.UserAddress;
 
 public class UpdateProductActivity extends AppCompatActivity {
 

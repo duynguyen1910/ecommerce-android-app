@@ -4,31 +4,20 @@ import static constants.collectionName.ADDRESS_COLLECTION;
 import static constants.collectionName.USER_ADDRESS_COLLECTION;
 import static constants.keyName.ADDRESS_ID;
 import static constants.keyName.USER_ID;
-import static constants.toastMessage.INTERNET_ERROR;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import constants.toastMessage;
 import interfaces.CreateDocumentCallback;
 import interfaces.GetCollectionCallback;
 import interfaces.GetDocumentCallback;
-import models.InvoiceDetail;
 import models.Product;
-import models.User;
 import models.UserAddress;
 
 public class addressApi {

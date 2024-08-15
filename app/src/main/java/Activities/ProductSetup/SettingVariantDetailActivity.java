@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,13 +18,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.stores.R;
 import com.example.stores.databinding.ActivitySettingVariantDetailBinding;
-import com.google.errorprone.annotations.Var;
 
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
-import Adapters.MyProductsAdapter;
 import Adapters.SettingVariant.VariantSettingAdapter;
 import api.uploadApi;
 import api.variantApi;

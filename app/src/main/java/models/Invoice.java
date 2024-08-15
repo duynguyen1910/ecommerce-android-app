@@ -25,6 +25,7 @@ public class Invoice extends BaseObject implements Serializable {
 
     private String note;
     private String cancelledReason;
+    private String storeID;
     private ArrayList<InvoiceDetail> invoiceItems;
     //    private CartItem cartItem;
     private invoiceApi invoiceApi;
@@ -49,6 +50,14 @@ public class Invoice extends BaseObject implements Serializable {
 
     public void setCancelledReason(String cancelledReason) {
         this.cancelledReason = cancelledReason;
+    }
+
+    public String getStoreID() {
+        return storeID;
+    }
+
+    public void setStoreID(String storeID) {
+        this.storeID = storeID;
     }
 
     public String getCancelledBy() {

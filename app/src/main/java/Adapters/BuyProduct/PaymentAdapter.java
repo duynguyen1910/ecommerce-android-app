@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import models.CartItem;
 import models.Product;
+import models.Variant;
 
 
 public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHolder> {
@@ -55,15 +56,16 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         CartItem cartItem = list.get(holder.getBindingAdapterPosition());
-        ArrayList<Product> listProducts = cartItem.getListProducts();
+        ArrayList<Variant> listVariants = cartItem.getListVariants();
 
         holder.binding.txtStoreName.setText(cartItem.getStoreName());
 
-        ProductsAdapterForInvoice adapter = new ProductsAdapterForInvoice(context, cartItem.getListProducts());
+        ProductsAdapterForInvoice adapter = new ProductsAdapterForInvoice(context, cartItem.getListVariants());
+
         holder.binding.recyclerViewProducts.setLayoutManager(new LinearLayoutManager(context));
         holder.binding.recyclerViewProducts.setAdapter(adapter);
 
-        holder.binding.txtQuantityProducts.setText("Tổng số tiền (" + listProducts.size() + " sản phẩm)");
+        holder.binding.txtQuantityProducts.setText("Tổng số tiền (" + listVariants.size() + " sản phẩm)");
 
 
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));

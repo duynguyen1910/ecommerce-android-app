@@ -2,18 +2,15 @@ package Activities.BuyProduct;
 
 import static constants.keyName.DEFAULT_ADDRESS_ID;
 import static constants.keyName.DETAILED_ADDRESS;
-import static constants.keyName.DISTRICT_ID;
 import static constants.keyName.DISTRICT_NAME;
 import static constants.keyName.PROVINCE_NAME;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
-import static constants.keyName.WARD_ID;
 import static constants.keyName.WARD_NAME;
 import static constants.toastMessage.ADDRESS_REQUIRE;
 import static constants.keyName.PAYMENT;
-import static constants.keyName.USER_ID;
-import static constants.keyName.USER_INFO;
 import static utils.Cart.CartUtils.getCartItemFee;
+import static utils.Cart.CartUtils.showToast;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -33,15 +30,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.stores.R;
-import com.example.stores.databinding.ActivityCreateAddressBinding;
-import com.example.stores.databinding.ActivityDeliveryAddressBinding;
 import com.example.stores.databinding.ActivityPaymentBinding;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import Activities.AddAddress.DeliveryAddressActivity;
@@ -49,6 +42,7 @@ import api.addressApi;
 import Activities.MainActivity;
 import Adapters.BuyProduct.PaymentAdapter;
 import api.invoiceApi;
+import api.productApi;
 import api.userApi;
 import enums.OrderStatus;
 import interfaces.CreateDocumentCallback;
@@ -57,8 +51,8 @@ import interfaces.StatusCallback;
 import interfaces.UserCallback;
 import models.CartItem;
 import models.InvoiceDetail;
-import models.Product;
 import models.User;
+import models.Variant;
 import utils.FormatHelper;
 
 public class PaymentActivity extends AppCompatActivity {
@@ -67,6 +61,7 @@ public class PaymentActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     String userID = null;
     String defaultAddressID = null;
+    String tag = "payment5";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,16 +119,17 @@ public class PaymentActivity extends AppCompatActivity {
                 newInvoice.put("note", item.getNote());
                 newInvoice.put("storeID", item.getStoreID());
 
-                binding.progressBar.setVisibility(View.VISIBLE);
+//                binding.progressBar.setVisibility(View.VISIBLE);
                 binding.progressBar.getIndeterminateDrawable()
                         .setColorFilter(Color.parseColor("#f04d7f"), PorterDuff.Mode.MULTIPLY);
                 binding.btnBooking.setBackground(ContextCompat.getDrawable(this, R.color.darkgray));
 
                 invoiceApi invoiceApi = new invoiceApi();
+
                 invoiceApi.createInvoiceApi(newInvoice, new CreateDocumentCallback() {
                     @Override
                     public void onCreateSuccess(String documentID) {
-                        createInvoiceDetail(invoiceApi, documentID, item.getListProducts());
+                        createInvoiceDetail(invoiceApi, documentID, item.getListVariants());
                     }
 
                     @Override
@@ -149,18 +145,18 @@ public class PaymentActivity extends AppCompatActivity {
         binding.txtCustomerAddress.setOnClickListener(v -> {
             myLauncher.launch(new Intent(PaymentActivity.this, DeliveryAddressActivity.class));
         });
-
-//        binding.txtPaymentMethod.setOnClickListener(v -> {
-//            Intent intent = new Intent(PaymentActivity.this, PaymentMethodActivity.class);
-//            startActivity(intent);
-//        });
     }
 
-    private void createInvoiceDetail(invoiceApi invoiceApi, String invoiceID, ArrayList<Product> productList) {
+    private void createInvoiceDetail(invoiceApi invoiceApi, String invoiceID, ArrayList<Variant> variantsList) {
         ArrayList<InvoiceDetail> invoiceDetails = new ArrayList<>();
-        for (Product product : productList) {
-            invoiceDetails.add(new InvoiceDetail(invoiceID, product.getBaseID(), product.getNumberInCart()));
+        for (Variant variant : variantsList) {
+            invoiceDetails.add(new InvoiceDetail(invoiceID, variant.getBaseID(), variant.getProductID(), variant.getProductName(), variant.getNumberInCart()));
         }
+        invoiceDetails.forEach(item -> {
+            Log.d(tag, "variantID: " + item.getVariantID() + "\nquantity: " + item.getQuantity() + "\nProductName: " + item.getProductName() + "\nProductID: " + item.getProductID());
+            Log.d(tag, "--------------------");
+        });
+
 
         invoiceApi.createDetailInvoiceApi(invoiceDetails, new StatusCallback() {
             @Override
@@ -168,6 +164,21 @@ public class PaymentActivity extends AppCompatActivity {
                 binding.progressBar.setVisibility(View.GONE);
                 binding.btnBooking.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.color.primary_color));
                 Toast.makeText(PaymentActivity.this, successMessage, Toast.LENGTH_SHORT).show();
+                // call API update tồn kho
+                productApi m_productApi = new productApi();
+                m_productApi.updateInventory(invoiceDetails, new StatusCallback() {
+                    @Override
+                    public void onSuccess(String successMessage) {
+                        showToast(PaymentActivity.this, successMessage);
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        showToast(PaymentActivity.this, errorMessage);
+                    }
+                });
+
+
 
                 Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -186,29 +197,21 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
 
-    private double calculatorPayment() {
-        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        binding.txtTotalProductsFee.setText("đ" + formatter.format(getTotalProductsFee()));
+    private void calculatorPayment() {
+        binding.txtTotalProductsFee.setText(FormatHelper.formatVND(getTotalProductsFee()));
         double delivery = 25000;
         double totalDelivery = delivery * payment.size();
-        double ecommerceDeliveryDiscount = 50000;
-
-        binding.txtTotalDeliveryFee.setText("đ" + formatter.format(totalDelivery));
-
-//        binding.txtEcommerceDeliveryDiscount.setText("-đ" + formatter.format(ecommerceDeliveryDiscount));
-//        binding.txtTotalDiscount.setText("-đ" + formatter.format(ecommerceDeliveryDiscount));
-
+        binding.txtTotalDeliveryFee.setText(FormatHelper.formatVND(totalDelivery));
         double total = getTotalProductsFee() + totalDelivery;
-        binding.txtTotalPayment.setText("đ" + formatter.format(total));
-        binding.txtTotalOrder.setText("đ" + formatter.format(total));
-        return total;
+        binding.txtTotalPayment.setText(FormatHelper.formatVND(total));
+        binding.txtTotalOrder.setText(FormatHelper.formatVND(total));
     }
 
     private double getTotalProductsFee() {
         double fee = 0;
         for (CartItem item : payment) {
-            for (Product product : item.getListProducts()) {
-                fee += (product.getNewPrice() * product.getNumberInCart());
+            for (Variant variant : item.getListVariants()) {
+                fee += (variant.getNewPrice() * variant.getNumberInCart());
             }
         }
         return fee;
