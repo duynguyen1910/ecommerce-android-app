@@ -56,22 +56,23 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/txtCustomerProfileDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:id="@+id/txtCustomerProfileDetail"
-                android:drawableEnd="@drawable/ic_arrow_right_24"
-                android:drawableTint="@color/darkgray"
                 android:gravity="center_vertical"
                 android:padding="16dp"
                 android:text="Hồ sơ của tôi"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:drawableEndCompat="@drawable/ic_arrow_right_24"
+                app:drawableTint="@color/darkgray" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -80,11 +81,12 @@
                     android:text="Tên người dùng"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical"
                     android:padding="16dp"
                     android:text="botfarhome"
                     android:textColor="@color/black"
@@ -94,8 +96,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -104,20 +107,23 @@
                     android:text="Điện thoại"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical"
                     android:padding="16dp"
                     android:text="*****57"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -126,27 +132,29 @@
                     android:text="Email nhận hóa đơn"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
                     android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical"
                     android:padding="16dp"
                     android:text="x**********y@gmail.com"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </RelativeLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:drawableEnd="@drawable/ic_arrow_right_24"
-                android:drawableTint="@color/darkgray"
                 android:gravity="center_vertical"
                 android:padding="16dp"
                 android:text="Đổi mật khẩu"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:drawableEndCompat="@drawable/ic_arrow_right_24"
+                app:drawableTint="@color/darkgray" />
 
         </LinearLayout>
 

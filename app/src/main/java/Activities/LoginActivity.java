@@ -1,5 +1,6 @@
 package Activities;
 
+import static constants.keyName.DEFAULT_ADDRESS_ID;
 import static constants.keyName.FULLNAME;
 import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;
@@ -27,6 +28,7 @@ import java.util.Objects;
 import interfaces.UserCallback;
 import models.User;
 import constants.toastMessage;
+import utils.Encryptor;
 
 public class LoginActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
@@ -77,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
         User user = new User();
-       user.onLogin(phoneNumber, password, new UserCallback() {
+       user.onLogin(phoneNumber, Encryptor.encryptString(password), new UserCallback() {
            @Override
            public void getUserInfoSuccess(User user) {
                binding.progressBar.setVisibility(View.GONE);
@@ -107,7 +109,8 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString(FULLNAME, user.getFullname());
         editor.putString(PASSWORD, user.getPassword());
         editor.putInt(USER_ROLE, user.getRole().getRoleValue());
-        editor.putString(STORE_ID, user.getStoreId());
+        editor.putString(STORE_ID, user.getStoreID());
+        editor.putString(DEFAULT_ADDRESS_ID, user.getDefaultAddressID());
         editor.apply();
     }
 
@@ -115,16 +118,16 @@ public class LoginActivity extends AppCompatActivity {
     private void getDataRememberLogin() {
         sharedPreferences = getSharedPreferences("dataRememberLogin", MODE_PRIVATE);
         boolean checkedStatus = sharedPreferences.getBoolean("checked", false);
-        binding.chkRemember.setChecked(checkedStatus);  // Set the checkbox status
-        if (checkedStatus) {
-            String key_phoneNumber = sharedPreferences.getString("phoneNumber", "");
-            String key_password = sharedPreferences.getString("password", "");
-            binding.edtPhoneNumber.setText(key_phoneNumber);
-            binding.edtPassword.setText(key_password);
-        } else {
-            binding.edtPhoneNumber.setText("");
-            binding.edtPassword.setText("");
-        }
+//        binding.chkRemember.setChecked(checkedStatus);  // Set the checkbox status
+//        if (checkedStatus) {
+//            String key_phoneNumber = sharedPreferences.getString("phoneNumber", "");
+//            String key_password = sharedPreferences.getString("password", "");
+//            binding.edtPhoneNumber.setText(key_phoneNumber);
+//            binding.edtPassword.setText(key_password);
+//        } else {
+//            binding.edtPhoneNumber.setText("");
+//            binding.edtPassword.setText("");
+//        }
     }
 
     @Override

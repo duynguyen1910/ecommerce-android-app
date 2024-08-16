@@ -12,8 +12,9 @@
 
     <color name="primary_color">#f04d7f</color>
     <color name="black_trans">#33000000</color>
+    <color name="light_light_primary">#F8DEE4</color>
+    <color name="light_bg_primary">#FBF7F8</color>
 
-    <color name="secondary_color">#0c0</color>
     <color name="gray1" >#686868</color>
     <color name="gray2" >#5f6368</color>
     <color name="gray3" >#A2A3A3</color>
@@ -53,17 +54,24 @@
 
     <color name="green">#169955</color>
     <color name="darkgreen">#5C8A72</color>
-    <color name="green_persian">#009688</color>
-    <color name="green_persian_alpha70">#B0009688</color>
-    <color name="light_green_persian">#679E99</color>
-    <color name="lightpink">#D985A1</color>
-    <color name="pink">#C13564</color>
+    <color name="secondary_color">#009688</color>
+
+    <color name="secondary_color_alpha70">#B0009688</color>
+    <color name="light_secondary_color">#679E99</color>
+    <color name="light_light_secondary_color">#EBFAF8</color>
+    <color name="light_primary_color">#D985A1</color>
+    <color name="dark_primary_color">#C13564</color>
     <color name="red">#ff343b</color>
     <color name="gray">#d2d2d2</color>
     <color name="darkgray">#616161</color>
+
+    <color name="gray_cancel">#F2F2F2</color>
     <color name="lightgray">#EFEFEF</color>
     <color name="mediumgray">#ECEBEB</color>
     <color name="yellow">#EDD707</color>
     <color name="lightyellow">#F4E9BE</color>
+    <color name="lightlightyellow">#FAF7ED</color>
+    <color name="lightlightgreen">#EBFAF8</color>
     <color name="orange"> #E7502A</color>
+    <color name="black_magic">#2B2E41</color>
 </resources>

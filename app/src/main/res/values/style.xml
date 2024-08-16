@@ -4,6 +4,7 @@
         <!-- Thiết lập màu StatusBar trong suốt -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">false</item>
+
     </style>
 
     <style name="BottomNavigationViewStyle" parent="Widget.Design.BottomNavigationView">

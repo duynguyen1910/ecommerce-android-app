@@ -1,19 +1,16 @@
 package models;
 
-
-import java.util.ArrayList;
-
-import api.invoiceApi;
-import interfaces.StatusCallback;
-
 public class InvoiceDetail {
     private String invoiceID;
     private String variantID;
+    private String variantName;
     private String productName;
     private double newPrice;
     private double oldPrice;
     private int quantity;
     private String storeID;
+    private String productImage;
+    private String productID;
     public static int ITEM_TO_DISPLAY = 1;
 
     public InvoiceDetail() {
@@ -23,6 +20,32 @@ public class InvoiceDetail {
         this.invoiceID = invoiceID;
         this.variantID = variantID;
         this.quantity = quantity;
+    }
+
+    public InvoiceDetail(String invoiceID, String productID, String variantID, String productName, double newPrice, double oldPrice, int quantity) {
+        this.invoiceID = invoiceID;
+        this.productID = productID;
+        this.variantID = variantID;
+        this.productName = productName;
+        this.newPrice = newPrice;
+        this.oldPrice = oldPrice;
+        this.quantity = quantity;
+    }
+
+    public String getProductID() {
+        return productID;
+    }
+
+    public void setProductID(String productID) {
+        this.productID = productID;
+    }
+
+    public String getVariantName() {
+        return variantName;
+    }
+
+    public void setVariantName(String variantName) {
+        this.variantName = variantName;
     }
 
     public String getInvoiceID() {
@@ -71,6 +94,14 @@ public class InvoiceDetail {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 
     public String getStoreID() {

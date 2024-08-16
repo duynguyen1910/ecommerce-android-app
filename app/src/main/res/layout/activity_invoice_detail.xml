@@ -67,17 +67,17 @@
                     android:orientation="vertical"
                     android:paddingVertical="6dp">
 
-                    <TextView
-                        android:id="@+id/txtInvoiceStatus"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:background="@color/green_persian"
-                        android:gravity="center_vertical"
-                        android:padding="16dp"
-                        android:text="Đơn hàng đang chờ xác nhận"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
+                    <!--                    <TextView-->
+                    <!--                        android:id="@+id/txtInvoiceStatus"-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_marginBottom="10dp"-->
+                    <!--                        android:background="@color/primary_color"-->
+                    <!--                        android:gravity="center_vertical"-->
+                    <!--                        android:padding="16dp"-->
+                    <!--                        android:text="Đơn hàng đang chờ xác nhận"-->
+                    <!--                        android:textColor="@color/white"-->
+                    <!--                        android:textSize="16sp" />-->
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -90,25 +90,35 @@
                             android:layout_height="wrap_content"
                             android:drawablePadding="6dp"
                             android:text="Địa chỉ nhận hàng"
-                            android:textStyle="bold"
                             android:textColor="@color/black"
+                            android:textStyle="bold"
                             app:drawableStartCompat="@drawable/ic_location_16"
                             app:drawableTint="@color/primary_color" />
 
                         <TextView
+                            android:id="@+id/txtInvoiceStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:drawablePadding="6dp"
-                            android:text="Sao chép"
-                            android:textColor="@color/black"
-                            app:drawableEndCompat="@drawable/ic_copy_16"
-                            app:drawableTint="@color/green_persian" />
+                            android:gravity="center_vertical"
+                            android:text="Chờ xác nhận"
+                            android:textColor="@color/secondary_color" />
                     </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/txtDetailedCustomer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="2dp"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="26dp"
+                        android:text="..."
+                        android:textColor="@color/black"
+                        app:drawableTint="@color/darkgray" />
 
 
                     <TextView
-                        android:id="@+id/txtAddress"
+                        android:id="@+id/txtCustomerAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="6dp"
@@ -146,15 +156,6 @@
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnViewStore"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:layout_alignParentEnd="true"
-                        android:background="@drawable/custom_border_primary_color"
-                        android:text="Xem Store"
-                        android:textAllCaps="false"
-                        android:textColor="@color/primary_color" />
 
                 </LinearLayout>
 
@@ -162,16 +163,16 @@
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/lightgray"
                     android:layout_weight="1" />
 
                 <ProgressBar
-                    android:visibility="gone"
-                    android:layout_gravity="center"
+                    android:id="@+id/progressBar"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:id="@+id/progressBar"
+                    android:layout_gravity="center"
                     android:indeterminateTintMode="src_atop"
-                    />
+                    android:visibility="gone" />
 
 
             </LinearLayout>
@@ -181,10 +182,37 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_border_bottom"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:text="Tin nhắn"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/txtInvoiceNote"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:text="..."
+                        android:gravity="center_vertical|end"
+                        android:textColor="@color/darkgray"
+                        android:textSize="14sp"
+                        app:drawableTint="@color/darkgray" />
+                </LinearLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_border_top_bottom"
+                    android:background="@drawable/custom_border_bottom"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="16dp">
@@ -214,7 +242,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_border_top_bottom"
+                    android:background="@drawable/custom_border_bottom"
                     android:orientation="vertical"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="16dp">
@@ -248,7 +276,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/custom_border_top_bottom"
+                    android:background="@drawable/custom_border_bottom"
                     android:orientation="vertical"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="16dp">
@@ -284,7 +312,7 @@
                             android:text="Sao chép"
                             android:textColor="@color/black"
                             app:drawableEndCompat="@drawable/ic_copy_16"
-                            app:drawableTint="@color/green_persian" />
+                            app:drawableTint="@color/secondary_color" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -311,10 +339,10 @@
 
                     <RelativeLayout
                         android:id="@+id/confirmedAtRL"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="8dp">
+                        android:paddingVertical="8dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -335,10 +363,10 @@
 
                     <RelativeLayout
                         android:id="@+id/shippedAtRL"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="8dp">
+                        android:paddingVertical="8dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -359,10 +387,10 @@
 
                     <RelativeLayout
                         android:id="@+id/deliveredAtRL"
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="8dp">
+                        android:paddingVertical="8dp"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -380,10 +408,69 @@
                             android:textColor="@color/darkgray"
                             app:backgroundTint="@null" />
                     </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/cancelledAtRL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="8dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thời gian hủy đơn:"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/txtCanceledAt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerInParent="true"
+                            android:text="2024/07/03, 08:54"
+                            android:textColor="@color/darkgray"
+                            app:backgroundTint="@null" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/cancelledReasonRL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingVertical="8dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Lý do hủy đơn:"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/txtCanceledReason"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sản phẩm hư hại trong quá trình vận chuyển"
+                            android:textColor="@color/darkgray"
+                            app:backgroundTint="@null" />
+                    </LinearLayout>
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnCancelInvoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/custom_button_close"
+                    android:text="Hủy đơn"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:visibility="gone" />
+
             </LinearLayout>
-
-
         </LinearLayout>
     </ScrollView>
 

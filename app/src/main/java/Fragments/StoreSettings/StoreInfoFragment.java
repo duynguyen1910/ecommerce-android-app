@@ -1,16 +1,10 @@
 package Fragments.StoreSettings;
 
-import static android.content.Context.MODE_PRIVATE;
-import static constants.keyName.PHONE_NUMBER;
-import static constants.keyName.USER_INFO;
 import static constants.toastMessage.DEFAULT_REQUIRE;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +18,7 @@ import com.example.stores.databinding.FragmentStoreInfoBinding;
 
 import java.util.Objects;
 
-import Activities.CreateAddressActivity;
+import Activities.AddAddress.CreateAddressActivity;
 
 public class StoreInfoFragment extends Fragment {
     FragmentStoreInfoBinding binding;
@@ -35,21 +29,10 @@ public class StoreInfoFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentStoreInfoBinding.inflate(getLayoutInflater());
-//        initUI();
         setupEvent();
-
         return binding.getRoot();
     }
 
-//    private void initUI(){
-//        // lấy các thông tin của user bao gồm phoneNumber, Address, Email
-//
-//        sharedPreferences = requireContext().getSharedPreferences(USER_INFO, MODE_PRIVATE);
-//        String phoneNumber = sharedPreferences.getString(PHONE_NUMBER, null);
-//        if (phoneNumber != null){
-//            binding.edtPhoneNumber.setText(phoneNumber);
-//        }
-//    }
     private void setupEvent() {
 
         binding.layoutCreateAddress.setOnClickListener(new View.OnClickListener() {

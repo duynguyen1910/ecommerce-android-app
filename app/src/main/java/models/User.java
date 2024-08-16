@@ -10,7 +10,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Map;
 
 import api.userApi;
@@ -25,11 +24,14 @@ public class User extends BaseObject implements Serializable {
     private String phoneNumber;
     private String password;
     private String fullname;
-    private String imageUrl;
+    private String userImageUrl;
+    private String userAddress;
     private String email;
     private UserRole role;
+    private String defaultAddressID;
     private userApi userApi;
-    private String storeId;
+    private String storeID;
+
 
 
     public User() {
@@ -51,11 +53,12 @@ public class User extends BaseObject implements Serializable {
         this.fullname = fullname;
     }
 
-    public User(String phoneNumber, String password, String fullname, String imageUrl, String email, UserRole role, api.userApi userApi) {
+    public User(String phoneNumber, String password, String fullname, String userImageUrl,
+                String email, UserRole role, api.userApi userApi) {
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.fullname = fullname;
-        this.imageUrl = imageUrl;
+        this.userImageUrl = userImageUrl;
         this.email = email;
         this.role = role;
         this.userApi = userApi;
@@ -69,17 +72,15 @@ public class User extends BaseObject implements Serializable {
     @Override
     public void setBaseID(String userId) {
         super.validateBaseID(userId);
-
         super.baseID = userId;
-
     }
 
-    public String getStoreId() {
-        return storeId;
+    public String getStoreID() {
+        return storeID;
     }
 
-    public void setStoreId(String storeId) {
-        this.storeId = storeId;
+    public void setStoreID(String storeID) {
+        this.storeID = storeID;
     }
 
     public String getPhoneNumber() {
@@ -106,12 +107,20 @@ public class User extends BaseObject implements Serializable {
         this.fullname = fullname;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getUserImageUrl() {
+        return userImageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setUserImageUrl(String userImageUrl) {
+        this.userImageUrl = userImageUrl;
+    }
+
+    public String getUserAddress() {
+        return userAddress;
+    }
+
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
     }
 
     public String getEmail() {
@@ -120,6 +129,14 @@ public class User extends BaseObject implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getDefaultAddressID() {
+        return defaultAddressID;
+    }
+
+    public void setDefaultAddressID(String defaultAddressID) {
+        this.defaultAddressID = defaultAddressID;
     }
 
     public UserRole getRole() {

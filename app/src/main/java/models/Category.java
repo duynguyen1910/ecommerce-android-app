@@ -16,6 +16,7 @@ public class Category extends BaseObject implements Serializable {
 
     @Override
     public void setBaseID(String categoryID) {
+        super.validateBaseID(categoryID);
         super.baseID = categoryID;
     }
 
@@ -38,6 +39,7 @@ public class Category extends BaseObject implements Serializable {
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
+
 
     public void getCategoryCollection(GetCollectionCallback<Category> callback){
        categoryApi.getAllCategoryApi(callback);

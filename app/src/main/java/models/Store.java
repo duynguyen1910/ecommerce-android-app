@@ -13,6 +13,7 @@ public class Store extends BaseObject implements Serializable {
     private String storeImage;
     private int ownerID;
     private storeApi storeApi;
+    private double storeRevenue;
 
 
     public Store() {
@@ -26,16 +27,30 @@ public class Store extends BaseObject implements Serializable {
         this.storeImage = storeImage;
     }
 
+    public Store(String storeName, double storeRevenue) {
+        this.storeName = storeName;
+        this.storeRevenue = storeRevenue;
+    }
+
     @Override
     public String getBaseID() {
         return super.baseID;
     }
 
-    @Override
-    public void setBaseID(String storeID) {
-        validateBaseID(storeID);
 
-        super.baseID = storeID;
+    public double getStoreRevenue() {
+        return storeRevenue;
+    }
+
+    public void setStoreRevenue(double storeRevenue) {
+        this.storeRevenue = storeRevenue;
+    }
+
+    @Override
+    public void setBaseID(String storeId) {
+        validateBaseID(storeId);
+
+        super.baseID = storeId;
     }
 
 

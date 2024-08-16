@@ -21,9 +21,9 @@ public enum OrderStatus {
 
     private static final String CANCELLED_LABEL = "Đã hủy";
     private static final String PENDING_CONFIRMATION_LABEL = "Chờ xác nhận";
-    private static final String PENDING_SHIPMENT_LABEL = "Chờ xử lý";
+    private static final String PENDING_SHIPMENT_LABEL = "Chờ lấy hàng";
     private static final String IN_TRANSIT_LABEL = "Đang giao hàng";
-    private static final String DELIVERED_LABEL = "Hoàn thành";
+    private static final String DELIVERED_LABEL = "Đã giao";
 
 
     OrderStatus(String label, int value) {

@@ -4,12 +4,15 @@ import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Map;
 
 import api.invoiceApi;
 import enums.OrderStatus;
+import interfaces.UpdateDocumentCallback;
 
 public class Invoice extends BaseObject implements Serializable {
     private String customerID;
+    private String detailedAddress;
     private String deliveryAddress;
     private double total;
     private OrderStatus status;
@@ -18,12 +21,17 @@ public class Invoice extends BaseObject implements Serializable {
     private Timestamp shippedAt;
     private Timestamp deliveredAt;
     private Timestamp cancelledAt;
+    private String cancelledBy;
+
     private String note;
+    private String cancelledReason;
+    private String storeID;
     private ArrayList<InvoiceDetail> invoiceItems;
-//    private CartItem cartItem;
     private invoiceApi invoiceApi;
 
-    public Invoice() {this.invoiceApi = new invoiceApi();}
+    public Invoice() {
+        this.invoiceApi = new invoiceApi();
+    }
 
     public Invoice(String customerID, String deliveryAddress, double total, OrderStatus status,
                    Timestamp createdAt, String note) {
@@ -33,6 +41,30 @@ public class Invoice extends BaseObject implements Serializable {
         this.status = status;
         this.createdAt = createdAt;
         this.note = note;
+    }
+
+    public String getCancelledReason() {
+        return cancelledReason;
+    }
+
+    public void setCancelledReason(String cancelledReason) {
+        this.cancelledReason = cancelledReason;
+    }
+
+    public String getStoreID() {
+        return storeID;
+    }
+
+    public void setStoreID(String storeID) {
+        this.storeID = storeID;
+    }
+
+    public String getCancelledBy() {
+        return cancelledBy;
+    }
+
+    public void setCancelledBy(String cancelledBy) {
+        this.cancelledBy = cancelledBy;
     }
 
     @Override
@@ -53,6 +85,14 @@ public class Invoice extends BaseObject implements Serializable {
 
     public void setCustomerID(String customerID) {
         this.customerID = customerID;
+    }
+
+    public String getDetailedAddress() {
+        return detailedAddress;
+    }
+
+    public void setDetailedAddress(String detailedAddress) {
+        this.detailedAddress = detailedAddress;
     }
 
     public String getDeliveryAddress() {
@@ -142,5 +182,10 @@ public class Invoice extends BaseObject implements Serializable {
 
     public void setInvoiceItems(ArrayList<InvoiceDetail> invoiceItems) {
         this.invoiceItems = invoiceItems;
+    }
+
+    public void updateInvoice(String invoiceID, Map<String, Object> invoiceUpdate,
+                              final UpdateDocumentCallback callback) {
+        invoiceApi.updateStatusInvoiceApi(invoiceID, invoiceUpdate, callback);
     }
 }

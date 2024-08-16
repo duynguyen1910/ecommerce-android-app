@@ -5,9 +5,10 @@ import static constants.keyName.STORE_NAME;
 import static constants.keyName.STORE_OWNER_ID;
 import static constants.keyName.USER_ID;
 import static constants.keyName.USER_INFO;
-import static constants.toastMessage.INTERNET_ERROR;
+import static constants.keyName.USER_ROLE;
 import static constants.toastMessage.STOREA_ADDRESS_REQUIRE;
 import static constants.toastMessage.STORENAME_REQUIRE;
+import static utils.Cart.CartUtils.showToast;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -15,27 +16,26 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import com.example.stores.R;
 import com.example.stores.databinding.ActivityCreateStoreBinding;
-import com.example.stores.databinding.ItemTabLayoutCreateStoreBinding;
+import com.example.stores.databinding.ItemTabLabelBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
 import Adapters.ViewPager2Adapter;
 import Fragments.StoreSettings.SettingDeliveryFragment;
 import Fragments.StoreSettings.StoreIdentifierInfoFragment;
 import Fragments.StoreSettings.StoreInfoFragment;
 import Fragments.StoreSettings.TaxInfoFragment;
+import enums.UserRole;
 import interfaces.CreateDocumentCallback;
 import interfaces.UpdateDocumentCallback;
 import kotlin.Pair;
@@ -48,8 +48,6 @@ public class CreateStoreActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     int currentState = 1;
     int steps = 4;
-    private String storeName;
-    private String emailStore;
     ViewPager2Adapter viewPager2Adapter;
 
     @Override
@@ -97,7 +95,7 @@ public class CreateStoreActivity extends AppCompatActivity {
                     binding.btnNext.setBackground(ContextCompat.getDrawable(CreateStoreActivity.this, R.color.primary_color));
                     binding.viewPager2.setCurrentItem(0);
                     binding.progressBar.setVisibility(View.GONE);
-                    Toast.makeText(this, STORENAME_REQUIRE, Toast.LENGTH_SHORT).show();
+                    showToast(this,STORENAME_REQUIRE );
                     return;
                 }
                 String storeAddress = storeInfoFragment.getStoreAddress();
@@ -106,7 +104,7 @@ public class CreateStoreActivity extends AppCompatActivity {
                     binding.btnNext.setBackground(ContextCompat.getDrawable(CreateStoreActivity.this, R.color.primary_color));
                     binding.progressBar.setVisibility(View.GONE);
                     binding.viewPager2.setCurrentItem(0);
-                    Toast.makeText(this, STOREA_ADDRESS_REQUIRE, Toast.LENGTH_SHORT).show();
+                    showToast(this,STOREA_ADDRESS_REQUIRE );
                     return;
                 }
 
@@ -115,19 +113,21 @@ public class CreateStoreActivity extends AppCompatActivity {
                 storeInfo.put(STORE_NAME, storeName);
                 storeInfo.put(STORE_ADDRESS, storeAddress);
                 storeInfo.put(STORE_OWNER_ID, userId);
-                // call API
+
                 newStore.onCreateStore(storeInfo, new CreateDocumentCallback() {
                     @Override
                     public void onCreateSuccess(String documentId) {
-                        // Sau khi tạo  store xong, ta lấy storeId vừa tạo, call api update user
                         User user = new User();
                         Map<String, Object> updateData = new HashMap<>();
                         updateData.put(STORE_ID, documentId);
+                        updateData.put(USER_ROLE, UserRole.STORE_OWNER_ROLE.getRoleValue());
+
                         user.onUpdate(updateData, userId, new UpdateDocumentCallback() {
                             @Override
-                            public void onUpdateSuccess() {
+                            public void onUpdateSuccess(String successMessage) {
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putString(STORE_ID, documentId);
+                                editor.putInt(USER_ROLE, UserRole.STORE_OWNER_ROLE.getRoleValue());
                                 editor.apply();
 
                                 binding.progressBar.setVisibility(View.GONE);
@@ -138,7 +138,9 @@ public class CreateStoreActivity extends AppCompatActivity {
 
                             @Override
                             public void onUpdateFailure(String errorMessage) {
-                                Toast.makeText(CreateStoreActivity.this, INTERNET_ERROR, Toast.LENGTH_SHORT).show();
+                                Log.d("TAG", errorMessage);
+                                binding.progressBar.setVisibility(View.GONE);
+//                                showToast(CreateStoreActivity.this, errorMessage);
                             }
                         });
 
@@ -207,7 +209,7 @@ public class CreateStoreActivity extends AppCompatActivity {
         binding.viewPager2.setCurrentItem(0);
 
         new TabLayoutMediator(binding.tabLayout, binding.viewPager2, (tab, position) -> {
-            ItemTabLayoutCreateStoreBinding tabLayoutBinding = ItemTabLayoutCreateStoreBinding.inflate(getLayoutInflater());
+            ItemTabLabelBinding tabLayoutBinding = ItemTabLabelBinding.inflate(getLayoutInflater());
             TextView tabLabel = tabLayoutBinding.tabLabel;
             tabLabel.setText(viewPager2Adapter.getPageTitle(position));
             tab.setCustomView(tabLayoutBinding.getRoot());

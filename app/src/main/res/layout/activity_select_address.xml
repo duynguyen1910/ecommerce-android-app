@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightgray"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
         android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -26,7 +26,7 @@
             app:tint="@color/primary_color" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_weight="1"
@@ -38,38 +38,68 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
-
-
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="Địa chỉ"
-        android:textColor="@color/black" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <Button
+        android:id="@+id/getLocationBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Sử dụng vị trí hiện tại của tôi"
+        android:textAllCaps="false"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/white" />
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp">
+
+        <Spinner
+            android:id="@+id/provinceSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/custom_border_gray"
+            android:padding="7dp"
+            android:pointerIcon="arrow"
+            android:spinnerMode="dropdown"
+            android:textColorHint="@color/text1" />
+
+        <Spinner
+            android:id="@+id/districtSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/custom_border_gray"
+            android:padding="7dp"
+            android:pointerIcon="arrow"
+            android:spinnerMode="dropdown"
+            android:textColorHint="@color/text1" />
+
+        <Spinner
+            android:id="@+id/wardSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/custom_border_gray"
+            android:padding="7dp"
+            android:pointerIcon="arrow"
+            android:spinnerMode="dropdown"
+            android:textColorHint="@color/text1" />
+    </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnAccept"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:layout_margin="40dp"
-        android:background="@drawable/custom_edit_text_border"
-        android:drawableStart="@drawable/ic_add"
-        android:drawableTint="@color/primary_color"
-        android:gravity="center"
-        android:paddingHorizontal="16dp"
-        android:text="Thêm địa chỉ mới"
+        android:id="@+id/btnSave"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5dp"
+        android:background="@drawable/custom_button_primary"
+        android:text="Lưu"
         android:textAllCaps="false"
-        android:textColor="@color/primary_color" />
+        android:textColor="@color/white"
+        android:textSize="14sp" />
 
 
 </LinearLayout>

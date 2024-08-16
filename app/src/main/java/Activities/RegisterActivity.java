@@ -1,6 +1,4 @@
 package Activities;
-
-import static constants.keyName.CART;
 import static constants.keyName.FULLNAME;
 import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;
@@ -19,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.stores.databinding.ActivityRegisterBinding;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +27,7 @@ import constants.toastMessage;
 import interfaces.StatusCallback;
 import models.User;
 import enums.UserRole;
+import utils.Encryptor;
 
 public class RegisterActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
@@ -85,13 +85,13 @@ public class RegisterActivity extends AppCompatActivity {
         binding.progressBar.getIndeterminateDrawable()
                 .setColorFilter(Color.parseColor("#F04D7F"), PorterDuff.Mode.MULTIPLY);
 
-        User user = new User(phoneNumber, fullname, password);
+        User user = new User(phoneNumber, password, fullname);
         user.setRole(UserRole.CUSTOMER_ROLE.getRoleValue());
 
         Map<String, Object> newUser = new HashMap<>();
         newUser.put(PHONE_NUMBER, user.getPhoneNumber());
         newUser.put(FULLNAME, user.getFullname());
-        newUser.put(PASSWORD, user.getPassword());
+        newUser.put(PASSWORD,  Encryptor.encryptString(user.getPassword()));
         newUser.put(USER_ROLE, UserRole.CUSTOMER_ROLE.getRoleValue());
         newUser.put(STORE_ID, null);
 

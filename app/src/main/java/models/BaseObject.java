@@ -1,7 +1,10 @@
 package models;
 
-public abstract class BaseObject {
+import java.io.Serializable;
+
+public abstract class BaseObject implements Serializable {
     protected String baseID;
+
 
     /**
      * Retrieves the unique identifier of the object.

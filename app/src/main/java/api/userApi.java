@@ -4,6 +4,7 @@ import static constants.collectionName.USER_COLLECTION;
 import static constants.keyName.PASSWORD;
 import static constants.keyName.PHONE_NUMBER;
 import static constants.keyName.USER_IMAGE_URL;
+import static constants.toastMessage.UPDATE_SUCCESSFULLY;
 import static constants.toastMessage.URL_NOT_FOUND;
 
 import androidx.annotation.NonNull;
@@ -73,17 +74,20 @@ public class userApi {
                     }
                 });
     }
-    public void updateUserApi(Map<String, Object> updateData, String userId, UpdateDocumentCallback callback) {
+
+    public void updateUserApi(Map<String, Object> updateData, String userId,
+                              UpdateDocumentCallback callback) {
         DocumentReference userRef = db.collection(USER_COLLECTION).document(userId);
         userRef.update(updateData).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        callback.onUpdateSuccess(UPDATE_SUCCESSFULLY);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        callback.onUpdateFailure(e.getMessage());
                     }
                 });
     };
@@ -128,7 +132,8 @@ public class userApi {
                 });
     }
 
-    public void updateUserInfoApi(String userId, Map<String, Object> userUpdates, final StatusCallback callback) {
+    public void updateUserInfoApi(String userId, Map<String, Object> userUpdates,
+                                  final StatusCallback callback) {
         db.collection(USER_COLLECTION).document(userId)
                 .update(userUpdates)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
